@@ -64,7 +64,7 @@ export const Route = createFileRoute("/inventory")({
       },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(inventoryQuery),
+  loader: () => null,
   component: InventoryPage,
 });
 
@@ -74,7 +74,7 @@ function formatPrice(cents: number) {
 }
 
 function InventoryPage() {
-  const { data: items } = useSuspenseQuery(inventoryQuery);
+  const { data: items = [], isLoading, error } = useQuery(inventoryQuery);
 
   const grouped = new Map<string, InventoryItem[]>();
   for (const item of items) {
