@@ -246,6 +246,8 @@ function RecommenderPage() {
           <AIResult
             recommendation={result.recommendation}
             blueprintImage={result.blueprintImage}
+            input={data}
+            contact={contact}
             onReset={reset}
             onSend={sendToQuote}
           />
@@ -270,11 +272,15 @@ function RecommenderPage() {
 function AIResult({
   recommendation,
   blueprintImage,
+  input,
+  contact,
   onReset,
   onSend,
 }: {
   recommendation: AIRecommendation;
   blueprintImage: string | null;
+  input: RecommenderInput;
+  contact: { name: string; email: string; phone: string; method: string; notes: string };
   onReset: () => void;
   onSend: () => void;
 }) {
@@ -289,26 +295,96 @@ function AIResult({
     ...Array.from(grouped.keys()).filter((c) => !CATEGORY_ORDER.includes(c)),
   ];
 
+  const firstName = contact.name.trim().split(/\s+/)[0] || "there";
+  const eventDateLabel = input.eventDate
+    ? new Date(input.eventDate + "T00:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })
+    : "your selected date";
+
+  const recapRows: Array<[string, string]> = [
+    ["Event type", input.eventType],
+    ["Date", eventDateLabel],
+    ["Location", input.location || "—"],
+    ["Setting", input.outdoor],
+    ["Guests", String(input.guestCount)],
+    ["Setup", input.setupType],
+    ["Seating", input.seated],
+    ["Tables", input.tableStyle],
+    ["Food", input.food],
+    ["Dancing", input.dancing],
+    ["Surface", input.surface],
+    ["Exposure", input.exposure],
+    ["Sidewalls", input.sidewalls],
+    ["After sunset", input.afterSunset],
+  ];
+
   return (
     <div className="space-y-8">
+      {/* Review intro */}
       <div className="rounded-2xl border border-border bg-card p-8 shadow-md sm:p-10">
         <div className="text-center">
           <Sparkles className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
-          <h2 className="mt-4 font-serif text-3xl text-primary sm:text-4xl">{recommendation.headline}</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{recommendation.summary}</p>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Your Recommendation Is Ready</p>
+          <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">{recommendation.headline}</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-foreground">
+            Thanks {firstName} — we reviewed your {input.eventType.toLowerCase()} for{" "}
+            <span className="font-semibold">{input.guestCount} guests</span> on{" "}
+            <span className="font-semibold">{eventDateLabel}</span>
+            {input.location ? <> at <span className="font-semibold">{input.location}</span></> : null}. Based on your answers, here's what we'd recommend.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">{recommendation.summary}</p>
         </div>
       </div>
 
-      {blueprintImage && (
-        <div className="overflow-hidden rounded-2xl border border-border bg-primary shadow-md">
-          <div className="border-b border-primary-foreground/10 px-6 py-4 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">AI-Generated Blueprint</p>
-            <p className="mt-1 font-serif text-xl text-primary-foreground">Suggested Layout</p>
+      {/* Input recap */}
+      <div className="rounded-2xl border border-border bg-card p-7 shadow-sm sm:p-9">
+        <h3 className="font-serif text-xl text-primary">Your event at a glance</h3>
+        <p className="mt-1 text-xs text-muted-foreground">A quick summary of what you told us.</p>
+        <dl className="mt-5 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+          {recapRows.map(([k, v]) => (
+            <div key={k} className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-2 text-sm">
+              <dt className="text-xs uppercase tracking-wider text-muted-foreground">{k}</dt>
+              <dd className="text-right font-medium text-foreground">{v}</dd>
+            </div>
+          ))}
+        </dl>
+        {(input.extras.length > 0 || input.rentals.length > 0) && (
+          <div className="mt-5 space-y-3">
+            {input.extras.length > 0 && (
+              <div>
+                <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Extras requested</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {input.extras.map((e) => (
+                    <span key={e} className="rounded-full bg-secondary px-3 py-1 text-xs text-foreground">{e}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {input.rentals.length > 0 && (
+              <div>
+                <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Rentals of interest</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {input.rentals.map((e) => (
+                    <span key={e} className="rounded-full bg-secondary px-3 py-1 text-xs text-foreground">{e}</span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-          <img src={blueprintImage} alt="AI-generated event blueprint" className="w-full" />
-          <p className="px-6 py-3 text-center text-xs text-primary-foreground/70">
-            Conceptual layout for illustration. Final placement confirmed during quoting.
-          </p>
+        )}
+      </div>
+
+      {/* Blueprint sketch */}
+      {blueprintImage && (
+        <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-md">
+          <div className="border-b border-border px-6 py-4 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Suggested Layout</p>
+            <p className="mt-1 font-serif text-xl text-primary">Blueprint Sketch</p>
+          </div>
+          <img src={blueprintImage} alt="Top-down blueprint sketch of recommended event layout" className="mx-auto block w-full max-w-2xl" />
+          <div className="border-t border-border px-6 py-4 text-center">
+            <p className="text-sm font-medium text-foreground">{recommendation.layout_caption}</p>
+            <p className="mt-1 text-xs text-muted-foreground">Conceptual sketch — final placement confirmed during quoting.</p>
+          </div>
         </div>
       )}
 
