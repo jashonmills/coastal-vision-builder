@@ -193,7 +193,7 @@ function SiteFooter() {
     <footer className="mt-24 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
-          <img src={footerLogo} alt="" className="mb-4 h-12 w-auto brightness-0 invert" />
+          <img src={footerLogo} alt="Pacific North Events & Tents" className="mb-4 h-16 w-auto" />
           <h3 className="font-serif text-xl text-primary-foreground">Pacific North Events &amp; Tents</h3>
           <p className="mt-3 text-sm leading-relaxed text-primary-foreground/75">
             {t("footer.tagline")}
