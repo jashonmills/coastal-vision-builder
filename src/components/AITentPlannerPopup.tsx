@@ -152,7 +152,7 @@ function PopupIllustration() {
   return (
     <div
       aria-hidden="true"
-      className="relative mx-auto mt-5 h-[110px] w-full overflow-hidden rounded-xl bg-gradient-to-b from-[#f3ecdc]/60 to-transparent sm:h-[130px]"
+      className="relative mx-auto mt-4 h-[90px] w-full overflow-hidden rounded-lg bg-gradient-to-b from-[#f3ecdc]/60 to-transparent sm:mt-5 sm:h-[130px] sm:rounded-xl"
     >
       <svg
         viewBox="0 0 360 130"
