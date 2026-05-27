@@ -1,4 +1,4 @@
-import { useState, useRef, type ReactNode } from "react";
+import { useState, useRef, type ReactNode, type ElementType } from "react";
 import { Pencil, Upload, Loader2, X, Check } from "lucide-react";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useSlotText, useSlotImage, useSaveSlot } from "@/hooks/use-site-content";
@@ -7,7 +7,7 @@ import { uploadImage } from "@/lib/upload-image";
 type EditableTextProps = {
   slot: string;
   fallback: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
   className?: string;
   multiline?: boolean;
   children?: (text: string) => ReactNode;
