@@ -58,6 +58,40 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         })
         .eq("id", data.saved_recommendation_id);
     }
+
+    // Auto-create scheduler entries: one on the request date, one on event date
+    const guests = data.guest_count ? `${data.guest_count} guests` : "";
+    const evtType = data.event_type ?? "Event";
+    const baseTitle = `New Quote Request: ${evtType}${guests ? " · " + guests : ""}`;
+    const events: Array<Record<string, unknown>> = [
+      {
+        title: baseTitle,
+        event_type: "quote_request",
+        start_time: new Date().toISOString(),
+        all_day: false,
+        status: "pending",
+        color: "#d4a64a",
+        quote_request_id: row.id,
+        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        location: data.event_location ?? null,
+        notes: data.customer_note ?? null,
+      },
+    ];
+    if (data.event_date) {
+      events.push({
+        title: `Potential Event: ${evtType}${guests ? " · " + guests : ""}`,
+        event_type: "quote_request",
+        start_time: new Date(data.event_date).toISOString(),
+        all_day: true,
+        status: "pending",
+        color: "#d4a64a",
+        quote_request_id: row.id,
+        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        location: data.event_location ?? null,
+      });
+    }
+    await supabaseAdmin.from("rental_calendar_events").insert(events);
+
     return { id: row.id };
   });
 

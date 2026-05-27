@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Box, Type, Tag, ArrowRight } from "lucide-react";
+import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Box, Type, Tag, ArrowRight, FileSpreadsheet, CalendarDays } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -47,7 +47,13 @@ function AdminPage() {
             to="/admin/inventory"
             className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/50 bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-[color:var(--gold)]/10"
           >
-            <Box className="h-4 w-4" /> Inventory Management <ArrowRight className="h-3.5 w-3.5" />
+            <Box className="h-4 w-4" /> Inventory <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+          <Link to="/admin/data-import" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary">
+            <FileSpreadsheet className="h-4 w-4" /> Data Import <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+          <Link to="/admin/scheduler" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary">
+            <CalendarDays className="h-4 w-4" /> Scheduler <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
