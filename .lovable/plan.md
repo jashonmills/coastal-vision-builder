@@ -1,63 +1,44 @@
-# Make the site fully editable by admins
+# Plan
 
-Goal: signed-in admins can edit inventory, gallery images, site text, and key site images (logo, hero, backgrounds) — both inline on the page and via a dedicated admin dashboard.
+Two independent additions. No backend changes, no business-logic changes.
 
-## 1. Roles (admin gate)
+## 1. Accessibility Font Chooser (floating button + panel)
 
-- New enum `app_role` (`admin`, `user`) and table `user_roles (user_id, role)` with RLS.
-- `has_role(_user_id, _role)` SECURITY DEFINER function (avoids recursive RLS).
-- Seed your account as admin (you'll tell me the email, or first signup gets promoted manually via a one-off insert).
-- `useIsAdmin()` hook reading `user_roles` for the current session.
+**New files**
+- `src/components/AccessibilityFontButton.tsx` — floating button + popover panel, all logic colocated.
+- `src/hooks/useAccessibilityFont.ts` — reads/writes `localStorage["pacificNorthPreferredFont"]`, sets `--accessibility-font` CSS var on `document.documentElement`, applies on mount before paint.
 
-## 2. Editable content storage
+**Edits**
+- `src/styles.css` — `@import` Google Fonts (Atkinson Hyperlegible, Lexend, Inter) and `@font-face` for OpenDyslexic from a CDN (gutenberg/jsDelivr). Add `body { font-family: var(--accessibility-font, <current site font stack>); }` so the variable cascades, leaving headings/brand marks untouched where they set their own font.
+- `src/components/SiteLayout.tsx` — mount `<AccessibilityFontButton />` once so it appears on every page.
 
-Two new tables (all writes restricted to admins via `has_role`; public read):
+**Behavior**
+- Bottom-left fixed, 24px inset, z-index above nav. Deep navy bg, cream icon (lucide `Accessibility`), seafoam focus ring.
+- Click toggles a Radix Popover panel anchored above the button (shadcn `Popover` already in project).
+- Panel: title "Text Accessibility", description, RadioGroup with 5 options (Default, OpenDyslexic, Atkinson Hyperlegible, Lexend, Verdana — Inter omitted per "Recommended active options"). Each option preview-rendered in its own font. Selection applies immediately and persists. "Reset to Default" button. Close X. Escape closes, focus returns to button. `aria-expanded`, `aria-controls`, proper RadioGroup semantics.
+- If OpenDyslexic `@font-face` fails to load (detect via `document.fonts.check`), disable that option with "Available soon" note.
+- Selected font drives `--accessibility-font`; body and descendants that don't explicitly set `font-family` (forms, modals, AI Tent Planner, popup, quote forms, translated content) inherit it. Logo/brand display fonts are untouched.
+- Mobile: panel `max-width: calc(100vw - 32px)`.
 
-- `site_content (key text pk, value jsonb, updated_at)` — stores text snippets and image URLs keyed by slot (e.g. `home.hero.title`, `home.hero.image`, `about.intro`, `services.tent.description`).
-- `gallery_images (id, url, caption, sort_order, created_at)` — gallery photos.
+## 2. AI Tent Planner Popup — Top Illustration
 
-Inventory already exists (`inventory_items`) — add admin INSERT/UPDATE/DELETE RLS policies (currently public-read only).
+**Edit only**
+- `src/components/AITentPlannerPopup.tsx` — insert a new illustration block between the "NEW FREE TOOL" badge and the headline. All existing text/CTAs/structure preserved.
 
-Storage: reuse existing public `images` bucket; add admin-only write policies.
+**Illustration approach**
+- Inline SVG component (no asset generation needed) composed of three layered groups within one horizontal band:
+  - Left: faded watercolor-wash tree silhouette (low-opacity sage/seafoam path).
+  - Center: line-art high-peak sailcloth tent with 3 peaks, tiny pennant flags, thin navy strokes, faint guy lines.
+  - Right: small blueprint inset — bordered square, 4 round tables as circles with chair tick marks, dimension lines with arrowheads, small "20'×20'" label.
+  - Background: very faint blueprint grid (CSS background or SVG `<pattern>`), pale gold/sand accent rule.
+- Colors pulled from existing tokens (navy, cream, seafoam, sand, gold) — kept low-contrast so headline remains dominant.
+- Sizing: ~full popup width, ~140px tall on desktop, ~110px on mobile, with breathing room above headline. Does not push CTA off-screen.
+- `aria-hidden="true"` (decorative).
 
-## 3. Admin dashboard (`/admin`)
+## Out of scope
+- No text-to-speech, no audio, no AI changes.
+- No i18n key changes (panel labels are UI chrome; can be added to en.json + other locales if desired — will include English-only by default unless you want translations too).
+- No changes to planner logic or quote flow.
 
-Protected by `_authenticated` + admin role check. Tabs:
-
-- **Inventory** — table view; add/edit/delete rows (name, category, price, unit, notes, sort_order).
-- **Gallery** — grid; upload (drag & drop), reorder, caption, delete.
-- **Site images** — slots for logo, each page's hero, section backgrounds; click to replace via upload.
-- **Site text** — list of all registered text slots with inline editors.
-
-## 4. Inline editing on public pages
-
-When signed in as admin, render:
-
-- `<EditableText slot="home.hero.title">` — falls back to default copy; click to edit (popover with textarea + save).
-- `<EditableImage slot="home.hero.image">` — hover overlay with "Replace" button → upload to `images` bucket → save URL to `site_content`.
-- Floating "Admin mode" toggle in the corner so admins can preview as visitors.
-
-Non-admins see the rendered content with zero edit affordances. Default copy stays hardcoded as fallback so the site never looks empty if a slot is unset.
-
-## 5. Wire-up across existing pages
-
-Convert hardcoded headings, paragraphs, and hero/background images on:
-`index.tsx`, `about.tsx`, `services.tsx`, `tent-rentals.tsx`, `events.tsx`, `gallery.tsx`, `inventory.tsx`, `contact.tsx`, and `SiteLayout` (logo) — into `<EditableText>` / `<EditableImage>` slots backed by `site_content`.
-
-Gallery page reads from `gallery_images` table. Inventory page already reads from `inventory_items` — no display change, just admin writes.
-
-## 6. Header link
-
-Add "Admin" link in header (visible to admins only) next to "Account".
-
----
-
-## Technical notes
-
-- Server functions (`createServerFn` + `requireSupabaseAuth`) for all admin mutations; admin check via `has_role` inside the handler.
-- Public reads of `site_content` and `gallery_images` go through `supabaseAdmin` in a public server fn (no PII) so visitors don't need a session.
-- Image uploads go directly from browser to Supabase Storage (`images` bucket) using the user's session; saved URL is then written to the relevant table via server fn.
-- All slot keys live in a single `src/lib/content-slots.ts` registry so the admin "Site text" tab can enumerate them.
-- Designed so adding a new editable slot later = add a key to the registry + drop `<EditableText slot="...">` in the JSX.
-
-Tell me the email address that should be the first admin and I'll seed it in the migration.
+## Open question
+Add the panel strings ("Text Accessibility", option labels, "Reset to Default") to all 10 locale files, or English-only for now?
