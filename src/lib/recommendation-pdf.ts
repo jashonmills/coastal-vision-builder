@@ -214,16 +214,8 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
   y += 14;
 
   // ---------- RECOMMENDED SETUP ----------
-  const grouped = new Map<string, Pick[]>();
-  for (const p of recommendation.picks ?? []) {
-    const arr = grouped.get(p.category) ?? [];
-    arr.push(p);
-    grouped.set(p.category, arr);
-  }
-  const orderedCategories = [
-    ...CATEGORY_ORDER.filter((c) => grouped.has(c)),
-    ...Array.from(grouped.keys()).filter((c) => !CATEGORY_ORDER.includes(c)),
-  ];
+  // (grouped + orderedCategories already computed above)
+
 
   // Heading + measure first item to keep heading with first item
   const measureItem = (p: Pick) => {
