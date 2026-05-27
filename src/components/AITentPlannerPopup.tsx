@@ -111,11 +111,11 @@ export function AITentPlannerPopup() {
             ))}
           </ul>
 
-          <div className="mt-7 flex flex-col items-center gap-3">
+          <div className="mt-6 flex flex-col items-center gap-2.5 sm:mt-7 sm:gap-3">
             <Link
               to="/ai-tent-planner"
               onClick={dismiss}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)]"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)] sm:px-7 sm:py-3.5"
             >
               <Sparkles className="h-4 w-4 text-[color:var(--gold)]" />
               {t("plannerPopup.primaryCta")}
