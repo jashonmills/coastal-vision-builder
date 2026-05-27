@@ -72,18 +72,18 @@ export function AITentPlannerPopup() {
       aria-labelledby="tent-planner-popup-title"
       onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}
     >
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-[color:var(--gold)]/30 bg-[#fbf6ee] shadow-2xl animate-in zoom-in-95 duration-300">
+      <div className="relative my-auto w-full max-w-sm overflow-hidden rounded-2xl border border-[color:var(--gold)]/30 bg-[#fbf6ee] shadow-2xl animate-in zoom-in-95 duration-300 sm:max-w-md sm:rounded-3xl">
         <button
           ref={closeBtnRef}
           type="button"
           onClick={dismiss}
           aria-label={t("plannerPopup.close")}
-          className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
+          className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground sm:right-4 sm:top-4 sm:h-9 sm:w-9"
         >
           <X className="h-4 w-4" />
         </button>
 
-        <div className="px-7 pb-7 pt-9 text-center sm:px-9 sm:pt-10">
+        <div className="px-5 pb-6 pt-7 text-center sm:px-9 sm:pb-7 sm:pt-10">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--seafoam,#9cc7bd)]/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
             <Sparkles className="h-3 w-3" /> {t("plannerPopup.badge")}
           </span>
