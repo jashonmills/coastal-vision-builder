@@ -127,3 +127,15 @@
    We intentionally do NOT use a window.print() CSS hack — it produced
    overlapping content. */
 
+/* AI Tent Planner icon micro-animation */
+@keyframes ai-sparkle-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.85; }
+}
+
+@keyframes ai-corner-shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+
