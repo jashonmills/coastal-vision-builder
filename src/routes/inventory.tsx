@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import festivalImg from "@/assets/festival-tents.jpg";
