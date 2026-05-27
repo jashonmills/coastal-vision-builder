@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import logoUrl from "@/assets/logo.png";
 import type { AIRecommendation, Pick } from "@/lib/recommender.functions";
 import type { RecommenderInput } from "@/lib/recommender";
