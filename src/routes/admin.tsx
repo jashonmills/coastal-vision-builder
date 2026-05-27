@@ -43,7 +43,7 @@ function AdminPage() {
       </div>
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
         <div className="mb-8 flex flex-wrap gap-2">
-          {([["inventory", Box, "Inventory"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
+          {([["inventory", Box, "Pricing"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
             <button key={k} onClick={() => setTab(k)} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${tab === k ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"}`}>
               <Icon className="h-4 w-4" /> {label}
             </button>
