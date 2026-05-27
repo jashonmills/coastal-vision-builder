@@ -1,5 +1,6 @@
 {
   "language": "Language",
+  "brand": "Pacific North Events & Tents",
   "nav": {
     "home": "Home",
     "rentals": "Rentals",
@@ -64,12 +65,251 @@
     "startOver": "Start Over",
     "talkToUs": "Talk to Us",
     "readyTitle": "Ready to Bring Your Event to Life?",
-    "readyDesc": "Tell us about your date, location, guest count, and vision. We'll help you choose the right tent setup for your event."
+    "readyDesc": "Tell us about your date, location, guest count, and vision. We'll help you choose the right tent setup for your event.",
+    "tryFreePlanner": "Try Our Free AI Tent Planner",
+    "viewOurServices": "View Our Services",
+    "startMyFreeTentPlan": "Start My Free Tent Plan",
+    "requestCustomQuote": "Request a Custom Quote"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Oregon Coast Event Rentals",
+      "title": "Event Tents & Rentals for Oregon Coast Celebrations",
+      "subtitle": "From weddings and festivals to private parties and corporate events, Pacific North Events & Tents helps bring your vision to life with stylish, reliable, weather-ready event rentals."
+    },
+    "badges": {
+      "weddings": "Weddings",
+      "festivals": "Festivals",
+      "privateParties": "Private Parties",
+      "corporateEvents": "Corporate Events",
+      "rainOrShine": "Rain-or-Shine Setups",
+      "yearRound": "Year-Round Rentals"
+    },
+    "intro": {
+      "eyebrow": "Our Promise",
+      "titleLine1": "Your Event. Your Vision.",
+      "titleLine2": "We Make It Happen.",
+      "body": "Planning an outdoor event on the Oregon Coast comes with a unique kind of magic — and a unique kind of weather. Pacific North Events & Tents provides high-quality event tents and rental support designed to keep your celebration comfortable, stylish, and stress-free."
+    },
+    "services": {
+      "title": "What We Help You Host",
+      "exploreLink": "Explore Services →",
+      "weddings": { "title": "Weddings", "text": "Elegant tented spaces for ceremonies, receptions, rehearsal dinners, and coastal wedding weekends." },
+      "festivals": { "title": "Festivals & Community", "text": "Large-scale tent solutions for markets, music events, fundraisers, fairs, and community celebrations." },
+      "privateParties": { "title": "Private Parties", "text": "Comfortable, beautiful setups for birthdays, reunions, graduations, backyard parties, and family gatherings." },
+      "corporate": { "title": "Corporate Events", "text": "Professional tent and rental solutions for business events, retreats, brand activations, and company gatherings." }
+    },
+    "weather": {
+      "eyebrow": "Coast-Ready",
+      "title": "Built for Coastal Weather",
+      "body": "Oregon Coast events need more than a pretty setup — they need smart planning, dependable equipment, and shelter that gives guests peace of mind. Our tents help protect your event from sun, wind, and rain while creating a polished space your guests will remember.",
+      "cta": "Plan Your Setup"
+    },
+    "tentCats": {
+      "eyebrow": "Tent Rentals",
+      "title": "Tents for Every Size Celebration",
+      "small": { "title": "Small Gatherings", "desc": "Backyard parties, intimate dinners, and small celebrations under 50 guests." },
+      "medium": { "title": "Medium Events", "desc": "Receptions and family celebrations for 50–100 guests with seating and food service." },
+      "large": { "title": "Large Celebrations", "desc": "Weddings and corporate events for 100–200 guests with dining and dancing." },
+      "festival": { "title": "Festival & Vendor Tents", "desc": "Markets, fairs, and multi-booth setups with weather-ready protection." },
+      "wedding": { "title": "Wedding Reception Tents", "desc": "Dining, dancing, lounge areas, and elegant outdoor wedding layouts." },
+      "custom": { "title": "Custom Event Layouts", "desc": "Multi-tent setups, vendor rows, weather plans, and full event flow design." }
+    },
+    "plannerPromo": {
+      "badge": "New Free Tool",
+      "eyebrow": "Plan Your Event in Minutes",
+      "title": "Try Our Free AI Tent Planner",
+      "body": "Not sure what size tent, seating layout, or equipment your event needs? Our AI Tent Planner helps you build a custom starting plan based on your guest count, event type, surface, weather exposure, and setup needs.",
+      "cards": {
+        "tentSize": { "title": "Tent Size Recommendation", "text": "Get a suggested tent size based on your guest count and layout." },
+        "equipment": { "title": "Equipment Checklist", "text": "See recommended tables, chairs, sidewalls, lighting, staging, and extras." },
+        "blueprint": { "title": "Blueprint-Style Layout", "text": "Generate a visual starting layout for your event setup." },
+        "quote": { "title": "Quote-Ready Plan", "text": "Send your plan to our team for a custom quote and final review." }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Inspiration",
+      "title": "See What's Possible",
+      "viewFull": "View Full Gallery →"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Services",
+      "title": "Event Rental Services for Every Occasion",
+      "subtitle": "Whether you're hosting an intimate gathering or a large coastal celebration, we help create the shelter, structure, and setting your event needs."
+    },
+    "items": {
+      "weddings": { "title": "Wedding Tent Rentals", "copy": "Create a beautiful covered space for your ceremony, reception, cocktail hour, or full wedding weekend. Our tent rentals help turn outdoor locations into comfortable, memorable venues." },
+      "festivals": { "title": "Festival & Community Event Rentals", "copy": "From vendor booths to large gathering spaces, we support festivals, markets, fundraisers, fairs, and public events with practical, weather-ready tent solutions." },
+      "private": { "title": "Private Party Rentals", "copy": "Host birthdays, reunions, graduations, anniversaries, and backyard celebrations with confidence. We help create a comfortable event space that feels intentional and easy to enjoy." },
+      "corporate": { "title": "Corporate Event Rentals", "copy": "Support company retreats, business gatherings, product launches, and branded events with polished tent setups that keep guests comfortable and the event looking professional." },
+      "setup": { "title": "Delivery, Setup & Breakdown", "copy": "Make event planning easier with reliable setup and breakdown support. Our team helps handle the structure so you can focus on the experience." }
+    },
+    "tailoredBanner": "Need something tailored to your event?"
+  },
+  "tentRentals": {
+    "hero": {
+      "eyebrow": "Tent Rentals",
+      "title": "Tent Rentals for Oregon Coast Events",
+      "subtitle": "Stylish shelter, flexible layouts, and dependable protection for weddings, parties, festivals, and corporate gatherings."
+    },
+    "bestFor": "Best for:",
+    "items": {
+      "popup": { "title": "Pop-Up / Vendor Tents", "best": "Markets, booths, check-ins, and small covered stations.", "cta": "Ask About Availability" },
+      "small": { "title": "Small Event Tents", "best": "Backyard parties, small gatherings, food service, and guest seating.", "cta": "Request Quote" },
+      "medium": { "title": "Medium Event Tents", "best": "Receptions, family celebrations, private parties, and community events.", "cta": "Request Quote" },
+      "large": { "title": "Large Event Tents", "best": "Weddings, festivals, corporate events, and large guest counts.", "cta": "Plan My Event" },
+      "wedding": { "title": "Wedding Reception Tents", "best": "Dining, dancing, lounge areas, and elegant outdoor wedding layouts.", "cta": "Start Wedding Quote" },
+      "custom": { "title": "Custom Event Layouts", "best": "Complex venues, multi-tent setups, vendor rows, weather plans, and event flow.", "cta": "Design My Setup" }
+    },
+    "help": {
+      "title": "Not Sure What Size Tent You Need?",
+      "body": "Tell us your guest count, event type, location, and layout goals. We'll help recommend the right tent size and setup for your event.",
+      "cta": "Get Help Choosing"
+    },
+    "inventory": {
+      "title": "Browse the Full Inventory",
+      "body": "See every tent size, table, chair, dance floor, lighting option, bar, and delivery zone — with 3-day rental pricing.",
+      "cta": "View Inventory & Pricing"
+    }
+  },
+  "events": {
+    "hero": {
+      "eyebrow": "Events",
+      "title": "Events We Support",
+      "subtitle": "From oceanfront weddings to community festivals, Pacific North Events & Tents helps create comfortable spaces for unforgettable gatherings."
+    },
+    "suggestedRentals": "Suggested rentals:",
+    "items": {
+      "weddings": { "title": "Weddings", "desc": "Create a beautiful covered venue for dining, dancing, ceremony seating, and guest comfort.", "rentals": "Reception tents, ceremony tents, vendor tents, lounge coverage, lighting-ready layouts.", "cta": "Request Wedding Quote" },
+      "festivals": { "title": "Festivals", "desc": "Large multi-tent layouts for music, food, and community festivals along the coast.", "rentals": "Main stage tents, vendor rows, food service tents, check-in covers.", "cta": "Plan My Festival" },
+      "private": { "title": "Private Parties", "desc": "From backyard birthdays to milestone celebrations, comfortable space for gathering and dining.", "rentals": "Small to medium tents, tables, chairs, lighting, sidewalls.", "cta": "Request Party Quote" },
+      "corporate": { "title": "Corporate Events", "desc": "Polished outdoor venues for retreats, product launches, and branded gatherings.", "rentals": "Reception tents, presentation areas, branded vendor tents.", "cta": "Request Corporate Quote" },
+      "markets": { "title": "Markets & Vendor Events", "desc": "Organized vendor rows that handle wind, sun, and Pacific Northwest rain.", "rentals": "10x10 / 10x20 vendor tents, check-in tents, sidewalls.", "cta": "Request Vendor Quote" },
+      "fundraisers": { "title": "Fundraisers & Community Gatherings", "desc": "Welcoming spaces for fundraisers, school events, and community celebrations.", "rentals": "Medium to large tents, tables, chairs, lighting.", "cta": "Request Community Quote" }
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "Gallery",
+      "title": "Event Inspiration Gallery",
+      "subtitle": "Browse tent setups, outdoor gatherings, and coastal event inspiration."
+    },
+    "filters": {
+      "all": "All",
+      "coastal": "Coastal Setups",
+      "reception": "Reception",
+      "lighting": "Lighting"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "About",
+      "title": "About Pacific North Events & Tents",
+      "subtitle": "Helping Oregon Coast events come together with dependable rentals, thoughtful planning, and weather-ready setups."
+    },
+    "story": {
+      "eyebrow": "Our Story",
+      "title": "Local Events Deserve Local Support",
+      "body": "Pacific North Events & Tents was created to help people host better outdoor events along the Oregon Coast. We understand that coastal celebrations need flexible planning, reliable equipment, and a team that knows how important every detail feels when the big day arrives."
+    },
+    "values": {
+      "title": "What We Stand For",
+      "reliable": { "title": "Reliable Setup", "text": "Dependable delivery, setup, and breakdown support so your event starts with confidence." },
+      "weather": { "title": "Weather-Ready Planning", "text": "Outdoor events need smart shelter. We help customers plan for comfort in changing coastal conditions." },
+      "flexible": { "title": "Flexible Event Support", "text": "From intimate gatherings to larger celebrations, we help match the setup to the event." },
+      "local": { "title": "Local, Friendly Service", "text": "We care about helping customers create memorable experiences without unnecessary stress." }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contact",
+      "title": "Request a Quote",
+      "subtitle": "Tell us about your event and we'll help you plan the right tent setup."
+    },
+    "thankYou": {
+      "title": "Thank you!",
+      "body": "We've received your request and will reach out shortly to help plan your event."
+    },
+    "fromRecommender": "From your recommender:",
+    "fields": {
+      "fullName": "Full Name *",
+      "email": "Email Address *",
+      "phone": "Phone Number *",
+      "eventDate": "Event Date *",
+      "eventLocation": "Event Location / Venue *",
+      "eventLocationPlaceholder": "Venue, city, or area",
+      "eventType": "Type of Event *",
+      "guestCount": "Estimated Guest Count *",
+      "rentalsInterest": "What rentals are you interested in?",
+      "preferredContact": "Preferred Contact Method",
+      "message": "Message",
+      "messagePlaceholder": "Tell us about your event, location, timeline, and vision…"
+    },
+    "selectOption": "Select an option",
+    "selectRange": "Select range",
+    "submit": "Send Quote Request",
+    "guestRanges": {
+      "under25": "Under 25",
+      "25_50": "25–50",
+      "50_100": "50–100",
+      "100_200": "100–200",
+      "200_plus": "200+"
+    },
+    "eventTypes": {
+      "wedding": "Wedding",
+      "festival": "Festival",
+      "privateParty": "Private Party",
+      "corporateEvent": "Corporate Event",
+      "marketVendor": "Market / Vendor Event",
+      "community": "Community Event",
+      "other": "Other"
+    },
+    "rentalOptions": {
+      "eventTent": "Event Tent",
+      "vendorTent": "Vendor Tent",
+      "weddingTent": "Wedding Tent",
+      "tables": "Tables",
+      "chairs": "Chairs",
+      "lighting": "Lighting",
+      "setupSupport": "Setup / Breakdown Support",
+      "notSure": "Not Sure Yet"
+    },
+    "contactMethod": {
+      "email": "Email",
+      "phone": "Phone",
+      "text": "Text"
+    },
+    "sidebar": {
+      "title": "Contact Pacific North Events & Tents",
+      "phonePlaceholder": "Add phone number",
+      "emailPlaceholder": "Add email address",
+      "areaServed": "Oregon Coast and surrounding areas",
+      "facebook": "Facebook",
+      "noteTitle": "Year-round rentals.",
+      "noteBody": "Contact us early for the best availability."
+    }
+  },
+  "plannerPopup": {
+    "badge": "New Free Tool",
+    "title": "Not Sure What Size Tent You Need?",
+    "body": "Try our free AI Tent Planner and get a custom tent size recommendation, equipment checklist, and blueprint-style event layout in minutes.",
+    "bullets": {
+      "tentSize": "Tent size recommendation",
+      "equipment": "Tables, chairs, staging, lighting & extras",
+      "blueprint": "Blueprint-style setup",
+      "quote": "Quote-ready plan"
+    },
+    "primaryCta": "Start My Free Tent Plan",
+    "secondaryCta": "Maybe Later",
+    "note": "Perfect for weddings, fundraisers, festivals, private parties, and corporate events.",
+    "close": "Close"
   },
   "recommender": {
-    "metaTitle": "Event Recommender | Pacific North Events & Tents",
-    "metaDesc": "AI-powered event setup recommender. Get a tent, table, chair, and equipment plan with a blueprint layout for your Oregon Coast event.",
-    "heroEyebrow": "Event Recommender",
+    "metaTitle": "AI Tent Planner | Pacific North Events & Tents",
+    "metaDesc": "Free AI Tent Planner. Get a custom tent size recommendation, equipment checklist, and blueprint-style event layout in minutes.",
+    "heroEyebrow": "AI Tent Planner",
     "heroTitle": "Find the Right Setup for Your Event",
     "heroSubtitle": "Answer a few quick questions and our AI will recommend a complete tent, table, chair, and equipment plan — plus a blueprint of your layout.",
     "intro": "Every event is different. We'll review your inventory needs across tents, tables, chairs, and specialty items so you have a complete picture before requesting a quote.",
@@ -106,127 +346,117 @@
     },
     "options": {
       "eventTypes": {
-        "wedding": "Wedding",
-        "festival": "Festival",
-        "privateParty": "Private Party",
-        "corporateEvent": "Corporate Event",
-        "marketVendorEvent": "Market / Vendor Event",
-        "fundraiser": "Fundraiser",
-        "communityEvent": "Community Event",
-        "graduationParty": "Graduation Party",
-        "other": "Other"
+        "Wedding": "Wedding",
+        "Festival": "Festival",
+        "Private Party": "Private Party",
+        "Corporate Event": "Corporate Event",
+        "Market / Vendor Event": "Market / Vendor Event",
+        "Fundraiser": "Fundraiser",
+        "Community Event": "Community Event",
+        "Graduation Party": "Graduation Party",
+        "Other": "Other"
       },
       "outdoor": {
-        "fullyOutdoors": "Fully outdoors",
-        "indoors": "Indoors",
-        "partiallyCovered": "Partially covered",
-        "notSureYet": "Not sure yet"
+        "Fully outdoors": "Fully outdoors",
+        "Indoors": "Indoors",
+        "Partially covered": "Partially covered",
+        "Not sure yet": "Not sure yet"
       },
       "setup": {
-        "standingOnly": "Standing only",
-        "ceremonySeating": "Ceremony seating",
-        "seatedDining": "Seated dining",
-        "cocktailMingling": "Cocktail tables / mingling",
-        "vendorBooths": "Vendor booths",
-        "foodServiceArea": "Food service area",
-        "mixedLayout": "Mixed layout",
-        "notSure": "Not sure"
+        "Standing only": "Standing only",
+        "Ceremony seating": "Ceremony seating",
+        "Seated dining": "Seated dining",
+        "Cocktail tables / mingling": "Cocktail tables / mingling",
+        "Vendor booths": "Vendor booths",
+        "Food service area": "Food service area",
+        "Mixed layout": "Mixed layout",
+        "Not sure": "Not sure"
       },
       "seated": {
-        "allSeated": "Yes, all guests seated",
-        "someSeated": "Some seated, some standing",
-        "mostlyStanding": "No, mostly standing",
-        "notSure": "Not sure"
+        "Yes, all guests seated": "Yes, all guests seated",
+        "Some seated, some standing": "Some seated, some standing",
+        "No, mostly standing": "No, mostly standing",
+        "Not sure": "Not sure"
       },
       "tableStyle": {
-        "round": "Round tables",
-        "banquet": "Banquet / rectangular tables",
-        "cocktail": "Cocktail tables",
-        "picnic": "Picnic-style tables",
-        "noTables": "No tables needed",
-        "notSure": "Not sure"
+        "Round tables": "Round tables",
+        "Banquet / rectangular tables": "Banquet / rectangular tables",
+        "Cocktail tables": "Cocktail tables",
+        "Picnic-style tables": "Picnic-style tables",
+        "No tables needed": "No tables needed",
+        "Not sure": "Not sure"
       },
       "food": {
-        "buffet": "Yes, buffet",
-        "plated": "Yes, plated meal",
-        "foodTrucks": "Yes, food trucks nearby",
-        "snackOnly": "Yes, snack / dessert table only",
-        "noFood": "No food service",
-        "notSure": "Not sure"
+        "Yes, buffet": "Yes, buffet",
+        "Yes, plated meal": "Yes, plated meal",
+        "Yes, food trucks nearby": "Yes, food trucks nearby",
+        "Yes, snack / dessert table only": "Yes, snack / dessert table only",
+        "No food service": "No food service",
+        "Not sure": "Not sure"
       },
       "dancing": {
-        "danceFloor": "Yes, dance floor area needed",
-        "small": "Small dancing area",
-        "none": "No dancing area",
-        "notSure": "Not sure"
+        "Yes, dance floor area needed": "Yes, dance floor area needed",
+        "Small dancing area": "Small dancing area",
+        "No dancing area": "No dancing area",
+        "Not sure": "Not sure"
       },
       "extras": {
-        "bar": "Bar area",
-        "gift": "Gift table",
-        "dessert": "Dessert table",
-        "dj": "DJ booth",
-        "band": "Live band",
-        "stage": "Small stage",
-        "speaker": "Speaker / announcement area",
-        "none": "None",
-        "notSure": "Not sure"
+        "Bar area": "Bar area",
+        "Gift table": "Gift table",
+        "Dessert table": "Dessert table",
+        "DJ booth": "DJ booth",
+        "Live band": "Live band",
+        "Small stage": "Small stage",
+        "Speaker / announcement area": "Speaker / announcement area",
+        "None": "None",
+        "Not sure": "Not sure"
       },
       "rentals": {
-        "tent": "Tent",
-        "tables": "Tables",
-        "chairs": "Chairs",
-        "linens": "Linens",
-        "lighting": "Lighting",
-        "danceFloor": "Dance floor",
-        "sidewalls": "Sidewalls",
-        "heaters": "Heaters",
-        "flooring": "Flooring",
-        "vendorTents": "Vendor tents",
-        "trash": "Trash / recycling stations",
-        "setup": "Setup and breakdown",
-        "notSure": "Not sure yet"
+        "Tent": "Tent",
+        "Tables": "Tables",
+        "Chairs": "Chairs",
+        "Linens": "Linens",
+        "Lighting": "Lighting",
+        "Dance floor": "Dance floor",
+        "Sidewalls": "Sidewalls",
+        "Heaters": "Heaters",
+        "Flooring": "Flooring",
+        "Vendor tents": "Vendor tents",
+        "Trash / recycling stations": "Trash / recycling stations",
+        "Setup and breakdown": "Setup and breakdown",
+        "Not sure yet": "Not sure yet"
       },
       "surface": {
-        "grass": "Grass",
-        "gravel": "Gravel",
-        "concrete": "Concrete",
-        "asphalt": "Asphalt",
-        "sand": "Sand",
-        "deckPatio": "Deck / patio",
-        "mixed": "Mixed surface",
-        "notSure": "Not sure"
+        "Grass": "Grass",
+        "Gravel": "Gravel",
+        "Concrete": "Concrete",
+        "Asphalt": "Asphalt",
+        "Sand": "Sand",
+        "Deck / patio": "Deck / patio",
+        "Mixed surface": "Mixed surface",
+        "Not sure": "Not sure"
       },
       "exposure": {
-        "veryExposed": "Yes, very exposed",
-        "somewhatExposed": "Somewhat exposed",
-        "mostlyProtected": "Mostly protected",
-        "notSure": "Not sure"
+        "Yes, very exposed": "Yes, very exposed",
+        "Somewhat exposed": "Somewhat exposed",
+        "Mostly protected": "Mostly protected",
+        "Not sure": "Not sure"
       },
       "sidewalls": {
-        "yes": "Yes",
-        "maybe": "Maybe",
-        "no": "No",
-        "notSure": "Not sure"
+        "Yes": "Yes",
+        "Maybe": "Maybe",
+        "No": "No",
+        "Not sure": "Not sure"
       },
       "afterSunset": {
-        "yes": "Yes",
-        "no": "No",
-        "notSure": "Not sure"
+        "Yes": "Yes",
+        "No": "No",
+        "Not sure": "Not sure"
       },
       "contactMethod": {
-        "email": "Email",
-        "phone": "Phone",
-        "text": "Text"
-      },
-      "guestCounts": {
-        "under_25": "Under 25",
-        "25_50": "25–50",
-        "50_75": "50–75",
-        "75_100": "75–100",
-        "100_150": "100–150",
-        "150_200": "150–200",
-        "200_300": "200–300",
-        "300_plus": "300+"
+        "Email": "Email",
+        "Phone": "Phone",
+        "Text": "Text"
       }
     },
     "stepTitles": {
@@ -263,7 +493,11 @@
     },
     "results": {
       "eyebrow": "Your Recommendation Is Ready",
-      "thanks": "Thanks {{name}} — we reviewed your {{eventType}} for {{guests}} guests on {{date}}{{locationClause}}. Based on your answers, here's what we'd recommend.",
+      "thanksLead": "Thanks {{name}} — we reviewed your {{eventType}} for",
+      "guestsLabel": "{{guests}} guests",
+      "onDate": "on",
+      "at": "at",
+      "thanksTrail": "Based on your answers, here's what we'd recommend.",
       "atGlance": "Your event at a glance",
       "atGlanceSub": "A quick summary of what you told us.",
       "extrasRequested": "Extras requested",
@@ -296,18 +530,17 @@
         "afterSunset": "After sunset"
       },
       "selectedDateFallback": "your selected date",
-      "noLocation": "—",
-      "atClause": " at "
+      "noLocation": "—"
     },
     "notSureYet": {
       "title": "Not Sure Yet? That's Okay.",
       "desc": "You don't need to know every detail before reaching out. If you have a date, a location, and a rough guest count, we can help guide the rest."
     },
     "validation": {
-      "required": "Required field",
-      "invalidEmail": "Please enter a valid email address",
-      "eventDateRequired": "Please enter your event date",
-      "eventLocationRequired": "Please enter your event location"
+      "required": "This field is required.",
+      "invalidEmail": "Please enter a valid email address.",
+      "eventDateRequired": "Please enter your event date.",
+      "eventLocationRequired": "Please enter your event location."
     }
   }
 }

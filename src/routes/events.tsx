@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { pickPhoto } from "@/lib/site-images";
 
@@ -12,37 +13,31 @@ export const Route = createFileRoute("/events")({
   component: EventsPage,
 });
 
-const events = [
-  { title: "Weddings", desc: "Create a beautiful covered venue for dining, dancing, ceremony seating, and guest comfort.", rentals: "Reception tents, ceremony tents, vendor tents, lounge coverage, lighting-ready layouts.", cta: "Request Wedding Quote" },
-  { title: "Festivals", desc: "Large multi-tent layouts for music, food, and community festivals along the coast.", rentals: "Main stage tents, vendor rows, food service tents, check-in covers.", cta: "Plan My Festival" },
-  { title: "Private Parties", desc: "From backyard birthdays to milestone celebrations, comfortable space for gathering and dining.", rentals: "Small to medium tents, tables, chairs, lighting, sidewalls.", cta: "Request Party Quote" },
-  { title: "Corporate Events", desc: "Polished outdoor venues for retreats, product launches, and branded gatherings.", rentals: "Reception tents, presentation areas, branded vendor tents.", cta: "Request Corporate Quote" },
-  { title: "Markets & Vendor Events", desc: "Organized vendor rows that handle wind, sun, and Pacific Northwest rain.", rentals: "10x10 / 10x20 vendor tents, check-in tents, sidewalls.", cta: "Request Vendor Quote" },
-  { title: "Fundraisers & Community Gatherings", desc: "Welcoming spaces for fundraisers, school events, and community celebrations.", rentals: "Medium to large tents, tables, chairs, lighting.", cta: "Request Community Quote" },
-];
+const eventKeys = ["weddings", "festivals", "private", "corporate", "markets", "fundraisers"];
 
 function EventsPage() {
+  const { t } = useTranslation();
   const hero = pickPhoto("events-hero");
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Events"
-        title="Events We Support"
-        subtitle="From oceanfront weddings to community festivals, Pacific North Events & Tents helps create comfortable spaces for unforgettable gatherings."
+        eyebrow={t("events.hero.eyebrow")}
+        title={t("events.hero.title")}
+        subtitle={t("events.hero.subtitle")}
         image={hero.url}
       />
       <section className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2">
-          {events.map((e) => (
-            <article key={e.title} className="rounded-2xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="font-serif text-2xl text-primary">{e.title}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{e.desc}</p>
+          {eventKeys.map((k) => (
+            <article key={k} className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+              <h2 className="font-serif text-2xl text-primary">{t(`events.items.${k}.title`)}</h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(`events.items.${k}.desc`)}</p>
               <p className="mt-4 text-sm leading-relaxed">
-                <span className="font-semibold text-foreground">Suggested rentals: </span>
-                <span className="text-muted-foreground">{e.rentals}</span>
+                <span className="font-semibold text-foreground">{t("events.suggestedRentals")} </span>
+                <span className="text-muted-foreground">{t(`events.items.${k}.rentals`)}</span>
               </p>
               <Link to="/contact" className="mt-6 inline-flex items-center text-sm font-semibold text-primary underline-offset-4 hover:underline">
-                {e.cta} →
+                {t(`events.items.${k}.cta`)} →
               </Link>
             </article>
           ))}

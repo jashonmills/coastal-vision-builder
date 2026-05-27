@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { Lightbox, useLightbox } from "@/components/Lightbox";
 import { photoImages, pickPhoto } from "@/lib/site-images";
@@ -14,34 +15,34 @@ export const Route = createFileRoute("/gallery")({
   component: GalleryPage,
 });
 
-const FILTERS = ["All", "Coastal Setups", "Reception", "Lighting"] as const;
+const FILTERS = ["all", "coastal", "reception", "lighting"] as const;
 type Filter = typeof FILTERS[number];
 
-// Filter heuristic uses alt text keywords so we don't need to retag every photo.
 function tagsFor(alt: string): Filter[] {
   const a = alt.toLowerCase();
   const tags: Filter[] = [];
-  if (/(coast|beach|ocean|sunset|golden|twilight|dusk)/.test(a)) tags.push("Coastal Setups");
-  if (/(reception|wedding|dining|banquet|ceremony|party|interior|table|chandelier|floral)/.test(a)) tags.push("Reception");
-  if (/(light|lit|string|warm|bistro|evening|night|dusk|twilight)/.test(a)) tags.push("Lighting");
+  if (/(coast|beach|ocean|sunset|golden|twilight|dusk)/.test(a)) tags.push("coastal");
+  if (/(reception|wedding|dining|banquet|ceremony|party|interior|table|chandelier|floral)/.test(a)) tags.push("reception");
+  if (/(light|lit|string|warm|bistro|evening|night|dusk|twilight)/.test(a)) tags.push("lighting");
   return tags;
 }
 
 function GalleryPage() {
-  const [filter, setFilter] = useState<Filter>("All");
+  const { t } = useTranslation();
+  const [filter, setFilter] = useState<Filter>("all");
   const hero = pickPhoto("gallery-hero");
   const lb = useLightbox();
 
-  const shown = filter === "All"
+  const shown = filter === "all"
     ? photoImages
     : photoImages.filter((img) => tagsFor(img.alt).includes(filter));
 
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Gallery"
-        title="Event Inspiration Gallery"
-        subtitle="Browse tent setups, outdoor gatherings, and coastal event inspiration."
+        eyebrow={t("gallery.hero.eyebrow")}
+        title={t("gallery.hero.title")}
+        subtitle={t("gallery.hero.subtitle")}
         image={hero.url}
       />
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
@@ -56,7 +57,7 @@ function GalleryPage() {
                   : "border-border bg-card text-foreground hover:bg-secondary"
               }`}
             >
-              {f}
+              {t(`gallery.filters.${f}`)}
             </button>
           ))}
         </div>

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { SiteLayout, CTASection } from "@/components/SiteLayout";
-import { EditableText, EditableImage } from "@/components/Editable";
 import { Lightbox, useLightbox } from "@/components/Lightbox";
 import { pickPhoto, pickPhotos } from "@/lib/site-images";
 import { CloudRain, Sparkles, Tent, Users } from "lucide-react";
@@ -17,25 +17,28 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const badges = ["Weddings", "Festivals", "Private Parties", "Corporate Events", "Rain-or-Shine Setups", "Year-Round Rentals"];
-
-const services = [
-  { title: "Weddings", text: "Elegant tented spaces for ceremonies, receptions, rehearsal dinners, and coastal wedding weekends.", icon: Sparkles },
-  { title: "Festivals & Community", text: "Large-scale tent solutions for markets, music events, fundraisers, fairs, and community celebrations.", icon: Users },
-  { title: "Private Parties", text: "Comfortable, beautiful setups for birthdays, reunions, graduations, backyard parties, and family gatherings.", icon: Tent },
-  { title: "Corporate Events", text: "Professional tent and rental solutions for business events, retreats, brand activations, and company gatherings.", icon: CloudRain },
+const badgeKeys = [
+  "home.badges.weddings",
+  "home.badges.festivals",
+  "home.badges.privateParties",
+  "home.badges.corporateEvents",
+  "home.badges.rainOrShine",
+  "home.badges.yearRound",
 ];
 
-const tentCats = [
-  { title: "Small Gatherings", desc: "Backyard parties, intimate dinners, and small celebrations under 50 guests." },
-  { title: "Medium Events", desc: "Receptions and family celebrations for 50–100 guests with seating and food service." },
-  { title: "Large Celebrations", desc: "Weddings and corporate events for 100–200 guests with dining and dancing." },
-  { title: "Festival & Vendor Tents", desc: "Markets, fairs, and multi-booth setups with weather-ready protection." },
-  { title: "Wedding Reception Tents", desc: "Dining, dancing, lounge areas, and elegant outdoor wedding layouts." },
-  { title: "Custom Event Layouts", desc: "Multi-tent setups, vendor rows, weather plans, and full event flow design." },
+const serviceKeys = [
+  { key: "weddings", icon: Sparkles },
+  { key: "festivals", icon: Users },
+  { key: "privateParties", icon: Tent },
+  { key: "corporate", icon: CloudRain },
 ];
+
+const tentCatKeys = ["small", "medium", "large", "festival", "wedding", "custom"];
+
+const plannerCardKeys = ["tentSize", "equipment", "blueprint", "quote"];
 
 function Home() {
+  const { t } = useTranslation();
   const heroImg = pickPhoto("home-hero");
   const eveningImg = pickPhoto("home-evening");
   const gallery = pickPhotos(6, "home-gallery");
@@ -49,30 +52,30 @@ function Home() {
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:py-32 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">Oregon Coast Event Rentals</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">{t("home.hero.eyebrow")}</p>
             <h1 className="mt-5 text-balance font-serif text-5xl font-medium leading-[1.02] sm:text-6xl lg:text-7xl">
-              Event Tents &amp; Rentals for Oregon Coast Celebrations
+              {t("home.hero.title")}
             </h1>
             <p className="mt-6 max-w-2xl text-balance text-lg text-primary-foreground/85">
-              From weddings and festivals to private parties and corporate events, Pacific North Events &amp; Tents helps bring your vision to life with stylish, reliable, weather-ready event rentals.
+              {t("home.hero.subtitle")}
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link to="/contact" className="inline-flex items-center rounded-full bg-[color:var(--gold)] px-7 py-3.5 text-sm font-semibold text-primary shadow-lg transition-transform hover:-translate-y-0.5">
-                Request a Quote
+                {t("cta.requestQuote")}
               </Link>
               <Link to="/ai-tent-planner" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/60 bg-primary-foreground/10 px-7 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur transition-all hover:bg-[color:var(--gold)] hover:text-primary">
                 <Sparkles className="h-4 w-4" />
-                Try Our Free AI Tent Planner
+                {t("cta.tryFreePlanner")}
               </Link>
               <Link to="/services" className="inline-flex items-center rounded-full border border-primary-foreground/30 bg-primary-foreground/5 px-7 py-3.5 text-sm font-medium text-primary-foreground backdrop-blur transition-colors hover:bg-primary-foreground/15">
-                View Our Services
+                {t("cta.viewOurServices")}
               </Link>
             </div>
             <ul className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm text-primary-foreground/85">
-              {badges.map((b) => (
+              {badgeKeys.map((b) => (
                 <li key={b} className="inline-flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--gold)]" />
-                  {b}
+                  {t(b)}
                 </li>
               ))}
             </ul>
@@ -83,12 +86,12 @@ function Home() {
       {/* Intro */}
       <section className="bg-background">
         <div className="mx-auto max-w-4xl px-4 py-24 text-center lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">Our Promise</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">{t("home.intro.eyebrow")}</p>
           <h2 className="mt-4 font-serif text-4xl text-primary sm:text-5xl">
-            Your Event. Your Vision.<br />We Make It Happen.
+            {t("home.intro.titleLine1")}<br />{t("home.intro.titleLine2")}
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Planning an outdoor event on the Oregon Coast comes with a unique kind of magic — and a unique kind of weather. Pacific North Events &amp; Tents provides high-quality event tents and rental support designed to keep your celebration comfortable, stylish, and stress-free.
+            {t("home.intro.body")}
           </p>
         </div>
       </section>
@@ -97,17 +100,17 @@ function Home() {
       <section className="bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
           <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
-            <h2 className="font-serif text-3xl text-primary sm:text-4xl">What We Help You Host</h2>
-            <Link to="/services" className="text-sm font-medium text-primary underline-offset-4 hover:underline">Explore Services →</Link>
+            <h2 className="font-serif text-3xl text-primary sm:text-4xl">{t("home.services.title")}</h2>
+            <Link to="/services" className="text-sm font-medium text-primary underline-offset-4 hover:underline">{t("home.services.exploreLink")}</Link>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((s) => (
-              <article key={s.title} className="group rounded-2xl border border-border/70 bg-card p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+            {serviceKeys.map((s) => (
+              <article key={s.key} className="group rounded-2xl border border-border/70 bg-card p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
                 <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <s.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-serif text-xl text-primary">{s.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.text}</p>
+                <h3 className="font-serif text-xl text-primary">{t(`home.services.${s.key}.title`)}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(`home.services.${s.key}.text`)}</p>
               </article>
             ))}
           </div>
@@ -120,15 +123,15 @@ function Home() {
         <div className="absolute inset-0 bg-primary/85" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-24 text-primary-foreground lg:grid-cols-2 lg:px-8">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">Coast-Ready</p>
-            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">Built for Coastal Weather</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">{t("home.weather.eyebrow")}</p>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">{t("home.weather.title")}</h2>
           </div>
           <div>
             <p className="text-lg leading-relaxed text-primary-foreground/85">
-              Oregon Coast events need more than a pretty setup — they need smart planning, dependable equipment, and shelter that gives guests peace of mind. Our tents help protect your event from sun, wind, and rain while creating a polished space your guests will remember.
+              {t("home.weather.body")}
             </p>
             <Link to="/contact" className="mt-7 inline-flex items-center rounded-full bg-[color:var(--gold)] px-7 py-3 text-sm font-semibold text-primary transition-transform hover:-translate-y-0.5">
-              Plan Your Setup
+              {t("home.weather.cta")}
             </Link>
           </div>
         </div>
@@ -138,16 +141,16 @@ function Home() {
       <section className="bg-background">
         <div className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
           <div className="mb-12 max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">Tent Rentals</p>
-            <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">Tents for Every Size Celebration</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">{t("home.tentCats.eyebrow")}</p>
+            <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">{t("home.tentCats.title")}</h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {tentCats.map((t) => (
-              <article key={t.title} className="flex flex-col rounded-2xl border border-border bg-card p-7 shadow-sm">
-                <h3 className="font-serif text-xl text-primary">{t.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{t.desc}</p>
+            {tentCatKeys.map((k) => (
+              <article key={k} className="flex flex-col rounded-2xl border border-border bg-card p-7 shadow-sm">
+                <h3 className="font-serif text-xl text-primary">{t(`home.tentCats.${k}.title`)}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{t(`home.tentCats.${k}.desc`)}</p>
                 <Link to="/contact" className="mt-6 inline-flex items-center text-sm font-semibold text-primary underline-offset-4 hover:underline">
-                  Get Quote →
+                  {t("cta.getQuote")} →
                 </Link>
               </article>
             ))}
@@ -160,28 +163,23 @@ function Home() {
         <div className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--seafoam,#9cc7bd)]/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-              <Sparkles className="h-3 w-3" /> New Free Tool
+              <Sparkles className="h-3 w-3" /> {t("home.plannerPromo.badge")}
             </span>
-            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">Plan Your Event in Minutes</p>
-            <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">Try Our Free AI Tent Planner</h2>
+            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">{t("home.plannerPromo.eyebrow")}</p>
+            <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">{t("home.plannerPromo.title")}</h2>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Not sure what size tent, seating layout, or equipment your event needs? Our AI Tent Planner helps you build a custom starting plan based on your guest count, event type, surface, weather exposure, and setup needs.
+              {t("home.plannerPromo.body")}
             </p>
           </div>
 
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { title: "Tent Size Recommendation", text: "Get a suggested tent size based on your guest count and layout." },
-              { title: "Equipment Checklist", text: "See recommended tables, chairs, sidewalls, lighting, staging, and extras." },
-              { title: "Blueprint-Style Layout", text: "Generate a visual starting layout for your event setup." },
-              { title: "Quote-Ready Plan", text: "Send your plan to our team for a custom quote and final review." },
-            ].map((c) => (
-              <article key={c.title} className="rounded-2xl border border-border/70 bg-card/80 p-6 shadow-sm backdrop-blur">
+            {plannerCardKeys.map((k) => (
+              <article key={k} className="rounded-2xl border border-border/70 bg-card/80 p-6 shadow-sm backdrop-blur">
                 <div className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Sparkles className="h-4 w-4" />
                 </div>
-                <h3 className="font-serif text-lg text-primary">{c.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.text}</p>
+                <h3 className="font-serif text-lg text-primary">{t(`home.plannerPromo.cards.${k}.title`)}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t(`home.plannerPromo.cards.${k}.text`)}</p>
               </article>
             ))}
           </div>
@@ -192,7 +190,7 @@ function Home() {
               className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)]"
             >
               <Sparkles className="h-4 w-4 text-[color:var(--gold)]" />
-              Start My Free Tent Plan
+              {t("cta.startMyFreeTentPlan")}
             </Link>
           </div>
         </div>
@@ -203,10 +201,10 @@ function Home() {
         <div className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">Inspiration</p>
-              <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">See What's Possible</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">{t("home.gallery.eyebrow")}</p>
+              <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">{t("home.gallery.title")}</h2>
             </div>
-            <Link to="/gallery" className="text-sm font-medium text-primary underline-offset-4 hover:underline">View Full Gallery →</Link>
+            <Link to="/gallery" className="text-sm font-medium text-primary underline-offset-4 hover:underline">{t("home.gallery.viewFull")}</Link>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             {gallery.map((g, i) => (
