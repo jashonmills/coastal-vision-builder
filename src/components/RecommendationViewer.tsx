@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import logoUrl from "@/assets/logo.png";
 import type { AIRecommendation, Pick } from "@/lib/recommender.functions";
 import type { RecommenderInput } from "@/lib/recommender";
-import { Check, Download, FileText, Printer, X } from "lucide-react";
+import { downloadRecommendationPdf, printRecommendationPdf } from "@/lib/recommendation-pdf";
+import { Check, Download, FileText, Loader2, Printer, X } from "lucide-react";
 
 const CATEGORY_ORDER = ["Canopy", "Canopy Options", "Canopy Cleaning Fee", "Tables", "Chairs", "Specialty Items", "Delivery"];
 
