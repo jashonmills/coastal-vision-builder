@@ -445,11 +445,11 @@ function AIResult({
           ))}
         </div>
 
-        {recommendation.weather_notes.length > 0 && (
+        {(recommendation.weather_notes?.length ?? 0) > 0 && (
           <div className="mt-8 rounded-xl border border-border bg-background p-5">
             <h4 className="font-serif text-lg text-primary">Weather & Setup Notes</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              {recommendation.weather_notes.map((n, i) => (
+              {(recommendation.weather_notes ?? []).map((n, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 text-[color:var(--forest)]" />
                   <span>{n}</span>
