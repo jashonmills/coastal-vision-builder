@@ -1,9 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Sparkles, User, X } from "lucide-react";
+import { Menu, Sparkles, ShieldCheck, User, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-admin";
+import { useSlotImage } from "@/hooks/use-site-content";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -55,6 +57,8 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
+  const dynamicLogo = useSlotImage("site.logo", logoUrl);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -63,7 +67,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
-              src={logoUrl}
+              src={dynamicLogo}
               alt="Pacific North Event & Tent Rentals"
               className="h-12 w-auto sm:h-14"
             />
@@ -140,6 +144,15 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <User className="h-4 w-4" />
               {user ? "My Account" : "Sign In"}
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 transition-all hover:border-amber-500 hover:bg-amber-100"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
             <Link
               to="/contact"
               className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-[color:var(--navy-soft)]"
@@ -170,11 +183,12 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 }
 
 function SiteFooter() {
+  const footerLogo = useSlotImage("site.logo", logoUrl);
   return (
     <footer className="mt-24 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
-          <img src={logoUrl} alt="" className="mb-4 h-12 w-auto brightness-0 invert" />
+          <img src={footerLogo} alt="" className="mb-4 h-12 w-auto brightness-0 invert" />
           <h3 className="font-serif text-xl text-primary-foreground">Pacific North Events &amp; Tents</h3>
           <p className="mt-3 text-sm leading-relaxed text-primary-foreground/75">
             Event tent rentals and coastal event support for weddings, festivals, private parties, and corporate gatherings.

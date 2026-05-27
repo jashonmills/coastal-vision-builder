@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, CTASection } from "@/components/SiteLayout";
+import { EditableText, EditableImage } from "@/components/Editable";
 import { pickPhoto, pickPhotos } from "@/lib/site-images";
 import { CloudRain, Sparkles, Tent, Users } from "lucide-react";
 
