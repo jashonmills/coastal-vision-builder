@@ -1,0 +1,313 @@
+{
+  "language": "Language",
+  "nav": {
+    "home": "Home",
+    "rentals": "Rentals",
+    "tentRentals": "Tent Rentals",
+    "inventoryPricing": "Inventory & Pricing",
+    "eventRecommender": "Event Recommender",
+    "services": "Services",
+    "allServices": "All Services",
+    "events": "Events",
+    "gallery": "Gallery",
+    "about": "About",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "requestQuote": "Request a Quote",
+    "findMyTentSize": "Find My Tent Size",
+    "myAccount": "My Account",
+    "signIn": "Sign In",
+    "admin": "Admin",
+    "menu": "Menu",
+    "recommender": "Recommender",
+    "quote": "Quote",
+    "explore": "Explore",
+    "more": "More",
+    "inventory": "Inventory",
+    "closeMenu": "Close menu",
+    "navigationMenu": "Navigation menu"
+  },
+  "navDesc": {
+    "tentRentals": "Frame, pole, and hexagon tents",
+    "inventoryPricing": "Full catalog with sample layouts",
+    "eventRecommender": "AI-built setup for your event",
+    "allServices": "Weddings, festivals, corporate",
+    "events": "Past events and case studies",
+    "aboutUs": "Coastal team, our story",
+    "contact": "Get in touch"
+  },
+  "footer": {
+    "tagline": "Event tent rentals and coastal event support for weddings, festivals, private parties, and corporate gatherings.",
+    "servicesHeading": "Services",
+    "weddingTents": "Wedding Tents",
+    "festivalTents": "Festival Tents",
+    "privateParties": "Private Parties",
+    "corporateEvents": "Corporate Events",
+    "vendorTents": "Vendor Tents",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "servingOregon": "Serving the Oregon Coast",
+    "followFacebook": "Follow us on Facebook",
+    "copyright": "© 2026 Pacific North Events & Tents. Your Event. Your Vision. We Make It Happen."
+  },
+  "cta": {
+    "requestQuote": "Request a Quote",
+    "findMyTentSize": "Find My Tent Size",
+    "viewServices": "View Services",
+    "exploreServices": "Explore Services",
+    "planMySetup": "Plan My Setup",
+    "getQuote": "Get Quote",
+    "startWeddingQuote": "Start Wedding Quote",
+    "sendQuoteRequest": "Send Quote Request",
+    "showMyRecommendation": "Show My Recommendation",
+    "requestFinalQuote": "Request Final Quote",
+    "startOver": "Start Over",
+    "talkToUs": "Talk to Us",
+    "readyTitle": "Ready to Bring Your Event to Life?",
+    "readyDesc": "Tell us about your date, location, guest count, and vision. We'll help you choose the right tent setup for your event."
+  },
+  "recommender": {
+    "metaTitle": "Event Recommender | Pacific North Events & Tents",
+    "metaDesc": "AI-powered event setup recommender. Get a tent, table, chair, and equipment plan with a blueprint layout for your Oregon Coast event.",
+    "heroEyebrow": "Event Recommender",
+    "heroTitle": "Find the Right Setup for Your Event",
+    "heroSubtitle": "Answer a few quick questions and our AI will recommend a complete tent, table, chair, and equipment plan — plus a blueprint of your layout.",
+    "intro": "Every event is different. We'll review your inventory needs across tents, tables, chairs, and specialty items so you have a complete picture before requesting a quote.",
+    "steps": {
+      "eventBasics": "Event Basics",
+      "guestLayout": "Guests & Layout",
+      "extras": "Food & Extras",
+      "locationWeather": "Location & Weather",
+      "contact": "Your Details"
+    },
+    "fields": {
+      "eventType": "What type of event are you planning?",
+      "eventDate": "What is your event date? *",
+      "eventLocation": "Where will the event be held? *",
+      "eventLocationPlaceholder": "Venue name, backyard, park, beach area, business location, etc.",
+      "outdoorIndoor": "Is the event outdoors, indoors, or partially covered?",
+      "guestCount": "How many guests are you expecting? *",
+      "setupType": "What kind of setup do you need?",
+      "seatedGuests": "Will guests be seated at tables?",
+      "tableStyle": "What table style do you prefer?",
+      "foodService": "Will there be food or catering under the tent?",
+      "dancing": "Do you need space for dancing?",
+      "extras": "Will there be a bar, gift table, DJ, band, or stage?",
+      "rentalItems": "What rental items are you interested in?",
+      "surface": "What type of surface will the tent be set up on?",
+      "weatherExposure": "Is the location exposed to wind or coastal weather?",
+      "sidewalls": "Would you like sidewalls for extra weather protection?",
+      "afterSunset": "Will the event continue after sunset?",
+      "fullName": "Full Name *",
+      "email": "Email Address *",
+      "phone": "Phone Number",
+      "preferredContact": "Preferred Contact Method",
+      "message": "Anything else we should know about your event?"
+    },
+    "options": {
+      "eventTypes": {
+        "wedding": "Wedding",
+        "festival": "Festival",
+        "privateParty": "Private Party",
+        "corporateEvent": "Corporate Event",
+        "marketVendorEvent": "Market / Vendor Event",
+        "fundraiser": "Fundraiser",
+        "communityEvent": "Community Event",
+        "graduationParty": "Graduation Party",
+        "other": "Other"
+      },
+      "outdoor": {
+        "fullyOutdoors": "Fully outdoors",
+        "indoors": "Indoors",
+        "partiallyCovered": "Partially covered",
+        "notSureYet": "Not sure yet"
+      },
+      "setup": {
+        "standingOnly": "Standing only",
+        "ceremonySeating": "Ceremony seating",
+        "seatedDining": "Seated dining",
+        "cocktailMingling": "Cocktail tables / mingling",
+        "vendorBooths": "Vendor booths",
+        "foodServiceArea": "Food service area",
+        "mixedLayout": "Mixed layout",
+        "notSure": "Not sure"
+      },
+      "seated": {
+        "allSeated": "Yes, all guests seated",
+        "someSeated": "Some seated, some standing",
+        "mostlyStanding": "No, mostly standing",
+        "notSure": "Not sure"
+      },
+      "tableStyle": {
+        "round": "Round tables",
+        "banquet": "Banquet / rectangular tables",
+        "cocktail": "Cocktail tables",
+        "picnic": "Picnic-style tables",
+        "noTables": "No tables needed",
+        "notSure": "Not sure"
+      },
+      "food": {
+        "buffet": "Yes, buffet",
+        "plated": "Yes, plated meal",
+        "foodTrucks": "Yes, food trucks nearby",
+        "snackOnly": "Yes, snack / dessert table only",
+        "noFood": "No food service",
+        "notSure": "Not sure"
+      },
+      "dancing": {
+        "danceFloor": "Yes, dance floor area needed",
+        "small": "Small dancing area",
+        "none": "No dancing area",
+        "notSure": "Not sure"
+      },
+      "extras": {
+        "bar": "Bar area",
+        "gift": "Gift table",
+        "dessert": "Dessert table",
+        "dj": "DJ booth",
+        "band": "Live band",
+        "stage": "Small stage",
+        "speaker": "Speaker / announcement area",
+        "none": "None",
+        "notSure": "Not sure"
+      },
+      "rentals": {
+        "tent": "Tent",
+        "tables": "Tables",
+        "chairs": "Chairs",
+        "linens": "Linens",
+        "lighting": "Lighting",
+        "danceFloor": "Dance floor",
+        "sidewalls": "Sidewalls",
+        "heaters": "Heaters",
+        "flooring": "Flooring",
+        "vendorTents": "Vendor tents",
+        "trash": "Trash / recycling stations",
+        "setup": "Setup and breakdown",
+        "notSure": "Not sure yet"
+      },
+      "surface": {
+        "grass": "Grass",
+        "gravel": "Gravel",
+        "concrete": "Concrete",
+        "asphalt": "Asphalt",
+        "sand": "Sand",
+        "deckPatio": "Deck / patio",
+        "mixed": "Mixed surface",
+        "notSure": "Not sure"
+      },
+      "exposure": {
+        "veryExposed": "Yes, very exposed",
+        "somewhatExposed": "Somewhat exposed",
+        "mostlyProtected": "Mostly protected",
+        "notSure": "Not sure"
+      },
+      "sidewalls": {
+        "yes": "Yes",
+        "maybe": "Maybe",
+        "no": "No",
+        "notSure": "Not sure"
+      },
+      "afterSunset": {
+        "yes": "Yes",
+        "no": "No",
+        "notSure": "Not sure"
+      },
+      "contactMethod": {
+        "email": "Email",
+        "phone": "Phone",
+        "text": "Text"
+      },
+      "guestCounts": {
+        "under_25": "Under 25",
+        "25_50": "25–50",
+        "50_75": "50–75",
+        "75_100": "75–100",
+        "100_150": "100–150",
+        "150_200": "150–200",
+        "200_300": "200–300",
+        "300_plus": "300+"
+      }
+    },
+    "stepTitles": {
+      "eventBasics": "Event basics",
+      "guestLayout": "Guest count & layout",
+      "extras": "Food, dancing & extras",
+      "locationWeather": "Location & weather",
+      "contact": "Your details"
+    },
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "startOver": "Start Over",
+      "generate": "Generate My Setup",
+      "tryAgain": "Try Again",
+      "openPdf": "Open PDF Viewer",
+      "viewPdf": "View PDF",
+      "downloadPdf": "Download PDF",
+      "print": "Print",
+      "closeViewer": "Close PDF viewer",
+      "saveAccount": "Save to My Account",
+      "createAccount": "Create Account to Save",
+      "viewPlans": "View My Plans",
+      "sendForQuote": "Send This Recommendation for a Quote"
+    },
+    "loading": {
+      "title": "Designing your event setup…",
+      "subtitle": "Our AI is reviewing inventory and drafting your blueprint. This usually takes 15–30 seconds."
+    },
+    "error": {
+      "title": "We couldn't generate your recommendation",
+      "generic": "Something went wrong on our end.",
+      "retryHint": "Your answers are saved below. Click \"Generate My Setup\" again to retry, or \"Talk to Us\" and we'll build a setup manually."
+    },
+    "results": {
+      "eyebrow": "Your Recommendation Is Ready",
+      "thanks": "Thanks {{name}} — we reviewed your {{eventType}} for {{guests}} guests on {{date}}{{locationClause}}. Based on your answers, here's what we'd recommend.",
+      "atGlance": "Your event at a glance",
+      "atGlanceSub": "A quick summary of what you told us.",
+      "extrasRequested": "Extras requested",
+      "rentalsOfInterest": "Rentals of interest",
+      "suggestedLayout": "Suggested Layout",
+      "blueprintSketch": "Blueprint Sketch",
+      "blueprintNote": "Conceptual sketch — final placement confirmed during quoting.",
+      "recommendedSetup": "Recommended Setup",
+      "recommendedSetupSub": "A complete inventory selection across every category. Quantities are an estimate.",
+      "weatherNotes": "Weather & Setup Notes",
+      "disclaimer": "This is an AI-generated estimate. Final tent size, quantities, and equipment may change based on your venue, surface, layout, weather, and availability. No pricing is shown — request a quote for confirmed pricing.",
+      "savedToAccount": "Saved to your account.",
+      "dontLose": "Don't lose this recommendation",
+      "dontLoseDesc": "Create a free account to save this plan and access it anytime. We'll save it automatically once you sign in.",
+      "pdfViewer": "PDF Viewer",
+      "recapKeys": {
+        "eventType": "Event type",
+        "date": "Date",
+        "location": "Location",
+        "setting": "Setting",
+        "guests": "Guests",
+        "setup": "Setup",
+        "seating": "Seating",
+        "tables": "Tables",
+        "food": "Food",
+        "dancing": "Dancing",
+        "surface": "Surface",
+        "exposure": "Exposure",
+        "sidewalls": "Sidewalls",
+        "afterSunset": "After sunset"
+      },
+      "selectedDateFallback": "your selected date",
+      "noLocation": "—",
+      "atClause": " at "
+    },
+    "notSureYet": {
+      "title": "Not Sure Yet? That's Okay.",
+      "desc": "You don't need to know every detail before reaching out. If you have a date, a location, and a rough guest count, we can help guide the rest."
+    },
+    "validation": {
+      "required": "Required field",
+      "invalidEmail": "Please enter a valid email address",
+      "eventDateRequired": "Please enter your event date",
+      "eventLocationRequired": "Please enter your event location"
+    }
+  }
+}

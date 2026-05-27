@@ -1,0 +1,313 @@
+{
+  "language": "Idioma",
+  "nav": {
+    "home": "Inicio",
+    "rentals": "Alquileres",
+    "tentRentals": "Alquiler de Carpas",
+    "inventoryPricing": "Inventario y Precios",
+    "eventRecommender": "Recomendador de Eventos",
+    "services": "Servicios",
+    "allServices": "Todos los Servicios",
+    "events": "Eventos",
+    "gallery": "Galería",
+    "about": "Nosotros",
+    "aboutUs": "Sobre Nosotros",
+    "contact": "Contacto",
+    "requestQuote": "Solicitar Cotización",
+    "findMyTentSize": "Encontrar Mi Carpa",
+    "myAccount": "Mi Cuenta",
+    "signIn": "Iniciar Sesión",
+    "admin": "Admin",
+    "menu": "Menú",
+    "recommender": "Recomendador",
+    "quote": "Cotizar",
+    "explore": "Explorar",
+    "more": "Más",
+    "inventory": "Inventario",
+    "closeMenu": "Cerrar menú",
+    "navigationMenu": "Menú de navegación"
+  },
+  "navDesc": {
+    "tentRentals": "Carpas de marco, poste y hexagonales",
+    "inventoryPricing": "Catálogo completo con diseños de muestra",
+    "eventRecommender": "Configuración con IA para tu evento",
+    "allServices": "Bodas, festivales, corporativo",
+    "events": "Eventos pasados y casos de estudio",
+    "aboutUs": "Equipo costero, nuestra historia",
+    "contact": "Ponte en contacto"
+  },
+  "footer": {
+    "tagline": "Alquiler de carpas para eventos y apoyo costero para bodas, festivales, fiestas privadas y reuniones corporativas.",
+    "servicesHeading": "Servicios",
+    "weddingTents": "Carpas para Bodas",
+    "festivalTents": "Carpas para Festivales",
+    "privateParties": "Fiestas Privadas",
+    "corporateEvents": "Eventos Corporativos",
+    "vendorTents": "Carpas para Vendedores",
+    "quickLinks": "Enlaces Rápidos",
+    "contact": "Contacto",
+    "servingOregon": "Sirviendo la Costa de Oregón",
+    "followFacebook": "Síguenos en Facebook",
+    "copyright": "© 2026 Pacific North Events & Tents. Tu Evento. Tu Visión. Lo Hacemos Realidad."
+  },
+  "cta": {
+    "requestQuote": "Solicitar Cotización",
+    "findMyTentSize": "Encontrar Mi Carpa",
+    "viewServices": "Ver Servicios",
+    "exploreServices": "Explorar Servicios",
+    "planMySetup": "Planificar Mi Montaje",
+    "getQuote": "Obtener Cotización",
+    "startWeddingQuote": "Iniciar Cotización de Boda",
+    "sendQuoteRequest": "Enviar Solicitud de Cotización",
+    "showMyRecommendation": "Mostrar Mi Recomendación",
+    "requestFinalQuote": "Solicitar Cotización Final",
+    "startOver": "Empezar de Nuevo",
+    "talkToUs": "Habla con Nosotros",
+    "readyTitle": "¿Listo para Dar Vida a tu Evento?",
+    "readyDesc": "Cuéntanos sobre tu fecha, ubicación, número de invitados y visión. Te ayudaremos a elegir la carpa adecuada para tu evento."
+  },
+  "recommender": {
+    "metaTitle": "Recomendador de Eventos | Pacific North Events & Tents",
+    "metaDesc": "Recomendador de configuración de eventos con IA. Obtén un plan completo de carpa, mesas, sillas y equipo con un diseño para tu evento.",
+    "heroEyebrow": "Recomendador de Eventos",
+    "heroTitle": "Encuentra la Configuración Correcta para tu Evento",
+    "heroSubtitle": "Responde algunas preguntas rápidas y nuestra IA recomendará un plan completo de carpa, mesas, sillas y equipo, además de un diseño de tu distribución.",
+    "intro": "Cada evento es diferente. Revisaremos tus necesidades de inventario en carpas, mesas, sillas y artículos especiales para que tengas una imagen completa antes de solicitar una cotización.",
+    "steps": {
+      "eventBasics": "Detalles del Evento",
+      "guestLayout": "Invitados y Distribución",
+      "extras": "Comida y Extras",
+      "locationWeather": "Ubicación y Clima",
+      "contact": "Tus Datos"
+    },
+    "fields": {
+      "eventType": "¿Qué tipo de evento estás planeando?",
+      "eventDate": "¿Cuál es la fecha de tu evento? *",
+      "eventLocation": "¿Dónde se realizará el evento? *",
+      "eventLocationPlaceholder": "Nombre del lugar, patio, parque, playa, ubicación comercial, etc.",
+      "outdoorIndoor": "¿El evento es al aire libre, interior o parcialmente cubierto?",
+      "guestCount": "¿Cuántos invitados esperas? *",
+      "setupType": "¿Qué tipo de montaje necesitas?",
+      "seatedGuests": "¿Los invitados estarán sentados en mesas?",
+      "tableStyle": "¿Qué estilo de mesa prefieres?",
+      "foodService": "¿Habrá comida o catering bajo la carpa?",
+      "dancing": "¿Necesitas espacio para bailar?",
+      "extras": "¿Habrá un bar, mesa de regalos, DJ, banda o escenario?",
+      "rentalItems": "¿Qué artículos de alquiler te interesan?",
+      "surface": "¿En qué tipo de superficie se montará la carpa?",
+      "weatherExposure": "¿La ubicación está expuesta al viento o clima costero?",
+      "sidewalls": "¿Deseas paredes laterales para protección adicional?",
+      "afterSunset": "¿El evento continuará después del atardecer?",
+      "fullName": "Nombre Completo *",
+      "email": "Correo Electrónico *",
+      "phone": "Número de Teléfono",
+      "preferredContact": "Método de Contacto Preferido",
+      "message": "¿Algo más que debamos saber sobre tu evento?"
+    },
+    "options": {
+      "eventTypes": {
+        "wedding": "Boda",
+        "festival": "Festival",
+        "privateParty": "Fiesta Privada",
+        "corporateEvent": "Evento Corporativo",
+        "marketVendorEvent": "Mercado / Evento de Vendedores",
+        "fundraiser": "Recaudación de Fondos",
+        "communityEvent": "Evento Comunitario",
+        "graduationParty": "Fiesta de Graduación",
+        "other": "Otro"
+      },
+      "outdoor": {
+        "fullyOutdoors": "Totalmente al aire libre",
+        "indoors": "Interior",
+        "partiallyCovered": "Parcialmente cubierto",
+        "notSureYet": "Aún no estoy seguro"
+      },
+      "setup": {
+        "standingOnly": "Solo de pie",
+        "ceremonySeating": "Asientos de ceremonia",
+        "seatedDining": "Cena con asientos",
+        "cocktailMingling": "Mesas de cóctel / convivencia",
+        "vendorBooths": "Puestos de vendedores",
+        "foodServiceArea": "Área de servicio de comida",
+        "mixedLayout": "Diseño mixto",
+        "notSure": "No estoy seguro"
+      },
+      "seated": {
+        "allSeated": "Sí, todos los invitados sentados",
+        "someSeated": "Algunos sentados, algunos de pie",
+        "mostlyStanding": "No, mayormente de pie",
+        "notSure": "No estoy seguro"
+      },
+      "tableStyle": {
+        "round": "Mesas redondas",
+        "banquet": "Mesas de banquete / rectangulares",
+        "cocktail": "Mesas de cóctel",
+        "picnic": "Mesas estilo picnic",
+        "noTables": "No se necesitan mesas",
+        "notSure": "No estoy seguro"
+      },
+      "food": {
+        "buffet": "Sí, buffet",
+        "plated": "Sí, comida emplatada",
+        "foodTrucks": "Sí, food trucks cerca",
+        "snackOnly": "Sí, solo mesa de bocadillos / postres",
+        "noFood": "Sin servicio de comida",
+        "notSure": "No estoy seguro"
+      },
+      "dancing": {
+        "danceFloor": "Sí, se necesita pista de baile",
+        "small": "Pequeña área de baile",
+        "none": "Sin área de baile",
+        "notSure": "No estoy seguro"
+      },
+      "extras": {
+        "bar": "Área de bar",
+        "gift": "Mesa de regalos",
+        "dessert": "Mesa de postres",
+        "dj": "Cabina de DJ",
+        "band": "Banda en vivo",
+        "stage": "Escenario pequeño",
+        "speaker": "Área de altavoces / anuncios",
+        "none": "Ninguno",
+        "notSure": "No estoy seguro"
+      },
+      "rentals": {
+        "tent": "Carpa",
+        "tables": "Mesas",
+        "chairs": "Sillas",
+        "linens": "Manteles",
+        "lighting": "Iluminación",
+        "danceFloor": "Pista de baile",
+        "sidewalls": "Paredes laterales",
+        "heaters": "Calefactores",
+        "flooring": "Piso",
+        "vendorTents": "Carpas para vendedores",
+        "trash": "Estaciones de basura / reciclaje",
+        "setup": "Montaje y desmontaje",
+        "notSure": "Aún no estoy seguro"
+      },
+      "surface": {
+        "grass": "Césped",
+        "gravel": "Grava",
+        "concrete": "Concreto",
+        "asphalt": "Asfalto",
+        "sand": "Arena",
+        "deckPatio": "Terraza / patio",
+        "mixed": "Superficie mixta",
+        "notSure": "No estoy seguro"
+      },
+      "exposure": {
+        "veryExposed": "Sí, muy expuesto",
+        "somewhatExposed": "Algo expuesto",
+        "mostlyProtected": "Mayormente protegido",
+        "notSure": "No estoy seguro"
+      },
+      "sidewalls": {
+        "yes": "Sí",
+        "maybe": "Tal vez",
+        "no": "No",
+        "notSure": "No estoy seguro"
+      },
+      "afterSunset": {
+        "yes": "Sí",
+        "no": "No",
+        "notSure": "No estoy seguro"
+      },
+      "contactMethod": {
+        "email": "Correo electrónico",
+        "phone": "Teléfono",
+        "text": "Mensaje de texto"
+      },
+      "guestCounts": {
+        "under_25": "Menos de 25",
+        "25_50": "25–50",
+        "50_75": "50–75",
+        "75_100": "75–100",
+        "100_150": "100–150",
+        "150_200": "150–200",
+        "200_300": "200–300",
+        "300_plus": "300+"
+      }
+    },
+    "stepTitles": {
+      "eventBasics": "Detalles del evento",
+      "guestLayout": "Número de invitados y distribución",
+      "extras": "Comida, baile y extras",
+      "locationWeather": "Ubicación y clima",
+      "contact": "Tus datos"
+    },
+    "buttons": {
+      "back": "Atrás",
+      "next": "Siguiente",
+      "startOver": "Empezar de Nuevo",
+      "generate": "Generar Mi Montaje",
+      "tryAgain": "Intentar de Nuevo",
+      "openPdf": "Abrir Visor PDF",
+      "viewPdf": "Ver PDF",
+      "downloadPdf": "Descargar PDF",
+      "print": "Imprimir",
+      "closeViewer": "Cerrar visor PDF",
+      "saveAccount": "Guardar en Mi Cuenta",
+      "createAccount": "Crear Cuenta para Guardar",
+      "viewPlans": "Ver Mis Planes",
+      "sendForQuote": "Enviar Esta Recomendación para Cotización"
+    },
+    "loading": {
+      "title": "Diseñando tu montaje del evento…",
+      "subtitle": "Nuestra IA está revisando el inventario y diseñando tu plan. Suele tardar 15–30 segundos."
+    },
+    "error": {
+      "title": "No pudimos generar tu recomendación",
+      "generic": "Algo salió mal de nuestro lado.",
+      "retryHint": "Tus respuestas están guardadas abajo. Haz clic en \"Generar Mi Montaje\" para reintentar, o \"Habla con Nosotros\" y crearemos un montaje manualmente."
+    },
+    "results": {
+      "eyebrow": "Tu Recomendación Está Lista",
+      "thanks": "Gracias {{name}} — revisamos tu {{eventType}} para {{guests}} invitados el {{date}}{{locationClause}}. Basado en tus respuestas, esto es lo que recomendamos.",
+      "atGlance": "Tu evento en un vistazo",
+      "atGlanceSub": "Un resumen rápido de lo que nos dijiste.",
+      "extrasRequested": "Extras solicitados",
+      "rentalsOfInterest": "Alquileres de interés",
+      "suggestedLayout": "Diseño Sugerido",
+      "blueprintSketch": "Boceto del Plano",
+      "blueprintNote": "Boceto conceptual — el emplazamiento final se confirma durante la cotización.",
+      "recommendedSetup": "Montaje Recomendado",
+      "recommendedSetupSub": "Una selección completa de inventario en cada categoría. Las cantidades son estimadas.",
+      "weatherNotes": "Notas de Clima y Montaje",
+      "disclaimer": "Esta es una estimación generada por IA. El tamaño final de la carpa, cantidades y equipo pueden cambiar según tu lugar, superficie, distribución, clima y disponibilidad. No se muestra precio — solicita una cotización para precios confirmados.",
+      "savedToAccount": "Guardado en tu cuenta.",
+      "dontLose": "No pierdas esta recomendación",
+      "dontLoseDesc": "Crea una cuenta gratuita para guardar este plan y acceder en cualquier momento. Lo guardaremos automáticamente cuando inicies sesión.",
+      "pdfViewer": "Visor PDF",
+      "recapKeys": {
+        "eventType": "Tipo de evento",
+        "date": "Fecha",
+        "location": "Ubicación",
+        "setting": "Entorno",
+        "guests": "Invitados",
+        "setup": "Montaje",
+        "seating": "Asientos",
+        "tables": "Mesas",
+        "food": "Comida",
+        "dancing": "Baile",
+        "surface": "Superficie",
+        "exposure": "Exposición",
+        "sidewalls": "Paredes laterales",
+        "afterSunset": "Después del atardecer"
+      },
+      "selectedDateFallback": "tu fecha seleccionada",
+      "noLocation": "—",
+      "atClause": " en "
+    },
+    "notSureYet": {
+      "title": "¿Aún No Estás Seguro? Está Bien.",
+      "desc": "No necesitas saber cada detalle antes de contactarnos. Si tienes una fecha, ubicación y un número aproximado de invitados, podemos guiar el resto."
+    },
+    "validation": {
+      "required": "Campo obligatorio",
+      "invalidEmail": "Por favor ingresa un correo electrónico válido",
+      "eventDateRequired": "Por favor ingresa la fecha de tu evento",
+      "eventLocationRequired": "Por favor ingresa la ubicación de tu evento"
+    }
+  }
+}

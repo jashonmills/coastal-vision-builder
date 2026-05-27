@@ -1,0 +1,194 @@
+{
+  "language": "언어",
+  "nav": {
+    "home": "홈", "rentals": "렌탈", "tentRentals": "텐트 렌탈",
+    "inventoryPricing": "재고 및 가격", "eventRecommender": "이벤트 추천",
+    "services": "서비스", "allServices": "모든 서비스", "events": "이벤트",
+    "gallery": "갤러리", "about": "소개", "aboutUs": "회사 소개",
+    "contact": "연락처", "requestQuote": "견적 요청",
+    "findMyTentSize": "텐트 크기 찾기", "myAccount": "내 계정",
+    "signIn": "로그인", "admin": "관리자", "menu": "메뉴",
+    "recommender": "추천기", "quote": "견적", "explore": "둘러보기",
+    "more": "더보기", "inventory": "재고", "closeMenu": "메뉴 닫기",
+    "navigationMenu": "탐색 메뉴"
+  },
+  "navDesc": {
+    "tentRentals": "프레임, 폴, 육각형 텐트",
+    "inventoryPricing": "샘플 레이아웃이 포함된 전체 카탈로그",
+    "eventRecommender": "이벤트를 위한 AI 설정",
+    "allServices": "결혼식, 축제, 기업 행사",
+    "events": "과거 이벤트 및 사례 연구",
+    "aboutUs": "해안 팀, 우리 이야기",
+    "contact": "문의하기"
+  },
+  "footer": {
+    "tagline": "결혼식, 축제, 개인 파티, 기업 모임을 위한 이벤트 텐트 렌탈 및 해안 이벤트 지원.",
+    "servicesHeading": "서비스", "weddingTents": "결혼식 텐트",
+    "festivalTents": "축제 텐트", "privateParties": "개인 파티",
+    "corporateEvents": "기업 이벤트", "vendorTents": "벤더 텐트",
+    "quickLinks": "빠른 링크", "contact": "연락처",
+    "servingOregon": "오리건 해안 서비스",
+    "followFacebook": "Facebook에서 팔로우",
+    "copyright": "© 2026 Pacific North Events & Tents. 당신의 이벤트. 당신의 비전. 우리가 실현합니다."
+  },
+  "cta": {
+    "requestQuote": "견적 요청", "findMyTentSize": "텐트 크기 찾기",
+    "viewServices": "서비스 보기", "exploreServices": "서비스 둘러보기",
+    "planMySetup": "설정 계획", "getQuote": "견적 받기",
+    "startWeddingQuote": "결혼식 견적 시작", "sendQuoteRequest": "견적 요청 보내기",
+    "showMyRecommendation": "내 추천 보기", "requestFinalQuote": "최종 견적 요청",
+    "startOver": "다시 시작", "talkToUs": "문의하기",
+    "readyTitle": "이벤트를 현실로 만들 준비가 되셨나요?",
+    "readyDesc": "날짜, 위치, 손님 수, 비전을 알려주세요."
+  },
+  "recommender": {
+    "metaTitle": "이벤트 추천 | Pacific North Events & Tents",
+    "metaDesc": "AI 기반 이벤트 설정 추천기.",
+    "heroEyebrow": "이벤트 추천",
+    "heroTitle": "이벤트에 맞는 설정 찾기",
+    "heroSubtitle": "몇 가지 빠른 질문에 답하면 AI가 완전한 텐트, 테이블, 의자, 장비 계획을 추천합니다.",
+    "intro": "모든 이벤트는 다릅니다. 재고 요구사항을 검토하겠습니다.",
+    "steps": {
+      "eventBasics": "이벤트 기본 정보", "guestLayout": "손님 및 배치",
+      "extras": "음식 및 추가 사항", "locationWeather": "위치 및 날씨", "contact": "세부 정보"
+    },
+    "fields": {
+      "eventType": "어떤 유형의 이벤트를 계획하고 계신가요?",
+      "eventDate": "이벤트 날짜는 언제인가요? *",
+      "eventLocation": "이벤트는 어디에서 열리나요? *",
+      "eventLocationPlaceholder": "장소 이름, 뒷마당, 공원, 해변, 비즈니스 위치 등.",
+      "outdoorIndoor": "이벤트는 야외, 실내 또는 부분적으로 덮여 있나요?",
+      "guestCount": "몇 명의 손님을 예상하시나요? *",
+      "setupType": "어떤 유형의 설정이 필요하신가요?",
+      "seatedGuests": "손님들이 테이블에 앉으실 건가요?",
+      "tableStyle": "어떤 테이블 스타일을 선호하시나요?",
+      "foodService": "텐트 아래에 음식이나 케이터링이 있나요?",
+      "dancing": "춤출 공간이 필요한가요?",
+      "extras": "바, 선물 테이블, DJ, 밴드 또는 무대가 있나요?",
+      "rentalItems": "어떤 렌탈 품목에 관심이 있으신가요?",
+      "surface": "텐트는 어떤 종류의 표면에 설치되나요?",
+      "weatherExposure": "위치가 바람이나 해안 날씨에 노출되어 있나요?",
+      "sidewalls": "추가 날씨 보호를 위한 측벽이 필요하신가요?",
+      "afterSunset": "이벤트가 일몰 후에도 계속되나요?",
+      "fullName": "이름 *", "email": "이메일 주소 *", "phone": "전화번호",
+      "preferredContact": "선호하는 연락 방법",
+      "message": "이벤트에 대해 알아야 할 다른 사항이 있나요?"
+    },
+    "options": {
+      "eventTypes": {
+        "wedding": "결혼식", "festival": "축제", "privateParty": "개인 파티",
+        "corporateEvent": "기업 이벤트", "marketVendorEvent": "시장 / 벤더 이벤트",
+        "fundraiser": "모금 행사", "communityEvent": "커뮤니티 이벤트",
+        "graduationParty": "졸업 파티", "other": "기타"
+      },
+      "outdoor": {
+        "fullyOutdoors": "완전 야외", "indoors": "실내",
+        "partiallyCovered": "부분적으로 덮임", "notSureYet": "아직 확실하지 않음"
+      },
+      "setup": {
+        "standingOnly": "서서만", "ceremonySeating": "예식 좌석",
+        "seatedDining": "착석 식사", "cocktailMingling": "칵테일 테이블 / 어울림",
+        "vendorBooths": "벤더 부스", "foodServiceArea": "음식 서비스 구역",
+        "mixedLayout": "혼합 배치", "notSure": "확실하지 않음"
+      },
+      "seated": {
+        "allSeated": "예, 모든 손님 착석", "someSeated": "일부는 앉고, 일부는 서서",
+        "mostlyStanding": "아니요, 대부분 서서", "notSure": "확실하지 않음"
+      },
+      "tableStyle": {
+        "round": "원형 테이블", "banquet": "연회 / 직사각형 테이블",
+        "cocktail": "칵테일 테이블", "picnic": "피크닉 스타일 테이블",
+        "noTables": "테이블 불필요", "notSure": "확실하지 않음"
+      },
+      "food": {
+        "buffet": "예, 뷔페", "plated": "예, 코스 식사",
+        "foodTrucks": "예, 근처 푸드트럭", "snackOnly": "예, 간식 / 디저트 테이블만",
+        "noFood": "음식 서비스 없음", "notSure": "확실하지 않음"
+      },
+      "dancing": {
+        "danceFloor": "예, 댄스 플로어 필요", "small": "작은 댄스 구역",
+        "none": "댄스 구역 없음", "notSure": "확실하지 않음"
+      },
+      "extras": {
+        "bar": "바 구역", "gift": "선물 테이블", "dessert": "디저트 테이블",
+        "dj": "DJ 부스", "band": "라이브 밴드", "stage": "작은 무대",
+        "speaker": "스피커 / 안내 구역", "none": "없음", "notSure": "확실하지 않음"
+      },
+      "rentals": {
+        "tent": "텐트", "tables": "테이블", "chairs": "의자", "linens": "리넨",
+        "lighting": "조명", "danceFloor": "댄스 플로어", "sidewalls": "측벽",
+        "heaters": "히터", "flooring": "바닥재", "vendorTents": "벤더 텐트",
+        "trash": "쓰레기 / 재활용 스테이션", "setup": "설치 및 철거", "notSure": "아직 확실하지 않음"
+      },
+      "surface": {
+        "grass": "잔디", "gravel": "자갈", "concrete": "콘크리트", "asphalt": "아스팔트",
+        "sand": "모래", "deckPatio": "데크 / 파티오", "mixed": "혼합 표면", "notSure": "확실하지 않음"
+      },
+      "exposure": {
+        "veryExposed": "예, 매우 노출됨", "somewhatExposed": "다소 노출됨",
+        "mostlyProtected": "대부분 보호됨", "notSure": "확실하지 않음"
+      },
+      "sidewalls": { "yes": "예", "maybe": "아마도", "no": "아니요", "notSure": "확실하지 않음" },
+      "afterSunset": { "yes": "예", "no": "아니요", "notSure": "확실하지 않음" },
+      "contactMethod": { "email": "이메일", "phone": "전화", "text": "문자" },
+      "guestCounts": {
+        "under_25": "25명 미만", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
+        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      }
+    },
+    "stepTitles": {
+      "eventBasics": "이벤트 기본 정보", "guestLayout": "손님 수 및 배치",
+      "extras": "음식, 춤 및 추가사항", "locationWeather": "위치 및 날씨", "contact": "세부 정보"
+    },
+    "buttons": {
+      "back": "뒤로", "next": "다음", "startOver": "다시 시작",
+      "generate": "내 설정 생성", "tryAgain": "다시 시도",
+      "openPdf": "PDF 뷰어 열기", "viewPdf": "PDF 보기",
+      "downloadPdf": "PDF 다운로드", "print": "인쇄",
+      "closeViewer": "PDF 뷰어 닫기", "saveAccount": "내 계정에 저장",
+      "createAccount": "저장하려면 계정 생성", "viewPlans": "내 계획 보기",
+      "sendForQuote": "이 추천을 견적용으로 보내기"
+    },
+    "loading": {
+      "title": "이벤트 설정을 디자인하는 중…",
+      "subtitle": "AI가 재고를 검토 중입니다. 보통 15–30초 정도 걸립니다."
+    },
+    "error": {
+      "title": "추천을 생성할 수 없습니다",
+      "generic": "당사 측에서 문제가 발생했습니다.",
+      "retryHint": "답변이 아래에 저장되어 있습니다. \"내 설정 생성\"을 다시 클릭하세요."
+    },
+    "results": {
+      "eyebrow": "추천이 준비되었습니다",
+      "thanks": "감사합니다 {{name}} — {{date}}{{locationClause}}에 {{guests}}명의 손님을 위한 {{eventType}}을(를) 검토했습니다.",
+      "atGlance": "이벤트 한눈에 보기", "atGlanceSub": "알려주신 내용 요약.",
+      "extrasRequested": "요청된 추가사항", "rentalsOfInterest": "관심 있는 렌탈",
+      "suggestedLayout": "제안된 배치", "blueprintSketch": "청사진 스케치",
+      "blueprintNote": "개념 스케치 — 최종 배치는 견적 시 확인됩니다.",
+      "recommendedSetup": "권장 설정",
+      "recommendedSetupSub": "모든 카테고리의 전체 재고 선택.",
+      "weatherNotes": "날씨 및 설정 참고사항",
+      "disclaimer": "이것은 AI가 생성한 추정치입니다.",
+      "savedToAccount": "계정에 저장되었습니다.",
+      "dontLose": "이 추천을 놓치지 마세요",
+      "dontLoseDesc": "이 계획을 저장하려면 무료 계정을 만드세요.",
+      "pdfViewer": "PDF 뷰어",
+      "recapKeys": {
+        "eventType": "이벤트 유형", "date": "날짜", "location": "위치", "setting": "환경",
+        "guests": "손님", "setup": "설정", "seating": "좌석", "tables": "테이블",
+        "food": "음식", "dancing": "춤", "surface": "표면", "exposure": "노출",
+        "sidewalls": "측벽", "afterSunset": "일몰 후"
+      },
+      "selectedDateFallback": "선택한 날짜", "noLocation": "—", "atClause": " 위치: "
+    },
+    "notSureYet": {
+      "title": "아직 확실하지 않으신가요? 괜찮습니다.",
+      "desc": "연락하기 전에 모든 세부사항을 알 필요는 없습니다."
+    },
+    "validation": {
+      "required": "필수 필드", "invalidEmail": "유효한 이메일 주소를 입력하세요",
+      "eventDateRequired": "이벤트 날짜를 입력하세요",
+      "eventLocationRequired": "이벤트 위치를 입력하세요"
+    }
+  }
+}

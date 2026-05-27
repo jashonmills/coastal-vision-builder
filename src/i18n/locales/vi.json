@@ -1,0 +1,192 @@
+{
+  "language": "Ngôn ngữ",
+  "nav": {
+    "home": "Trang chủ", "rentals": "Cho thuê", "tentRentals": "Cho thuê Lều",
+    "inventoryPricing": "Hàng tồn & Giá", "eventRecommender": "Đề xuất Sự kiện",
+    "services": "Dịch vụ", "allServices": "Tất cả Dịch vụ", "events": "Sự kiện",
+    "gallery": "Thư viện", "about": "Giới thiệu", "aboutUs": "Về Chúng tôi",
+    "contact": "Liên hệ", "requestQuote": "Yêu cầu Báo giá",
+    "findMyTentSize": "Tìm Kích thước Lều", "myAccount": "Tài khoản",
+    "signIn": "Đăng nhập", "admin": "Quản trị", "menu": "Menu",
+    "recommender": "Đề xuất", "quote": "Báo giá", "explore": "Khám phá",
+    "more": "Thêm", "inventory": "Hàng tồn", "closeMenu": "Đóng menu",
+    "navigationMenu": "Menu điều hướng"
+  },
+  "navDesc": {
+    "tentRentals": "Lều khung, cột và lục giác",
+    "inventoryPricing": "Danh mục đầy đủ với bố cục mẫu",
+    "eventRecommender": "Cài đặt AI cho sự kiện của bạn",
+    "allServices": "Đám cưới, lễ hội, doanh nghiệp",
+    "events": "Sự kiện trước và nghiên cứu điển hình",
+    "aboutUs": "Đội ngũ ven biển, câu chuyện của chúng tôi",
+    "contact": "Liên hệ"
+  },
+  "footer": {
+    "tagline": "Cho thuê lều sự kiện và hỗ trợ ven biển cho đám cưới, lễ hội, tiệc riêng và sự kiện doanh nghiệp.",
+    "servicesHeading": "Dịch vụ", "weddingTents": "Lều Đám cưới",
+    "festivalTents": "Lều Lễ hội", "privateParties": "Tiệc Riêng",
+    "corporateEvents": "Sự kiện Doanh nghiệp", "vendorTents": "Lều Bán hàng",
+    "quickLinks": "Liên kết Nhanh", "contact": "Liên hệ",
+    "servingOregon": "Phục vụ Bờ biển Oregon",
+    "followFacebook": "Theo dõi chúng tôi trên Facebook",
+    "copyright": "© 2026 Pacific North Events & Tents. Sự kiện của Bạn. Tầm nhìn của Bạn. Chúng tôi Biến nó Thành Hiện thực."
+  },
+  "cta": {
+    "requestQuote": "Yêu cầu Báo giá", "findMyTentSize": "Tìm Kích thước Lều",
+    "viewServices": "Xem Dịch vụ", "exploreServices": "Khám phá Dịch vụ",
+    "planMySetup": "Lập Kế hoạch", "getQuote": "Nhận Báo giá",
+    "startWeddingQuote": "Bắt đầu Báo giá Cưới", "sendQuoteRequest": "Gửi Yêu cầu Báo giá",
+    "showMyRecommendation": "Hiển thị Đề xuất", "requestFinalQuote": "Yêu cầu Báo giá Cuối",
+    "startOver": "Bắt đầu Lại", "talkToUs": "Trò chuyện",
+    "readyTitle": "Sẵn sàng Thực hiện Sự kiện của Bạn?",
+    "readyDesc": "Cho chúng tôi biết ngày, địa điểm, số khách và tầm nhìn của bạn."
+  },
+  "recommender": {
+    "metaTitle": "Đề xuất Sự kiện | Pacific North Events & Tents",
+    "metaDesc": "Đề xuất cài đặt sự kiện bằng AI.",
+    "heroEyebrow": "Đề xuất Sự kiện",
+    "heroTitle": "Tìm Cài đặt Phù hợp cho Sự kiện",
+    "heroSubtitle": "Trả lời vài câu hỏi nhanh và AI sẽ đề xuất kế hoạch đầy đủ.",
+    "intro": "Mỗi sự kiện đều khác nhau. Chúng tôi sẽ xem xét nhu cầu của bạn.",
+    "steps": {
+      "eventBasics": "Cơ bản Sự kiện", "guestLayout": "Khách & Bố cục",
+      "extras": "Đồ ăn & Phụ kiện", "locationWeather": "Địa điểm & Thời tiết", "contact": "Thông tin"
+    },
+    "fields": {
+      "eventType": "Bạn đang lên kế hoạch loại sự kiện gì?",
+      "eventDate": "Ngày sự kiện của bạn là khi nào? *",
+      "eventLocation": "Sự kiện sẽ tổ chức ở đâu? *",
+      "eventLocationPlaceholder": "Tên địa điểm, sân sau, công viên, bãi biển, địa điểm kinh doanh, v.v.",
+      "outdoorIndoor": "Sự kiện ngoài trời, trong nhà hay có mái che một phần?",
+      "guestCount": "Bạn dự kiến bao nhiêu khách? *",
+      "setupType": "Bạn cần loại bố trí nào?",
+      "seatedGuests": "Khách có ngồi ở bàn không?",
+      "tableStyle": "Bạn thích kiểu bàn nào?",
+      "foodService": "Sẽ có đồ ăn hoặc tiệc dưới lều không?",
+      "dancing": "Bạn có cần không gian để nhảy không?",
+      "extras": "Sẽ có quầy bar, bàn quà, DJ, ban nhạc hoặc sân khấu không?",
+      "rentalItems": "Bạn quan tâm đến vật phẩm cho thuê nào?",
+      "surface": "Lều sẽ được dựng trên loại bề mặt nào?",
+      "weatherExposure": "Địa điểm có tiếp xúc với gió hoặc thời tiết ven biển không?",
+      "sidewalls": "Bạn có muốn vách bên để bảo vệ thêm không?",
+      "afterSunset": "Sự kiện có tiếp tục sau khi mặt trời lặn không?",
+      "fullName": "Họ và tên *", "email": "Địa chỉ Email *", "phone": "Số Điện thoại",
+      "preferredContact": "Phương thức Liên hệ Ưa thích",
+      "message": "Có điều gì khác chúng tôi cần biết về sự kiện của bạn không?"
+    },
+    "options": {
+      "eventTypes": {
+        "wedding": "Đám cưới", "festival": "Lễ hội", "privateParty": "Tiệc Riêng",
+        "corporateEvent": "Sự kiện Doanh nghiệp", "marketVendorEvent": "Chợ / Sự kiện Bán hàng",
+        "fundraiser": "Gây quỹ", "communityEvent": "Sự kiện Cộng đồng",
+        "graduationParty": "Tiệc Tốt nghiệp", "other": "Khác"
+      },
+      "outdoor": {
+        "fullyOutdoors": "Hoàn toàn ngoài trời", "indoors": "Trong nhà",
+        "partiallyCovered": "Có mái che một phần", "notSureYet": "Chưa chắc chắn"
+      },
+      "setup": {
+        "standingOnly": "Chỉ đứng", "ceremonySeating": "Ghế nghi lễ",
+        "seatedDining": "Ngồi ăn", "cocktailMingling": "Bàn cocktail / giao lưu",
+        "vendorBooths": "Quầy bán hàng", "foodServiceArea": "Khu vực phục vụ ăn",
+        "mixedLayout": "Bố cục hỗn hợp", "notSure": "Không chắc"
+      },
+      "seated": {
+        "allSeated": "Có, tất cả khách ngồi", "someSeated": "Một số ngồi, một số đứng",
+        "mostlyStanding": "Không, chủ yếu đứng", "notSure": "Không chắc"
+      },
+      "tableStyle": {
+        "round": "Bàn tròn", "banquet": "Bàn tiệc / chữ nhật",
+        "cocktail": "Bàn cocktail", "picnic": "Bàn kiểu dã ngoại",
+        "noTables": "Không cần bàn", "notSure": "Không chắc"
+      },
+      "food": {
+        "buffet": "Có, buffet", "plated": "Có, bữa ăn được phục vụ",
+        "foodTrucks": "Có, xe đồ ăn gần đó", "snackOnly": "Có, chỉ bàn đồ ăn nhẹ / tráng miệng",
+        "noFood": "Không có dịch vụ ăn", "notSure": "Không chắc"
+      },
+      "dancing": {
+        "danceFloor": "Có, cần sàn nhảy", "small": "Khu nhảy nhỏ",
+        "none": "Không có khu nhảy", "notSure": "Không chắc"
+      },
+      "extras": {
+        "bar": "Khu bar", "gift": "Bàn quà", "dessert": "Bàn tráng miệng",
+        "dj": "Bàn DJ", "band": "Ban nhạc trực tiếp", "stage": "Sân khấu nhỏ",
+        "speaker": "Khu loa / thông báo", "none": "Không", "notSure": "Không chắc"
+      },
+      "rentals": {
+        "tent": "Lều", "tables": "Bàn", "chairs": "Ghế", "linens": "Khăn trải",
+        "lighting": "Đèn", "danceFloor": "Sàn nhảy", "sidewalls": "Vách bên",
+        "heaters": "Lò sưởi", "flooring": "Sàn", "vendorTents": "Lều bán hàng",
+        "trash": "Trạm rác / tái chế", "setup": "Lắp đặt và tháo dỡ",
+        "notSure": "Chưa chắc chắn"
+      },
+      "surface": {
+        "grass": "Cỏ", "gravel": "Sỏi", "concrete": "Bê tông", "asphalt": "Nhựa đường",
+        "sand": "Cát", "deckPatio": "Sàn gỗ / sân", "mixed": "Bề mặt hỗn hợp", "notSure": "Không chắc"
+      },
+      "exposure": {
+        "veryExposed": "Có, rất lộ thiên", "somewhatExposed": "Hơi lộ thiên",
+        "mostlyProtected": "Chủ yếu được bảo vệ", "notSure": "Không chắc"
+      },
+      "sidewalls": { "yes": "Có", "maybe": "Có thể", "no": "Không", "notSure": "Không chắc" },
+      "afterSunset": { "yes": "Có", "no": "Không", "notSure": "Không chắc" },
+      "contactMethod": { "email": "Email", "phone": "Điện thoại", "text": "Tin nhắn" },
+      "guestCounts": {
+        "under_25": "Dưới 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
+        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      }
+    },
+    "stepTitles": {
+      "eventBasics": "Cơ bản sự kiện", "guestLayout": "Số khách & bố cục",
+      "extras": "Đồ ăn, nhảy & phụ kiện", "locationWeather": "Địa điểm & thời tiết", "contact": "Thông tin"
+    },
+    "buttons": {
+      "back": "Quay lại", "next": "Tiếp", "startOver": "Bắt đầu Lại",
+      "generate": "Tạo Cài đặt", "tryAgain": "Thử lại",
+      "openPdf": "Mở Trình xem PDF", "viewPdf": "Xem PDF",
+      "downloadPdf": "Tải PDF", "print": "In",
+      "closeViewer": "Đóng trình xem PDF", "saveAccount": "Lưu vào Tài khoản",
+      "createAccount": "Tạo Tài khoản để Lưu", "viewPlans": "Xem Kế hoạch",
+      "sendForQuote": "Gửi Đề xuất này để Báo giá"
+    },
+    "loading": {
+      "title": "Đang thiết kế cài đặt sự kiện…",
+      "subtitle": "AI của chúng tôi đang xem xét. Thường mất 15–30 giây."
+    },
+    "error": {
+      "title": "Chúng tôi không thể tạo đề xuất",
+      "generic": "Đã có lỗi xảy ra.",
+      "retryHint": "Câu trả lời được lưu bên dưới. Nhấp \"Tạo Cài đặt\" để thử lại."
+    },
+    "results": {
+      "eyebrow": "Đề xuất của bạn đã sẵn sàng",
+      "thanks": "Cảm ơn {{name}} — chúng tôi đã xem xét {{eventType}} của bạn cho {{guests}} khách vào {{date}}{{locationClause}}.",
+      "atGlance": "Sự kiện trong nháy mắt", "atGlanceSub": "Tóm tắt nhanh.",
+      "extrasRequested": "Phụ kiện yêu cầu", "rentalsOfInterest": "Cho thuê quan tâm",
+      "suggestedLayout": "Bố cục Đề xuất", "blueprintSketch": "Phác thảo Bố cục",
+      "blueprintNote": "Phác thảo khái niệm — vị trí cuối cùng được xác nhận khi báo giá.",
+      "recommendedSetup": "Cài đặt Đề xuất",
+      "recommendedSetupSub": "Lựa chọn đầy đủ cho mọi danh mục.",
+      "weatherNotes": "Lưu ý Thời tiết & Cài đặt",
+      "disclaimer": "Đây là ước tính do AI tạo.",
+      "savedToAccount": "Đã lưu vào tài khoản.",
+      "dontLose": "Đừng mất đề xuất này",
+      "dontLoseDesc": "Tạo tài khoản miễn phí để lưu.",
+      "pdfViewer": "Trình xem PDF",
+      "recapKeys": {
+        "eventType": "Loại sự kiện", "date": "Ngày", "location": "Địa điểm", "setting": "Bối cảnh",
+        "guests": "Khách", "setup": "Cài đặt", "seating": "Chỗ ngồi", "tables": "Bàn",
+        "food": "Đồ ăn", "dancing": "Nhảy", "surface": "Bề mặt", "exposure": "Tiếp xúc",
+        "sidewalls": "Vách bên", "afterSunset": "Sau hoàng hôn"
+      },
+      "selectedDateFallback": "ngày bạn chọn", "noLocation": "—", "atClause": " tại "
+    },
+    "notSureYet": { "title": "Chưa chắc? Không sao.", "desc": "Bạn không cần biết mọi chi tiết trước khi liên hệ." },
+    "validation": {
+      "required": "Trường bắt buộc", "invalidEmail": "Vui lòng nhập email hợp lệ",
+      "eventDateRequired": "Vui lòng nhập ngày sự kiện",
+      "eventLocationRequired": "Vui lòng nhập địa điểm sự kiện"
+    }
+  }
+}
