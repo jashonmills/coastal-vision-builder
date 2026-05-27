@@ -167,14 +167,21 @@ function Home() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             {gallery.map((g, i) => (
-              <div key={i} className={`overflow-hidden rounded-xl ${i === 0 ? "col-span-2 row-span-2 sm:col-span-1 sm:row-span-1" : ""}`}>
-                <img src={g.url} alt={g.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-              </div>
+              <button
+                type="button"
+                key={i}
+                onClick={() => lb.open(i)}
+                className={`group overflow-hidden rounded-xl ${i === 0 ? "col-span-2 row-span-2 sm:col-span-1 sm:row-span-1" : ""}`}
+                aria-label={`Open image: ${g.alt}`}
+              >
+                <img src={g.url} alt={g.alt} loading="lazy" className="h-full w-full cursor-zoom-in object-cover transition-transform duration-700 group-hover:scale-105" />
+              </button>
             ))}
           </div>
         </div>
       </section>
 
+      <Lightbox images={gallery} index={lb.index} onClose={lb.close} onIndexChange={lb.setIndex} />
       <CTASection />
     </SiteLayout>
   );
