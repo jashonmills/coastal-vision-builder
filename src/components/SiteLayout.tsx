@@ -161,14 +161,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             </Link>
           </div>
 
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 text-primary lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
       </header>
 
