@@ -152,7 +152,6 @@ export function RecommendationViewer({
   contactName?: string;
   fileName: string;
 }) {
-  const reportRef = useRef<HTMLDivElement | null>(null);
   const [busy, setBusy] = useState<null | "download" | "print">(null);
 
   useEffect(() => {
