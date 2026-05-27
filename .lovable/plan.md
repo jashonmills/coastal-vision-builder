@@ -1,38 +1,39 @@
 ## Goal
-Replace the cluttered 8-link top nav with a clean, grouped header using dropdowns.
+Make the recommender result page match the reference: an input recap, a friendly review message, the recommended rental list (already exists), and a blueprint sketch in the same black-on-white top-down line-art style as the uploaded examples.
 
-## New header structure
+## Changes
 
-Primary visible items (desktop):
-- **Home**
-- **Rentals** ▾ (dropdown)
-  - Tent Rentals
-  - Inventory
-  - Event Recommender
-- **Services** ▾ (dropdown)
-  - All Services
-  - Events
-- **Gallery**
-- **About** ▾ (dropdown)
-  - About Us
-  - Contact
+### 1. `src/lib/recommender.functions.ts` — blueprint prompt + model
+Rewrite the image prompt to lock in the reference style and pass concrete sizing/quantity context so the sketch reflects the actual recommendation, not a generic floor plan.
 
-Right side (unchanged behavior, tighter):
-- **Request a Quote** (primary pill button)
+- Compute `blueprintContext` server-side from the picks: tent size (from the chosen Canopy item name, e.g. "20×40 Frame Tent"), table count + style (round vs banquet), chair count, dance-floor sections, plus presence of bar/DJ/stage.
+- Replace the navy/white prompt with a precise sketch brief, e.g.:
+  > "Top-down floor plan sketch, **black line art on plain white background**, hand-drafted blueprint style like an event-rental layout diagram. Render a single tent rectangle with rounded corners labeled with its dimensions. Inside: draw {N} {round|banquet} tables as simple top-down icons with chair rectangles around each, a {WxH} dance floor as a cross-hatched grid, and label the bar/DJ/stage if present. Add a short caption underneath in plain sans-serif: '{tent size} · {N} {table type} · {chair count} chairs[ · dance floor]'. No color, no shading, no people, no perspective — strictly schematic and clean."
+- Upgrade image model from `google/gemini-2.5-flash-image` to `google/gemini-3.1-flash-image-preview` for sharper line work (still fast/cheap).
+- Extend the tool-calling schema with two new fields the model already has context to produce:
+  - `tent_size` (string, e.g. "20×40 Frame Tent")
+  - `layout_caption` (string, the one-line caption to render under the sketch)
+  Use these to drive the image prompt deterministically instead of relying only on `blueprint_prompt`.
 
-This collapses 8 links + 2 buttons down to 4 nav items + 1 CTA. The standalone "Find My Tent Size / Event Recommender" outlined button is removed from the header (it lives inside the Rentals dropdown and is still surfaced via the mobile bottom nav + CTASection).
+### 2. `src/routes/recommender.tsx` — result layout
 
-## Implementation
+Insert two new blocks above the existing blueprint + recommended-setup cards:
 
-**`src/components/SiteLayout.tsx`**
-- Replace flat `navLinks` array with a grouped structure: `{ label, to?, children?: [{label, to, description?}] }`.
-- Use shadcn `NavigationMenu` (already available in `src/components/ui/navigation-menu.tsx` — verify; if not, add via `bunx shadcn add navigation-menu`) for hover/focus dropdowns with proper a11y.
-- Each dropdown panel: small padded card, 1 column, item shows label + optional one-line description in muted text.
-- Active state: highlight the parent label when any child route is active (compare `useRouterState().location.pathname`).
-- Keep "Request a Quote" CTA. Remove the separate "Event Recommender" outlined button.
-- Mobile sheet: render groups as collapsible sections (group label as a non-link heading, children indented) instead of a long flat list. Keep the existing `MobileBottomNav` untouched.
+**a. "We reviewed your event" intro card**  
+Replaces the standalone headline card. Same gold sparkle, but copy reframed as a personal review note:
+> "Thanks {firstName} — our team's AI reviewed your {eventType} for {guestCount} guests on {eventDate} at {location}. Here's what we'd recommend."
+Followed by `recommendation.summary`.
 
-**No changes** to routes, pages, or `MobileBottomNav`.
+**b. "Your event at a glance" recap**  
+A compact 2-column grid of the user's answers (Event type, Date, Location, Guest count, Setup, Seating, Tables, Food, Dancing, Surface, Exposure, Sidewalls, After sunset, Extras chips, Rentals chips). Read-only chips/labels — gives the user confidence the AI used their inputs.
+
+Update the blueprint card chrome to match the new sketch style:
+- White background (not navy), thin border, small caption strip below showing `recommendation.layout_caption`.
+- Header label stays: "Suggested Layout".
+
+No changes to the form steps, mutation flow, or contact handoff.
 
 ## Out of scope
-Footer, logo, search, theme toggle.
+- Inventory page, navigation, other routes.
+- Generating multiple alternative blueprints (single sketch only).
+- Replacing AI image generation with SVG (keeps Gemini image model).
