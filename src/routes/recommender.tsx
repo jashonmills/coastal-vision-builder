@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
