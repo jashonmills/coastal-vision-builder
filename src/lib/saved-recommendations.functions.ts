@@ -24,10 +24,10 @@ export const saveRecommendation = createServerFn({ method: "POST" })
         title: data.title,
         event_date: data.event_date ?? null,
         location: data.location ?? null,
-        input: data.input as object,
-        recommendation: data.recommendation as object,
+        input: data.input as never,
+        recommendation: data.recommendation as never,
         blueprint_image: data.blueprint_image ?? null,
-        contact: (data.contact ?? null) as object | null,
+        contact: (data.contact ?? null) as never,
       })
       .select("id")
       .single();
