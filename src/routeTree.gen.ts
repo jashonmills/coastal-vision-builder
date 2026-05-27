@@ -90,9 +90,9 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountIdRoute = AccountIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AccountRoute,
+  id: '/account/$id',
+  path: '/account/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -208,6 +208,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentRentalsRoute: typeof TentRentalsRoute
+  AccountIdRoute: typeof AccountIdRoute
   AccountIndexRoute: typeof AccountIndexRoute
 }
 
@@ -306,10 +307,10 @@ declare module '@tanstack/react-router' {
     }
     '/account/$id': {
       id: '/account/$id'
-      path: '/$id'
+      path: '/account/$id'
       fullPath: '/account/$id'
       preLoaderRoute: typeof AccountIdRouteImport
-      parentRoute: typeof AccountRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -327,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentRentalsRoute: TentRentalsRoute,
+  AccountIdRoute: AccountIdRoute,
   AccountIndexRoute: AccountIndexRoute,
 }
 export const routeTree = rootRouteImport
