@@ -1,21 +1,56 @@
-import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import { MobileBottomNav } from "./MobileBottomNav";
 
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/services", label: "Services" },
-  { to: "/tent-rentals", label: "Tent Rentals" },
-  { to: "/inventory", label: "Inventory" },
-  { to: "/events", label: "Events" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-] as const;
+type NavChild = { to: string; label: string; description?: string };
+type NavGroup = { label: string; to?: string; children?: NavChild[] };
+
+const navGroups: NavGroup[] = [
+  { label: "Home", to: "/" },
+  {
+    label: "Rentals",
+    children: [
+      { to: "/tent-rentals", label: "Tent Rentals", description: "Frame, pole, and hexagon tents" },
+      { to: "/inventory", label: "Inventory & Pricing", description: "Full catalog with sample layouts" },
+      { to: "/recommender", label: "Event Recommender", description: "AI-built setup for your event" },
+    ],
+  },
+  {
+    label: "Services",
+    children: [
+      { to: "/services", label: "All Services", description: "Weddings, festivals, corporate" },
+      { to: "/events", label: "Events", description: "Past events and case studies" },
+    ],
+  },
+  { label: "Gallery", to: "/gallery" },
+  {
+    label: "About",
+    children: [
+      { to: "/about", label: "About Us", description: "Coastal team, our story" },
+      { to: "/contact", label: "Contact", description: "Get in touch" },
+    ],
+  },
+];
+
+function isGroupActive(group: NavGroup, pathname: string): boolean {
+  if (group.to) return group.to === "/" ? pathname === "/" : pathname.startsWith(group.to);
+  return group.children?.some((c) => pathname.startsWith(c.to)) ?? false;
+}
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -30,28 +65,63 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex">
-            {navLinks.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                activeOptions={{ exact: l.to === "/" }}
-                activeProps={{ className: "text-primary" }}
-                inactiveProps={{ className: "text-muted-foreground hover:text-primary" }}
-                className="text-sm font-medium transition-colors"
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+          <NavigationMenu className="hidden lg:flex">
+            <NavigationMenuList className="gap-1">
+              {navGroups.map((group) => {
+                const active = isGroupActive(group, pathname);
+                if (!group.children) {
+                  return (
+                    <NavigationMenuItem key={group.label}>
+                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle() + " !bg-transparent"}>
+                        <Link
+                          to={group.to!}
+                          className={
+                            "text-sm font-medium transition-colors " +
+                            (active ? "text-primary" : "text-muted-foreground hover:text-primary")
+                          }
+                        >
+                          {group.label}
+                        </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  );
+                }
+                return (
+                  <NavigationMenuItem key={group.label}>
+                    <NavigationMenuTrigger
+                      className={
+                        "!bg-transparent text-sm font-medium " +
+                        (active ? "text-primary" : "text-muted-foreground hover:text-primary")
+                      }
+                    >
+                      {group.label}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="w-[280px] p-2">
+                        {group.children.map((child) => (
+                          <li key={child.to}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                to={child.to}
+                                className="block rounded-md px-3 py-2 hover:bg-secondary"
+                              >
+                                <div className="text-sm font-medium text-foreground">{child.label}</div>
+                                {child.description && (
+                                  <p className="mt-0.5 text-xs text-muted-foreground">{child.description}</p>
+                                )}
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                );
+              })}
+            </NavigationMenuList>
+          </NavigationMenu>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <Link
-              to="/recommender"
-              className="inline-flex items-center rounded-full border border-primary/20 bg-transparent px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
-            >
-              Event Recommender
-            </Link>
             <Link
               to="/contact"
               className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-[color:var(--navy-soft)]"
@@ -73,18 +143,49 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         {open && (
           <div className="border-t border-border/60 bg-background lg:hidden">
             <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
-              {navLinks.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  onClick={() => setOpen(false)}
-                  activeOptions={{ exact: l.to === "/" }}
-                  activeProps={{ className: "bg-secondary text-primary" }}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {navGroups.map((group) => {
+                if (!group.children) {
+                  return (
+                    <Link
+                      key={group.label}
+                      to={group.to!}
+                      onClick={() => setOpen(false)}
+                      activeOptions={{ exact: group.to === "/" }}
+                      activeProps={{ className: "bg-secondary text-primary" }}
+                      className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                    >
+                      {group.label}
+                    </Link>
+                  );
+                }
+                const expanded = openGroup === group.label;
+                return (
+                  <div key={group.label}>
+                    <button
+                      type="button"
+                      onClick={() => setOpenGroup(expanded ? null : group.label)}
+                      className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                    >
+                      {group.label}
+                      <ChevronDown className={"h-4 w-4 transition-transform " + (expanded ? "rotate-180" : "")} />
+                    </button>
+                    {expanded && (
+                      <div className="ml-3 flex flex-col gap-1 border-l border-border/60 pl-3 py-1">
+                        {group.children.map((child) => (
+                          <Link
+                            key={child.to}
+                            to={child.to}
+                            onClick={() => setOpen(false)}
+                            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
               <Link
                 to="/contact"
                 onClick={() => setOpen(false)}
