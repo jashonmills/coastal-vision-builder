@@ -50,6 +50,14 @@ export function RecommendationReport({
     ["After sunset", input.afterSunset],
   ];
 
+  // One-line equipment summary derived from picks
+  const equipmentSummary = orderedCategories
+    .map((cat) => {
+      const total = grouped.get(cat)!.reduce((s, p) => s + (p.quantity || 0), 0);
+      return `${total}× ${cat}`;
+    })
+    .join("  ·  ");
+
   return (
     <div className="bg-card p-7 text-foreground sm:p-10">
       <div className="border-b border-border pb-6 text-center">
@@ -59,7 +67,7 @@ export function RecommendationReport({
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">{recommendation.summary}</p>
       </div>
 
-      <section className="mt-7">
+      <section className="mt-7 print:break-inside-avoid">
         <h3 className="font-serif text-xl text-primary">Event Blueprint</h3>
         <p className="mt-2 text-sm text-foreground">
           Prepared for {contactName || "your event"} · {input.eventType} · {input.guestCount} guests · {eventDateLabel}
@@ -77,45 +85,54 @@ export function RecommendationReport({
             Blueprint image unavailable — layout note: {recommendation.layout_caption}
           </div>
         )}
+        {equipmentSummary && (
+          <p className="mt-3 text-center text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            {equipmentSummary}
+          </p>
+        )}
       </section>
 
-      <section className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
-          <h3 className="font-serif text-xl text-primary">Event Details</h3>
-          <dl className="mt-4 space-y-2">
-            {recapRows.map(([k, v]) => (
-              <div key={k} className="flex justify-between gap-4 border-b border-border/60 pb-2 text-sm">
-                <dt className="text-muted-foreground">{k}</dt>
-                <dd className="text-right font-medium text-foreground">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        <div>
-          <h3 className="font-serif text-xl text-primary">Recommended Setup</h3>
-          <div className="mt-4 space-y-5">
-            {orderedCategories.map((cat) => (
-              <div key={cat}>
-                <h4 className="border-b border-border pb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--gold)]">{cat}</h4>
-                <ul className="mt-3 space-y-2">
-                  {grouped.get(cat)!.map((p, i) => (
-                    <li key={`${p.item_id}-${i}`} className="grid grid-cols-[auto_1fr] gap-3 rounded-lg bg-secondary/35 px-3 py-2.5 text-sm">
-                      <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">{p.quantity}×</span>
-                      <span>
-                        <span className="block font-medium text-foreground">{p.item_name}</span>
-                        <span className="mt-0.5 block text-xs text-muted-foreground">{p.reason}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+      <section className="mt-8 break-inside-avoid print:break-inside-avoid">
+        <h3 className="font-serif text-xl text-primary">Event Details</h3>
+        <dl className="mt-4 grid grid-cols-1 gap-x-8 gap-y-0 sm:grid-cols-2">
+          {recapRows.map(([k, v]) => (
+            <div key={k} className="flex items-baseline justify-between gap-4 border-b border-border/60 py-1.5 text-sm">
+              <dt className="text-muted-foreground">{k}</dt>
+              <dd className="text-right font-semibold text-foreground">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className="mt-8">
+        <h3 className="font-serif text-xl text-primary">Recommended Setup</h3>
+        <div className="mt-4 space-y-5">
+          {orderedCategories.map((cat) => (
+            <div key={cat} className="break-inside-avoid print:break-inside-avoid">
+              <h4 className="border-b border-border pb-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--gold)]">{cat}</h4>
+              <ul className="mt-2 space-y-1.5">
+                {grouped.get(cat)!.map((p, i) => (
+                  <li
+                    key={`${p.item_id}-${i}`}
+                    className="grid grid-cols-[44px_1fr] items-center gap-3 break-inside-avoid rounded-lg border border-border/50 bg-secondary/35 px-3 py-2 text-sm print:break-inside-avoid"
+                  >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                      {p.quantity}×
+                    </span>
+                    <span className="leading-snug">
+                      <span className="block font-semibold text-foreground">{p.item_name}</span>
+                      {p.reason && <span className="mt-0.5 block text-xs text-muted-foreground">{p.reason}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
       {(recommendation.weather_notes?.length ?? 0) > 0 && (
-        <section className="mt-8 rounded-xl border border-border bg-background p-5">
+        <section className="mt-8 break-inside-avoid rounded-xl border border-border bg-background p-5 print:break-inside-avoid">
           <h3 className="font-serif text-xl text-primary">Weather &amp; Setup Notes</h3>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             {(recommendation.weather_notes ?? []).map((n, i) => (
