@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
+import { Lightbox, useLightbox } from "@/components/Lightbox";
 import { photoImages, pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/gallery")({
