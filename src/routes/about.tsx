@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { Heart, Shield, Sparkles, Users } from "lucide-react";
-import coastalImg from "@/assets/coastal-reception.jpg";
+import { pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
