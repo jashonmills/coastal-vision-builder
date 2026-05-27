@@ -1,13 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
-import logoUrl from "@/assets/logo.png";
 import { useAuth } from "@/hooks/use-auth";
 import { saveRecommendation } from "@/lib/saved-recommendations.functions";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
+import { downloadRecommendationPdf, printRecommendationPdf } from "@/lib/recommendation-pdf";
 import { Check, ChevronLeft, ChevronRight, Download, FileText, Loader2, Printer, RefreshCw, Save, Sparkles, UserPlus, X } from "lucide-react";
 
 export const Route = createFileRoute("/recommender")({
