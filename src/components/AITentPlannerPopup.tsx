@@ -66,43 +66,43 @@ export function AITentPlannerPopup() {
 
   return (
     <div
-      className="fixed inset-0 z-[95] flex items-center justify-center bg-primary/70 p-4 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-[95] flex items-start justify-center overflow-y-auto bg-primary/70 p-4 pt-16 backdrop-blur-sm animate-in fade-in duration-300 sm:items-center sm:pt-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="tent-planner-popup-title"
       onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}
     >
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-[color:var(--gold)]/30 bg-[#fbf6ee] shadow-2xl animate-in zoom-in-95 duration-300">
+      <div className="relative my-auto w-full max-w-sm overflow-hidden rounded-2xl border border-[color:var(--gold)]/30 bg-[#fbf6ee] shadow-2xl animate-in zoom-in-95 duration-300 sm:max-w-md sm:rounded-3xl">
         <button
           ref={closeBtnRef}
           type="button"
           onClick={dismiss}
           aria-label={t("plannerPopup.close")}
-          className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
+          className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground sm:right-4 sm:top-4 sm:h-9 sm:w-9"
         >
           <X className="h-4 w-4" />
         </button>
 
-        <div className="px-7 pb-7 pt-9 text-center sm:px-9 sm:pt-10">
+        <div className="px-5 pb-6 pt-7 text-center sm:px-9 sm:pb-7 sm:pt-10">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--seafoam,#9cc7bd)]/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
             <Sparkles className="h-3 w-3" /> {t("plannerPopup.badge")}
           </span>
 
           <PopupIllustration />
 
-          <h2 id="tent-planner-popup-title" className="mt-3 font-serif text-3xl leading-[1.1] text-primary sm:text-[2rem]">
+          <h2 id="tent-planner-popup-title" className="mt-2 font-serif text-2xl leading-[1.1] text-primary sm:mt-3 sm:text-[2rem]">
             {t("plannerPopup.title")}
           </h2>
 
           <div className="mx-auto mt-4 h-px w-12 bg-[color:var(--gold)]/60" />
 
-          <p className="mx-auto mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-5">
             {t("plannerPopup.body")}
           </p>
 
-          <ul className="mx-auto mt-6 max-w-xs space-y-2.5 text-left">
+          <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left sm:mt-6 sm:space-y-2.5">
             {bulletKeys.map((b) => (
-              <li key={b} className="flex items-start gap-2.5 text-sm text-foreground">
+              <li key={b} className="flex items-start gap-2 text-sm text-foreground sm:gap-2.5">
                 <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[color:var(--seafoam,#9cc7bd)]/40 text-primary">
                   <Check className="h-3 w-3" />
                 </span>
@@ -111,11 +111,11 @@ export function AITentPlannerPopup() {
             ))}
           </ul>
 
-          <div className="mt-7 flex flex-col items-center gap-3">
+          <div className="mt-6 flex flex-col items-center gap-2.5 sm:mt-7 sm:gap-3">
             <Link
               to="/ai-tent-planner"
               onClick={dismiss}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)]"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)] sm:px-7 sm:py-3.5"
             >
               <Sparkles className="h-4 w-4 text-[color:var(--gold)]" />
               {t("plannerPopup.primaryCta")}
@@ -152,7 +152,7 @@ function PopupIllustration() {
   return (
     <div
       aria-hidden="true"
-      className="relative mx-auto mt-5 h-[110px] w-full overflow-hidden rounded-xl bg-gradient-to-b from-[#f3ecdc]/60 to-transparent sm:h-[130px]"
+      className="relative mx-auto mt-4 h-[90px] w-full overflow-hidden rounded-lg bg-gradient-to-b from-[#f3ecdc]/60 to-transparent sm:mt-5 sm:h-[130px] sm:rounded-xl"
     >
       <svg
         viewBox="0 0 360 130"
