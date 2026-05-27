@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import {
@@ -122,6 +122,13 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </NavigationMenu>
 
           <div className="hidden items-center gap-2 lg:flex">
+            <Link
+              to="/recommender"
+              className="inline-flex items-center gap-2 rounded-full border border-primary/25 px-5 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
+            >
+              <Sparkles className="h-4 w-4" />
+              Event Recommender
+            </Link>
             <Link
               to="/contact"
               className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-[color:var(--navy-soft)]"
