@@ -145,7 +145,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               to="/ai-tent-planner"
               className="inline-flex items-center gap-2 rounded-full border border-primary/25 px-5 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
             >
-              <Sparkles className="h-4 w-4" />
+              <span className="relative inline-flex h-6 w-6 items-center justify-center">
+                {/* Four-point corner border */}
+                <span className="absolute left-0 top-0 h-1.5 w-1.5 border-l-2 border-t-2 border-[color:var(--gold)]" style={{ animation: 'ai-corner-shimmer 2.5s ease-in-out infinite' }} />
+                <span className="absolute right-0 top-0 h-1.5 w-1.5 border-r-2 border-t-2 border-[color:var(--gold)]" style={{ animation: 'ai-corner-shimmer 2.5s ease-in-out 0.6s infinite' }} />
+                <span className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b-2 border-l-2 border-[color:var(--gold)]" style={{ animation: 'ai-corner-shimmer 2.5s ease-in-out 1.2s infinite' }} />
+                <span className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b-2 border-r-2 border-[color:var(--gold)]" style={{ animation: 'ai-corner-shimmer 2.5s ease-in-out 1.8s infinite' }} />
+                <Sparkles className="h-4 w-4 text-[color:var(--gold)]" style={{ animation: 'ai-sparkle-pulse 2s ease-in-out infinite' }} />
+              </span>
               {t("nav.eventRecommender")}
             </Link>
             <Link
