@@ -307,6 +307,8 @@ function AIResult({
   blueprintImage,
   input,
   contact,
+  viewerOpen,
+  setViewerOpen,
   onReset,
   onSend,
 }: {
@@ -314,9 +316,12 @@ function AIResult({
   blueprintImage: string | null;
   input: RecommenderInput;
   contact: { name: string; email: string; phone: string; method: string; notes: string };
+  viewerOpen: boolean;
+  setViewerOpen: (open: boolean) => void;
   onReset: () => void;
   onSend: () => void;
 }) {
+  const reportRef = useRef<HTMLDivElement | null>(null);
   const grouped = new Map<string, Pick[]>();
   for (const p of recommendation.picks ?? []) {
     const arr = grouped.get(p.category) ?? [];
@@ -350,8 +355,166 @@ function AIResult({
     ["After sunset", input.afterSunset],
   ];
 
+  useEffect(() => {
+    if (!viewerOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setViewerOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [setViewerOpen, viewerOpen]);
+
+  async function downloadPdf() {
+    const element = reportRef.current;
+    if (!element) return;
+    const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ]);
+    const canvas = await html2canvas(element, {
+      backgroundColor: "#ffffff",
+      scale: Math.min(window.devicePixelRatio || 1, 2),
+      useCORS: true,
+    });
+    const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "letter" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 24;
+    const imageWidth = pageWidth - margin * 2;
+    const imageHeight = (canvas.height * imageWidth) / canvas.width;
+    const imageData = canvas.toDataURL("image/png");
+    let renderedHeight = 0;
+
+    pdf.addImage(imageData, "PNG", margin, margin, imageWidth, imageHeight);
+    renderedHeight += pageHeight - margin * 2;
+    while (renderedHeight < imageHeight) {
+      pdf.addPage();
+      pdf.addImage(imageData, "PNG", margin, margin - renderedHeight, imageWidth, imageHeight);
+      renderedHeight += pageHeight - margin * 2;
+    }
+    pdf.save(`event-recommendation-${input.eventDate || "setup"}.pdf`);
+  }
+
+  const report = (
+    <div ref={reportRef} className="recommender-print-area bg-card p-7 text-foreground sm:p-10">
+      <div className="border-b border-border pb-6 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Pacific North Events &amp; Tents</p>
+        <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">{recommendation.headline}</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">{recommendation.summary}</p>
+      </div>
+
+      <section className="mt-7">
+        <h3 className="font-serif text-xl text-primary">Event Blueprint</h3>
+        <p className="mt-2 text-sm text-foreground">
+          Prepared for {contact.name || "your event"} · {input.eventType} · {input.guestCount} guests · {eventDateLabel}
+          {input.location ? ` · ${input.location}` : ""}
+        </p>
+        {blueprintImage ? (
+          <figure className="mt-5 overflow-hidden rounded-xl border border-border bg-background">
+            <img src={blueprintImage} alt="Top-down blueprint sketch of recommended event layout" className="mx-auto block w-full max-w-2xl" />
+            <figcaption className="border-t border-border px-4 py-3 text-center text-sm font-medium text-foreground">
+              {recommendation.layout_caption}
+            </figcaption>
+          </figure>
+        ) : (
+          <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-5 text-sm text-muted-foreground">
+            Blueprint image unavailable — layout note: {recommendation.layout_caption}
+          </div>
+        )}
+      </section>
+
+      <section className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h3 className="font-serif text-xl text-primary">Event Details</h3>
+          <dl className="mt-4 space-y-2">
+            {recapRows.map(([k, v]) => (
+              <div key={k} className="flex justify-between gap-4 border-b border-border/60 pb-2 text-sm">
+                <dt className="text-muted-foreground">{k}</dt>
+                <dd className="text-right font-medium text-foreground">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div>
+          <h3 className="font-serif text-xl text-primary">Recommended Setup</h3>
+          <div className="mt-4 space-y-5">
+            {orderedCategories.map((cat) => (
+              <div key={cat}>
+                <h4 className="border-b border-border pb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--gold)]">{cat}</h4>
+                <ul className="mt-3 space-y-2">
+                  {grouped.get(cat)!.map((p, i) => (
+                    <li key={`${p.item_id}-${i}`} className="grid grid-cols-[auto_1fr] gap-3 rounded-lg bg-secondary/35 px-3 py-2.5 text-sm">
+                      <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">{p.quantity}×</span>
+                      <span>
+                        <span className="block font-medium text-foreground">{p.item_name}</span>
+                        <span className="mt-0.5 block text-xs text-muted-foreground">{p.reason}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {(recommendation.weather_notes?.length ?? 0) > 0 && (
+        <section className="mt-8 rounded-xl border border-border bg-background p-5">
+          <h3 className="font-serif text-xl text-primary">Weather &amp; Setup Notes</h3>
+          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+            {(recommendation.weather_notes ?? []).map((n, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <Check className="mt-0.5 h-4 w-4 flex-none text-[color:var(--forest)]" />
+                <span>{n}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <p className="mt-8 rounded-lg bg-secondary/50 p-4 text-xs leading-relaxed text-muted-foreground">
+        This is an AI-generated estimate. Final tent size, quantities, equipment placement, and anchoring may change based on venue details, surface, weather, access, and availability. Request a quote for confirmed pricing and logistics.
+      </p>
+    </div>
+  );
+
   return (
-    <div className="space-y-8">
+    <>
+      {viewerOpen && (
+        <div className="fixed inset-0 z-[90] bg-primary/80 p-3 backdrop-blur-sm sm:p-5" role="dialog" aria-modal="true" aria-label="Recommendation PDF viewer">
+          <div className="mx-auto flex h-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-4 py-3 sm:px-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                <FileText className="h-4 w-4" />
+                PDF Viewer
+              </div>
+              <div className="flex items-center gap-2">
+                <button type="button" onClick={downloadPdf} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)]">
+                  <Download className="h-3.5 w-3.5" /> Download PDF
+                </button>
+                <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-secondary">
+                  <Printer className="h-3.5 w-3.5" /> Print
+                </button>
+                <button type="button" onClick={() => setViewerOpen(false)} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary" aria-label="Close PDF viewer">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 overflow-auto bg-secondary/60 p-3 sm:p-6">
+              <div className="mx-auto max-w-[816px] overflow-hidden rounded-xl border border-border bg-card shadow-xl">
+                {report}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-8">
       {/* Review intro */}
       <div className="rounded-2xl border border-border bg-card p-8 shadow-md sm:p-10">
         <div className="text-center">
@@ -365,6 +528,9 @@ function AIResult({
             {input.location ? <> at <span className="font-semibold">{input.location}</span></> : null}. Based on your answers, here's what we'd recommend.
           </p>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">{recommendation.summary}</p>
+          <button type="button" onClick={() => setViewerOpen(true)} className="mt-7 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)]">
+            <FileText className="h-4 w-4" /> Open PDF Viewer
+          </button>
         </div>
       </div>
 
@@ -469,6 +635,9 @@ function AIResult({
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <button onClick={() => setViewerOpen(true)} className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)]">
+            <FileText className="h-4 w-4" /> View PDF
+          </button>
           <button onClick={onSend} className="inline-flex items-center rounded-full bg-[color:var(--gold)] px-7 py-3 text-sm font-semibold text-primary hover:-translate-y-0.5 transition-transform">
             Send This Recommendation for a Quote
           </button>
@@ -477,7 +646,8 @@ function AIResult({
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
