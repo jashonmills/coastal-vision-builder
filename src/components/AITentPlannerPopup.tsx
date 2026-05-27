@@ -96,13 +96,13 @@ export function AITentPlannerPopup() {
 
           <div className="mx-auto mt-4 h-px w-12 bg-[color:var(--gold)]/60" />
 
-          <p className="mx-auto mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-5">
             {t("plannerPopup.body")}
           </p>
 
-          <ul className="mx-auto mt-6 max-w-xs space-y-2.5 text-left">
+          <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left sm:mt-6 sm:space-y-2.5">
             {bulletKeys.map((b) => (
-              <li key={b} className="flex items-start gap-2.5 text-sm text-foreground">
+              <li key={b} className="flex items-start gap-2 text-sm text-foreground sm:gap-2.5">
                 <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[color:var(--seafoam,#9cc7bd)]/40 text-primary">
                   <Check className="h-3 w-3" />
                 </span>
