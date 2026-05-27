@@ -94,10 +94,22 @@
     "services": {
       "title": "What We Help You Host",
       "exploreLink": "Explore Services →",
-      "weddings": { "title": "Weddings", "text": "Elegant tented spaces for ceremonies, receptions, rehearsal dinners, and coastal wedding weekends." },
-      "festivals": { "title": "Festivals & Community", "text": "Large-scale tent solutions for markets, music events, fundraisers, fairs, and community celebrations." },
-      "privateParties": { "title": "Private Parties", "text": "Comfortable, beautiful setups for birthdays, reunions, graduations, backyard parties, and family gatherings." },
-      "corporate": { "title": "Corporate Events", "text": "Professional tent and rental solutions for business events, retreats, brand activations, and company gatherings." }
+      "weddings": {
+        "title": "Weddings",
+        "text": "Elegant tented spaces for ceremonies, receptions, rehearsal dinners, and coastal wedding weekends."
+      },
+      "festivals": {
+        "title": "Festivals & Community",
+        "text": "Large-scale tent solutions for markets, music events, fundraisers, fairs, and community celebrations."
+      },
+      "privateParties": {
+        "title": "Private Parties",
+        "text": "Comfortable, beautiful setups for birthdays, reunions, graduations, backyard parties, and family gatherings."
+      },
+      "corporate": {
+        "title": "Corporate Events",
+        "text": "Professional tent and rental solutions for business events, retreats, brand activations, and company gatherings."
+      }
     },
     "weather": {
       "eyebrow": "Coast-Ready",
@@ -108,12 +120,30 @@
     "tentCats": {
       "eyebrow": "Tent Rentals",
       "title": "Tents for Every Size Celebration",
-      "small": { "title": "Small Gatherings", "desc": "Backyard parties, intimate dinners, and small celebrations under 50 guests." },
-      "medium": { "title": "Medium Events", "desc": "Receptions and family celebrations for 50–100 guests with seating and food service." },
-      "large": { "title": "Large Celebrations", "desc": "Weddings and corporate events for 100–200 guests with dining and dancing." },
-      "festival": { "title": "Festival & Vendor Tents", "desc": "Markets, fairs, and multi-booth setups with weather-ready protection." },
-      "wedding": { "title": "Wedding Reception Tents", "desc": "Dining, dancing, lounge areas, and elegant outdoor wedding layouts." },
-      "custom": { "title": "Custom Event Layouts", "desc": "Multi-tent setups, vendor rows, weather plans, and full event flow design." }
+      "small": {
+        "title": "Small Gatherings",
+        "desc": "Backyard parties, intimate dinners, and small celebrations under 50 guests."
+      },
+      "medium": {
+        "title": "Medium Events",
+        "desc": "Receptions and family celebrations for 50–100 guests with seating and food service."
+      },
+      "large": {
+        "title": "Large Celebrations",
+        "desc": "Weddings and corporate events for 100–200 guests with dining and dancing."
+      },
+      "festival": {
+        "title": "Festival & Vendor Tents",
+        "desc": "Markets, fairs, and multi-booth setups with weather-ready protection."
+      },
+      "wedding": {
+        "title": "Wedding Reception Tents",
+        "desc": "Dining, dancing, lounge areas, and elegant outdoor wedding layouts."
+      },
+      "custom": {
+        "title": "Custom Event Layouts",
+        "desc": "Multi-tent setups, vendor rows, weather plans, and full event flow design."
+      }
     },
     "plannerPromo": {
       "badge": "New Free Tool",
@@ -121,10 +151,22 @@
       "title": "Try Our Free AI Tent Planner",
       "body": "Not sure what size tent, seating layout, or equipment your event needs? Our AI Tent Planner helps you build a custom starting plan based on your guest count, event type, surface, weather exposure, and setup needs.",
       "cards": {
-        "tentSize": { "title": "Tent Size Recommendation", "text": "Get a suggested tent size based on your guest count and layout." },
-        "equipment": { "title": "Equipment Checklist", "text": "See recommended tables, chairs, sidewalls, lighting, staging, and extras." },
-        "blueprint": { "title": "Blueprint-Style Layout", "text": "Generate a visual starting layout for your event setup." },
-        "quote": { "title": "Quote-Ready Plan", "text": "Send your plan to our team for a custom quote and final review." }
+        "tentSize": {
+          "title": "Tent Size Recommendation",
+          "text": "Get a suggested tent size based on your guest count and layout."
+        },
+        "equipment": {
+          "title": "Equipment Checklist",
+          "text": "See recommended tables, chairs, sidewalls, lighting, staging, and extras."
+        },
+        "blueprint": {
+          "title": "Blueprint-Style Layout",
+          "text": "Generate a visual starting layout for your event setup."
+        },
+        "quote": {
+          "title": "Quote-Ready Plan",
+          "text": "Send your plan to our team for a custom quote and final review."
+        }
       }
     },
     "gallery": {
@@ -140,11 +182,26 @@
       "subtitle": "Whether you're hosting an intimate gathering or a large coastal celebration, we help create the shelter, structure, and setting your event needs."
     },
     "items": {
-      "weddings": { "title": "Wedding Tent Rentals", "copy": "Create a beautiful covered space for your ceremony, reception, cocktail hour, or full wedding weekend. Our tent rentals help turn outdoor locations into comfortable, memorable venues." },
-      "festivals": { "title": "Festival & Community Event Rentals", "copy": "From vendor booths to large gathering spaces, we support festivals, markets, fundraisers, fairs, and public events with practical, weather-ready tent solutions." },
-      "private": { "title": "Private Party Rentals", "copy": "Host birthdays, reunions, graduations, anniversaries, and backyard celebrations with confidence. We help create a comfortable event space that feels intentional and easy to enjoy." },
-      "corporate": { "title": "Corporate Event Rentals", "copy": "Support company retreats, business gatherings, product launches, and branded events with polished tent setups that keep guests comfortable and the event looking professional." },
-      "setup": { "title": "Delivery, Setup & Breakdown", "copy": "Make event planning easier with reliable setup and breakdown support. Our team helps handle the structure so you can focus on the experience." }
+      "weddings": {
+        "title": "Wedding Tent Rentals",
+        "copy": "Create a beautiful covered space for your ceremony, reception, cocktail hour, or full wedding weekend. Our tent rentals help turn outdoor locations into comfortable, memorable venues."
+      },
+      "festivals": {
+        "title": "Festival & Community Event Rentals",
+        "copy": "From vendor booths to large gathering spaces, we support festivals, markets, fundraisers, fairs, and public events with practical, weather-ready tent solutions."
+      },
+      "private": {
+        "title": "Private Party Rentals",
+        "copy": "Host birthdays, reunions, graduations, anniversaries, and backyard celebrations with confidence. We help create a comfortable event space that feels intentional and easy to enjoy."
+      },
+      "corporate": {
+        "title": "Corporate Event Rentals",
+        "copy": "Support company retreats, business gatherings, product launches, and branded events with polished tent setups that keep guests comfortable and the event looking professional."
+      },
+      "setup": {
+        "title": "Delivery, Setup & Breakdown",
+        "copy": "Make event planning easier with reliable setup and breakdown support. Our team helps handle the structure so you can focus on the experience."
+      }
     },
     "tailoredBanner": "Need something tailored to your event?"
   },
@@ -156,12 +213,36 @@
     },
     "bestFor": "Best for:",
     "items": {
-      "popup": { "title": "Pop-Up / Vendor Tents", "best": "Markets, booths, check-ins, and small covered stations.", "cta": "Ask About Availability" },
-      "small": { "title": "Small Event Tents", "best": "Backyard parties, small gatherings, food service, and guest seating.", "cta": "Request Quote" },
-      "medium": { "title": "Medium Event Tents", "best": "Receptions, family celebrations, private parties, and community events.", "cta": "Request Quote" },
-      "large": { "title": "Large Event Tents", "best": "Weddings, festivals, corporate events, and large guest counts.", "cta": "Plan My Event" },
-      "wedding": { "title": "Wedding Reception Tents", "best": "Dining, dancing, lounge areas, and elegant outdoor wedding layouts.", "cta": "Start Wedding Quote" },
-      "custom": { "title": "Custom Event Layouts", "best": "Complex venues, multi-tent setups, vendor rows, weather plans, and event flow.", "cta": "Design My Setup" }
+      "popup": {
+        "title": "Pop-Up / Vendor Tents",
+        "best": "Markets, booths, check-ins, and small covered stations.",
+        "cta": "Ask About Availability"
+      },
+      "small": {
+        "title": "Small Event Tents",
+        "best": "Backyard parties, small gatherings, food service, and guest seating.",
+        "cta": "Request Quote"
+      },
+      "medium": {
+        "title": "Medium Event Tents",
+        "best": "Receptions, family celebrations, private parties, and community events.",
+        "cta": "Request Quote"
+      },
+      "large": {
+        "title": "Large Event Tents",
+        "best": "Weddings, festivals, corporate events, and large guest counts.",
+        "cta": "Plan My Event"
+      },
+      "wedding": {
+        "title": "Wedding Reception Tents",
+        "best": "Dining, dancing, lounge areas, and elegant outdoor wedding layouts.",
+        "cta": "Start Wedding Quote"
+      },
+      "custom": {
+        "title": "Custom Event Layouts",
+        "best": "Complex venues, multi-tent setups, vendor rows, weather plans, and event flow.",
+        "cta": "Design My Setup"
+      }
     },
     "help": {
       "title": "Not Sure What Size Tent You Need?",
@@ -182,12 +263,42 @@
     },
     "suggestedRentals": "Suggested rentals:",
     "items": {
-      "weddings": { "title": "Weddings", "desc": "Create a beautiful covered venue for dining, dancing, ceremony seating, and guest comfort.", "rentals": "Reception tents, ceremony tents, vendor tents, lounge coverage, lighting-ready layouts.", "cta": "Request Wedding Quote" },
-      "festivals": { "title": "Festivals", "desc": "Large multi-tent layouts for music, food, and community festivals along the coast.", "rentals": "Main stage tents, vendor rows, food service tents, check-in covers.", "cta": "Plan My Festival" },
-      "private": { "title": "Private Parties", "desc": "From backyard birthdays to milestone celebrations, comfortable space for gathering and dining.", "rentals": "Small to medium tents, tables, chairs, lighting, sidewalls.", "cta": "Request Party Quote" },
-      "corporate": { "title": "Corporate Events", "desc": "Polished outdoor venues for retreats, product launches, and branded gatherings.", "rentals": "Reception tents, presentation areas, branded vendor tents.", "cta": "Request Corporate Quote" },
-      "markets": { "title": "Markets & Vendor Events", "desc": "Organized vendor rows that handle wind, sun, and Pacific Northwest rain.", "rentals": "10x10 / 10x20 vendor tents, check-in tents, sidewalls.", "cta": "Request Vendor Quote" },
-      "fundraisers": { "title": "Fundraisers & Community Gatherings", "desc": "Welcoming spaces for fundraisers, school events, and community celebrations.", "rentals": "Medium to large tents, tables, chairs, lighting.", "cta": "Request Community Quote" }
+      "weddings": {
+        "title": "Weddings",
+        "desc": "Create a beautiful covered venue for dining, dancing, ceremony seating, and guest comfort.",
+        "rentals": "Reception tents, ceremony tents, vendor tents, lounge coverage, lighting-ready layouts.",
+        "cta": "Request Wedding Quote"
+      },
+      "festivals": {
+        "title": "Festivals",
+        "desc": "Large multi-tent layouts for music, food, and community festivals along the coast.",
+        "rentals": "Main stage tents, vendor rows, food service tents, check-in covers.",
+        "cta": "Plan My Festival"
+      },
+      "private": {
+        "title": "Private Parties",
+        "desc": "From backyard birthdays to milestone celebrations, comfortable space for gathering and dining.",
+        "rentals": "Small to medium tents, tables, chairs, lighting, sidewalls.",
+        "cta": "Request Party Quote"
+      },
+      "corporate": {
+        "title": "Corporate Events",
+        "desc": "Polished outdoor venues for retreats, product launches, and branded gatherings.",
+        "rentals": "Reception tents, presentation areas, branded vendor tents.",
+        "cta": "Request Corporate Quote"
+      },
+      "markets": {
+        "title": "Markets & Vendor Events",
+        "desc": "Organized vendor rows that handle wind, sun, and Pacific Northwest rain.",
+        "rentals": "10x10 / 10x20 vendor tents, check-in tents, sidewalls.",
+        "cta": "Request Vendor Quote"
+      },
+      "fundraisers": {
+        "title": "Fundraisers & Community Gatherings",
+        "desc": "Welcoming spaces for fundraisers, school events, and community celebrations.",
+        "rentals": "Medium to large tents, tables, chairs, lighting.",
+        "cta": "Request Community Quote"
+      }
     }
   },
   "gallery": {
@@ -216,10 +327,22 @@
     },
     "values": {
       "title": "What We Stand For",
-      "reliable": { "title": "Reliable Setup", "text": "Dependable delivery, setup, and breakdown support so your event starts with confidence." },
-      "weather": { "title": "Weather-Ready Planning", "text": "Outdoor events need smart shelter. We help customers plan for comfort in changing coastal conditions." },
-      "flexible": { "title": "Flexible Event Support", "text": "From intimate gatherings to larger celebrations, we help match the setup to the event." },
-      "local": { "title": "Local, Friendly Service", "text": "We care about helping customers create memorable experiences without unnecessary stress." }
+      "reliable": {
+        "title": "Reliable Setup",
+        "text": "Dependable delivery, setup, and breakdown support so your event starts with confidence."
+      },
+      "weather": {
+        "title": "Weather-Ready Planning",
+        "text": "Outdoor events need smart shelter. We help customers plan for comfort in changing coastal conditions."
+      },
+      "flexible": {
+        "title": "Flexible Event Support",
+        "text": "From intimate gatherings to larger celebrations, we help match the setup to the event."
+      },
+      "local": {
+        "title": "Local, Friendly Service",
+        "text": "We care about helping customers create memorable experiences without unnecessary stress."
+      }
     }
   },
   "contact": {
@@ -541,6 +664,57 @@
       "invalidEmail": "Please enter a valid email address.",
       "eventDateRequired": "Please enter your event date.",
       "eventLocationRequired": "Please enter your event location."
+    }
+  },
+  "chat": {
+    "buttonLabel": "Chat",
+    "header": "Planning Help",
+    "subheader": "Ask a question or get help choosing the right setup.",
+    "close": "Close chat",
+    "send": "Send",
+    "inputPlaceholder": "Type your question…",
+    "opening": "Hi! I can help with tent sizes, event rentals, beach setups, saved plans, and quote requests. What are you planning?",
+    "welcomeBack": "Welcome back. If you already have a saved plan, you can request a quote directly from it in your account.",
+    "quick": {
+      "tentSize": "Find my tent size",
+      "planEvent": "Help me plan my event",
+      "rentals": "What rentals do you offer?",
+      "beach": "Plan a beach event",
+      "quote": "Request a quote",
+      "contact": "Talk to someone"
+    },
+    "actions": {
+      "startPlanner": "Start AI Tent Planner",
+      "requestQuote": "Request a Quote",
+      "viewRentals": "View Rentals",
+      "myAccount": "My Account",
+      "viewMyPlans": "View My Plans",
+      "contact": "Contact Us"
+    },
+    "pageHints": {
+      "planner": "You are already on the AI Tent Planner. Fill out the form and it will build your tent plan, equipment checklist, and a blueprint-style layout.",
+      "savedPlan": "If this is the setup you like, use Request Quote for This Plan to send these exact details to the team.",
+      "account": "You can request a quote from any saved plan. Open the plan you want and click Request Quote.",
+      "rentals": "Browse rental categories here, or use the planner if you are not sure what you need.",
+      "contact": "You can send a quote request here. Adding event date, location, and guest count helps the team respond faster."
+    },
+    "answers": {
+      "tent_size": "Tent size depends on your guest count, seating style, food setup, dancing, weather exposure, and surface. The fastest way to get a good starting point is our AI Tent Planner — it suggests a tent size, equipment checklist, and a blueprint-style layout.",
+      "beach_event": "Yes, beach events are possible, but they take extra planning for wind, sand, anchoring, cleaning, access, and weather protection. For beach setups, water barrels and sidewalls are often recommended depending on the location and exposure.",
+      "sidewalls": "Sidewalls help when an event is exposed to wind, rain, or cooler coastal weather. For beach or open coastal setups, sidewalls add protection while keeping guests comfortable.",
+      "anchoring": "For sand, concrete, asphalt, or anywhere staking is not allowed, water barrels or alternate anchoring may be needed. Final anchoring depends on the surface, weather exposure, and site rules.",
+      "inventory": "We can help with tents and canopies, tables, chairs, dance floor sections, stage sections, a PA system, a portable bar, chafing dishes, sidewalls, anchoring, delivery, setup, and breakdown. Availability varies by date, so the best next step is to request a quote.",
+      "tables_chairs": "We offer 60\" round tables, 30\" round cocktail tables, 8 foot rectangular tables, and white folding chairs. Counts depend on your guest list and layout.",
+      "dance_floor": "Dance floors are available in sections so the size can be matched to your guest count and tent footprint.",
+      "stage_sound": "We offer 6x8 stage sections and a Bluetooth PA system with a mic. Final sizing depends on the venue and use case.",
+      "quote_request": "You can request a quote directly, or use the AI Tent Planner first to create a custom event plan. If you already have a saved plan, you can request a quote from that exact plan.",
+      "saved_plans": "Open your saved plan, preview the PDF, or open the PDF Viewer. Then click Request Quote for This Plan to send the exact plan to the business for follow-up.",
+      "account": "In your account you can save up to 3 active event plans, review past plans, and request a quote from any of them.",
+      "contact": "You can reach the team through the contact page with your event date, location, and a short description. The team follows up with pricing and logistics.",
+      "delivery_setup": "Yes, delivery, setup, and breakdown can be included depending on the event location, rental items, and availability.",
+      "availability": "Availability depends on the date, items, and location. The fastest way to confirm is to request a quote so the team can check the calendar.",
+      "plan_event": "Great — the AI Tent Planner walks you through event type, date, guest count, seating, surface, food, dancing, weather exposure, and extras, then builds a recommendation you can save, download, and send for a quote.",
+      "unknown": "That is a great question. The best next step is to request a quote so the team can review your event details, or use the AI Tent Planner to build a plan first."
     }
   }
 }

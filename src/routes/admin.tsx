@@ -36,6 +36,11 @@ function AdminPage() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Site Content" subtitle="Manage inventory, gallery, site images and text." />
+      <div className="mx-auto max-w-6xl px-4 pt-6 lg:px-8">
+        <Link to="/admin/inventory" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/40 bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-[color:var(--gold)]/10">
+          <Box className="h-4 w-4" /> Open Inventory Management
+        </Link>
+      </div>
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
         <div className="mb-8 flex flex-wrap gap-2">
           {([["inventory", Box, "Inventory"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
