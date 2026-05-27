@@ -129,23 +129,19 @@ export function AccessibilityFontButton() {
           <div role="radiogroup" aria-label="Font choice" className="mt-3 space-y-1.5">
             {OPTIONS.map((opt) => {
               const isSel = selected === opt.key;
-              const disabled = opt.key === "open-dyslexic" && !dyslexicAvailable;
               return (
                 <button
                   key={opt.key}
                   type="button"
                   role="radio"
                   aria-checked={isSel}
-                  aria-disabled={disabled || undefined}
-                  disabled={disabled}
                   onClick={() => choose(opt.key)}
                   style={{ fontFamily: FONT_STACKS[opt.key] || undefined }}
                   className={
                     "flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] " +
                     (isSel
                       ? "border-primary bg-primary/5 text-primary"
-                      : "border-border hover:bg-secondary") +
-                    (disabled ? " cursor-not-allowed opacity-50" : "")
+                      : "border-border hover:bg-secondary")
                   }
                 >
                   <span className="flex items-center gap-2">
@@ -158,18 +154,14 @@ export function AccessibilityFontButton() {
                     />
                     {opt.label}
                   </span>
-                  {disabled && (
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Available soon
-                    </span>
-                  )}
-                  {isSel && !disabled && (
+                  {isSel && (
                     <span className="text-[10px] uppercase tracking-wider text-primary">Active</span>
                   )}
                 </button>
               );
             })}
           </div>
+
 
           <button
             type="button"
