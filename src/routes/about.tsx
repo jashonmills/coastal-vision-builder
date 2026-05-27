@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { Heart, Shield, Sparkles, Users } from "lucide-react";
-import coastalImg from "@/assets/coastal-reception.jpg";
+import { pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -21,13 +21,14 @@ const values = [
 ];
 
 function AboutPage() {
+  const hero = pickPhoto("about-hero");
   return (
     <SiteLayout>
       <PageHero
         eyebrow="About"
         title="About Pacific North Events & Tents"
         subtitle="Helping Oregon Coast events come together with dependable rentals, thoughtful planning, and weather-ready setups."
-        image={coastalImg}
+        image={hero.url}
       />
       <section className="mx-auto max-w-4xl px-4 py-20 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">Our Story</p>

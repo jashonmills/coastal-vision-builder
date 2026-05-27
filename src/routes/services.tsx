@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
-import weddingImg from "@/assets/wedding-tent.jpg";
+import { pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -22,13 +22,14 @@ const services = [
 ];
 
 function ServicesPage() {
+  const hero = pickPhoto("services-hero");
   return (
     <SiteLayout>
       <PageHero
         eyebrow="Services"
         title="Event Rental Services for Every Occasion"
         subtitle="Whether you're hosting an intimate gathering or a large coastal celebration, we help create the shelter, structure, and setting your event needs."
-        image={weddingImg}
+        image={hero.url}
       />
       <div className="mx-auto max-w-5xl px-4 py-20 lg:px-8">
         {services.map((s, i) => (

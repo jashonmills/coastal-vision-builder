@@ -1,12 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, CTASection } from "@/components/SiteLayout";
-import heroImg from "@/assets/hero-tent.jpg";
-import weddingImg from "@/assets/wedding-tent.jpg";
-import festivalImg from "@/assets/festival-tents.jpg";
-import privateImg from "@/assets/private-party.jpg";
-import corporateImg from "@/assets/corporate-event.jpg";
-import coastalImg from "@/assets/coastal-reception.jpg";
-import eveningImg from "@/assets/evening-tent.jpg";
+import { pickPhoto, pickPhotos } from "@/lib/site-images";
 import { CloudRain, Sparkles, Tent, Users } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -39,21 +33,16 @@ const tentCats = [
   { title: "Custom Event Layouts", desc: "Multi-tent setups, vendor rows, weather plans, and full event flow design." },
 ];
 
-const gallery = [
-  { src: weddingImg, alt: "Wedding tent with string lights" },
-  { src: coastalImg, alt: "Outdoor coastal reception" },
-  { src: festivalImg, alt: "Festival vendor tents" },
-  { src: corporateImg, alt: "Corporate event tent" },
-  { src: privateImg, alt: "Backyard private party" },
-  { src: eveningImg, alt: "Evening tent setup with warm lighting" },
-];
-
 function Home() {
+  const heroImg = pickPhoto("home-hero");
+  const eveningImg = pickPhoto("home-evening");
+  const gallery = pickPhotos(6, "home-gallery");
+
   return (
     <SiteLayout>
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-primary text-primary-foreground">
-        <img src={heroImg} alt="Oregon Coast wedding tent at sunset" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-60" />
+        <img src={heroImg.url} alt={heroImg.alt} width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-60" />
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:py-32 lg:px-8">
           <div className="max-w-3xl">
@@ -120,7 +109,7 @@ function Home() {
 
       {/* Weather-ready */}
       <section className="relative overflow-hidden">
-        <img src={eveningImg} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={eveningImg.url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-primary/85" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-24 text-primary-foreground lg:grid-cols-2 lg:px-8">
           <div>
@@ -172,7 +161,7 @@ function Home() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             {gallery.map((g, i) => (
               <div key={i} className={`overflow-hidden rounded-xl ${i === 0 ? "col-span-2 row-span-2 sm:col-span-1 sm:row-span-1" : ""}`}>
-                <img src={g.src} alt={g.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
+                <img src={g.url} alt={g.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
               </div>
             ))}
           </div>
