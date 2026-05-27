@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import logoUrl from "@/assets/logo.png";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
 import { Check, ChevronLeft, ChevronRight, Download, FileText, Loader2, Printer, RefreshCw, Sparkles, X } from "lucide-react";
@@ -403,6 +404,7 @@ function AIResult({
   const report = (
     <div ref={reportRef} className="recommender-print-area bg-card p-7 text-foreground sm:p-10">
       <div className="border-b border-border pb-6 text-center">
+        <img src={logoUrl} alt="Pacific North Event & Tent Rentals" className="mx-auto mb-4 h-16 w-auto" />
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Pacific North Events &amp; Tents</p>
         <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">{recommendation.headline}</h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">{recommendation.summary}</p>
