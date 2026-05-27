@@ -34,6 +34,8 @@ export type AIRecommendation = {
   summary: string;
   picks: Pick[];
   weather_notes: string[];
+  tent_size: string;
+  layout_caption: string;
   blueprint_prompt: string;
 };
 
@@ -70,7 +72,9 @@ RULES:
 - Pick the right Delivery zone based on the location text.
 - Quantities: tables sized to ~8 per round/banquet; chairs equal to guest count + ~10%; add cocktail tables for mingling; add bar/dance floor/stage as needed.
 - Provide a short "reason" per pick (1 sentence).
-- Write a "blueprint_prompt" describing a top-down floor plan layout in 1-2 sentences (tent dimensions, table arrangement, dance floor, bar, stage placement, entrance).
+- "tent_size": short label of the chosen tent, e.g. "20×40 Frame Tent" or "20×60 Frame Tent".
+- "layout_caption": ONE short line describing the floor plan, formatted like the references: e.g. "20×40 Frame Tent · 8 round tables · 64 chairs · dance floor".
+- "blueprint_prompt": 1-2 sentences describing the top-down arrangement of tables, chairs, dance floor, bar, DJ/stage, and entrance inside the tent footprint.
 - Do NOT include prices. Recommendation is an estimate; customer requests a final quote.`;
 
     const userPrompt = `EVENT DETAILS:
@@ -115,9 +119,11 @@ ${JSON.stringify(inventoryByCategory, null, 2)}`;
                     },
                   },
                   weather_notes: { type: "array", items: { type: "string" } },
+                  tent_size: { type: "string" },
+                  layout_caption: { type: "string" },
                   blueprint_prompt: { type: "string" },
                 },
-                required: ["headline", "summary", "picks", "weather_notes", "blueprint_prompt"],
+                required: ["headline", "summary", "picks", "weather_notes", "tent_size", "layout_caption", "blueprint_prompt"],
                 additionalProperties: false,
               },
             },
@@ -141,17 +147,27 @@ ${JSON.stringify(inventoryByCategory, null, 2)}`;
     }
     const recommendation = JSON.parse(toolCall.function.arguments) as AIRecommendation;
 
-    // 2. Generate blueprint image
+    // 2. Generate blueprint sketch (black line art on white, like reference rental layouts)
     let blueprintImage: string | null = null;
     try {
-      const blueprintPrompt = `Top-down architectural blueprint floor plan, clean white lines on deep navy blue background, technical drawing style, labeled elements. ${recommendation.blueprint_prompt} Show tent footprint outline, tables (circles or rectangles labeled by type), chairs around tables, dance floor (cross-hatched square), bar area, stage, and entrance. Minimal, schematic, isometric-flat overhead view. No people, no photographic detail.`;
+      const sketchPrompt = `A clean, hand-drafted top-down floor plan sketch in the style of an event rental layout diagram. STRICT STYLE: pure black line art on a plain white background, no color, no shading, no perspective, no people, no photographic detail — strictly schematic 2D blueprint.
+
+Draw the tent as a single rectangle outline labeled with its dimensions (${recommendation.tent_size}). Inside the rectangle, render the arrangement from above: ${recommendation.blueprint_prompt}
+
+Tables shown as simple top-down icons (circles for rounds, rectangles for banquet), each surrounded by small chair rectangles. Dance floor as a cross-hatched square grid. Label the bar, DJ, and stage zones with plain text if present.
+
+Below the tent, center a short caption in a plain sans-serif font:
+"${recommendation.layout_caption}"
+
+The result must look like an architect's blueprint sketch — minimal, precise, fully contained on the white canvas with generous margins. Do not add any extra decoration, color, or background.`;
 
       const imgRes = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
         method: "POST",
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash-image",
-          prompt: blueprintPrompt,
+          model: "google/gemini-3.1-flash-image-preview",
+          messages: [{ role: "user", content: sketchPrompt }],
+          modalities: ["image", "text"],
         }),
       });
       if (imgRes.ok) {
