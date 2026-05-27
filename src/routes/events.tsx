@@ -22,13 +22,14 @@ const events = [
 ];
 
 function EventsPage() {
+  const hero = pickPhoto("events-hero");
   return (
     <SiteLayout>
       <PageHero
         eyebrow="Events"
         title="Events We Support"
         subtitle="From oceanfront weddings to community festivals, Pacific North Events & Tents helps create comfortable spaces for unforgettable gatherings."
-        image={coastalImg}
+        image={hero.url}
       />
       <section className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2">
