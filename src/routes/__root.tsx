@@ -74,10 +74,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Pacific North Events & Tents | Oregon Coast Event Tent Rentals" },
       { name: "description", content: "Event tent rentals and setup support for weddings, festivals, private parties, corporate events, and year-round Oregon Coast celebrations." },
-      { property: "og:title", content: "Pacific North Events & Tents" },
-      { property: "og:description", content: "Stylish, weather-ready event tent rentals on the Oregon Coast." },
+      { property: "og:title", content: "Pacific North Events & Tents | Oregon Coast Event Tent Rentals" },
+      { property: "og:description", content: "Event tent rentals and setup support for weddings, festivals, private parties, corporate events, and year-round Oregon Coast celebrations." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Pacific North Events & Tents | Oregon Coast Event Tent Rentals" },
+      { name: "twitter:description", content: "Event tent rentals and setup support for weddings, festivals, private parties, corporate events, and year-round Oregon Coast celebrations." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/rjMQAKU3KkYgTNtMvoEjXcTsE7h2/social-images/social-1779910755111-ChatGPT_Image_May_27,_2026,_12_38_03_PM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/rjMQAKU3KkYgTNtMvoEjXcTsE7h2/social-images/social-1779910755111-ChatGPT_Image_May_27,_2026,_12_38_03_PM.webp" },
     ],
     links: [
       {
