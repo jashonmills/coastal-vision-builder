@@ -70,7 +70,6 @@ if (!i18n.isInitialized) {
     lng: initialLng,
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
-    initImmediate: false,
   });
 
   if (isBrowser) {
