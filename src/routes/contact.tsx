@@ -1,5 +1,6 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { Mail, MapPin, Phone, Facebook } from "lucide-react";
 import { z } from "zod";
@@ -19,9 +20,13 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const RENTALS = ["Event Tent", "Vendor Tent", "Wedding Tent", "Tables", "Chairs", "Lighting", "Setup / Breakdown Support", "Not Sure Yet"];
+const RENTAL_KEYS = ["eventTent", "vendorTent", "weddingTent", "tables", "chairs", "lighting", "setupSupport", "notSure"];
+const EVENT_TYPE_KEYS = ["wedding", "festival", "privateParty", "corporateEvent", "marketVendor", "community", "other"];
+const GUEST_RANGE_KEYS = ["under25", "25_50", "50_100", "100_200", "200_plus"];
+const CONTACT_METHODS = ["email", "phone", "text"] as const;
 
 function ContactPage() {
+  const { t } = useTranslation();
   const { prefill } = useSearch({ from: "/contact" });
   const [submitted, setSubmitted] = useState(false);
 
@@ -33,80 +38,80 @@ function ContactPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Contact"
-        title="Request a Quote"
-        subtitle="Tell us about your event and we'll help you plan the right tent setup."
+        eyebrow={t("contact.hero.eyebrow")}
+        title={t("contact.hero.title")}
+        subtitle={t("contact.hero.subtitle")}
       />
       <section className="mx-auto grid max-w-7xl gap-12 px-4 py-20 lg:grid-cols-[1fr_360px] lg:px-8">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-sm sm:p-10">
           {submitted ? (
             <div className="py-10 text-center">
-              <h2 className="font-serif text-3xl text-primary">Thank you!</h2>
+              <h2 className="font-serif text-3xl text-primary">{t("contact.thankYou.title")}</h2>
               <p className="mt-4 text-muted-foreground">
-                We've received your request and will reach out shortly to help plan your event.
+                {t("contact.thankYou.body")}
               </p>
             </div>
           ) : (
             <form onSubmit={onSubmit} className="grid gap-5">
               {prefill && (
                 <div className="rounded-lg border border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10 px-4 py-3 text-sm text-primary">
-                  <strong className="font-semibold">From your recommender:</strong> {prefill}
+                  <strong className="font-semibold">{t("contact.fromRecommender")}</strong> {prefill}
                 </div>
               )}
               <Row>
-                <Field label="Full Name *"><input required maxLength={100} name="name" className={input} /></Field>
-                <Field label="Email Address *"><input required type="email" maxLength={255} name="email" className={input} /></Field>
+                <Field label={t("contact.fields.fullName")}><input required maxLength={100} name="name" className={input} /></Field>
+                <Field label={t("contact.fields.email")}><input required type="email" maxLength={255} name="email" className={input} /></Field>
               </Row>
               <Row>
-                <Field label="Phone Number *"><input required type="tel" maxLength={30} name="phone" className={input} /></Field>
-                <Field label="Event Date *"><input required type="date" name="date" className={input} /></Field>
+                <Field label={t("contact.fields.phone")}><input required type="tel" maxLength={30} name="phone" className={input} /></Field>
+                <Field label={t("contact.fields.eventDate")}><input required type="date" name="date" className={input} /></Field>
               </Row>
-              <Field label="Event Location / Venue *">
-                <input required maxLength={200} name="location" className={input} placeholder="Venue, city, or area" />
+              <Field label={t("contact.fields.eventLocation")}>
+                <input required maxLength={200} name="location" className={input} placeholder={t("contact.fields.eventLocationPlaceholder")} />
               </Field>
               <Row>
-                <Field label="Type of Event *">
+                <Field label={t("contact.fields.eventType")}>
                   <select required name="type" className={input} defaultValue="">
-                    <option value="" disabled>Select an option</option>
-                    {["Wedding","Festival","Private Party","Corporate Event","Market / Vendor Event","Community Event","Other"].map(o => <option key={o}>{o}</option>)}
+                    <option value="" disabled>{t("contact.selectOption")}</option>
+                    {EVENT_TYPE_KEYS.map(k => <option key={k} value={k}>{t(`contact.eventTypes.${k}`)}</option>)}
                   </select>
                 </Field>
-                <Field label="Estimated Guest Count *">
+                <Field label={t("contact.fields.guestCount")}>
                   <select required name="guests" className={input} defaultValue="">
-                    <option value="" disabled>Select range</option>
-                    {["Under 25","25–50","50–100","100–200","200+"].map(o => <option key={o}>{o}</option>)}
+                    <option value="" disabled>{t("contact.selectRange")}</option>
+                    {GUEST_RANGE_KEYS.map(k => <option key={k} value={k}>{t(`contact.guestRanges.${k}`)}</option>)}
                   </select>
                 </Field>
               </Row>
 
-              <Field label="What rentals are you interested in?">
+              <Field label={t("contact.fields.rentalsInterest")}>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                  {RENTALS.map((r) => (
-                    <label key={r} className="flex items-center gap-2 text-sm">
-                      <input type="checkbox" name="rentals" value={r} className="accent-[color:var(--navy)]" />
-                      <span className="text-foreground">{r}</span>
+                  {RENTAL_KEYS.map((k) => (
+                    <label key={k} className="flex items-center gap-2 text-sm">
+                      <input type="checkbox" name="rentals" value={k} className="accent-[color:var(--navy)]" />
+                      <span className="text-foreground">{t(`contact.rentalOptions.${k}`)}</span>
                     </label>
                   ))}
                 </div>
               </Field>
 
-              <Field label="Preferred Contact Method">
+              <Field label={t("contact.fields.preferredContact")}>
                 <div className="flex flex-wrap gap-5 text-sm">
-                  {["Email","Phone","Text"].map((m) => (
+                  {CONTACT_METHODS.map((m) => (
                     <label key={m} className="flex items-center gap-2">
-                      <input type="radio" name="contactMethod" value={m} defaultChecked={m === "Email"} className="accent-[color:var(--navy)]" />
-                      <span>{m}</span>
+                      <input type="radio" name="contactMethod" value={m} defaultChecked={m === "email"} className="accent-[color:var(--navy)]" />
+                      <span>{t(`contact.contactMethod.${m}`)}</span>
                     </label>
                   ))}
                 </div>
               </Field>
 
-              <Field label="Message">
-                <textarea name="message" rows={5} maxLength={2000} className={input} placeholder="Tell us about your event, location, timeline, and vision…" defaultValue={prefill ?? ""} />
+              <Field label={t("contact.fields.message")}>
+                <textarea name="message" rows={5} maxLength={2000} className={input} placeholder={t("contact.fields.messagePlaceholder")} defaultValue={prefill ?? ""} />
               </Field>
 
               <button type="submit" className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)]">
-                Send Quote Request
+                {t("contact.submit")}
               </button>
             </form>
           )}
@@ -114,17 +119,17 @@ function ContactPage() {
 
         <aside className="space-y-5">
           <div className="rounded-2xl border border-border bg-card p-7 shadow-sm">
-            <h3 className="font-serif text-xl text-primary">Contact Pacific North Events &amp; Tents</h3>
+            <h3 className="font-serif text-xl text-primary">{t("contact.sidebar.title")}</h3>
             <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-primary" /> Add phone number</li>
-              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-primary" /> Add email address</li>
-              <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-primary" /> Oregon Coast and surrounding areas</li>
-              <li className="flex items-start gap-3"><Facebook className="mt-0.5 h-4 w-4 text-primary" /> Facebook</li>
+              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.phonePlaceholder")}</li>
+              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.emailPlaceholder")}</li>
+              <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.areaServed")}</li>
+              <li className="flex items-start gap-3"><Facebook className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.facebook")}</li>
             </ul>
           </div>
           <div className="rounded-2xl border border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10 p-6 text-sm text-primary">
-            <strong className="font-semibold">Year-round rentals.</strong>{" "}
-            Contact us early for the best availability.
+            <strong className="font-semibold">{t("contact.sidebar.noteTitle")}</strong>{" "}
+            {t("contact.sidebar.noteBody")}
           </div>
         </aside>
       </section>

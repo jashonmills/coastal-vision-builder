@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { Check, Sparkles, X } from "lucide-react";
 
 const DISMISS_KEY = "pacificNorthTentPlannerPopupDismissed";
@@ -7,6 +8,7 @@ const VIDEO_SEEN_KEY = "pacificNorthIntroVideoSeen";
 const POPUP_DELAY_MS = 3000;
 
 export function AITentPlannerPopup() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
@@ -21,14 +23,12 @@ export function AITentPlannerPopup() {
       timer = window.setTimeout(() => setOpen(true), POPUP_DELAY_MS);
     };
 
-    // If the intro video is still showing, wait for it to finish.
     const videoSeen = sessionStorage.getItem(VIDEO_SEEN_KEY);
     if (videoSeen) {
       schedule();
     } else {
       const onVideoDone = () => schedule();
       window.addEventListener("pn:intro-video-done", onVideoDone, { once: true });
-      // Safety net: if no video event arrives in 15s, show anyway.
       timer = window.setTimeout(() => setOpen(true), 18000);
       return () => {
         window.removeEventListener("pn:intro-video-done", onVideoDone);
@@ -62,12 +62,7 @@ export function AITentPlannerPopup() {
 
   if (!open) return null;
 
-  const bullets = [
-    "Tent size recommendation",
-    "Tables, chairs, staging, lighting & extras",
-    "Blueprint-style setup",
-    "Quote-ready plan",
-  ];
+  const bulletKeys = ["tentSize", "equipment", "blueprint", "quote"];
 
   return (
     <div
@@ -82,7 +77,7 @@ export function AITentPlannerPopup() {
           ref={closeBtnRef}
           type="button"
           onClick={dismiss}
-          aria-label="Close"
+          aria-label={t("plannerPopup.close")}
           className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
         >
           <X className="h-4 w-4" />
@@ -90,26 +85,26 @@ export function AITentPlannerPopup() {
 
         <div className="px-7 pb-7 pt-9 text-center sm:px-9 sm:pt-10">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--seafoam,#9cc7bd)]/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-            <Sparkles className="h-3 w-3" /> New Free Tool
+            <Sparkles className="h-3 w-3" /> {t("plannerPopup.badge")}
           </span>
 
           <h2 id="tent-planner-popup-title" className="mt-5 font-serif text-3xl leading-[1.1] text-primary sm:text-[2rem]">
-            Not Sure What Size<br />Tent You Need?
+            {t("plannerPopup.title")}
           </h2>
 
           <div className="mx-auto mt-4 h-px w-12 bg-[color:var(--gold)]/60" />
 
           <p className="mx-auto mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            Try our free AI Tent Planner and get a custom tent size recommendation, equipment checklist, and blueprint-style event layout in minutes.
+            {t("plannerPopup.body")}
           </p>
 
           <ul className="mx-auto mt-6 max-w-xs space-y-2.5 text-left">
-            {bullets.map((b) => (
+            {bulletKeys.map((b) => (
               <li key={b} className="flex items-start gap-2.5 text-sm text-foreground">
                 <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[color:var(--seafoam,#9cc7bd)]/40 text-primary">
                   <Check className="h-3 w-3" />
                 </span>
-                <span>{b}</span>
+                <span>{t(`plannerPopup.bullets.${b}`)}</span>
               </li>
             ))}
           </ul>
@@ -121,14 +116,14 @@ export function AITentPlannerPopup() {
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)]"
             >
               <Sparkles className="h-4 w-4 text-[color:var(--gold)]" />
-              Start My Free Tent Plan
+              {t("plannerPopup.primaryCta")}
             </Link>
             <button
               type="button"
               onClick={dismiss}
               className="text-xs font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
             >
-              Maybe Later
+              {t("plannerPopup.secondaryCta")}
             </button>
           </div>
 
@@ -138,7 +133,7 @@ export function AITentPlannerPopup() {
             <span className="h-px flex-1 bg-border" />
           </div>
           <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-            Perfect for weddings, fundraisers, festivals,<br />private parties, and corporate events.
+            {t("plannerPopup.note")}
           </p>
         </div>
       </div>
