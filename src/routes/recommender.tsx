@@ -559,6 +559,37 @@ function AIResult({
         </div>
       </div>
 
+      {/* Save / Account CTA */}
+      {user ? (
+        <div className="rounded-2xl border border-[color:var(--forest)]/30 bg-[color:var(--forest)]/5 p-6 text-center">
+          {savedId ? (
+            <p className="text-sm text-foreground">
+              <Check className="mr-1 inline h-4 w-4 text-[color:var(--forest)]" />
+              Saved to your account.{" "}
+              <Link to="/account" className="font-semibold text-primary underline">View My Plans</Link>
+            </p>
+          ) : (
+            <button onClick={() => saveMut.mutate()} disabled={saveMut.isPending} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)] disabled:opacity-60">
+              {saveMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save to My Account
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-2xl border-2 border-[color:var(--gold)]/50 bg-[color:var(--gold)]/10 p-6 text-center">
+          <UserPlus className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
+          <p className="mt-3 font-serif text-xl text-primary">Don't lose this recommendation</p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-foreground">
+            Create a free account to save this plan and access it anytime. We'll save it automatically once you sign in.
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            <button onClick={() => navigate({ to: "/login", search: { next: "/recommender" } as never })} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
+              <UserPlus className="h-4 w-4" /> Create Account to Save
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Input recap */}
       <div className="rounded-2xl border border-border bg-card p-7 shadow-sm sm:p-9">
         <h3 className="font-serif text-xl text-primary">Your event at a glance</h3>
