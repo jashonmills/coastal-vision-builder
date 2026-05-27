@@ -38,10 +38,11 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
   const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "letter" });
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
-  const margin = 40;
+  const margin = 48;
+  const footerReserve = 40; // space at bottom reserved for footer
+  const contentBottom = pageH - margin - footerReserve;
   const contentW = pageW - margin * 2;
 
-  // Colors (matches site palette approximately)
   const navy: [number, number, number] = [30, 41, 59];
   const gold: [number, number, number] = [180, 142, 65];
   const muted: [number, number, number] = [100, 110, 120];
@@ -50,51 +51,44 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
 
   let y = margin;
 
-  const ensureSpace = (needed: number) => {
-    if (y + needed > pageH - margin) {
-      pdf.addPage();
-      y = margin;
-    }
-  };
+  const remaining = () => contentBottom - y;
+  const newPage = () => { pdf.addPage(); y = margin; };
+  const ensureSpace = (needed: number) => { if (y + needed > contentBottom) newPage(); };
 
-  // Logo
+  // ---------- HEADER (cover block) ----------
   const logo = await loadImageDataUrl(logoUrl);
   if (logo) {
-    const lh = 44;
+    const lh = 56;
     const lw = (logo.w / logo.h) * lh;
     pdf.addImage(logo.data, "PNG", (pageW - lw) / 2, y, lw, lh);
-    y += lh + 8;
+    y += lh + 14;
   }
 
-  // Brand line
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(8);
+  pdf.setFontSize(9);
   pdf.setTextColor(...gold);
-  pdf.text("PACIFIC NORTH EVENTS & TENTS", pageW / 2, y, { align: "center" });
-  y += 16;
+  pdf.text("PACIFIC NORTH EVENTS & TENTS", pageW / 2, y, { align: "center", charSpace: 1.2 });
+  y += 18;
 
-  // Headline
   pdf.setFont("times", "bold");
-  pdf.setFontSize(22);
+  pdf.setFontSize(24);
   pdf.setTextColor(...navy);
-  const headlineLines = pdf.splitTextToSize(recommendation.headline || "Event Setup Recommendation", contentW);
-  pdf.text(headlineLines, pageW / 2, y, { align: "center" });
-  y += headlineLines.length * 24;
+  const headlineLines = pdf.splitTextToSize(recommendation.headline || "Event Setup Recommendation", contentW - 60);
+  pdf.text(headlineLines, pageW / 2, y + 20, { align: "center" });
+  y += headlineLines.length * 28 + 8;
 
-  // Summary
   pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(10);
+  pdf.setFontSize(11);
   pdf.setTextColor(...muted);
-  const sumLines = pdf.splitTextToSize(recommendation.summary || "", contentW - 40);
-  pdf.text(sumLines, pageW / 2, y, { align: "center" });
-  y += sumLines.length * 13 + 14;
+  const sumLines = pdf.splitTextToSize(recommendation.summary || "", contentW - 80);
+  pdf.text(sumLines, pageW / 2, y + 6, { align: "center" });
+  y += sumLines.length * 14 + 22;
 
-  // Divider
   pdf.setDrawColor(...border);
   pdf.line(margin, y, pageW - margin, y);
   y += 18;
 
-  // Prepared for
+  // ---------- PREPARED FOR ----------
   const eventDateLabel = input.eventDate
     ? new Date(input.eventDate + "T00:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })
     : "your selected date";
@@ -104,44 +98,44 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
   const prepared = `Prepared for ${contactName || "your event"}  ·  ${input.eventType}  ·  ${input.guestCount} guests  ·  ${eventDateLabel}${input.location ? "  ·  " + input.location : ""}`;
   const prepLines = pdf.splitTextToSize(prepared, contentW);
   pdf.text(prepLines, margin, y);
-  y += prepLines.length * 13 + 10;
+  y += prepLines.length * 13 + 16;
 
-  // Blueprint image
+  // ---------- BLUEPRINT ----------
   if (blueprintImage) {
     const img = await loadImageDataUrl(blueprintImage);
     if (img) {
       const maxW = contentW;
-      const maxH = 280;
+      const maxH = Math.min(300, remaining() - 60);
       let iw = maxW;
       let ih = (img.h / img.w) * iw;
       if (ih > maxH) { ih = maxH; iw = (img.w / img.h) * ih; }
-      ensureSpace(ih + 30);
       pdf.addImage(img.data, "PNG", margin + (contentW - iw) / 2, y, iw, ih);
-      y += ih + 6;
-      pdf.setFont("helvetica", "italic");
-      pdf.setFontSize(9);
-      pdf.setTextColor(...muted);
-      const cap = pdf.splitTextToSize(recommendation.layout_caption || "", contentW);
-      pdf.text(cap, pageW / 2, y + 8, { align: "center" });
-      y += cap.length * 11 + 18;
+      y += ih + 14;
+
+      if (recommendation.layout_caption) {
+        pdf.setFont("helvetica", "italic");
+        pdf.setFontSize(10);
+        pdf.setTextColor(...muted);
+        const cap = pdf.splitTextToSize(recommendation.layout_caption, contentW - 40);
+        pdf.text(cap, pageW / 2, y, { align: "center" });
+        y += cap.length * 12 + 20;
+      }
     }
   }
 
-  // Section heading helper
+  // ---------- Section heading helper ----------
   const sectionHeading = (label: string) => {
-    ensureSpace(28);
     pdf.setFont("times", "bold");
-    pdf.setFontSize(14);
+    pdf.setFontSize(15);
     pdf.setTextColor(...navy);
     pdf.text(label, margin, y);
-    y += 6;
+    y += 8;
     pdf.setDrawColor(...border);
     pdf.line(margin, y, pageW - margin, y);
-    y += 14;
+    y += 16;
   };
 
-  // Event details (two-column key/value)
-  sectionHeading("Event Details");
+  // ---------- EVENT DETAILS (keep together) ----------
   const recapRows: Array<[string, string]> = [
     ["Event type", input.eventType],
     ["Date", eventDateLabel],
@@ -158,26 +152,30 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
     ["Sidewalls", input.sidewalls],
     ["After sunset", input.afterSunset],
   ];
+  // Measure block
+  const rowH = 20;
+  const detailsBlockH = 30 + recapRows.length * rowH + 10;
+  if (remaining() < detailsBlockH) newPage();
+
+  sectionHeading("Event Details");
   pdf.setFontSize(10);
   for (const [k, v] of recapRows) {
-    ensureSpace(18);
     pdf.setFont("helvetica", "normal");
     pdf.setTextColor(...muted);
     pdf.text(k, margin, y);
     pdf.setFont("helvetica", "bold");
     pdf.setTextColor(...navy);
-    const vLines = pdf.splitTextToSize(String(v), contentW - 140);
+    const vLines = pdf.splitTextToSize(String(v), contentW - 160);
     pdf.text(vLines, pageW - margin, y, { align: "right" });
-    const used = Math.max(vLines.length * 12, 14);
-    y += used;
+    const used = Math.max(vLines.length * 12, rowH - 6);
+    y += used + 2;
     pdf.setDrawColor(240, 240, 240);
     pdf.line(margin, y, pageW - margin, y);
-    y += 6;
+    y += 4;
   }
-  y += 6;
+  y += 14;
 
-  // Recommended setup
-  sectionHeading("Recommended Setup");
+  // ---------- RECOMMENDED SETUP ----------
   const grouped = new Map<string, Pick[]>();
   for (const p of recommendation.picks ?? []) {
     const arr = grouped.get(p.category) ?? [];
@@ -189,82 +187,104 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
     ...Array.from(grouped.keys()).filter((c) => !CATEGORY_ORDER.includes(c)),
   ];
 
+  // Heading + measure first item to keep heading with first item
+  const measureItem = (p: Pick) => {
+    const nameLines = pdf.splitTextToSize(p.item_name, contentW - 70);
+    const reasonLines = pdf.splitTextToSize(p.reason || "", contentW - 70);
+    return nameLines.length * 13 + reasonLines.length * 12 + 16;
+  };
+
+  // Reserve room for setup heading + first category header + first item
+  const setupHeadingH = 34;
+  if (orderedCategories.length > 0) {
+    const firstCat = orderedCategories[0];
+    const firstItems = grouped.get(firstCat)!;
+    const firstNeeded = setupHeadingH + 24 + (firstItems[0] ? measureItem(firstItems[0]) : 30);
+    if (remaining() < firstNeeded) newPage();
+  }
+
+  sectionHeading("Recommended Setup");
+
   for (const cat of orderedCategories) {
-    ensureSpace(24);
+    const items = grouped.get(cat)!;
+    const firstItemH = items[0] ? measureItem(items[0]) : 30;
+    // Keep category heading with first item
+    if (remaining() < 28 + firstItemH) newPage();
+
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(9);
     pdf.setTextColor(...gold);
-    pdf.text(cat.toUpperCase(), margin, y);
-    y += 4;
+    pdf.text(cat.toUpperCase(), margin, y, { charSpace: 1 });
+    y += 6;
     pdf.setDrawColor(...border);
     pdf.line(margin, y, pageW - margin, y);
-    y += 10;
+    y += 12;
 
-    for (const p of grouped.get(cat)!) {
+    for (const p of items) {
+      const nameLines = pdf.splitTextToSize(p.item_name, contentW - 70);
+      const reasonLines = pdf.splitTextToSize(p.reason || "", contentW - 70);
+      const blockH = nameLines.length * 13 + reasonLines.length * 12 + 16;
+      if (remaining() < blockH) newPage();
+
+      pdf.setFillColor(...rowBg);
+      pdf.roundedRect(margin, y, contentW, blockH - 6, 4, 4, "F");
+
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(10);
       pdf.setTextColor(...navy);
-      const qty = `${p.quantity}×`;
-      const nameLines = pdf.splitTextToSize(p.item_name, contentW - 60);
-      const reasonLines = pdf.splitTextToSize(p.reason || "", contentW - 60);
-      const blockH = nameLines.length * 12 + reasonLines.length * 11 + 12;
-      ensureSpace(blockH);
+      pdf.text(`${p.quantity}×`, margin + 10, y + 14);
+      pdf.text(nameLines, margin + 56, y + 14);
 
-      // Row background
-      pdf.setFillColor(...rowBg);
-      pdf.roundedRect(margin, y - 2, contentW, blockH - 4, 4, 4, "F");
-
-      pdf.text(qty, margin + 8, y + 10);
-      pdf.text(nameLines, margin + 50, y + 10);
-      let inner = y + 10 + nameLines.length * 12;
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(9);
       pdf.setTextColor(...muted);
-      pdf.text(reasonLines, margin + 50, inner);
+      pdf.text(reasonLines, margin + 56, y + 14 + nameLines.length * 13);
+
       y += blockH;
     }
-    y += 6;
+    y += 10;
   }
 
-  // Weather notes
+  // ---------- WEATHER NOTES (keep heading with at least 1 note) ----------
   const notes = recommendation.weather_notes ?? [];
   if (notes.length > 0) {
-    y += 6;
+    const firstNote = pdf.splitTextToSize(`•  ${notes[0]}`, contentW);
+    if (remaining() < 40 + firstNote.length * 12) newPage();
     sectionHeading("Weather & Setup Notes");
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(10);
     pdf.setTextColor(...navy);
     for (const n of notes) {
       const lines = pdf.splitTextToSize(`•  ${n}`, contentW);
-      ensureSpace(lines.length * 12 + 4);
+      const h = lines.length * 13 + 6;
+      if (remaining() < h) newPage();
       pdf.text(lines, margin, y);
-      y += lines.length * 12 + 4;
+      y += h;
     }
+    y += 8;
   }
 
-  // Disclaimer
-  y += 10;
-  ensureSpace(40);
-  pdf.setFillColor(...rowBg);
-  pdf.roundedRect(margin, y, contentW, 38, 4, 4, "F");
+  // ---------- DISCLAIMER ----------
+  const discText = "This is an AI-generated estimate. Final tent size, quantities, equipment placement, and anchoring may change based on venue details, surface, weather, access, and availability. Request a quote for confirmed pricing and logistics.";
   pdf.setFont("helvetica", "italic");
   pdf.setFontSize(8);
+  const discLines = pdf.splitTextToSize(discText, contentW - 20);
+  const discH = discLines.length * 11 + 18;
+  if (remaining() < discH) newPage();
+  pdf.setFillColor(...rowBg);
+  pdf.roundedRect(margin, y, contentW, discH, 4, 4, "F");
   pdf.setTextColor(...muted);
-  const disc = pdf.splitTextToSize(
-    "This is an AI-generated estimate. Final tent size, quantities, equipment placement, and anchoring may change based on venue details, surface, weather, access, and availability. Request a quote for confirmed pricing and logistics.",
-    contentW - 16,
-  );
-  pdf.text(disc, margin + 8, y + 12);
+  pdf.text(discLines, margin + 10, y + 12);
 
-  // Footer page numbers
+  // ---------- FOOTER ----------
   const total = pdf.getNumberOfPages();
   for (let i = 1; i <= total; i++) {
     pdf.setPage(i);
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(8);
     pdf.setTextColor(...muted);
-    pdf.text(`Pacific North Events & Tents`, margin, pageH - 20);
-    pdf.text(`Page ${i} of ${total}`, pageW - margin, pageH - 20, { align: "right" });
+    pdf.text("Pacific North Events & Tents", margin, pageH - 22);
+    pdf.text(`Page ${i} of ${total}`, pageW - margin, pageH - 22, { align: "right" });
   }
 
   return pdf;
