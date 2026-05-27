@@ -27,7 +27,7 @@ export function OpeningVideoSplash() {
 
   function finish() {
     if (exiting) return;
-    window.sessionStorage.setItem(SPLASH_SEEN_KEY, "true");
+    
     setExiting(true);
     window.setTimeout(() => setVisible(false), 900);
   }
