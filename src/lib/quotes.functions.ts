@@ -63,7 +63,19 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     const guests = data.guest_count ? `${data.guest_count} guests` : "";
     const evtType = data.event_type ?? "Event";
     const baseTitle = `New Quote Request: ${evtType}${guests ? " · " + guests : ""}`;
-    const events: Array<Record<string, unknown>> = [
+    type CalEvent = {
+      title: string;
+      event_type: string;
+      start_time: string;
+      all_day?: boolean;
+      status?: string;
+      color?: string | null;
+      quote_request_id?: string | null;
+      saved_recommendation_id?: string | null;
+      location?: string | null;
+      notes?: string | null;
+    };
+    const events: CalEvent[] = [
       {
         title: baseTitle,
         event_type: "quote_request",
