@@ -13,10 +13,12 @@ import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RecommenderRouteImport } from './routes/recommender'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -40,6 +42,11 @@ const RecommenderRoute = RecommenderRouteImport.update({
   path: '/recommender',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
@@ -60,6 +67,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -74,10 +86,12 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
+  '/login': typeof LoginRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -86,10 +100,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
+  '/login': typeof LoginRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -99,10 +115,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
+  '/login': typeof LoginRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -113,10 +131,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/contact'
     | '/events'
     | '/gallery'
     | '/inventory'
+    | '/login'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -125,10 +145,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/contact'
     | '/events'
     | '/gallery'
     | '/inventory'
+    | '/login'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -137,10 +159,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/contact'
     | '/events'
     | '/gallery'
     | '/inventory'
+    | '/login'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -150,10 +174,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
   InventoryRoute: typeof InventoryRoute
+  LoginRoute: typeof LoginRoute
   RecommenderRoute: typeof RecommenderRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -190,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecommenderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inventory': {
       id: '/inventory'
       path: '/inventory'
@@ -218,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -238,10 +278,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
   InventoryRoute: InventoryRoute,
+  LoginRoute: LoginRoute,
   RecommenderRoute: RecommenderRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
