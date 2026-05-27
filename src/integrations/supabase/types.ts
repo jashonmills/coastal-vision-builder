@@ -595,6 +595,84 @@ export type Database = {
           },
         ]
       }
+      rental_calendar_events: {
+        Row: {
+          all_day: boolean
+          assigned_to: string | null
+          color: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          deleted_at: string | null
+          end_time: string | null
+          event_type: string
+          external_calendar_event_id: string | null
+          external_calendar_provider: string | null
+          id: string
+          location: string | null
+          notes: string | null
+          quote_id: string | null
+          quote_request_id: string | null
+          rental_event_id: string | null
+          saved_recommendation_id: string | null
+          start_time: string
+          status: string
+          sync_to_external_calendar: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          all_day?: boolean
+          assigned_to?: string | null
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          deleted_at?: string | null
+          end_time?: string | null
+          event_type: string
+          external_calendar_event_id?: string | null
+          external_calendar_provider?: string | null
+          id?: string
+          location?: string | null
+          notes?: string | null
+          quote_id?: string | null
+          quote_request_id?: string | null
+          rental_event_id?: string | null
+          saved_recommendation_id?: string | null
+          start_time: string
+          status?: string
+          sync_to_external_calendar?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          all_day?: boolean
+          assigned_to?: string | null
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          deleted_at?: string | null
+          end_time?: string | null
+          event_type?: string
+          external_calendar_event_id?: string | null
+          external_calendar_provider?: string | null
+          id?: string
+          location?: string | null
+          notes?: string | null
+          quote_id?: string | null
+          quote_request_id?: string | null
+          rental_event_id?: string | null
+          saved_recommendation_id?: string | null
+          start_time?: string
+          status?: string
+          sync_to_external_calendar?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       saved_recommendations: {
         Row: {
           blueprint_image: string | null
@@ -684,6 +762,163 @@ export type Database = {
           value?: Json
         }
         Relationships: []
+      }
+      spreadsheet_imports: {
+        Row: {
+          column_mapping: Json
+          completed_at: string | null
+          created_at: string
+          errors: Json
+          id: string
+          import_type: string
+          imported_by: string | null
+          rows_detected: number
+          rows_imported: number
+          rows_skipped: number
+          source_file_name: string | null
+          spreadsheet_source_id: string | null
+          status: string
+          warnings: Json
+        }
+        Insert: {
+          column_mapping?: Json
+          completed_at?: string | null
+          created_at?: string
+          errors?: Json
+          id?: string
+          import_type: string
+          imported_by?: string | null
+          rows_detected?: number
+          rows_imported?: number
+          rows_skipped?: number
+          source_file_name?: string | null
+          spreadsheet_source_id?: string | null
+          status?: string
+          warnings?: Json
+        }
+        Update: {
+          column_mapping?: Json
+          completed_at?: string | null
+          created_at?: string
+          errors?: Json
+          id?: string
+          import_type?: string
+          imported_by?: string | null
+          rows_detected?: number
+          rows_imported?: number
+          rows_skipped?: number
+          source_file_name?: string | null
+          spreadsheet_source_id?: string | null
+          status?: string
+          warnings?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spreadsheet_imports_spreadsheet_source_id_fkey"
+            columns: ["spreadsheet_source_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spreadsheet_sources: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          external_sheet_name: string | null
+          external_spreadsheet_id: string | null
+          file_url: string | null
+          id: string
+          last_sync_status: string | null
+          last_synced_at: string | null
+          provider: string
+          source_name: string
+          source_type: string
+          sync_enabled: boolean
+          sync_frequency: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          external_sheet_name?: string | null
+          external_spreadsheet_id?: string | null
+          file_url?: string | null
+          id?: string
+          last_sync_status?: string | null
+          last_synced_at?: string | null
+          provider?: string
+          source_name: string
+          source_type: string
+          sync_enabled?: boolean
+          sync_frequency?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          external_sheet_name?: string | null
+          external_spreadsheet_id?: string | null
+          file_url?: string | null
+          id?: string
+          last_sync_status?: string | null
+          last_synced_at?: string | null
+          provider?: string
+          source_name?: string
+          source_type?: string
+          sync_enabled?: boolean
+          sync_frequency?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      spreadsheet_sync_logs: {
+        Row: {
+          completed_at: string | null
+          errors: Json
+          id: string
+          rows_checked: number
+          rows_created: number
+          rows_skipped: number
+          rows_updated: number
+          spreadsheet_source_id: string | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          errors?: Json
+          id?: string
+          rows_checked?: number
+          rows_created?: number
+          rows_skipped?: number
+          rows_updated?: number
+          spreadsheet_source_id?: string | null
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          completed_at?: string | null
+          errors?: Json
+          id?: string
+          rows_checked?: number
+          rows_created?: number
+          rows_skipped?: number
+          rows_updated?: number
+          spreadsheet_source_id?: string | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spreadsheet_sync_logs_spreadsheet_source_id_fkey"
+            columns: ["spreadsheet_source_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_sources"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
