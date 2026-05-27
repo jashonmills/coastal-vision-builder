@@ -174,7 +174,7 @@ function EditQuotePage() {
   );
 }
 
-function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
+function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
   const [draft, setDraft] = useState(item);
   useEffect(() => setDraft(item), [item]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
@@ -188,6 +188,7 @@ function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: ()
     } }),
     onSuccess: onSaved,
   });
+  const short = avail ? (draft.quantity > avail.available) : false;
   return (
     <tr className="border-t border-border align-top">
       <td className="px-2 py-2">
@@ -201,6 +202,16 @@ function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: ()
           )}
         </div>
         {draft.reason && <div className="mt-0.5 text-[10px] text-muted-foreground">{draft.reason}</div>}
+      </td>
+      <td className="px-2 py-2 text-xs">
+        {avail ? (
+          <div className={short ? "text-red-700 font-semibold" : "text-emerald-700"}>
+            {avail.available} / {avail.total_owned}
+            {short && <div className="text-[10px] font-normal">Short by {draft.quantity - avail.available}</div>}
+          </div>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )}
       </td>
       <td className="px-2 py-2"><input type="number" className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" value={draft.quantity} onChange={(e) => setDraft({ ...draft, quantity: parseInt(e.target.value || "0") })} /></td>
       <td className="px-2 py-2"><input className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" value={draft.unit} onChange={(e) => setDraft({ ...draft, unit: e.target.value })} /></td>
