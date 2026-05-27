@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Sparkles, ShieldCheck, User, X } from "lucide-react";
+import { Sparkles, ShieldCheck, User } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
