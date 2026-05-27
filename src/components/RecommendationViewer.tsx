@@ -153,6 +153,7 @@ export function RecommendationViewer({
   fileName: string;
 }) {
   const reportRef = useRef<HTMLDivElement | null>(null);
+  const [busy, setBusy] = useState<null | "download" | "print">(null);
 
   useEffect(() => {
     if (!open) return;
@@ -163,34 +164,24 @@ export function RecommendationViewer({
     return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); };
   }, [open, onClose]);
 
-  async function downloadPdf() {
-    const element = reportRef.current;
-    if (!element) return;
-    const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
-      import("html2canvas"),
-      import("jspdf"),
-    ]);
-    const canvas = await html2canvas(element, {
-      backgroundColor: "#ffffff",
-      scale: Math.min(window.devicePixelRatio || 1, 2),
-      useCORS: true,
-    });
-    const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "letter" });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 24;
-    const imageWidth = pageWidth - margin * 2;
-    const imageHeight = (canvas.height * imageWidth) / canvas.width;
-    const imageData = canvas.toDataURL("image/png");
-    let rendered = 0;
-    pdf.addImage(imageData, "PNG", margin, margin, imageWidth, imageHeight);
-    rendered += pageHeight - margin * 2;
-    while (rendered < imageHeight) {
-      pdf.addPage();
-      pdf.addImage(imageData, "PNG", margin, margin - rendered, imageWidth, imageHeight);
-      rendered += pageHeight - margin * 2;
+  async function handleDownload() {
+    if (busy) return;
+    setBusy("download");
+    try {
+      await downloadRecommendationPdf({ recommendation, blueprintImage, input, contactName }, fileName);
+    } finally {
+      setBusy(null);
     }
-    pdf.save(`${fileName}.pdf`);
+  }
+
+  async function handlePrint() {
+    if (busy) return;
+    setBusy("print");
+    try {
+      await printRecommendationPdf({ recommendation, blueprintImage, input, contactName });
+    } finally {
+      setBusy(null);
+    }
   }
 
   if (!open) return null;
@@ -203,11 +194,11 @@ export function RecommendationViewer({
             <FileText className="h-4 w-4" /> PDF Viewer
           </div>
           <div className="flex items-center gap-2">
-            <button type="button" onClick={downloadPdf} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
-              <Download className="h-3.5 w-3.5" /> Download PDF
+            <button type="button" onClick={handleDownload} disabled={busy !== null} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)] disabled:opacity-60">
+              {busy === "download" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Download PDF
             </button>
-            <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-secondary">
-              <Printer className="h-3.5 w-3.5" /> Print
+            <button type="button" onClick={handlePrint} disabled={busy !== null} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-secondary disabled:opacity-60">
+              {busy === "print" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Printer className="h-3.5 w-3.5" />} Print
             </button>
             <button type="button" onClick={onClose} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground hover:bg-secondary" aria-label="Close">
               <X className="h-4 w-4" />
