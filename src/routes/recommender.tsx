@@ -1,11 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
-import { Check, ChevronLeft, ChevronRight, Loader2, RefreshCw, Sparkles } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Download, FileText, Loader2, Printer, RefreshCw, Sparkles, X } from "lucide-react";
 
 export const Route = createFileRoute("/recommender")({
   head: () => ({
@@ -53,6 +53,7 @@ function RecommenderPage() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<RecommenderInput>(empty);
   const [contact, setContact] = useState({ name: "", email: "", phone: "", method: "Email", notes: "" });
+  const [viewerOpen, setViewerOpen] = useState(false);
 
   const generateFn = useServerFn(generateRecommendation);
   const mutation = useMutation({
@@ -63,6 +64,7 @@ function RecommenderPage() {
     },
     onSuccess: (res) => {
       console.log("[recommender] success", res);
+      setViewerOpen(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
   });
@@ -92,6 +94,7 @@ function RecommenderPage() {
     setData(empty);
     setContact({ name: "", email: "", phone: "", method: "Email", notes: "" });
     mutation.reset();
+    setViewerOpen(false);
     setStep(0);
   }
 
@@ -274,6 +277,8 @@ function RecommenderPage() {
             blueprintImage={result.blueprintImage}
             input={data}
             contact={contact}
+            viewerOpen={viewerOpen}
+            setViewerOpen={setViewerOpen}
             onReset={reset}
             onSend={sendToQuote}
           />
