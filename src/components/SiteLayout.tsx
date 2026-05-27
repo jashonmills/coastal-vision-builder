@@ -70,7 +70,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       {pathname === "/" && <OpeningVideoSplash />}
       {pathname === "/" && <AITentPlannerPopup />}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-center lg:justify-between gap-6 px-4 py-4 lg:px-8">
+        <div className="relative mx-auto flex max-w-7xl items-center justify-center lg:justify-between gap-6 px-4 py-4 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
               src={dynamicLogo}
@@ -78,6 +78,10 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               className="h-12 w-auto sm:h-14"
             />
           </Link>
+
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 lg:hidden">
+            <LanguageSelector variant="header" />
+          </div>
 
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="gap-1">
