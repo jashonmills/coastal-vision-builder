@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { getRecommendation } from "@/lib/saved-recommendations.functions";
-import { RecommendationViewer } from "@/components/RecommendationViewer";
+import { RecommendationReport, RecommendationViewer } from "@/components/RecommendationViewer";
 import type { AIRecommendation } from "@/lib/recommender.functions";
 import type { RecommenderInput } from "@/lib/recommender";
-import { ChevronLeft, Download, FileText, Loader2 } from "lucide-react";
+import { ChevronLeft, FileText, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/account/$id")({
   head: () => ({ meta: [{ title: "Saved Plan | Pacific North Events & Tents" }] }),
@@ -71,7 +71,7 @@ function SavedPlanPage() {
             Preview · <button onClick={() => setOpen(true)} className="text-primary underline">open viewer</button> for Download / Print
           </div>
           <div className="max-h-[600px] overflow-auto">
-            <RecommendationViewerInline
+            <RecommendationReport
               recommendation={recommendation}
               blueprintImage={data.blueprint_image}
               input={input}
@@ -93,7 +93,3 @@ function SavedPlanPage() {
   );
 }
 
-function RecommendationViewerInline(props: React.ComponentProps<typeof import("@/components/RecommendationViewer").RecommendationReport>) {
-  const { RecommendationReport } = require("@/components/RecommendationViewer") as typeof import("@/components/RecommendationViewer");
-  return <RecommendationReport {...props} />;
-}
