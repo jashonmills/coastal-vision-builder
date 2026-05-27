@@ -345,7 +345,7 @@ function AIResult({
     if (user && !savedId && !saveMut.isPending) saveMut.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-  const reportRef = useRef<HTMLDivElement | null>(null);
+  const [pdfBusy, setPdfBusy] = useState<null | "download" | "print">(null);
   const grouped = new Map<string, Pick[]>();
   for (const p of recommendation.picks ?? []) {
     const arr = grouped.get(p.category) ?? [];
