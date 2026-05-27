@@ -324,6 +324,27 @@ function AIResult({
   onReset: () => void;
   onSend: () => void;
 }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const saveFn = useServerFn(saveRecommendation);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const saveMut = useMutation({
+    mutationFn: () => saveFn({ data: {
+      title: `${input.eventType} · ${input.guestCount} guests${input.location ? ` · ${input.location}` : ""}`,
+      event_date: input.eventDate || null,
+      location: input.location || null,
+      input,
+      recommendation,
+      blueprint_image: blueprintImage,
+      contact,
+    } }),
+    onSuccess: (res) => setSavedId(res.id),
+  });
+  // Auto-save when user signs in after generating
+  useEffect(() => {
+    if (user && !savedId && !saveMut.isPending) saveMut.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
   const reportRef = useRef<HTMLDivElement | null>(null);
   const grouped = new Map<string, Pick[]>();
   for (const p of recommendation.picks ?? []) {
