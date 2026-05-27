@@ -57,6 +57,8 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
+  const dynamicLogo = useSlotImage("site.logo", logoUrl);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -65,7 +67,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
-              src={logoUrl}
+              src={dynamicLogo}
               alt="Pacific North Event & Tent Rentals"
               className="h-12 w-auto sm:h-14"
             />
