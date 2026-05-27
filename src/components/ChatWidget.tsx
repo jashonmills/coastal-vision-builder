@@ -65,32 +65,31 @@ export function ChatWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 60);
   }, [open]);
 
-  function answerFor(intent: string): Msg {
-    const a = CHAT_ANSWERS[intent] ?? CHAT_ANSWERS.unknown;
-    let actions = a.actions ?? [];
+  function botFromResponse(text: string, actions: ChatAction[]): Msg {
     // Inject saved-plans shortcut for logged-in users on quote/saved intents
-    if (user && (intent === "quote_request" || intent === "saved_plans")) {
-      actions = [{ labelKey: "chat.actions.viewMyPlans", to: "/account" }, ...actions];
-    }
-    return { id: uid(), role: "bot", text: t(a.bodyKey), actions };
+    return { id: uid(), role: "bot", text, actions };
   }
 
   function send(text: string) {
     const trimmed = text.trim();
     if (!trimmed) return;
     const userMsg: Msg = { id: uid(), role: "user", text: trimmed };
-    const intent = matchIntent(trimmed);
-    const botMsg = answerFor(intent);
-    setMessages((m) => [...m, userMsg, botMsg]);
+    const parsed = parseUserMessage(trimmed);
+    const resp = generateScriptedResponse(parsed);
+    let actions = resp.actions;
+    if (user && (parsed.intent === "quote_request" || parsed.intent === "saved_plans")) {
+      actions = [{ label: "View My Plans", to: "/account" }, ...actions];
+    }
+    setMessages((m) => [...m, userMsg, botFromResponse(resp.text, actions)]);
     setInput("");
   }
 
-  function handleQuick(intent: string) {
-    const a = CHAT_ANSWERS[intent] ?? CHAT_ANSWERS.unknown;
+  function handleQuick(intent: ScriptedIntent, label: string) {
+    const resp = respondByIntent(intent);
     setMessages((m) => [
       ...m,
-      { id: uid(), role: "user", text: t(`chat.quick.${quickLabelKey(intent)}` , { defaultValue: intent }) },
-      answerFor(intent),
+      { id: uid(), role: "user", text: label },
+      botFromResponse(resp.text, resp.actions),
     ]);
   }
 
