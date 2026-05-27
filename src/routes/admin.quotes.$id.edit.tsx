@@ -93,6 +93,19 @@ function EditQuotePage() {
               Preview
             </Link>
             <button
+              onClick={() => {
+                const previewUrl = `${window.location.origin}/admin/quotes/${id}/preview`;
+                const subject = encodeURIComponent(`Your Pacific North Events Quote ${quote.quote_number}`);
+                const body = encodeURIComponent(
+                  `Hi ${quote.customer_name},\n\nThank you for considering Pacific North Events & Tents. Your quote ${quote.quote_number} is ready.\n\nView it here: ${previewUrl}\n\nTotal: $${(quote.total_cents / 100).toFixed(2)}\n\nLet us know if you have any questions.\n\n— Pacific North Events & Tents`,
+                );
+                window.location.href = `mailto:${quote.customer_email}?subject=${subject}&body=${body}`;
+              }}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-secondary"
+            >
+              <Mail className="h-4 w-4" /> Email Customer
+            </button>
+            <button
               onClick={() => send.mutate()}
               disabled={send.isPending || quote.status === "sent"}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
