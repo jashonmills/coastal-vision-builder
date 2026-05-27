@@ -1,170 +1,151 @@
-## Goal
+# Quote workflow: from planner to admin-reviewed quote
 
-Replace the lightweight inventory we shipped last turn with a real rental-operations foundation. This round delivers schema + seed data + admin UI. Quotes, rental_events, customers, and check-in/check-out workflows are scaffolded conceptually but their UIs are deferred to a follow-up round (per your scope answer).
+Goal: turn "Request Quote" into an internal admin workflow. The database — not email — is the source of truth. The current Pricing editor stays as the pricing catalog and becomes the price source for quote line items. Inventory stays separate as the operational stock system.
 
-## Scope this round
+This plan is scoped to "Phase 1 + Phase 2": schema, admin inbox, quote builder, customer trigger wiring. Stripe and mobile technician flows are stubbed (columns reserved) but not built.
 
-In:
-- Rename existing `public.inventory_items` → `public.pricing_items` (no data loss)
-- Drop the placeholder `inventory_master_items` and `inventory_reservations` from last turn (replaced by the proper schema)
-- New `public.inventory_categories` (12 seeded)
-- New `public.inventory_items` master table (full spec, 14 seeded)
-- Expand `public.inventory_transactions` with `from_status`, `to_status`, plus the full transaction-type enum
-- Add `customer_id` + `pdf_url` columns to `saved_recommendations`
-- Admin UI: `/admin/inventory` dashboard, `/admin/inventory/$id` item detail, reusable Adjust Quantity modal
-- Update existing references (`/inventory` page, `/admin` pricing tab, recommender) to the renamed `pricing_items` table
+---
 
-Out (deferred):
-- `rental_events`, `rental_event_items`, `quotes`, `quote_items`, `customers` tables
-- Check-out / check-in routes
-- Reservation lifecycle (the master table tracks `reserved_quantity` manually for now; reservation-creation workflow ships when `rental_events` does)
-- Planner availability awareness, chat live inventory lookups (the chat keeps its preloaded knowledge base)
-- Status snapshots cron, reports, mobile-optimized admin
+## 1. Database changes (one migration)
 
-## Database changes (single migration)
+Three new tables + one mapping table. Lookups use existing `pricing_items` and `inventory_items`. RLS: customers can insert their own quote requests; only admins read/write quotes.
 
 ```text
-1. RENAME TABLE  public.inventory_items → public.pricing_items
-                 (RLS policies + GRANTs travel with the table)
+quote_requests
+  id, user_id (nullable), customer_id (nullable),
+  saved_recommendation_id (nullable),
+  customer_name, customer_email, customer_phone,
+  preferred_contact_method ('email' | 'phone' | 'text'),
+  event_type, event_date, event_location, guest_count,
+  planner_input jsonb, recommendation jsonb, pdf_url,
+  status ('new'|'in_review'|'quote_created'|'quote_sent'|'booked'|'closed'|'archived'),
+  admin_notes, created_at, updated_at
 
-2. DROP TABLE   public.inventory_reservations
-   DROP TABLE   public.inventory_master_items  (CASCADE drops the FK from inventory_transactions)
+quotes
+  id, quote_request_id (nullable), saved_recommendation_id (nullable),
+  quote_number (auto, e.g. Q-2026-0001),
+  customer_name, customer_email, customer_phone,
+  event_type, event_date, event_location, guest_count,
+  status ('draft'|'sent'|'approved'|'booked'|'cancelled'),
+  subtotal_cents, delivery_fee_cents, cleaning_fee_cents,
+  discount_cents, tax_cents, total_cents,
+  customer_notes, internal_notes, terms,
+  sent_at, approved_at, booked_at,
+  -- reserved for future Stripe phase (nullable, unused now):
+  deposit_amount_cents, amount_paid_cents, payment_status,
+  stripe_customer_id, stripe_payment_intent_id, stripe_invoice_id,
+  created_at, updated_at
 
-3. CREATE TABLE public.inventory_categories
-   (name, slug UNIQUE, description, sort_order, active)
-   + admin-only RLS + service_role grant + public SELECT
-   (public SELECT so planner/chat can read category list later)
+quote_items
+  id, quote_id, pricing_item_id (nullable), inventory_item_id (nullable),
+  category, name, description,
+  quantity, unit, unit_price_cents, line_total_cents,
+  needs_pricing_review (bool),  -- planner item with no pricing match
+  sort_order, created_at, updated_at
 
-4. CREATE TABLE public.inventory_items  (the new master)
-   Columns from your spec:
-     name, slug UNIQUE, sku, category_id FK, item_type,
-     description, short_description, unit_label, default_quantity_unit,
-     total_owned_quantity, available_quantity, reserved_quantity,
-     checked_out_quantity, cleaning_quantity, maintenance_quantity,
-     damaged_missing_quantity,
-     replacement_cost_cents, default_rental_price_cents,
-     cleaning_fee_cents, beach_cleaning_fee_cents,
-     setup_required, requires_cleaning, requires_anchoring,
-     beach_compatible, wind_sensitive,
-     active, visible_to_planner, visible_to_chat,
-     admin_notes, deleted_at
-   CHECK constraints: every *_quantity ≥ 0, item_type IN (...)
-   Indexes: category_id, item_type, active, slug
-   RLS: admins full CRUD; anon+authenticated SELECT only rows where
-        visible_to_chat=true OR visible_to_planner=true AND deleted_at IS NULL
-
-5. RECREATE  public.inventory_transactions  with full spec:
-     inventory_item_id FK → inventory_items
-     transaction_type (full enum: add_stock, remove_stock, adjust_count,
-       reserve, release_reservation, check_out, check_in,
-       move_to_cleaning, mark_cleaned_available, move_to_maintenance,
-       return_from_maintenance, mark_damaged, mark_missing,
-       recover_missing, retire_item, admin_correction)
-     quantity, from_status, to_status,
-     related_event_id, related_quote_id, related_recommendation_id, related_order_id,
-     notes, created_by
-   Admin-only RLS.
-
-6. ALTER TABLE  public.saved_recommendations
-   ADD COLUMN customer_id UUID, ADD COLUMN pdf_url TEXT
-
-7. SEED categories (12) + items (14) with the spec'd defaults
-   (all quantities = 0, active=true, planner/chat flags as spec'd,
-    beach_compatible/requires_cleaning/etc. set per your item-by-item list).
+pricing_inventory_mappings
+  id, pricing_item_id, inventory_item_id (nullable),
+  recommendation_keyword (text), active (bool), created_at, updated_at
 ```
 
-`Available = total_owned - reserved - checked_out - cleaning - maintenance - damaged_missing` is enforced in application code (in the adjust-quantity transaction handler) — not as a generated column, since admin overrides may temporarily violate it.
+RLS policies (with explicit GRANTs):
+- `quote_requests`: anon + authenticated can INSERT (customer submission); admin reads/updates all.
+- `quotes`, `quote_items`, `pricing_inventory_mappings`: admin only.
+- Customers do NOT read their own quote — they receive a link or email.
 
-## Application changes
+Quote number generator: small Postgres function + sequence `quote_number_seq`, formatted `Q-{YYYY}-{0000}`.
 
-### Rename fallout (existing pricing list)
-- `src/routes/inventory.tsx` — `.from("inventory_items")` → `.from("pricing_items")`
-- `src/routes/admin.tsx` — inventory tab (admin pricing editor) → `pricing_items`
-- `src/lib/recommender.functions.ts` — query → `pricing_items`
-- Update labels in the admin pricing tab from "Inventory" → "Pricing"
+Seed `pricing_inventory_mappings` so the planner's known item names match existing pricing rows (20x40 Frame Tent, Round Table, Folding Chair, Dance Floor, Stage, Portable Bar, Chafing Dish, Canopy Wall, Cleaning Fee - Beach, Seaside Delivery, etc.).
 
-### New admin UI
+## 2. Customer-side wiring (existing "Request Quote" buttons)
 
-**`src/routes/admin.inventory.tsx`** — rewrite the page we shipped last turn:
-- Summary cards: Total items, Owned units, Available, Reserved, Checked out, Cleaning, Maintenance, Damaged/Missing, Low-availability count
-- Filter bar: category, item type, active/inactive, planner-visible, chat-visible, text search
-- Table columns: Item, Category, Type, Owned, Available, Reserved, Out, Cleaning, Maint, Damaged, Active, Actions (View / Edit / Adjust / Add stock / Archive)
-- Bulk "Add item" modal (full field set)
-- Row-level "Adjust quantity" opens the shared modal
+Audit and rewire every existing "Request Quote" trigger so they call a new helper `createQuoteRequest({ savedRecommendationId, contact, ... })`:
+- Planner result page
+- Saved plan card
+- Plan preview / PDF viewer modal
+- Bottom CTA under PDF preview
 
-**`src/routes/admin.inventory.$id.tsx`** — new item detail page:
-- Header: item name, type, category, active toggle, archive
-- Quantity breakdown card (7 buckets + computed Available)
-- Pricing/fees panel (replacement cost, rental price, cleaning fee, beach cleaning fee)
-- Rules panel (requires_cleaning, requires_anchoring, beach_compatible, wind_sensitive, setup_required)
-- Visibility panel (visible_to_planner, visible_to_chat)
-- Admin notes (textarea)
-- Transaction history table (last 50 transactions)
-- Buttons: Edit / Adjust Quantity / Add Stock / Move to Cleaning / Move to Maintenance / Mark Damaged / Mark Missing / Archive
-- Upcoming reservations panel renders an empty state with "Reservations ship with the rental_events module."
+The helper:
+1. Inserts a `quote_requests` row with status `new`, snapshotting planner input + recommendation JSON + pdf_url.
+2. Updates the linked `saved_recommendations` row (`quote_requested_at`, status).
+3. Shows confirmation UI: "Got it — our team will review and send a quote shortly." No pricing is shown.
+4. (Optional, if email infra is enabled) sends an admin notification email. Email is notification only — the DB row is the source of truth.
 
-**`src/components/admin/AdjustQuantityModal.tsx`** — reusable, used from both routes:
-- Inputs: adjustment_type, quantity (>0), from_status, to_status, notes
-- Adjustment types: add_stock, remove_stock, adjust_count, move_status, mark_damaged, mark_missing, mark_cleaned_available, move_to_maintenance, return_from_maintenance, admin_correction
-- Client-side validation:
-  - Quantity must be positive integer
-  - Moving from a status requires that status to have ≥ quantity
-  - "Available" is computed, not directly editable except via add_stock / remove_stock / adjust_count
-- On submit: single RPC-free flow — update `inventory_items` quantity columns + insert `inventory_transactions` row in one supabase transaction-pattern (two awaited calls; admin gets toast on failure). Stretch: wrap in a Postgres function `apply_inventory_adjustment` to make it atomic. Decision: ship as two ordered calls now, function follows in the rental_events round.
+A clear human-in-the-loop note is added near the request button:
+"Your planner result is a starting recommendation. Our team will review your event details and send a final quote."
 
-### Admin warnings panel
-Surfaced at the top of `/admin/inventory`:
-- "X items have owned=0 and are visible to planner/chat" (your spec'd warning)
-- "X items have a negative available quantity" (data integrity)
+## 3. Admin: Quote Requests inbox
 
-### Saved recommendations
-- New columns added but no UI changes this round. Quote-request modal continues to work.
+New routes:
+- `/admin/quote-requests` — list view
+- `/admin/quote-requests/$id` — detail view
 
-## Security
+List columns: Customer · Event Type · Event Date · Guest Count · Location · Recommended Tent · Status · Created · Actions (View, Create Quote, Mark Contacted, Archive).
+Filters: status, date range, search by name/email.
+"New" badge count exposed via a small hook for the admin nav.
 
-- `inventory_items` SELECT: public for rows where `(visible_to_planner OR visible_to_chat) AND deleted_at IS NULL AND active`. INSERT/UPDATE/DELETE: admin only.
-- `inventory_categories` SELECT: public. Writes: admin only.
-- `inventory_transactions`: admin only for all operations.
-- `pricing_items`: keeps its existing RLS (public SELECT, admin writes).
-- `saved_recommendations`: unchanged.
+Detail view sections:
+- Customer info (name, email, phone, preferred contact)
+- Event info (type, date, location, guest count + planner answers: surface, weather, seating, food, dancing, sidewalls, after sunset)
+- Planner recommendation (tent size, layout, equipment checklist, weather/surface notes, blueprint preview, PDF link)
+- Admin actions: **Create Quote from This Plan**, Mark In Review, Contact Customer (mailto), Archive
 
-All new tables get explicit GRANTs (authenticated + service_role; anon SELECT only on the two public-readable tables).
+## 4. Admin: Quote Builder
 
-## Files
+New routes:
+- `/admin/quotes` — list of all quotes (status filter, search by quote #, customer)
+- `/admin/quotes/$id/edit` — builder
 
-Migration:
-- `supabase/migrations/<ts>_rental_ops_foundation.sql` — all 7 steps above
+"Create Quote from This Plan" flow:
+1. Insert `quotes` row with snapshot of customer + event info.
+2. Walk the recommendation equipment checklist. For each entry, look up `pricing_inventory_mappings` by keyword → resolve `pricing_item_id` → insert a `quote_items` row with default unit price.
+3. Unmatched entries become draft line items with `needs_pricing_review = true` and a "Needs pricing review" pill.
+4. Set `quote_requests.status = 'quote_created'`.
+5. Redirect admin to `/admin/quotes/$id/edit`.
 
-New code:
-- `src/routes/admin.inventory.$id.tsx`
-- `src/components/admin/AdjustQuantityModal.tsx`
-- `src/components/admin/InventorySummaryCards.tsx`
-- `src/lib/inventory.ts` — shared types + `computeAvailable()` + `validateAdjustment()`
+Builder layout:
+- Top: customer + event summary, quote number, status badge
+- Middle: line-item table — Category · Item · Description · Qty · Unit · Unit Price · Line Total · Inventory · Actions (Edit, Remove, Duplicate, Link Pricing, Link Inventory)
+- Inline "Add line item" with autocomplete against `pricing_items`; also "Add custom line item" (no pricing match)
+- Right rail: totals (Subtotal, Delivery, Cleaning, Discount, Tax optional, Total), Internal notes, Customer notes, Terms
+- Actions bar: Save Draft · Preview Quote · Send Quote · Mark Booked · Cancel
 
-Rewritten:
-- `src/routes/admin.inventory.tsx` (full rebuild against the new schema)
+Inventory availability column: if the line is linked to an `inventory_items` row, show a small status pill computed from `computeAvailable()`:
+- Available · Low availability (≤ 20% of owned) · Not enough available · Not configured (owned = 0) · Needs admin review (negative)
+- Warnings never block save — admin can still send the quote.
 
-Touched (rename fallout):
-- `src/routes/inventory.tsx`
-- `src/routes/admin.tsx`
-- `src/lib/recommender.functions.ts`
+## 5. Quote preview + send
 
-## Acceptance for this round
+`/admin/quotes/$id/preview` — invoice-style document (logo, quote #, dates, customer/event, line items, totals, notes, terms, CTA "Contact Us to Book"). Printable via browser print.
 
-- [ ] Existing `/inventory` pricing page still renders identically (now reading from `pricing_items`)
-- [ ] `/admin` "Inventory" tab now labeled "Pricing", still works
-- [ ] `/admin/inventory` dashboard shows 14 seeded items across 12 categories with zero quantities and correct flags
-- [ ] Filters (category, type, active, planner-visible, chat-visible, search) all work
-- [ ] Clicking an item opens `/admin/inventory/$id` with full detail
-- [ ] Adjust-quantity modal validates from/to status and quantity, writes a transaction row, updates buckets
-- [ ] Item history table shows the transaction immediately
-- [ ] Warnings panel flags planner-visible items with owned=0
-- [ ] `saved_recommendations` has new `customer_id` and `pdf_url` columns
-- [ ] All non-admin users get blocked from admin routes and from writes via RLS
+**Send Quote** action:
+1. Update quote: `status = 'sent'`, `sent_at = now()`.
+2. Update linked `quote_requests.status = 'quote_sent'`.
+3. Email the customer using the existing email helper if available; otherwise a short stub that logs to console and shows "Mark as sent (email manually)" — Stripe/email infra is not required to ship the workflow.
+4. Email subject: "Your Pacific North Events & Tents Quote". Body summarizes event + total + link to the preview URL.
 
-## Follow-up rounds
+## 6. Admin navigation update
 
-1. `rental_events` + `rental_event_items` + check-out/check-in routes (consumes the transaction types we're already defining)
-2. `customers` + `quotes` + `quote_items`, and wire the quote-request flow to create real quote rows
-3. Planner/chat live inventory awareness (`visible_to_planner`/`visible_to_chat` flags already exist for this)
-4. Reports + status snapshots + mobile admin polish
+Update the admin tab bar / shell to show: Dashboard · Quote Requests (with `new` count badge) · Quotes · Pricing · Inventory · Gallery · Site Images · Site Text. Pricing and Inventory keep their current routes.
+
+A tiny admin dashboard widget set (counts: new requests, drafts, sent, items needing cleaning, items checked out) can be added on the existing `/admin` landing.
+
+---
+
+## Out of scope for this round
+
+- Stripe checkout / deposits / payment links (columns reserved, no UI).
+- Mobile technician check-out / check-in app.
+- Auto-reserving inventory when a quote is sent — manual reservation only.
+- Bulk customer messaging.
+
+---
+
+## Technical notes
+
+- All new tables get explicit `GRANT` + RLS in the same migration.
+- Quote number generator uses a Postgres sequence + trigger, not client-side.
+- `pricing_inventory_mappings` is the matching layer — planner labels vary, so the agent seeds keywords ("frame tent", "round table 60", "folding chair white", "dance floor section", "stage 6x8", "portable bar", "chafing dish", "canopy wall 20", "water barrel", "beach cleaning", "delivery") and admins can extend it later from the Pricing screen.
+- Money is stored as `*_cents` integers everywhere.
+- Existing `saved_recommendations` already has `pdf_url`, `customer_id`, `quote_requested_at` — reused as-is.
+- Customer-facing "Request Quote" buttons never display pricing.
