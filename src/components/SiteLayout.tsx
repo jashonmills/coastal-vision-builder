@@ -165,7 +165,8 @@ function SiteFooter() {
     <footer className="mt-24 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
-          <h3 className="font-serif text-xl">Pacific North Events &amp; Tents</h3>
+          <img src={logoUrl} alt="" className="mb-4 h-12 w-auto brightness-0 invert" />
+          <h3 className="font-serif text-xl text-primary-foreground">Pacific North Events &amp; Tents</h3>
           <p className="mt-3 text-sm leading-relaxed text-primary-foreground/75">
             Event tent rentals and coastal event support for weddings, festivals, private parties, and corporate gatherings.
           </p>
