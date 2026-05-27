@@ -13,6 +13,7 @@ import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RecommenderRouteImport } from './routes/recommender'
+import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -37,6 +38,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const RecommenderRoute = RecommenderRouteImport.update({
   id: '/recommender',
   path: '/recommender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryRoute = InventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GalleryRoute = GalleryRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
+  '/inventory': typeof InventoryRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
+  '/inventory': typeof InventoryRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
+  '/inventory': typeof InventoryRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/gallery'
+    | '/inventory'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/gallery'
+    | '/inventory'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/gallery'
+    | '/inventory'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
+  InventoryRoute: typeof InventoryRoute
   RecommenderRoute: typeof RecommenderRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/recommender'
       fullPath: '/recommender'
       preLoaderRoute: typeof RecommenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory': {
+      id: '/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof InventoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gallery': {
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
+  InventoryRoute: InventoryRoute,
   RecommenderRoute: RecommenderRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

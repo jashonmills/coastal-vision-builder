@@ -47,14 +47,25 @@ function TentRentalsPage() {
       </section>
 
       <section className="bg-secondary/40">
-        <div className="mx-auto max-w-3xl px-4 py-20 text-center lg:px-8">
-          <h2 className="font-serif text-3xl text-primary sm:text-4xl">Not Sure What Size Tent You Need?</h2>
-          <p className="mt-5 text-muted-foreground">
-            Tell us your guest count, event type, location, and layout goals. We'll help recommend the right tent size and setup for your event.
-          </p>
-          <Link to="/recommender" className="mt-8 inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground hover:bg-[color:var(--navy-soft)]">
-            Get Help Choosing
-          </Link>
+        <div className="mx-auto grid max-w-5xl gap-10 px-4 py-20 lg:grid-cols-2 lg:px-8">
+          <div>
+            <h2 className="font-serif text-3xl text-primary sm:text-4xl">Not Sure What Size Tent You Need?</h2>
+            <p className="mt-5 text-muted-foreground">
+              Tell us your guest count, event type, location, and layout goals. We'll help recommend the right tent size and setup for your event.
+            </p>
+            <Link to="/recommender" className="mt-8 inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground hover:bg-[color:var(--navy-soft)]">
+              Get Help Choosing
+            </Link>
+          </div>
+          <div>
+            <h2 className="font-serif text-3xl text-primary sm:text-4xl">Browse the Full Inventory</h2>
+            <p className="mt-5 text-muted-foreground">
+              See every tent size, table, chair, dance floor, lighting option, bar, and delivery zone — with 3-day rental pricing.
+            </p>
+            <Link to="/inventory" className="mt-8 inline-flex items-center rounded-full border border-primary bg-transparent px-7 py-3 text-sm font-medium text-primary hover:bg-primary/5">
+              View Inventory & Pricing
+            </Link>
+          </div>
         </div>
       </section>
       <CTASection />
