@@ -51,7 +51,7 @@ export function RecommendationReport({
   ];
 
   return (
-    <div className="recommender-print-area bg-card p-7 text-foreground sm:p-10">
+    <div className="bg-card p-7 text-foreground sm:p-10">
       <div className="border-b border-border pb-6 text-center">
         <img src={logoUrl} alt="Pacific North Event & Tent Rentals" className="mx-auto mb-4 h-16 w-auto" />
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Pacific North Events &amp; Tents</p>
