@@ -54,7 +54,7 @@ function TentRentalsPage() {
             <p className="mt-5 text-muted-foreground">
               Tell us your guest count, event type, location, and layout goals. We'll help recommend the right tent size and setup for your event.
             </p>
-            <Link to="/recommender" className="mt-8 inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground hover:bg-[color:var(--navy-soft)]">
+            <Link to="/ai-tent-planner" className="mt-8 inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground hover:bg-[color:var(--navy-soft)]">
               Get Help Choosing
             </Link>
           </div>

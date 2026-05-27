@@ -49,7 +49,7 @@ const exploreTiles: Tile[] = [
 ];
 
 const exploreCenter: Center = {
-  to: "/recommender",
+  to: "/ai-tent-planner",
   label: "Recommender",
   icon: Sparkles,
   bgClass: "bg-primary",

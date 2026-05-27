@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
+import { AITentPlannerPopup } from "./AITentPlannerPopup";
 import { LanguageSelector } from "./LanguageSelector";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -30,7 +31,7 @@ const navGroups: NavGroup[] = [
     children: [
       { to: "/tent-rentals", labelKey: "nav.tentRentals", descKey: "navDesc.tentRentals" },
       { to: "/inventory", labelKey: "nav.inventoryPricing", descKey: "navDesc.inventoryPricing" },
-      { to: "/recommender", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
+      { to: "/ai-tent-planner", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
     ],
   },
   {
@@ -66,6 +67,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {pathname === "/" && <OpeningVideoSplash />}
+      {pathname === "/" && <AITentPlannerPopup />}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-center lg:justify-between gap-6 px-4 py-4 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
@@ -135,7 +137,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           <div className="hidden items-center gap-2 lg:flex">
             <LanguageSelector variant="header" />
             <Link
-              to="/recommender"
+              to="/ai-tent-planner"
               className="inline-flex items-center gap-2 rounded-full border border-primary/25 px-5 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
             >
               <Sparkles className="h-4 w-4" />
@@ -304,7 +306,7 @@ export function CTASection() {
             {t("cta.requestQuote")}
           </Link>
           <Link
-            to="/recommender"
+            to="/ai-tent-planner"
             className="inline-flex items-center rounded-full border border-primary/25 bg-transparent px-7 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
           >
             {t("nav.eventRecommender")}

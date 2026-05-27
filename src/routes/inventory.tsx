@@ -90,7 +90,7 @@ function SketchCard({ sketch }: { sketch: SiteImage }) {
         </p>
         <p className="text-sm leading-snug text-foreground">{sketch.caption}</p>
         <Link
-          to="/recommender"
+          to="/ai-tent-planner"
           className="mt-auto text-xs font-medium text-primary underline-offset-4 hover:underline"
         >
           Build this in the Recommender →
@@ -141,7 +141,7 @@ function InventoryPage() {
               </p>
             </div>
             <Link
-              to="/recommender"
+              to="/ai-tent-planner"
               className="text-sm font-medium text-primary underline-offset-4 hover:underline"
             >
               Get a personalized layout →
