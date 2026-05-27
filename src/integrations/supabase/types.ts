@@ -50,6 +50,75 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_recommendations: {
+        Row: {
+          blueprint_image: string | null
+          contact: Json | null
+          created_at: string
+          event_date: string | null
+          id: string
+          input: Json
+          location: string | null
+          recommendation: Json
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blueprint_image?: string | null
+          contact?: Json | null
+          created_at?: string
+          event_date?: string | null
+          id?: string
+          input: Json
+          location?: string | null
+          recommendation: Json
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blueprint_image?: string | null
+          contact?: Json | null
+          created_at?: string
+          event_date?: string | null
+          id?: string
+          input?: Json
+          location?: string | null
+          recommendation?: Json
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

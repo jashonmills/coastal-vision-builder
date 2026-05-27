@@ -1,8 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Sparkles, X } from "lucide-react";
+import { Menu, Sparkles, User, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
+import { useAuth } from "@/hooks/use-auth";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -53,6 +54,7 @@ function isGroupActive(group: NavGroup, pathname: string): boolean {
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -130,6 +132,13 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             >
               <Sparkles className="h-4 w-4" />
               Event Recommender
+            </Link>
+            <Link
+              to={user ? "/account" : "/login"}
+              className="inline-flex items-center gap-1 rounded-full border border-primary/25 px-4 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
+            >
+              <User className="h-4 w-4" />
+              {user ? "My Account" : "Sign In"}
             </Link>
             <Link
               to="/contact"

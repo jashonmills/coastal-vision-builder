@@ -1,12 +1,14 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import logoUrl from "@/assets/logo.png";
+import { useAuth } from "@/hooks/use-auth";
+import { saveRecommendation } from "@/lib/saved-recommendations.functions";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
-import { Check, ChevronLeft, ChevronRight, Download, FileText, Loader2, Printer, RefreshCw, Sparkles, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Download, FileText, Loader2, Printer, RefreshCw, Save, Sparkles, UserPlus, X } from "lucide-react";
 
 export const Route = createFileRoute("/recommender")({
   head: () => ({
@@ -322,6 +324,27 @@ function AIResult({
   onReset: () => void;
   onSend: () => void;
 }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const saveFn = useServerFn(saveRecommendation);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const saveMut = useMutation({
+    mutationFn: () => saveFn({ data: {
+      title: `${input.eventType} · ${input.guestCount} guests${input.location ? ` · ${input.location}` : ""}`,
+      event_date: input.eventDate || null,
+      location: input.location || null,
+      input,
+      recommendation,
+      blueprint_image: blueprintImage,
+      contact,
+    } }),
+    onSuccess: (res) => setSavedId(res.id),
+  });
+  // Auto-save when user signs in after generating
+  useEffect(() => {
+    if (user && !savedId && !saveMut.isPending) saveMut.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
   const reportRef = useRef<HTMLDivElement | null>(null);
   const grouped = new Map<string, Pick[]>();
   for (const p of recommendation.picks ?? []) {
@@ -535,6 +558,37 @@ function AIResult({
           </button>
         </div>
       </div>
+
+      {/* Save / Account CTA */}
+      {user ? (
+        <div className="rounded-2xl border border-[color:var(--forest)]/30 bg-[color:var(--forest)]/5 p-6 text-center">
+          {savedId ? (
+            <p className="text-sm text-foreground">
+              <Check className="mr-1 inline h-4 w-4 text-[color:var(--forest)]" />
+              Saved to your account.{" "}
+              <Link to="/account" className="font-semibold text-primary underline">View My Plans</Link>
+            </p>
+          ) : (
+            <button onClick={() => saveMut.mutate()} disabled={saveMut.isPending} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)] disabled:opacity-60">
+              {saveMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save to My Account
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-2xl border-2 border-[color:var(--gold)]/50 bg-[color:var(--gold)]/10 p-6 text-center">
+          <UserPlus className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
+          <p className="mt-3 font-serif text-xl text-primary">Don't lose this recommendation</p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-foreground">
+            Create a free account to save this plan and access it anytime. We'll save it automatically once you sign in.
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            <button onClick={() => navigate({ to: "/login", search: { next: "/recommender" } as never })} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
+              <UserPlus className="h-4 w-4" /> Create Account to Save
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Input recap */}
       <div className="rounded-2xl border border-border bg-card p-7 shadow-sm sm:p-9">
