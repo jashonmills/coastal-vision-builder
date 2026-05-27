@@ -243,25 +243,29 @@ function RecommenderPage() {
           </>
         )}
 
-        {mutation.isPending && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-16 text-center">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <p className="mt-6 font-serif text-2xl text-primary">Designing your event setup…</p>
-            <p className="mt-2 text-sm text-muted-foreground">Our AI is reviewing inventory and drafting your blueprint. This usually takes 15–30 seconds.</p>
+        {showForm && mutation.isError && (
+          <div className="mb-8 rounded-2xl border-2 border-destructive/50 bg-destructive/10 p-6 text-center shadow-md">
+            <p className="font-serif text-xl text-destructive">We couldn't generate your recommendation</p>
+            <p className="mt-2 text-sm text-foreground">
+              {(mutation.error as Error)?.message ?? "Something went wrong on our end."}
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">Your answers are saved below. Click "Generate My Setup" again to retry, or "Talk to Us" and we'll build a setup manually.</p>
+            <button
+              type="button"
+              onClick={() => mutation.mutate(data)}
+              className="mt-4 inline-flex items-center gap-1 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground"
+            >
+              Try Again
+            </button>
           </div>
         )}
 
-        {result && (
-          <AIResult
-            recommendation={result.recommendation}
-            blueprintImage={result.blueprintImage}
-            input={data}
-            contact={contact}
-            onReset={reset}
-            onSend={sendToQuote}
-          />
-        )}
-      </section>
+        {showForm && (
+          <>
+            <p className="mb-8 text-center text-muted-foreground">
+              Every event is different. We'll review your inventory needs across tents, tables, chairs, and specialty items so you have a complete picture before requesting a quote.
+            </p>
+
 
       <section className="bg-secondary/40">
         <div className="mx-auto max-w-3xl px-4 py-20 text-center lg:px-8">
