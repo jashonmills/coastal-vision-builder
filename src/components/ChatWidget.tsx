@@ -100,11 +100,14 @@ export function ChatWidget() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          aria-label={t("chat.buttonLabel")}
+          aria-label={t("chat.buttonLabel", { defaultValue: "Chat" })}
+          suppressHydrationWarning
           className="fixed bottom-24 right-6 z-[90] inline-flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-[color:var(--sand)] shadow-xl ring-2 ring-transparent transition-all hover:-translate-y-0.5 hover:ring-[color:var(--gold)]/60 focus:outline-none focus-visible:ring-[color:var(--gold)] lg:bottom-6"
         >
           <MessageCircle className="h-5 w-5" />
-          <span className="hidden text-sm font-medium sm:inline">{t("chat.buttonLabel")}</span>
+          <span className="hidden text-sm font-medium sm:inline" suppressHydrationWarning>
+            {t("chat.buttonLabel", { defaultValue: "Chat" })}
+          </span>
         </button>
       )}
 
