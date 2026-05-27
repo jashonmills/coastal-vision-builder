@@ -61,14 +61,17 @@ function GalleryPage() {
           ))}
         </div>
         <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-          {shown.map((it) => (
+          {shown.map((it, i) => (
             <figure key={it.file} className="mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-card shadow-sm">
-              <img src={it.url} alt={it.alt} loading="lazy" className="h-auto w-full transition-transform duration-700 hover:scale-105" />
+              <button type="button" onClick={() => lb.open(i)} className="block w-full" aria-label={`Open image: ${it.alt}`}>
+                <img src={it.url} alt={it.alt} loading="lazy" className="h-auto w-full cursor-zoom-in transition-transform duration-700 hover:scale-105" />
+              </button>
               <figcaption className="px-4 py-3 text-xs text-muted-foreground">{it.alt}</figcaption>
             </figure>
           ))}
         </div>
       </section>
+      <Lightbox images={shown} index={lb.index} onClose={lb.close} onIndexChange={lb.setIndex} />
       <CTASection />
     </SiteLayout>
   );
