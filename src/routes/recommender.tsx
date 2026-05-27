@@ -246,6 +246,8 @@ function RecommenderPage() {
           <AIResult
             recommendation={result.recommendation}
             blueprintImage={result.blueprintImage}
+            input={data}
+            contact={contact}
             onReset={reset}
             onSend={sendToQuote}
           />
