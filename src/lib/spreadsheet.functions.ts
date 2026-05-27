@@ -140,22 +140,28 @@ export const importSpreadsheet = createServerFn({ method: "POST" })
     } else if (data.import_type === "rental_events") {
       for (let i = 0; i < mapped.length; i++) {
         const raw = mapped[i];
-        try {
-          await upsertCalendarEvent({
-            data: {
-              title: String(raw.event_name ?? "Imported Event"),
-              event_type: "rental_reserved",
-              start_time: String(raw.event_date),
-              location: raw.event_location ? String(raw.event_location) : null,
-              notes: raw.notes ? String(raw.notes) : null,
-            },
-            context,
-          });
-          imported++;
-        } catch (e) {
-          errors.push({ row: i + 1, message: e instanceof Error ? e.message : "Unknown error" });
+        const eventDate = raw.event_date ? String(raw.event_date) : null;
+        if (!eventDate) {
+          errors.push({ row: i + 1, message: "Missing event_date" });
           skipped++;
+          continue;
         }
+        const startIso = new Date(eventDate).toISOString();
+        const { error } = await supabase.from("rental_calendar_events").insert({
+          title: String(raw.event_name ?? "Imported Event"),
+          event_type: "rental_reserved",
+          start_time: startIso,
+          all_day: true,
+          status: "scheduled",
+          location: raw.event_location ? String(raw.event_location) : null,
+          notes: raw.notes ? String(raw.notes) : null,
+          color: "#1e2a5e",
+          created_by: userId,
+        });
+        if (error) {
+          errors.push({ row: i + 1, message: error.message });
+          skipped++;
+        } else imported++;
       }
     } else {
       warnings.push({ row: 0, message: `Import type '${data.import_type}' is logged only — no destination wiring yet.` });
