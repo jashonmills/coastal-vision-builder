@@ -143,16 +143,20 @@ export function ChatWidget() {
 
           {/* Quick starts (always visible above input) */}
           <div className="flex flex-wrap gap-1.5 border-t border-border bg-muted/40 px-3 py-2">
-            {QUICK_STARTS.map((q) => (
-              <button
-                key={q.intent}
-                type="button"
-                onClick={() => handleQuick(q.intent)}
-                className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-foreground/80 transition hover:border-[color:var(--gold)] hover:text-foreground"
-              >
-                {t(q.labelKey)}
-              </button>
-            ))}
+            {QUICK_STARTS.map((q) => {
+              const label = t(q.labelKey);
+              const intent = (q.intent === "plan_event" ? "generic_event" : q.intent) as ScriptedIntent;
+              return (
+                <button
+                  key={q.intent}
+                  type="button"
+                  onClick={() => handleQuick(intent, label)}
+                  className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-foreground/80 transition hover:border-[color:var(--gold)] hover:text-foreground"
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Input */}
