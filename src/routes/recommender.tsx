@@ -393,120 +393,19 @@ function AIResult({
     };
   }, [setViewerOpen, viewerOpen]);
 
-  async function downloadPdf() {
-    const element = reportRef.current;
-    if (!element) return;
-    const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
-      import("html2canvas"),
-      import("jspdf"),
-    ]);
-    const canvas = await html2canvas(element, {
-      backgroundColor: "#ffffff",
-      scale: Math.min(window.devicePixelRatio || 1, 2),
-      useCORS: true,
-    });
-    const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "letter" });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 24;
-    const imageWidth = pageWidth - margin * 2;
-    const imageHeight = (canvas.height * imageWidth) / canvas.width;
-    const imageData = canvas.toDataURL("image/png");
-    let renderedHeight = 0;
+  const pdfArgs = { recommendation, blueprintImage, input, contactName: contact.name };
+  const fileName = `event-recommendation-${input.eventDate || "setup"}`;
 
-    pdf.addImage(imageData, "PNG", margin, margin, imageWidth, imageHeight);
-    renderedHeight += pageHeight - margin * 2;
-    while (renderedHeight < imageHeight) {
-      pdf.addPage();
-      pdf.addImage(imageData, "PNG", margin, margin - renderedHeight, imageWidth, imageHeight);
-      renderedHeight += pageHeight - margin * 2;
-    }
-    pdf.save(`event-recommendation-${input.eventDate || "setup"}.pdf`);
+  async function handleDownload() {
+    if (pdfBusy) return;
+    setPdfBusy("download");
+    try { await downloadRecommendationPdf(pdfArgs, fileName); } finally { setPdfBusy(null); }
   }
-
-  const report = (
-    <div ref={reportRef} className="recommender-print-area bg-card p-7 text-foreground sm:p-10">
-      <div className="border-b border-border pb-6 text-center">
-        <img src={logoUrl} alt="Pacific North Event & Tent Rentals" className="mx-auto mb-4 h-16 w-auto" />
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Pacific North Events &amp; Tents</p>
-        <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">{recommendation.headline}</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">{recommendation.summary}</p>
-      </div>
-
-      <section className="mt-7">
-        <h3 className="font-serif text-xl text-primary">Event Blueprint</h3>
-        <p className="mt-2 text-sm text-foreground">
-          Prepared for {contact.name || "your event"} · {input.eventType} · {input.guestCount} guests · {eventDateLabel}
-          {input.location ? ` · ${input.location}` : ""}
-        </p>
-        {blueprintImage ? (
-          <figure className="mt-5 overflow-hidden rounded-xl border border-border bg-background">
-            <img src={blueprintImage} alt="Top-down blueprint sketch of recommended event layout" className="mx-auto block w-full max-w-2xl" />
-            <figcaption className="border-t border-border px-4 py-3 text-center text-sm font-medium text-foreground">
-              {recommendation.layout_caption}
-            </figcaption>
-          </figure>
-        ) : (
-          <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-5 text-sm text-muted-foreground">
-            Blueprint image unavailable — layout note: {recommendation.layout_caption}
-          </div>
-        )}
-      </section>
-
-      <section className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
-          <h3 className="font-serif text-xl text-primary">Event Details</h3>
-          <dl className="mt-4 space-y-2">
-            {recapRows.map(([k, v]) => (
-              <div key={k} className="flex justify-between gap-4 border-b border-border/60 pb-2 text-sm">
-                <dt className="text-muted-foreground">{k}</dt>
-                <dd className="text-right font-medium text-foreground">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        <div>
-          <h3 className="font-serif text-xl text-primary">Recommended Setup</h3>
-          <div className="mt-4 space-y-5">
-            {orderedCategories.map((cat) => (
-              <div key={cat}>
-                <h4 className="border-b border-border pb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--gold)]">{cat}</h4>
-                <ul className="mt-3 space-y-2">
-                  {grouped.get(cat)!.map((p, i) => (
-                    <li key={`${p.item_id}-${i}`} className="grid grid-cols-[auto_1fr] gap-3 rounded-lg bg-secondary/35 px-3 py-2.5 text-sm">
-                      <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">{p.quantity}×</span>
-                      <span>
-                        <span className="block font-medium text-foreground">{p.item_name}</span>
-                        <span className="mt-0.5 block text-xs text-muted-foreground">{p.reason}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {(recommendation.weather_notes?.length ?? 0) > 0 && (
-        <section className="mt-8 rounded-xl border border-border bg-background p-5">
-          <h3 className="font-serif text-xl text-primary">Weather &amp; Setup Notes</h3>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            {(recommendation.weather_notes ?? []).map((n, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-4 w-4 flex-none text-[color:var(--forest)]" />
-                <span>{n}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <p className="mt-8 rounded-lg bg-secondary/50 p-4 text-xs leading-relaxed text-muted-foreground">
-        This is an AI-generated estimate. Final tent size, quantities, equipment placement, and anchoring may change based on venue details, surface, weather, access, and availability. Request a quote for confirmed pricing and logistics.
-      </p>
-    </div>
-  );
+  async function handlePrint() {
+    if (pdfBusy) return;
+    setPdfBusy("print");
+    try { await printRecommendationPdf(pdfArgs); } finally { setPdfBusy(null); }
+  }
 
   return (
     <>
