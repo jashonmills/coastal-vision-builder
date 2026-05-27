@@ -103,7 +103,7 @@ function InventoryAdmin() {
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["admin-inventory"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("inventory_items").select("*").order("category").order("sort_order");
+      const { data, error } = await supabase.from("pricing_items").select("*").order("category").order("sort_order");
       if (error) throw error;
       return data as InvItem[];
     },
@@ -111,7 +111,7 @@ function InventoryAdmin() {
 
   const add = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("inventory_items").insert({ category: "New Category", name: "New item", price_cents: 0, unit: "each", sort_order: 0 });
+      const { error } = await supabase.from("pricing_items").insert({ category: "New Category", name: "New item", price_cents: 0, unit: "each", sort_order: 0 });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
@@ -146,7 +146,7 @@ function InventoryRow({ item }: { item: InvItem }) {
 
   const save = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("inventory_items").update({
+      const { error } = await supabase.from("pricing_items").update({
         category: draft.category, name: draft.name, price_cents: draft.price_cents, unit: draft.unit, notes: draft.notes, sort_order: draft.sort_order, updated_at: new Date().toISOString(),
       }).eq("id", item.id);
       if (error) throw error;
@@ -155,7 +155,7 @@ function InventoryRow({ item }: { item: InvItem }) {
   });
   const del = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("inventory_items").delete().eq("id", item.id);
+      const { error } = await supabase.from("pricing_items").delete().eq("id", item.id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
