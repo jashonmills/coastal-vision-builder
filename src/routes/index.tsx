@@ -212,10 +212,10 @@ function Home() {
                 type="button"
                 key={i}
                 onClick={() => lb.open(i)}
-                className={`group overflow-hidden rounded-xl ${i === 0 ? "col-span-2 row-span-2 sm:col-span-1 sm:row-span-1" : ""}`}
+                className={`group relative aspect-square overflow-hidden rounded-xl bg-muted/40 ${i === 0 ? "col-span-2 row-span-2 sm:col-span-1 sm:row-span-1" : ""}`}
                 aria-label={`Open image: ${g.alt}`}
               >
-                <img src={g.url} alt={g.alt} loading="lazy" className="h-full w-full cursor-zoom-in object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={g.url} alt={g.alt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full cursor-zoom-in object-cover transition-transform duration-700 group-hover:scale-105" />
               </button>
             ))}
           </div>
