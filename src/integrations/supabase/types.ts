@@ -74,6 +74,192 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory_master_items: {
+        Row: {
+          active: boolean
+          beach_cleaning_fee_applicable: boolean
+          category: string
+          checked_out_quantity: number
+          cleaning_quantity: number
+          created_at: string
+          description: string | null
+          id: string
+          maintenance_quantity: number
+          name: string
+          notes: string | null
+          rental_price_cents: number | null
+          replacement_cost_cents: number
+          requires_anchoring: boolean
+          requires_cleaning: boolean
+          reserved_quantity: number
+          sku: string | null
+          total_quantity: number
+          unit_type: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          beach_cleaning_fee_applicable?: boolean
+          category: string
+          checked_out_quantity?: number
+          cleaning_quantity?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          maintenance_quantity?: number
+          name: string
+          notes?: string | null
+          rental_price_cents?: number | null
+          replacement_cost_cents?: number
+          requires_anchoring?: boolean
+          requires_cleaning?: boolean
+          reserved_quantity?: number
+          sku?: string | null
+          total_quantity?: number
+          unit_type?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          beach_cleaning_fee_applicable?: boolean
+          category?: string
+          checked_out_quantity?: number
+          cleaning_quantity?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          maintenance_quantity?: number
+          name?: string
+          notes?: string | null
+          rental_price_cents?: number | null
+          replacement_cost_cents?: number
+          requires_anchoring?: boolean
+          requires_cleaning?: boolean
+          reserved_quantity?: number
+          sku?: string | null
+          total_quantity?: number
+          unit_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      inventory_reservations: {
+        Row: {
+          created_at: string
+          end_date: string
+          event_date: string | null
+          event_id: string | null
+          id: string
+          inventory_item_id: string
+          notes: string | null
+          quantity_reserved: number
+          quote_id: string | null
+          recommendation_id: string | null
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          event_date?: string | null
+          event_id?: string | null
+          id?: string
+          inventory_item_id: string
+          notes?: string | null
+          quantity_reserved: number
+          quote_id?: string | null
+          recommendation_id?: string | null
+          start_date: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          event_date?: string | null
+          event_id?: string | null
+          id?: string
+          inventory_item_id?: string
+          notes?: string | null
+          quantity_reserved?: number
+          quote_id?: string | null
+          recommendation_id?: string | null
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_reservations_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_master_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_reservations_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "saved_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_transactions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          event_id: string | null
+          id: string
+          inventory_item_id: string
+          notes: string | null
+          quantity: number
+          recommendation_id: string | null
+          status: string | null
+          transaction_type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          event_id?: string | null
+          id?: string
+          inventory_item_id: string
+          notes?: string | null
+          quantity: number
+          recommendation_id?: string | null
+          status?: string | null
+          transaction_type: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          event_id?: string | null
+          id?: string
+          inventory_item_id?: string
+          notes?: string | null
+          quantity?: number
+          recommendation_id?: string | null
+          status?: string | null
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_transactions_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_master_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_transactions_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "saved_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
