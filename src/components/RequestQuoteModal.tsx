@@ -29,6 +29,7 @@ export function RequestQuoteModal({
   const [note, setNote] = useState("");
   const qc = useQueryClient();
   const requestFn = useServerFn(requestQuoteForRecommendation);
+  const createReqFn = useServerFn(createQuoteRequest);
 
   useEffect(() => {
     if (!open) return;
@@ -40,7 +41,32 @@ export function RequestQuoteModal({
   }, [open, onClose]);
 
   const m = useMutation({
-    mutationFn: () => requestFn({ data: { id: recommendationId, note: note.trim() || null } }),
+    mutationFn: async () => {
+      // 1) Land the request in the admin inbox (source of truth)
+      const email = contact?.email || userEmail || "";
+      const name = contact?.name || (email ? email.split("@")[0] : "Customer");
+      const pref = (contact?.preferredContact === "phone" || contact?.preferredContact === "text")
+        ? contact.preferredContact as "phone" | "text"
+        : "email";
+      await createReqFn({
+        data: {
+          saved_recommendation_id: recommendationId,
+          customer_name: name,
+          customer_email: email,
+          customer_phone: contact?.phone ?? null,
+          preferred_contact_method: pref,
+          event_type: input.eventType ?? null,
+          event_date: input.eventDate ?? null,
+          event_location: input.location ?? null,
+          guest_count: typeof input.guestCount === "number" ? input.guestCount : null,
+          planner_input: input,
+          recommendation,
+          customer_note: note.trim() || null,
+        },
+      });
+      // 2) Mark the saved recommendation as quote_requested (legacy / customer view)
+      return requestFn({ data: { id: recommendationId, note: note.trim() || null } });
+    },
     onSuccess: () => {
       const viewUrl = typeof window !== "undefined" ? `${window.location.origin}/account/${recommendationId}` : undefined;
       openQuoteRequestMailto({
@@ -54,6 +80,8 @@ export function RequestQuoteModal({
       toast.success("Quote request sent! Pacific North Events & Tents will review this plan and follow up soon.");
       qc.invalidateQueries({ queryKey: ["my-recommendations"] });
       qc.invalidateQueries({ queryKey: ["saved-rec", recommendationId] });
+      qc.invalidateQueries({ queryKey: ["admin-quote-requests"] });
+      qc.invalidateQueries({ queryKey: ["new-quote-requests-count"] });
       onClose();
     },
     onError: (err: Error) => {
