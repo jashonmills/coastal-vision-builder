@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
-import festivalImg from "@/assets/festival-tents.jpg";
+import { pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/tent-rentals")({
   head: () => ({
