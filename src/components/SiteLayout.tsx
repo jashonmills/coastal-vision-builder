@@ -1,9 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Sparkles, User, X } from "lucide-react";
+import { Menu, Sparkles, ShieldCheck, User, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-admin";
+import { useSlotImage } from "@/hooks/use-site-content";
 import {
   NavigationMenu,
   NavigationMenuContent,
