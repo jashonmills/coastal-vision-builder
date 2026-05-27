@@ -13,12 +13,12 @@ const FONT_STACKS: Record<FontKey, string> = {
   verdana: "Verdana, Geneva, sans-serif",
 };
 
-const OPTIONS: { key: FontKey; label: string }[] = [
-  { key: "default", label: "Default" },
-  { key: "open-dyslexic", label: "OpenDyslexic" },
-  { key: "atkinson", label: "Atkinson Hyperlegible" },
-  { key: "lexend", label: "Lexend" },
-  { key: "verdana", label: "Verdana" },
+const OPTIONS: { key: FontKey; label: string; helper: string }[] = [
+  { key: "default", label: "Default", helper: "Site default font" },
+  { key: "atkinson", label: "Atkinson Hyperlegible", helper: "Recommended for low vision" },
+  { key: "verdana", label: "Verdana", helper: "Simple, familiar system font" },
+  { key: "lexend", label: "Lexend", helper: "Designed for reading comfort" },
+  { key: "open-dyslexic", label: "OpenDyslexic", helper: "Designed for dyslexia support" },
 ];
 
 function applyFont(key: FontKey) {
@@ -144,18 +144,23 @@ export function AccessibilityFontButton() {
                       : "border-border hover:bg-secondary")
                   }
                 >
-                  <span className="flex items-center gap-2">
-                    <span
-                      aria-hidden="true"
-                      className={
-                        "inline-block h-3 w-3 rounded-full border " +
-                        (isSel ? "border-primary bg-primary" : "border-muted-foreground/50")
-                      }
-                    />
-                    {opt.label}
+                  <span className="flex flex-col">
+                    <span className="flex items-center gap-2">
+                      <span
+                        aria-hidden="true"
+                        className={
+                          "inline-block h-3 w-3 rounded-full border " +
+                          (isSel ? "border-primary bg-primary" : "border-muted-foreground/50")
+                        }
+                      />
+                      {opt.label}
+                    </span>
+                    <span className="ml-5 text-xs text-muted-foreground">
+                      {opt.helper}
+                    </span>
                   </span>
                   {isSel && (
-                    <span className="text-[10px] uppercase tracking-wider text-primary">Active</span>
+                    <span className="shrink-0 text-[10px] uppercase tracking-wider text-primary">Active</span>
                   )}
                 </button>
               );
