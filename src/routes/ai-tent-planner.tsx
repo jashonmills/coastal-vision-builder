@@ -14,7 +14,7 @@ import { Check, ChevronLeft, ChevronRight, Download, FileText, Loader2, Printer,
 export const Route = createFileRoute("/ai-tent-planner")({
   head: () => ({
     meta: [
-      { title: "Event Recommender | Pacific North Events & Tents" },
+      { title: " AI Tent Planner | Pacific North Events & Tents" },
       { name: "description", content: "AI-powered event setup recommender. Get a tent, table, chair, and equipment plan with a blueprint layout for your Oregon Coast event." },
     ],
   }),
@@ -119,7 +119,7 @@ function RecommenderPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Event Recommender"
+        eyebrow="AI Tent Planner"
         title="Find the Right Setup for Your Event"
         subtitle="Answer a few quick questions and our AI will recommend a complete tent, table, chair, and equipment plan — plus a blueprint of your layout."
       />
