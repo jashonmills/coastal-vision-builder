@@ -134,8 +134,8 @@ function InventoryDashboard() {
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["admin-inventory-master"],
     queryFn: async (): Promise<MasterItem[]> => {
-      const { data, error } = await supabase
-        .from("inventory_master_items" as never)
+      const { data, error } = await db
+        .from("inventory_master_items")
         .select("*")
         .order("category")
         .order("name");
@@ -369,13 +369,13 @@ function ItemEditor({ item, onClose }: { item: MasterItem | null; onClose: () =>
         notes: form.notes || null,
       };
       if (item) {
-        const { error } = await supabase
-          .from("inventory_master_items" as never)
+        const { error } = await db
+          .from("inventory_master_items")
           .update(payload)
           .eq("id", item.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("inventory_master_items" as never).insert(payload);
+        const { error } = await db.from("inventory_master_items").insert(payload);
         if (error) throw error;
       }
     },
