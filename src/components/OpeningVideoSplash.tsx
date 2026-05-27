@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import openingVideo from "@/assets/opening-video.mp4";
 
-const SPLASH_SEEN_KEY = "pnet-opening-video-seen";
-const FALLBACK_MS = 12500;
+const FALLBACK_MS = 15000;
 
 export function OpeningVideoSplash() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -10,11 +9,6 @@ export function OpeningVideoSplash() {
   const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
-    if (window.sessionStorage.getItem(SPLASH_SEEN_KEY) === "true") {
-      setVisible(false);
-      return;
-    }
-
     const video = videoRef.current;
     if (!video) return;
 
@@ -33,7 +27,7 @@ export function OpeningVideoSplash() {
 
   function finish() {
     if (exiting) return;
-    window.sessionStorage.setItem(SPLASH_SEEN_KEY, "true");
+    
     setExiting(true);
     window.setTimeout(() => setVisible(false), 900);
   }
