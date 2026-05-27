@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
-import festivalImg from "@/assets/festival-tents.jpg";
+import { pickPhoto, sketchImages, type SiteImage } from "@/lib/site-images";
 
 type InventoryItem = {
   id: string;
@@ -73,7 +73,35 @@ function formatPrice(cents: number) {
   return dollars % 1 === 0 ? `$${dollars.toFixed(0)}` : `$${dollars.toFixed(2)}`;
 }
 
+function SketchCard({ sketch }: { sketch: SiteImage }) {
+  return (
+    <figure className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+      <div className="aspect-[4/3] overflow-hidden bg-white">
+        <img
+          src={sketch.url}
+          alt={sketch.alt}
+          loading="lazy"
+          className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+      </div>
+      <figcaption className="flex flex-1 flex-col gap-2 border-t border-border px-4 py-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--forest)]">
+          Layout idea
+        </p>
+        <p className="text-sm leading-snug text-foreground">{sketch.caption}</p>
+        <Link
+          to="/recommender"
+          className="mt-auto text-xs font-medium text-primary underline-offset-4 hover:underline"
+        >
+          Build this in the Recommender →
+        </Link>
+      </figcaption>
+    </figure>
+  );
+}
+
 function InventoryPage() {
+  const hero = pickPhoto("inventory-hero");
   const { data: items = [], isLoading, error } = useQuery(inventoryQuery);
 
   const grouped = new Map<string, InventoryItem[]>();
@@ -93,8 +121,39 @@ function InventoryPage() {
         eyebrow="Inventory & Pricing"
         title="Rental Inventory & Pricing"
         subtitle="Everything we offer for Oregon Coast events — tents, tables, chairs, lighting, dance floors, bars, and delivery. All rentals include a 3-day rental window."
-        image={festivalImg}
+        image={hero.url}
       />
+
+      {/* Sample Setup Configurations */}
+      <section className="border-b border-border bg-secondary/30">
+        <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
+                Sample Setups
+              </p>
+              <h2 className="mt-2 font-serif text-3xl text-primary sm:text-4xl">
+                Sample Setup Configurations
+              </h2>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Real layouts we've drawn up for past events. Use them as a starting point for your
+                own — then mix and match items from the inventory below.
+              </p>
+            </div>
+            <Link
+              to="/recommender"
+              className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Get a personalized layout →
+            </Link>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {sketchImages.slice(0, 6).map((s) => (
+              <SketchCard key={s.file} sketch={s} />
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         {isLoading && <p className="text-center text-muted-foreground">Loading inventory…</p>}
@@ -128,8 +187,13 @@ function InventoryPage() {
         </nav>
 
         <div className="space-y-16">
-          {orderedCategories.map((category) => {
+          {orderedCategories.map((category, catIdx) => {
             const list = grouped.get(category) ?? [];
+            // Inline a sketch after every 2nd category to blend layouts with inventory.
+            const inlineSketch =
+              (catIdx + 1) % 2 === 0 && catIdx < orderedCategories.length - 1
+                ? sketchImages[(6 + Math.floor(catIdx / 2)) % sketchImages.length]
+                : null;
             return (
               <section key={category} id={slug(category)} className="scroll-mt-24">
                 <header className="mb-6 border-b border-border pb-4">
@@ -162,6 +226,12 @@ function InventoryPage() {
                     </li>
                   ))}
                 </ul>
+
+                {inlineSketch && (
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <SketchCard sketch={inlineSketch} />
+                  </div>
+                )}
               </section>
             );
           })}
