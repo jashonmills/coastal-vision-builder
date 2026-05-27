@@ -161,7 +161,7 @@ function InventoryDashboard() {
 
   const deleteMut = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("inventory_master_items" as never).delete().eq("id", id);
+      const { error } = await db.from("inventory_master_items").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory-master"] }),
