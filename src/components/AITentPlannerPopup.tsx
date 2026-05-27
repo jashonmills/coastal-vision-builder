@@ -90,7 +90,7 @@ export function AITentPlannerPopup() {
 
           <PopupIllustration />
 
-          <h2 id="tent-planner-popup-title" className="mt-3 font-serif text-3xl leading-[1.1] text-primary sm:text-[2rem]">
+          <h2 id="tent-planner-popup-title" className="mt-2 font-serif text-2xl leading-[1.1] text-primary sm:mt-3 sm:text-[2rem]">
             {t("plannerPopup.title")}
           </h2>
 
