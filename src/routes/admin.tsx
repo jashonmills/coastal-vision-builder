@@ -67,12 +67,7 @@ function ClaimAdmin() {
   async function claim() {
     setBusy(true); setErr(null);
     try {
-      // Only succeeds if no admin row exists yet (we'll insert; RLS denies if not admin AND there are admins)
-      // Safer: check count first using a count query (public read on user_roles is restricted; use rpc-less approach)
-      const { count, error: cErr } = await supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "admin");
-      if (cErr) throw cErr;
-      if ((count ?? 0) > 0) throw new Error("An admin already exists. Ask an existing admin to add you.");
-      const { error } = await supabase.from("user_roles").insert({ user_id: user!.id, role: "admin" });
+      const { error } = await supabase.rpc("claim_first_admin");
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ["is-admin"] });
     } catch (e) {
