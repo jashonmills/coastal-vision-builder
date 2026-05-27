@@ -130,7 +130,7 @@ function InventoryDashboard() {
     queryKey: ["admin-inventory-master"],
     queryFn: async (): Promise<MasterItem[]> => {
       const { data, error } = await supabase
-        .from("inventory_master_items" as never)
+        .from("inventory_master_items" as never) as any
         .select("*")
         .order("category")
         .order("name");
@@ -156,7 +156,7 @@ function InventoryDashboard() {
 
   const deleteMut = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("inventory_master_items" as never).delete().eq("id", id);
+      const { error } = await supabase.from("inventory_master_items" as never) as any.delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory-master"] }),
@@ -365,12 +365,12 @@ function ItemEditor({ item, onClose }: { item: MasterItem | null; onClose: () =>
       };
       if (item) {
         const { error } = await supabase
-          .from("inventory_master_items" as never)
+          .from("inventory_master_items" as never) as any
           .update(payload)
           .eq("id", item.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("inventory_master_items" as never).insert(payload);
+        const { error } = await supabase.from("inventory_master_items" as never) as any.insert(payload);
         if (error) throw error;
       }
     },
