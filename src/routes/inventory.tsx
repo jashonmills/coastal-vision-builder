@@ -39,7 +39,7 @@ const inventoryQuery = queryOptions({
   queryKey: ["inventory"],
   queryFn: async (): Promise<InventoryItem[]> => {
     const { data, error } = await supabase
-      .from("inventory_items")
+      .from("pricing_items")
       .select("id,category,name,price_cents,unit,notes,sort_order")
       .order("category", { ascending: true })
       .order("sort_order", { ascending: true });
