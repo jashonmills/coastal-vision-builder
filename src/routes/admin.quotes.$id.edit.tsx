@@ -122,6 +122,7 @@ function EditQuotePage() {
               <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
                 <tr>
                   <th className="px-2 py-2">Item</th>
+                  <th className="px-2 py-2 w-24">Avail.</th>
                   <th className="px-2 py-2 w-20">Qty</th>
                   <th className="px-2 py-2 w-20">Unit</th>
                   <th className="px-2 py-2 w-28">Unit $</th>
@@ -134,7 +135,8 @@ function EditQuotePage() {
                   <ItemRow
                     key={it.id}
                     item={it}
-                    onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); }}
+                    avail={(availability as Record<string, { available: number; total_owned: number; inventory_name: string } | null>)[it.id] ?? null}
+                    onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); qc.invalidateQueries({ queryKey: ["quote-availability", id] }); }}
                     onDelete={async () => {
                       if (!confirm("Remove this line?")) return;
                       await delFn({ data: { id: it.id, quote_id: quote.id } });
@@ -144,7 +146,7 @@ function EditQuotePage() {
                   />
                 ))}
                 {items.length === 0 && (
-                  <tr><td colSpan={6} className="px-3 py-6 text-center text-muted-foreground">No line items yet.</td></tr>
+                  <tr><td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">No line items yet.</td></tr>
                 )}
               </tbody>
             </table>
