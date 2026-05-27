@@ -57,6 +57,14 @@ function RecommenderPage() {
   const generateFn = useServerFn(generateRecommendation);
   const mutation = useMutation({
     mutationFn: (input: RecommenderInput) => generateFn({ data: input }),
+    onError: (err) => {
+      console.error("[recommender] generateRecommendation failed:", err);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    onSuccess: (res) => {
+      console.log("[recommender] success", res);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
   });
 
   function set<K extends keyof RecommenderInput>(k: K, v: RecommenderInput[K]) {
@@ -90,7 +98,7 @@ function RecommenderPage() {
   function sendToQuote() {
     const r = mutation.data?.recommendation;
     if (!r) return;
-    const picksSummary = r.picks
+    const picksSummary = (r.picks ?? [])
       .map((p) => `${p.quantity}× ${p.item_name} (${p.category})`)
       .join("; ");
     const prefill = `AI Recommendation: ${r.headline}. ${r.summary} Items: ${picksSummary}. Event: ${data.eventType}, ${data.guestCount} guests, ${data.eventDate} at ${data.location}.`;
@@ -98,7 +106,8 @@ function RecommenderPage() {
   }
 
   const result = mutation.data;
-  const showForm = !result && !mutation.isPending;
+  const hasValidResult = !!result?.recommendation?.picks;
+  const showForm = !hasValidResult && !mutation.isPending;
 
   return (
     <SiteLayout>
