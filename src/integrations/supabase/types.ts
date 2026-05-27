@@ -240,6 +240,51 @@ export type Database = {
           },
         ]
       }
+      pricing_inventory_mappings: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          inventory_item_id: string | null
+          pricing_item_id: string | null
+          recommendation_keyword: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          inventory_item_id?: string | null
+          pricing_item_id?: string | null
+          recommendation_keyword: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          inventory_item_id?: string | null
+          pricing_item_id?: string | null
+          recommendation_keyword?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pricing_inventory_mappings_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pricing_inventory_mappings_pricing_item_id_fkey"
+            columns: ["pricing_item_id"]
+            isOneToOne: false
+            referencedRelation: "pricing_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pricing_items: {
         Row: {
           category: string
@@ -302,6 +347,253 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      quote_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          inventory_item_id: string | null
+          line_total_cents: number
+          name: string
+          needs_pricing_review: boolean
+          pricing_item_id: string | null
+          quantity: number
+          quote_id: string
+          reason: string | null
+          sort_order: number
+          unit: string
+          unit_price_cents: number
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          inventory_item_id?: string | null
+          line_total_cents?: number
+          name: string
+          needs_pricing_review?: boolean
+          pricing_item_id?: string | null
+          quantity?: number
+          quote_id: string
+          reason?: string | null
+          sort_order?: number
+          unit?: string
+          unit_price_cents?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          inventory_item_id?: string | null
+          line_total_cents?: number
+          name?: string
+          needs_pricing_review?: boolean
+          pricing_item_id?: string | null
+          quantity?: number
+          quote_id?: string
+          reason?: string | null
+          sort_order?: number
+          unit?: string
+          unit_price_cents?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_items_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          customer_email: string
+          customer_id: string | null
+          customer_name: string
+          customer_note: string | null
+          customer_phone: string | null
+          event_date: string | null
+          event_location: string | null
+          event_type: string | null
+          guest_count: number | null
+          id: string
+          pdf_url: string | null
+          planner_input: Json | null
+          preferred_contact_method: string
+          recommendation: Json | null
+          saved_recommendation_id: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          customer_email: string
+          customer_id?: string | null
+          customer_name: string
+          customer_note?: string | null
+          customer_phone?: string | null
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          pdf_url?: string | null
+          planner_input?: Json | null
+          preferred_contact_method?: string
+          recommendation?: Json | null
+          saved_recommendation_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          customer_email?: string
+          customer_id?: string | null
+          customer_name?: string
+          customer_note?: string | null
+          customer_phone?: string | null
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          pdf_url?: string | null
+          planner_input?: Json | null
+          preferred_contact_method?: string
+          recommendation?: Json | null
+          saved_recommendation_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      quotes: {
+        Row: {
+          amount_paid_cents: number | null
+          approved_at: string | null
+          booked_at: string | null
+          cleaning_fee_cents: number
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_notes: string | null
+          customer_phone: string | null
+          delivery_fee_cents: number
+          deposit_amount_cents: number | null
+          discount_cents: number
+          event_date: string | null
+          event_location: string | null
+          event_type: string | null
+          guest_count: number | null
+          id: string
+          internal_notes: string | null
+          payment_status: string | null
+          quote_number: string
+          quote_request_id: string | null
+          saved_recommendation_id: string | null
+          sent_at: string | null
+          status: string
+          stripe_customer_id: string | null
+          stripe_invoice_id: string | null
+          stripe_payment_intent_id: string | null
+          subtotal_cents: number
+          tax_cents: number
+          terms: string | null
+          total_cents: number
+          updated_at: string
+        }
+        Insert: {
+          amount_paid_cents?: number | null
+          approved_at?: string | null
+          booked_at?: string | null
+          cleaning_fee_cents?: number
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_notes?: string | null
+          customer_phone?: string | null
+          delivery_fee_cents?: number
+          deposit_amount_cents?: number | null
+          discount_cents?: number
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          internal_notes?: string | null
+          payment_status?: string | null
+          quote_number?: string
+          quote_request_id?: string | null
+          saved_recommendation_id?: string | null
+          sent_at?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_invoice_id?: string | null
+          stripe_payment_intent_id?: string | null
+          subtotal_cents?: number
+          tax_cents?: number
+          terms?: string | null
+          total_cents?: number
+          updated_at?: string
+        }
+        Update: {
+          amount_paid_cents?: number | null
+          approved_at?: string | null
+          booked_at?: string | null
+          cleaning_fee_cents?: number
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_notes?: string | null
+          customer_phone?: string | null
+          delivery_fee_cents?: number
+          deposit_amount_cents?: number | null
+          discount_cents?: number
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          internal_notes?: string | null
+          payment_status?: string | null
+          quote_number?: string
+          quote_request_id?: string | null
+          saved_recommendation_id?: string | null
+          sent_at?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_invoice_id?: string | null
+          stripe_payment_intent_id?: string | null
+          subtotal_cents?: number
+          tax_cents?: number
+          terms?: string | null
+          total_cents?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_quote_request_id_fkey"
+            columns: ["quote_request_id"]
+            isOneToOne: false
+            referencedRelation: "quote_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       saved_recommendations: {
         Row: {
@@ -420,6 +712,7 @@ export type Database = {
     }
     Functions: {
       claim_first_admin: { Args: never; Returns: boolean }
+      generate_quote_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
