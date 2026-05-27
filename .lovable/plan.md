@@ -1,88 +1,70 @@
-## 1. Nav cleanup
+## Goal
 
-In `src/components/SiteLayout.tsx`:
-- Remove the `/recommender` entry from `navLinks` (the link sitting between Gallery and About).
-- Change the desktop pill button label `Find My Tent Size` → `Event Recommender` (keeps the same `to="/recommender"`).
-- Remove the same `/recommender` entry from the mobile slide-down menu list (it's the same `navLinks` array, so it falls out automatically).
+Restrict the site to use only images from the Lovable Cloud `images` bucket, and surface the configuration sketch images on the Inventory page blended with the rental list so visitors can see real setup layouts.
 
-## 2. AI-powered recommender (Gemini via Lovable AI Gateway)
+## Findings (from inspecting the bucket)
 
-### Server function — `src/lib/recommender.functions.ts`
-- `createServerFn({ method: "POST" })` named `generateRecommendation`.
-- Input (validated with Zod): the full `RecommenderInput` plus contact name (optional).
-- Handler steps:
-  1. Read the entire `inventory_items` table with `supabaseAdmin` (server only).
-  2. Build a system prompt: "You are a senior event planner for Pacific North Events & Tents. You MUST recommend items from EVERY available category (Canopy, Canopy Options, Tables, Chairs, Specialty Items, Delivery). Push as much product as reasonably fits the event. Output only items present in the provided inventory."
-  3. Call `https://ai.gateway.lovable.dev/v1/chat/completions` with model `google/gemini-3-flash-preview`, tool-calling to force structured JSON:
-     ```
-     {
-       headline: string,
-       summary: string,             // 2–3 sentence overview
-       picks: [{
-         category: string,
-         item_id: string,           // must match an inventory id
-         item_name: string,
-         quantity: number,
-         reason: string
-       }],
-       weather_notes: string[],
-       blueprint_prompt: string     // detailed prompt for the image generator
-     }
-     ```
-  4. Take the returned `blueprint_prompt`, call `/v1/images/generations` with `google/gemini-3.1-flash-image-preview`, prompt prefixed with: "Top-down architectural blueprint, white lines on navy background, labeled tent footprint, tables, chairs, dance floor, bar, stage — clean, minimal, technical drawing style. {prompt}". Return the resulting data URL.
-  5. Return `{ recommendation, blueprintImage, picks }` to the client.
-- 429/402 handled with a clean error message that the UI surfaces.
+The `images` bucket has 52 jpgs. They fall into three groups, distinguishable by share of near-white pixels:
 
-### Wiring
-- Confirm `LOVABLE_API_KEY` exists (use `ai_gateway--create` if missing).
-- Add `attachSupabaseAuth` to `src/start.ts` `functionMiddleware` if not already there (read-only inventory query doesn't require auth — but the file is canonical).
+- **Sketches / configuration diagrams** (~14 files, ≥50% white): hand-drawn top-down floor plans showing tent + table + chair + dance floor layouts (e.g. "1 - 20x60 Frame Tent, 8 - 60in Round Tables, 64 Chairs, 16 - 4x4 Dance Floor Sections"), plus multi-panel "Hexagon Tent Variation" reference sheets.
+- **Product cutouts on white** (a few): single items like skirted buffet tables, speakers, etc.
+- **Event photos** (the rest): real tent setups, weddings, festivals, catering.
 
-### UI — `src/routes/recommender.tsx`
-- Keep the existing 5-step form.
-- On final submit, instead of running the local `recommend()`, call the new server fn via `useServerFn` + `useMutation` (TanStack Query).
-- Loading state: "Designing your event setup…" spinner.
-- New `Result` block:
-  - Hero: headline + AI summary.
-  - **Blueprint** (full-width card): the generated image, with a small "AI-generated estimate" caption.
-  - **Recommended Setup** grouped by category, each row showing item name, quantity badge, and the AI's reason. Categories rendered in fixed order (Canopy → Options → Tables → Chairs → Specialty → Delivery) so every section is visibly represented.
-  - **Weather & Setup Notes** list.
-  - "Send This Recommendation for a Quote" button — passes a summarized payload via `prefill` search param to `/contact`.
-- Local `src/lib/recommender.ts` rules stay as a fallback if the AI call fails (catch → show fallback result + toast).
+I'll classify them at build time with a tiny script (whiteness ≥ 50% → sketch) and hand-verify the borderline files, then commit a typed manifest.
 
-## 3. Mobile / tablet bottom navigation
+## Changes
 
-Pattern modeled on FPK's `MobileBottomNav` (fixed bottom bar, icon + label per tab, primary CTA in the middle), adapted to this marketing site.
+### 1. Image manifest (single source of truth)
 
-New file `src/components/MobileBottomNav.tsx`:
-- Fixed `bottom-0 left-0 right-0`, `lg:hidden` so it only shows on mobile + tablet.
-- Background `bg-background/95 backdrop-blur border-t border-border`, safe-area padding.
-- 5 slots, equal width, icon + label:
-  1. **Home** → `/` (Home icon)
-  2. **Rentals** → `/tent-rentals` (Tent icon — `Tent` from lucide)
-  3. **Quote** (center, prominent primary-colored pill) → `/contact` (Send icon)
-  4. **Recommender** → `/recommender` (Sparkles icon)
-  5. **Menu** → opens the existing hamburger drawer (Menu icon)
-- Active route highlighted via `useRouterState` + `location.pathname`.
+Create `src/lib/site-images.ts`:
+- `BUCKET_BASE = ${VITE_SUPABASE_URL}/storage/v1/object/public/images`
+- Exported arrays: `sketchImages[]`, `productImages[]`, `photoImages[]` — each entry `{ file, url, alt, caption? }`.
+- Helpers: `heroImage()`, `pickPhotos(n, seed?)`, `pickSketches(n)`.
 
-In `SiteLayout.tsx`:
-- Render `<MobileBottomNav />` after `<main>`.
-- Add `pb-20 lg:pb-0` to the outer container so content isn't hidden behind the bar.
-- The existing hamburger button stays; Menu tab triggers the same `setOpen(true)` state (lift state or expose via context — simplest: keep hamburger and have Menu tab control the same `useState` since `MobileBottomNav` lives inside `SiteLayout`).
+Captions for sketches come from a small lookup keyed by filename (e.g. "20×60 Frame Tent · 8 rounds · 64 chairs · 16 dance floor sections"). Files whose caption I cannot read confidently get a generic "Sample event layout".
 
-## 4. Database & secrets
+### 2. Remove generated/stock assets, route everything through the manifest
 
-- No schema changes — `inventory_items` already exists.
-- Verify `LOVABLE_API_KEY` is set; create if missing.
+- Delete the generated hero/section images under `src/assets/` (`hero-tent.jpg`, `wedding-tent.jpg`, `coastal-reception.jpg`, `evening-tent.jpg`, `festival-tents.jpg`, `corporate-event.jpg`, `private-party.jpg`) and remove their imports.
+- Update the pages that use them — `index.tsx`, `events.tsx`, `gallery.tsx`, `services.tsx`, `tent-rentals.tsx`, `about.tsx`, `contact.tsx`, `recommender.tsx`, `SiteLayout.tsx` — to pull from the manifest instead. Same compositions, real photos.
+- Gallery page becomes a masonry of `photoImages` only (no sketches there — sketches live on Inventory).
 
-## Files touched
+### 3. Inventory page: blend in the configuration sketches
 
-- `src/components/SiteLayout.tsx` — nav cleanup, CTA rename, mount bottom nav, padding.
-- `src/components/MobileBottomNav.tsx` — new.
-- `src/lib/recommender.functions.ts` — new (server fn).
-- `src/routes/recommender.tsx` — swap local logic for server fn, render blueprint + AI picks.
-- `src/start.ts` — ensure `attachSupabaseAuth` registered (only if missing).
+`src/routes/inventory.tsx` today renders one big "Available for Rent" grid grouped by category. New structure:
+
+```text
+Inventory
+├─ Intro
+├─ Sample Setup Configurations            ← new band, full-width
+│   └─ Sketch cards (image + caption + "Build this in the Recommender" link)
+├─ Available for Rent                     ← existing categorized list
+│   └─ After every 2nd category, inject 1 sketch card inline as a
+│      "Layout idea" tile so sketches blend into the inventory flow
+└─ CTA → Request a Quote
+```
+
+- The top "Sample Setup Configurations" band is a horizontally-scrollable row on mobile, 2–3 column grid on desktop, using `sketchImages`.
+- The inline "Layout idea" tiles inside the category grid use the same card chrome as inventory items so the page reads as one merged experience.
+- Each sketch card's caption parses the configuration line (tent size + tables + chairs + dance floor) into small badges where possible; otherwise shows the raw caption.
+
+### 4. Recommender blueprint stays AI-generated
+
+The Gemini-generated blueprint on the Recommender page is content the user explicitly asked for and isn't a stock image, so it stays. Everywhere else, only `images` bucket URLs render.
+
+### 5. Lint guard (lightweight)
+
+Add a comment header in `src/lib/site-images.ts` plus a short note in `README.md`: "All `<img>` and CSS background images on this site must resolve to a URL from `site-images.ts` (i.e. the `images` storage bucket). Exception: the AI-generated blueprint on `/recommender`."
+
+## Technical details
+
+- Classification script (one-off, run during the build turn): downloads each object via the public URL, computes whiteness on a 64×64 thumbnail, writes `src/lib/site-images.generated.ts` with the file lists. `site-images.ts` re-exports + decorates with captions/alt.
+- Filenames stay as-is (Instagram-style numeric names); alt text + captions provide accessibility and SEO.
+- No DB schema changes. No new routes. No new dependencies.
+- `inventory_items` rows are not linked to sketch files — sketches are decorative/illustrative, not 1:1 with SKUs.
 
 ## Out of scope
 
-- No changes to inventory data, contact page, or other routes.
-- Blueprint is an AI-rendered illustrative image, not a CAD-accurate floor plan.
+- Uploading new images to the bucket.
+- Linking specific sketches to specific inventory SKUs (can add later if you want a "this layout uses these items" mapping).
+- Changing the Gallery to mix sketches in — sketches live on Inventory per your description.
