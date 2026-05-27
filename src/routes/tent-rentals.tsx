@@ -22,13 +22,14 @@ const tents = [
 ];
 
 function TentRentalsPage() {
+  const hero = pickPhoto("tent-rentals-hero");
   return (
     <SiteLayout>
       <PageHero
         eyebrow="Tent Rentals"
         title="Tent Rentals for Oregon Coast Events"
         subtitle="Stylish shelter, flexible layouts, and dependable protection for weddings, parties, festivals, and corporate gatherings."
-        image={festivalImg}
+        image={hero.url}
       />
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
