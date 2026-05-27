@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { MobileBottomNav } from "./MobileBottomNav";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -9,7 +10,6 @@ const navLinks = [
   { to: "/inventory", label: "Inventory" },
   { to: "/events", label: "Events" },
   { to: "/gallery", label: "Gallery" },
-  { to: "/recommender", label: "Event Recommender" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
@@ -50,7 +50,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               to="/recommender"
               className="inline-flex items-center rounded-full border border-primary/20 bg-transparent px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
             >
-              Find My Tent Size
+              Event Recommender
             </Link>
             <Link
               to="/contact"
@@ -97,9 +97,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         )}
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-24 lg:pb-0">{children}</main>
 
       <SiteFooter />
+
+      <MobileBottomNav onMenu={() => setOpen(true)} />
     </div>
   );
 }
@@ -216,7 +218,7 @@ export function CTASection() {
             to="/recommender"
             className="inline-flex items-center rounded-full border border-primary/25 bg-transparent px-7 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
           >
-            Find My Tent Size
+            Event Recommender
           </Link>
         </div>
       </div>
