@@ -62,7 +62,7 @@ function Home() {
               </Link>
               <Link to="/ai-tent-planner" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/60 bg-primary-foreground/10 px-7 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur transition-all hover:bg-[color:var(--gold)] hover:text-primary">
                 <Sparkles className="h-4 w-4" />
-                Event Recommender
+                Try Our Free AI Tent Planner
               </Link>
               <Link to="/services" className="inline-flex items-center rounded-full border border-primary-foreground/30 bg-primary-foreground/5 px-7 py-3.5 text-sm font-medium text-primary-foreground backdrop-blur transition-colors hover:bg-primary-foreground/15">
                 View Our Services
@@ -151,6 +151,49 @@ function Home() {
                 </Link>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* AI Tent Planner promo */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[color:var(--seafoam,#9cc7bd)]/15 via-background to-[color:var(--gold)]/10">
+        <div className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--seafoam,#9cc7bd)]/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
+              <Sparkles className="h-3 w-3" /> New Free Tool
+            </span>
+            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">Plan Your Event in Minutes</p>
+            <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">Try Our Free AI Tent Planner</h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Not sure what size tent, seating layout, or equipment your event needs? Our AI Tent Planner helps you build a custom starting plan based on your guest count, event type, surface, weather exposure, and setup needs.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { title: "Tent Size Recommendation", text: "Get a suggested tent size based on your guest count and layout." },
+              { title: "Equipment Checklist", text: "See recommended tables, chairs, sidewalls, lighting, staging, and extras." },
+              { title: "Blueprint-Style Layout", text: "Generate a visual starting layout for your event setup." },
+              { title: "Quote-Ready Plan", text: "Send your plan to our team for a custom quote and final review." },
+            ].map((c) => (
+              <article key={c.title} className="rounded-2xl border border-border/70 bg-card/80 p-6 shadow-sm backdrop-blur">
+                <div className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Sparkles className="h-4 w-4" />
+                </div>
+                <h3 className="font-serif text-lg text-primary">{c.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.text}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <Link
+              to="/ai-tent-planner"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-lg ring-1 ring-[color:var(--gold)]/40 transition-all hover:-translate-y-0.5 hover:bg-[color:var(--navy-soft,#1e293b)]"
+            >
+              <Sparkles className="h-4 w-4 text-[color:var(--gold)]" />
+              Start My Free Tent Plan
+            </Link>
           </div>
         </div>
       </section>
