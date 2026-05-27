@@ -1,0 +1,195 @@
+{
+  "language": "Wika",
+  "nav": {
+    "home": "Tahanan", "rentals": "Pa-upa", "tentRentals": "Pa-upa ng Tolda",
+    "inventoryPricing": "Imbentaryo at Presyo", "eventRecommender": "Tagapagrekomenda ng Kaganapan",
+    "services": "Serbisyo", "allServices": "Lahat ng Serbisyo", "events": "Mga Kaganapan",
+    "gallery": "Galerya", "about": "Tungkol", "aboutUs": "Tungkol sa Amin",
+    "contact": "Kontak", "requestQuote": "Humiling ng Quote",
+    "findMyTentSize": "Hanapin ang Aking Sukat ng Tolda", "myAccount": "Aking Account",
+    "signIn": "Mag-sign In", "admin": "Admin", "menu": "Menu",
+    "recommender": "Tagapagrekomenda", "quote": "Quote", "explore": "Tuklasin",
+    "more": "Higit pa", "inventory": "Imbentaryo", "closeMenu": "Isara ang menu",
+    "navigationMenu": "Menu ng nabigasyon"
+  },
+  "navDesc": {
+    "tentRentals": "Frame, pole, at hexagon na tolda",
+    "inventoryPricing": "Buong katalogo na may sample na layout",
+    "eventRecommender": "AI-built na setup para sa iyong kaganapan",
+    "allServices": "Kasal, pista, korporasyon",
+    "events": "Mga nakaraang kaganapan at case study",
+    "aboutUs": "Coastal team, ang aming kuwento",
+    "contact": "Makipag-ugnayan"
+  },
+  "footer": {
+    "tagline": "Pa-upa ng tolda at suporta sa kaganapan sa baybayin para sa mga kasal, pista, pribadong party at corporate gatherings.",
+    "servicesHeading": "Serbisyo", "weddingTents": "Toldang Pangkasal",
+    "festivalTents": "Toldang Pista", "privateParties": "Pribadong Party",
+    "corporateEvents": "Corporate na Kaganapan", "vendorTents": "Toldang Vendor",
+    "quickLinks": "Mabilis na Link", "contact": "Kontak",
+    "servingOregon": "Naglilingkod sa Oregon Coast",
+    "followFacebook": "Sundan kami sa Facebook",
+    "copyright": "© 2026 Pacific North Events & Tents. Iyong Kaganapan. Iyong Pangitain. Ginagawa Namin Itong Posible."
+  },
+  "cta": {
+    "requestQuote": "Humiling ng Quote", "findMyTentSize": "Hanapin ang Aking Sukat ng Tolda",
+    "viewServices": "Tingnan ang Serbisyo", "exploreServices": "Tuklasin ang Serbisyo",
+    "planMySetup": "Planuhin ang Aking Setup", "getQuote": "Kumuha ng Quote",
+    "startWeddingQuote": "Simulan ang Quote sa Kasal", "sendQuoteRequest": "Ipadala ang Kahilingan sa Quote",
+    "showMyRecommendation": "Ipakita ang Aking Rekomendasyon", "requestFinalQuote": "Humiling ng Pangwakas na Quote",
+    "startOver": "Magsimula Muli", "talkToUs": "Makipag-usap sa Amin",
+    "readyTitle": "Handa nang Buhayin ang Iyong Kaganapan?",
+    "readyDesc": "Sabihin sa amin ang iyong petsa, lokasyon, bilang ng bisita at pangitain."
+  },
+  "recommender": {
+    "metaTitle": "Tagapagrekomenda ng Kaganapan | Pacific North Events & Tents",
+    "metaDesc": "AI-powered na tagapagrekomenda ng setup ng kaganapan.",
+    "heroEyebrow": "Tagapagrekomenda ng Kaganapan",
+    "heroTitle": "Hanapin ang Tamang Setup para sa Iyong Kaganapan",
+    "heroSubtitle": "Sagutin ang ilang mabilis na tanong at magrerekomenda ang aming AI ng kumpletong plano.",
+    "intro": "Bawat kaganapan ay iba. Aming susuriin ang iyong mga pangangailangan.",
+    "steps": {
+      "eventBasics": "Mga Pangunahing Detalye", "guestLayout": "Bisita at Layout",
+      "extras": "Pagkain at Karagdagan", "locationWeather": "Lokasyon at Panahon", "contact": "Iyong Detalye"
+    },
+    "fields": {
+      "eventType": "Anong uri ng kaganapan ang pinaplano mo?",
+      "eventDate": "Ano ang petsa ng iyong kaganapan? *",
+      "eventLocation": "Saan gaganapin ang kaganapan? *",
+      "eventLocationPlaceholder": "Pangalan ng venue, bakuran, parke, lugar sa dalampasigan, lokasyon ng negosyo, atbp.",
+      "outdoorIndoor": "Ang kaganapan ba ay sa labas, loob, o bahagyang natatakpan?",
+      "guestCount": "Ilang bisita ang iyong inaasahan? *",
+      "setupType": "Anong uri ng setup ang kailangan mo?",
+      "seatedGuests": "Maupo ba ang mga bisita sa mga mesa?",
+      "tableStyle": "Anong estilo ng mesa ang gusto mo?",
+      "foodService": "May pagkain o catering ba sa ilalim ng tolda?",
+      "dancing": "Kailangan mo ba ng espasyo para sa pagsayaw?",
+      "extras": "May bar, mesa ng regalo, DJ, banda o stage ba?",
+      "rentalItems": "Anong mga item na pa-upa ang interesado ka?",
+      "surface": "Anong uri ng ibabaw ang lalagyan ng tolda?",
+      "weatherExposure": "Ang lokasyon ba ay nahaharap sa hangin o panahong baybayin?",
+      "sidewalls": "Gusto mo ba ng sidewalls para sa karagdagang proteksyon?",
+      "afterSunset": "Magpapatuloy ba ang kaganapan pagkatapos ng paglubog ng araw?",
+      "fullName": "Buong Pangalan *", "email": "Email Address *", "phone": "Telepono",
+      "preferredContact": "Gustong Paraan ng Pakikipag-ugnay",
+      "message": "May iba pa bang dapat naming malaman tungkol sa iyong kaganapan?"
+    },
+    "options": {
+      "eventTypes": {
+        "wedding": "Kasal", "festival": "Pista", "privateParty": "Pribadong Party",
+        "corporateEvent": "Corporate na Kaganapan", "marketVendorEvent": "Palengke / Vendor Event",
+        "fundraiser": "Pundraising", "communityEvent": "Komunidad na Kaganapan",
+        "graduationParty": "Graduation Party", "other": "Iba pa"
+      },
+      "outdoor": {
+        "fullyOutdoors": "Buong panlabas", "indoors": "Sa loob",
+        "partiallyCovered": "Bahagyang natatakpan", "notSureYet": "Hindi pa sigurado"
+      },
+      "setup": {
+        "standingOnly": "Nakatayo lamang", "ceremonySeating": "Upuan sa seremonya",
+        "seatedDining": "Nakaupo habang kumakain", "cocktailMingling": "Cocktail tables / pakikisalamuha",
+        "vendorBooths": "Vendor booths", "foodServiceArea": "Lugar ng paghahain ng pagkain",
+        "mixedLayout": "Halu-halong layout", "notSure": "Hindi sigurado"
+      },
+      "seated": {
+        "allSeated": "Oo, lahat ng bisita ay nakaupo", "someSeated": "Ilan nakaupo, ilan nakatayo",
+        "mostlyStanding": "Hindi, karamihan ay nakatayo", "notSure": "Hindi sigurado"
+      },
+      "tableStyle": {
+        "round": "Bilog na mesa", "banquet": "Banquet / parihabang mesa",
+        "cocktail": "Cocktail tables", "picnic": "Mesa na istilong picnic",
+        "noTables": "Walang kailangang mesa", "notSure": "Hindi sigurado"
+      },
+      "food": {
+        "buffet": "Oo, buffet", "plated": "Oo, plated meal",
+        "foodTrucks": "Oo, may food trucks malapit", "snackOnly": "Oo, snack / dessert table lamang",
+        "noFood": "Walang serbisyo ng pagkain", "notSure": "Hindi sigurado"
+      },
+      "dancing": {
+        "danceFloor": "Oo, kailangan ng sayawan", "small": "Maliit na lugar para sa sayawan",
+        "none": "Walang lugar para sa sayawan", "notSure": "Hindi sigurado"
+      },
+      "extras": {
+        "bar": "Bar area", "gift": "Mesa ng regalo", "dessert": "Mesa ng dessert",
+        "dj": "DJ booth", "band": "Live band", "stage": "Maliit na stage",
+        "speaker": "Lugar ng speaker / anunsyo", "none": "Wala", "notSure": "Hindi sigurado"
+      },
+      "rentals": {
+        "tent": "Tolda", "tables": "Mesa", "chairs": "Upuan", "linens": "Linen",
+        "lighting": "Ilaw", "danceFloor": "Sayawan", "sidewalls": "Sidewalls",
+        "heaters": "Heater", "flooring": "Sahig", "vendorTents": "Toldang vendor",
+        "trash": "Estasyon ng basura / recycling", "setup": "Pag-setup at pagtanggal",
+        "notSure": "Hindi pa sigurado"
+      },
+      "surface": {
+        "grass": "Damo", "gravel": "Graba", "concrete": "Konkreto", "asphalt": "Aspalto",
+        "sand": "Buhangin", "deckPatio": "Deck / patio", "mixed": "Halu-halong ibabaw", "notSure": "Hindi sigurado"
+      },
+      "exposure": {
+        "veryExposed": "Oo, sobrang nakalantad", "somewhatExposed": "Bahagyang nakalantad",
+        "mostlyProtected": "Karamihan protektado", "notSure": "Hindi sigurado"
+      },
+      "sidewalls": { "yes": "Oo", "maybe": "Siguro", "no": "Hindi", "notSure": "Hindi sigurado" },
+      "afterSunset": { "yes": "Oo", "no": "Hindi", "notSure": "Hindi sigurado" },
+      "contactMethod": { "email": "Email", "phone": "Telepono", "text": "Text" },
+      "guestCounts": {
+        "under_25": "Mas mababa sa 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
+        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      }
+    },
+    "stepTitles": {
+      "eventBasics": "Pangunahing detalye", "guestLayout": "Bilang ng bisita at layout",
+      "extras": "Pagkain, sayaw at karagdagan", "locationWeather": "Lokasyon at panahon", "contact": "Iyong detalye"
+    },
+    "buttons": {
+      "back": "Bumalik", "next": "Susunod", "startOver": "Magsimula Muli",
+      "generate": "Gumawa ng Setup", "tryAgain": "Subukan Muli",
+      "openPdf": "Buksan ang PDF Viewer", "viewPdf": "Tingnan ang PDF",
+      "downloadPdf": "I-download ang PDF", "print": "I-print",
+      "closeViewer": "Isara ang PDF viewer", "saveAccount": "I-save sa Aking Account",
+      "createAccount": "Gumawa ng Account para Mag-save", "viewPlans": "Tingnan ang Aking Plano",
+      "sendForQuote": "Ipadala ang Rekomendasyon para sa Quote"
+    },
+    "loading": {
+      "title": "Idinidisenyo ang iyong setup…",
+      "subtitle": "Sinusuri ng aming AI ang imbentaryo. Karaniwang umaabot ito ng 15–30 segundo."
+    },
+    "error": {
+      "title": "Hindi kami makapagbigay ng rekomendasyon",
+      "generic": "May mali sa aming bahagi.",
+      "retryHint": "Naka-save ang iyong sagot sa ibaba. I-click ang \"Gumawa ng Setup\" upang subukan muli."
+    },
+    "results": {
+      "eyebrow": "Handa na ang Iyong Rekomendasyon",
+      "thanks": "Salamat {{name}} — sinuri namin ang iyong {{eventType}} para sa {{guests}} bisita sa {{date}}{{locationClause}}.",
+      "atGlance": "Ang iyong kaganapan sa sulyap", "atGlanceSub": "Buod ng sinabi mo sa amin.",
+      "extrasRequested": "Mga karagdagang hiniling", "rentalsOfInterest": "Pa-upa na interesado",
+      "suggestedLayout": "Inirerekomendang Layout", "blueprintSketch": "Sketch ng Blueprint",
+      "blueprintNote": "Konseptong sketch — kumpirmahin ang panghuling lokasyon sa quoting.",
+      "recommendedSetup": "Inirerekomendang Setup",
+      "recommendedSetupSub": "Kumpletong pagpili ng imbentaryo sa bawat kategorya.",
+      "weatherNotes": "Tala sa Panahon at Setup",
+      "disclaimer": "Ito ay AI-generated na estimasyon.",
+      "savedToAccount": "Na-save sa iyong account.",
+      "dontLose": "Huwag mawala ang rekomendasyong ito",
+      "dontLoseDesc": "Gumawa ng libreng account upang i-save ang planong ito.",
+      "pdfViewer": "PDF Viewer",
+      "recapKeys": {
+        "eventType": "Uri ng kaganapan", "date": "Petsa", "location": "Lokasyon", "setting": "Kapaligiran",
+        "guests": "Bisita", "setup": "Setup", "seating": "Upuan", "tables": "Mesa",
+        "food": "Pagkain", "dancing": "Sayaw", "surface": "Ibabaw", "exposure": "Pagkakalantad",
+        "sidewalls": "Sidewalls", "afterSunset": "Pagkatapos ng paglubog"
+      },
+      "selectedDateFallback": "iyong napiling petsa", "noLocation": "—", "atClause": " sa "
+    },
+    "notSureYet": {
+      "title": "Hindi pa Sigurado? Okay lang Iyan.",
+      "desc": "Hindi mo kailangan malaman ang lahat ng detalye bago makipag-ugnayan."
+    },
+    "validation": {
+      "required": "Kailangang punan", "invalidEmail": "Mangyaring magpasok ng wastong email",
+      "eventDateRequired": "Mangyaring ipasok ang petsa ng iyong kaganapan",
+      "eventLocationRequired": "Mangyaring ipasok ang lokasyon ng iyong kaganapan"
+    }
+  }
+}

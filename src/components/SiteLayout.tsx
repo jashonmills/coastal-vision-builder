@@ -1,8 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Sparkles, ShieldCheck, User } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
+import { LanguageSelector } from "./LanguageSelector";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useSlotImage } from "@/hooks/use-site-content";
@@ -18,32 +20,32 @@ import {
 import { MobileBottomNav } from "./MobileBottomNav";
 import { MobileBentoDrawer } from "./MobileBentoDrawer";
 
-type NavChild = { to: string; label: string; description?: string };
-type NavGroup = { label: string; to?: string; children?: NavChild[] };
+type NavChild = { to: string; labelKey: string; descKey?: string };
+type NavGroup = { labelKey: string; to?: string; children?: NavChild[] };
 
 const navGroups: NavGroup[] = [
-  { label: "Home", to: "/" },
+  { labelKey: "nav.home", to: "/" },
   {
-    label: "Rentals",
+    labelKey: "nav.rentals",
     children: [
-      { to: "/tent-rentals", label: "Tent Rentals", description: "Frame, pole, and hexagon tents" },
-      { to: "/inventory", label: "Inventory & Pricing", description: "Full catalog with sample layouts" },
-      { to: "/recommender", label: "Event Recommender", description: "AI-built setup for your event" },
+      { to: "/tent-rentals", labelKey: "nav.tentRentals", descKey: "navDesc.tentRentals" },
+      { to: "/inventory", labelKey: "nav.inventoryPricing", descKey: "navDesc.inventoryPricing" },
+      { to: "/recommender", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
     ],
   },
   {
-    label: "Services",
+    labelKey: "nav.services",
     children: [
-      { to: "/services", label: "All Services", description: "Weddings, festivals, corporate" },
-      { to: "/events", label: "Events", description: "Past events and case studies" },
+      { to: "/services", labelKey: "nav.allServices", descKey: "navDesc.allServices" },
+      { to: "/events", labelKey: "nav.events", descKey: "navDesc.events" },
     ],
   },
-  { label: "Gallery", to: "/gallery" },
+  { labelKey: "nav.gallery", to: "/gallery" },
   {
-    label: "About",
+    labelKey: "nav.about",
     children: [
-      { to: "/about", label: "About Us", description: "Coastal team, our story" },
-      { to: "/contact", label: "Contact", description: "Get in touch" },
+      { to: "/about", labelKey: "nav.aboutUs", descKey: "navDesc.aboutUs" },
+      { to: "/contact", labelKey: "nav.contact", descKey: "navDesc.contact" },
     ],
   },
 ];
@@ -59,6 +61,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
   const dynamicLogo = useSlotImage("site.logo", logoUrl);
+  const { t } = useTranslation();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -79,7 +82,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 const active = isGroupActive(group, pathname);
                 if (!group.children) {
                   return (
-                    <NavigationMenuItem key={group.label}>
+                    <NavigationMenuItem key={group.labelKey}>
                       <NavigationMenuLink asChild className={navigationMenuTriggerStyle() + " !bg-transparent"}>
                         <Link
                           to={group.to!}
@@ -88,21 +91,21 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                             (active ? "text-primary" : "text-muted-foreground hover:text-primary")
                           }
                         >
-                          {group.label}
+                          {t(group.labelKey)}
                         </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   );
                 }
                 return (
-                  <NavigationMenuItem key={group.label}>
+                  <NavigationMenuItem key={group.labelKey}>
                     <NavigationMenuTrigger
                       className={
                         "!bg-transparent text-sm font-medium " +
                         (active ? "text-primary" : "text-muted-foreground hover:text-primary")
                       }
                     >
-                      {group.label}
+                      {t(group.labelKey)}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="w-[280px] p-2">
@@ -113,9 +116,9 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                                 to={child.to}
                                 className="block rounded-md px-3 py-2 hover:bg-secondary"
                               >
-                                <div className="text-sm font-medium text-foreground">{child.label}</div>
-                                {child.description && (
-                                  <p className="mt-0.5 text-xs text-muted-foreground">{child.description}</p>
+                                <div className="text-sm font-medium text-foreground">{t(child.labelKey)}</div>
+                                {child.descKey && (
+                                  <p className="mt-0.5 text-xs text-muted-foreground">{t(child.descKey)}</p>
                                 )}
                               </Link>
                             </NavigationMenuLink>
@@ -130,19 +133,20 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </NavigationMenu>
 
           <div className="hidden items-center gap-2 lg:flex">
+            <LanguageSelector variant="header" />
             <Link
               to="/recommender"
               className="inline-flex items-center gap-2 rounded-full border border-primary/25 px-5 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
             >
               <Sparkles className="h-4 w-4" />
-              Event Recommender
+              {t("nav.eventRecommender")}
             </Link>
             <Link
               to={user ? "/account" : "/login"}
               className="inline-flex items-center gap-1 rounded-full border border-primary/25 px-4 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
             >
               <User className="h-4 w-4" />
-              {user ? "My Account" : "Sign In"}
+              {user ? t("nav.myAccount") : t("nav.signIn")}
             </Link>
             {isAdmin && (
               <Link
@@ -150,14 +154,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 transition-all hover:border-amber-500 hover:bg-amber-100"
               >
                 <ShieldCheck className="h-4 w-4" />
-                Admin
+                {t("nav.admin")}
               </Link>
             )}
             <Link
               to="/contact"
               className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-[color:var(--navy-soft)]"
             >
-              Request a Quote
+              {t("cta.requestQuote")}
             </Link>
           </div>
 
@@ -176,6 +180,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
 function SiteFooter() {
   const footerLogo = useSlotImage("site.logo", logoUrl);
+  const { t } = useTranslation();
   return (
     <footer className="mt-24 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
@@ -183,42 +188,45 @@ function SiteFooter() {
           <img src={footerLogo} alt="" className="mb-4 h-12 w-auto brightness-0 invert" />
           <h3 className="font-serif text-xl text-primary-foreground">Pacific North Events &amp; Tents</h3>
           <p className="mt-3 text-sm leading-relaxed text-primary-foreground/75">
-            Event tent rentals and coastal event support for weddings, festivals, private parties, and corporate gatherings.
+            {t("footer.tagline")}
           </p>
+          <div className="mt-5">
+            <LanguageSelector variant="footer" />
+          </div>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">Services</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.servicesHeading")}</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">Wedding Tents</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">Festival Tents</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">Private Parties</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">Corporate Events</Link></li>
-            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">Vendor Tents</Link></li>
+            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.weddingTents")}</Link></li>
+            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.festivalTents")}</Link></li>
+            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.privateParties")}</Link></li>
+            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.corporateEvents")}</Link></li>
+            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">{t("footer.vendorTents")}</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">Quick Links</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.quickLinks")}</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
-            <li><Link to="/" className="hover:text-[color:var(--gold)]">Home</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">Services</Link></li>
-            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">Tent Rentals</Link></li>
-            <li><Link to="/gallery" className="hover:text-[color:var(--gold)]">Gallery</Link></li>
-            <li><Link to="/about" className="hover:text-[color:var(--gold)]">About</Link></li>
-            <li><Link to="/contact" className="hover:text-[color:var(--gold)]">Contact</Link></li>
+            <li><Link to="/" className="hover:text-[color:var(--gold)]">{t("nav.home")}</Link></li>
+            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("nav.services")}</Link></li>
+            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">{t("nav.tentRentals")}</Link></li>
+            <li><Link to="/gallery" className="hover:text-[color:var(--gold)]">{t("nav.gallery")}</Link></li>
+            <li><Link to="/about" className="hover:text-[color:var(--gold)]">{t("nav.about")}</Link></li>
+            <li><Link to="/contact" className="hover:text-[color:var(--gold)]">{t("nav.contact")}</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">Contact</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.contact")}</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
-            <li><Link to="/contact" className="hover:text-[color:var(--gold)]">Request a Quote</Link></li>
-            <li>Serving the Oregon Coast</li>
-            <li>Follow us on Facebook</li>
+            <li><Link to="/contact" className="hover:text-[color:var(--gold)]">{t("cta.requestQuote")}</Link></li>
+            <li>{t("footer.servingOregon")}</li>
+            <li>{t("footer.followFacebook")}</li>
           </ul>
         </div>
       </div>
       <div className="border-t border-primary-foreground/10">
         <div className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-primary-foreground/65 lg:px-8">
-          © 2026 Pacific North Events &amp; Tents. Your Event. Your Vision. We Make It Happen.
+          {t("footer.copyright")}
         </div>
       </div>
     </footer>
@@ -268,27 +276,28 @@ export function PageHero({
 }
 
 export function CTASection() {
+  const { t } = useTranslation();
   return (
     <section className="bg-sand-gradient">
       <div className="mx-auto max-w-4xl px-4 py-20 text-center lg:px-8">
         <h2 className="font-serif text-3xl text-primary sm:text-4xl">
-          Ready to Bring Your Event to Life?
+          {t("cta.readyTitle")}
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          Tell us about your date, location, guest count, and vision. We'll help you choose the right tent setup for your event.
+          {t("cta.readyDesc")}
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
             to="/contact"
             className="inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-[color:var(--navy-soft)]"
           >
-            Request a Quote
+            {t("cta.requestQuote")}
           </Link>
           <Link
             to="/recommender"
             className="inline-flex items-center rounded-full border border-primary/25 bg-transparent px-7 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
           >
-            Event Recommender
+            {t("nav.eventRecommender")}
           </Link>
         </div>
       </div>

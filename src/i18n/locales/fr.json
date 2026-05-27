@@ -1,0 +1,225 @@
+{
+  "language": "Langue",
+  "nav": {
+    "home": "Accueil",
+    "rentals": "Locations",
+    "tentRentals": "Location de Tentes",
+    "inventoryPricing": "Inventaire & Tarifs",
+    "eventRecommender": "Recommandation d'Événement",
+    "services": "Services",
+    "allServices": "Tous les Services",
+    "events": "Événements",
+    "gallery": "Galerie",
+    "about": "À propos",
+    "aboutUs": "À propos de nous",
+    "contact": "Contact",
+    "requestQuote": "Demander un Devis",
+    "findMyTentSize": "Trouver Ma Taille de Tente",
+    "myAccount": "Mon Compte",
+    "signIn": "Connexion",
+    "admin": "Admin",
+    "menu": "Menu",
+    "recommender": "Recommandation",
+    "quote": "Devis",
+    "explore": "Explorer",
+    "more": "Plus",
+    "inventory": "Inventaire",
+    "closeMenu": "Fermer le menu",
+    "navigationMenu": "Menu de navigation"
+  },
+  "navDesc": {
+    "tentRentals": "Tentes à structure, à mât et hexagonales",
+    "inventoryPricing": "Catalogue complet avec exemples de plans",
+    "eventRecommender": "Configuration IA pour votre événement",
+    "allServices": "Mariages, festivals, entreprise",
+    "events": "Événements passés et études de cas",
+    "aboutUs": "Équipe côtière, notre histoire",
+    "contact": "Nous contacter"
+  },
+  "footer": {
+    "tagline": "Location de tentes événementielles et soutien côtier pour mariages, festivals, fêtes privées et événements d'entreprise.",
+    "servicesHeading": "Services",
+    "weddingTents": "Tentes de Mariage",
+    "festivalTents": "Tentes de Festival",
+    "privateParties": "Fêtes Privées",
+    "corporateEvents": "Événements d'Entreprise",
+    "vendorTents": "Tentes Vendeurs",
+    "quickLinks": "Liens Rapides",
+    "contact": "Contact",
+    "servingOregon": "Au service de la côte de l'Oregon",
+    "followFacebook": "Suivez-nous sur Facebook",
+    "copyright": "© 2026 Pacific North Events & Tents. Votre Événement. Votre Vision. Nous le Réalisons."
+  },
+  "cta": {
+    "requestQuote": "Demander un Devis",
+    "findMyTentSize": "Trouver Ma Taille de Tente",
+    "viewServices": "Voir les Services",
+    "exploreServices": "Explorer les Services",
+    "planMySetup": "Planifier Mon Installation",
+    "getQuote": "Obtenir un Devis",
+    "startWeddingQuote": "Commencer Devis Mariage",
+    "sendQuoteRequest": "Envoyer la Demande de Devis",
+    "showMyRecommendation": "Afficher Ma Recommandation",
+    "requestFinalQuote": "Demander le Devis Final",
+    "startOver": "Recommencer",
+    "talkToUs": "Parlez-nous",
+    "readyTitle": "Prêt à Donner Vie à Votre Événement ?",
+    "readyDesc": "Parlez-nous de votre date, lieu, nombre d'invités et vision. Nous vous aiderons à choisir la bonne installation."
+  },
+  "recommender": {
+    "metaTitle": "Recommandation d'Événement | Pacific North Events & Tents",
+    "metaDesc": "Recommandation d'installation d'événement par IA. Obtenez un plan complet de tente, tables, chaises et équipement.",
+    "heroEyebrow": "Recommandation d'Événement",
+    "heroTitle": "Trouvez la Bonne Installation pour Votre Événement",
+    "heroSubtitle": "Répondez à quelques questions rapides et notre IA recommandera un plan complet de tente, tables, chaises et équipement — plus un schéma de votre disposition.",
+    "intro": "Chaque événement est différent. Nous examinerons vos besoins en tentes, tables, chaises et articles spéciaux pour vous donner une vue complète avant la demande de devis.",
+    "steps": {
+      "eventBasics": "Détails de l'Événement",
+      "guestLayout": "Invités & Disposition",
+      "extras": "Nourriture & Extras",
+      "locationWeather": "Lieu & Météo",
+      "contact": "Vos Coordonnées"
+    },
+    "fields": {
+      "eventType": "Quel type d'événement planifiez-vous ?",
+      "eventDate": "Quelle est la date de votre événement ? *",
+      "eventLocation": "Où se tiendra l'événement ? *",
+      "eventLocationPlaceholder": "Nom du lieu, jardin, parc, plage, lieu d'affaires, etc.",
+      "outdoorIndoor": "L'événement est-il en extérieur, intérieur ou partiellement couvert ?",
+      "guestCount": "Combien d'invités attendez-vous ? *",
+      "setupType": "Quel type d'installation vous faut-il ?",
+      "seatedGuests": "Les invités seront-ils assis à des tables ?",
+      "tableStyle": "Quel style de table préférez-vous ?",
+      "foodService": "Y aura-t-il de la nourriture ou un traiteur sous la tente ?",
+      "dancing": "Avez-vous besoin d'espace pour danser ?",
+      "extras": "Y aura-t-il un bar, table de cadeaux, DJ, groupe ou scène ?",
+      "rentalItems": "Quels articles de location vous intéressent ?",
+      "surface": "Sur quel type de surface la tente sera-t-elle installée ?",
+      "weatherExposure": "Le lieu est-il exposé au vent ou au climat côtier ?",
+      "sidewalls": "Souhaitez-vous des parois latérales pour plus de protection ?",
+      "afterSunset": "L'événement continuera-t-il après le coucher du soleil ?",
+      "fullName": "Nom Complet *",
+      "email": "Adresse E-mail *",
+      "phone": "Numéro de Téléphone",
+      "preferredContact": "Mode de Contact Préféré",
+      "message": "Autre chose que nous devrions savoir sur votre événement ?"
+    },
+    "options": {
+      "eventTypes": {
+        "wedding": "Mariage", "festival": "Festival", "privateParty": "Fête Privée",
+        "corporateEvent": "Événement d'Entreprise", "marketVendorEvent": "Marché / Événement Vendeur",
+        "fundraiser": "Collecte de Fonds", "communityEvent": "Événement Communautaire",
+        "graduationParty": "Remise de Diplôme", "other": "Autre"
+      },
+      "outdoor": {
+        "fullyOutdoors": "Entièrement en extérieur", "indoors": "Intérieur",
+        "partiallyCovered": "Partiellement couvert", "notSureYet": "Pas encore sûr"
+      },
+      "setup": {
+        "standingOnly": "Debout uniquement", "ceremonySeating": "Sièges de cérémonie",
+        "seatedDining": "Dîner assis", "cocktailMingling": "Tables cocktail / mingling",
+        "vendorBooths": "Stands de vendeurs", "foodServiceArea": "Zone de restauration",
+        "mixedLayout": "Disposition mixte", "notSure": "Pas sûr"
+      },
+      "seated": {
+        "allSeated": "Oui, tous les invités assis",
+        "someSeated": "Certains assis, certains debout",
+        "mostlyStanding": "Non, principalement debout", "notSure": "Pas sûr"
+      },
+      "tableStyle": {
+        "round": "Tables rondes", "banquet": "Tables de banquet / rectangulaires",
+        "cocktail": "Tables cocktail", "picnic": "Tables style pique-nique",
+        "noTables": "Pas de tables nécessaires", "notSure": "Pas sûr"
+      },
+      "food": {
+        "buffet": "Oui, buffet", "plated": "Oui, repas servi", "foodTrucks": "Oui, food trucks à proximité",
+        "snackOnly": "Oui, table de snacks / desserts seulement", "noFood": "Pas de service alimentaire",
+        "notSure": "Pas sûr"
+      },
+      "dancing": {
+        "danceFloor": "Oui, piste de danse nécessaire", "small": "Petite zone de danse",
+        "none": "Pas de zone de danse", "notSure": "Pas sûr"
+      },
+      "extras": {
+        "bar": "Zone bar", "gift": "Table cadeaux", "dessert": "Table desserts",
+        "dj": "Cabine DJ", "band": "Groupe live", "stage": "Petite scène",
+        "speaker": "Zone haut-parleur / annonce", "none": "Aucun", "notSure": "Pas sûr"
+      },
+      "rentals": {
+        "tent": "Tente", "tables": "Tables", "chairs": "Chaises", "linens": "Linge",
+        "lighting": "Éclairage", "danceFloor": "Piste de danse", "sidewalls": "Parois latérales",
+        "heaters": "Chauffages", "flooring": "Sol", "vendorTents": "Tentes vendeurs",
+        "trash": "Stations poubelle / recyclage", "setup": "Montage et démontage",
+        "notSure": "Pas encore sûr"
+      },
+      "surface": {
+        "grass": "Herbe", "gravel": "Gravier", "concrete": "Béton", "asphalt": "Asphalte",
+        "sand": "Sable", "deckPatio": "Terrasse / patio", "mixed": "Surface mixte", "notSure": "Pas sûr"
+      },
+      "exposure": {
+        "veryExposed": "Oui, très exposé", "somewhatExposed": "Quelque peu exposé",
+        "mostlyProtected": "Principalement protégé", "notSure": "Pas sûr"
+      },
+      "sidewalls": { "yes": "Oui", "maybe": "Peut-être", "no": "Non", "notSure": "Pas sûr" },
+      "afterSunset": { "yes": "Oui", "no": "Non", "notSure": "Pas sûr" },
+      "contactMethod": { "email": "E-mail", "phone": "Téléphone", "text": "SMS" },
+      "guestCounts": {
+        "under_25": "Moins de 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
+        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      }
+    },
+    "stepTitles": {
+      "eventBasics": "Détails de l'événement", "guestLayout": "Nombre d'invités & disposition",
+      "extras": "Nourriture, danse & extras", "locationWeather": "Lieu & météo", "contact": "Vos coordonnées"
+    },
+    "buttons": {
+      "back": "Retour", "next": "Suivant", "startOver": "Recommencer", "generate": "Générer Mon Installation",
+      "tryAgain": "Réessayer", "openPdf": "Ouvrir le Visualiseur PDF", "viewPdf": "Voir PDF",
+      "downloadPdf": "Télécharger PDF", "print": "Imprimer", "closeViewer": "Fermer le visualiseur PDF",
+      "saveAccount": "Enregistrer dans Mon Compte", "createAccount": "Créer un Compte pour Enregistrer",
+      "viewPlans": "Voir Mes Plans", "sendForQuote": "Envoyer Cette Recommandation pour un Devis"
+    },
+    "loading": {
+      "title": "Conception de votre installation…",
+      "subtitle": "Notre IA examine l'inventaire et conçoit votre plan. Cela prend généralement 15–30 secondes."
+    },
+    "error": {
+      "title": "Nous n'avons pas pu générer votre recommandation",
+      "generic": "Quelque chose s'est mal passé de notre côté.",
+      "retryHint": "Vos réponses sont sauvegardées ci-dessous. Cliquez sur \"Générer Mon Installation\" pour réessayer."
+    },
+    "results": {
+      "eyebrow": "Votre Recommandation est Prête",
+      "thanks": "Merci {{name}} — nous avons examiné votre {{eventType}} pour {{guests}} invités le {{date}}{{locationClause}}. Voici ce que nous recommandons.",
+      "atGlance": "Votre événement en un coup d'œil",
+      "atGlanceSub": "Un résumé rapide de ce que vous nous avez dit.",
+      "extrasRequested": "Extras demandés", "rentalsOfInterest": "Locations d'intérêt",
+      "suggestedLayout": "Disposition Suggérée", "blueprintSketch": "Croquis du Plan",
+      "blueprintNote": "Croquis conceptuel — placement final confirmé lors du devis.",
+      "recommendedSetup": "Installation Recommandée",
+      "recommendedSetupSub": "Une sélection complète d'inventaire dans chaque catégorie. Les quantités sont une estimation.",
+      "weatherNotes": "Notes Météo & Installation",
+      "disclaimer": "Ceci est une estimation générée par IA. La taille finale, les quantités et l'équipement peuvent varier. Aucun prix affiché — demandez un devis.",
+      "savedToAccount": "Enregistré dans votre compte.",
+      "dontLose": "Ne perdez pas cette recommandation",
+      "dontLoseDesc": "Créez un compte gratuit pour enregistrer ce plan. Nous l'enregistrerons automatiquement après votre connexion.",
+      "pdfViewer": "Visualiseur PDF",
+      "recapKeys": {
+        "eventType": "Type d'événement", "date": "Date", "location": "Lieu", "setting": "Cadre",
+        "guests": "Invités", "setup": "Installation", "seating": "Sièges", "tables": "Tables",
+        "food": "Nourriture", "dancing": "Danse", "surface": "Surface", "exposure": "Exposition",
+        "sidewalls": "Parois", "afterSunset": "Après coucher du soleil"
+      },
+      "selectedDateFallback": "votre date sélectionnée", "noLocation": "—", "atClause": " à "
+    },
+    "notSureYet": {
+      "title": "Pas Sûr Encore ? C'est OK.",
+      "desc": "Vous n'avez pas besoin de tout savoir avant de nous contacter. Avec une date, un lieu et un nombre approximatif d'invités, nous guiderons le reste."
+    },
+    "validation": {
+      "required": "Champ obligatoire", "invalidEmail": "Veuillez entrer une adresse e-mail valide",
+      "eventDateRequired": "Veuillez entrer la date de votre événement",
+      "eventLocationRequired": "Veuillez entrer le lieu de votre événement"
+    }
+  }
+}
