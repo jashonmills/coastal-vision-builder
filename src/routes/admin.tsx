@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Box, Type } from "lucide-react";
+import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Box, Type, Tag, ArrowRight } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -15,13 +15,13 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Tab = "inventory" | "gallery" | "images" | "text";
+type Tab = "pricing" | "gallery" | "images" | "text";
 
 function AdminPage() {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: roleLoading } = useIsAdmin();
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("inventory");
+  const [tab, setTab] = useState<Tab>("pricing");
 
   useEffect(() => {
     if (!authLoading && !user) navigate({ to: "/login", search: { next: "/admin" } as never });
@@ -35,21 +35,31 @@ function AdminPage() {
 
   return (
     <SiteLayout>
-      <PageHero eyebrow="Admin" title="Site Content" subtitle="Manage inventory, gallery, site images and text." />
-      <div className="mx-auto max-w-6xl px-4 pt-6 lg:px-8">
-        <Link to="/admin/inventory" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/40 bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-[color:var(--gold)]/10">
-          <Box className="h-4 w-4" /> Open Inventory Management
-        </Link>
-      </div>
+      <PageHero eyebrow="Admin" title="Site Content" subtitle="Manage pricing, inventory, gallery, site images and text." />
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
         <div className="mb-8 flex flex-wrap gap-2">
-          {([["inventory", Box, "Pricing"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
+          {([["pricing", Tag, "Pricing"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
             <button key={k} onClick={() => setTab(k)} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${tab === k ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"}`}>
               <Icon className="h-4 w-4" /> {label}
             </button>
           ))}
+          <Link
+            to="/admin/inventory"
+            className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/50 bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-[color:var(--gold)]/10"
+          >
+            <Box className="h-4 w-4" /> Inventory Management <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
-        {tab === "inventory" && <InventoryAdmin />}
+
+        {tab === "pricing" && (
+          <div className="mb-6 rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+            <strong className="text-foreground">Pricing / Public Catalog.</strong>{" "}
+            Edit the public-facing rental price list shown to customers. For owned-stock, reservations, check-in/out and quantity adjustments, use{" "}
+            <Link to="/admin/inventory" className="font-semibold text-primary underline">Inventory Management</Link>.
+          </div>
+        )}
+
+        {tab === "pricing" && <PricingAdmin />}
         {tab === "gallery" && <GalleryAdmin />}
         {tab === "images" && <ImagesAdmin />}
         {tab === "text" && <TextAdmin />}
@@ -93,10 +103,10 @@ function ClaimAdmin() {
 
 type InvItem = { id: string; category: string; name: string; price_cents: number; unit: string; notes: string | null; sort_order: number };
 
-function InventoryAdmin() {
+function PricingAdmin() {
   const qc = useQueryClient();
   const { data: items = [], isLoading } = useQuery({
-    queryKey: ["admin-inventory"],
+    queryKey: ["admin-pricing"],
     queryFn: async () => {
       const { data, error } = await supabase.from("pricing_items").select("*").order("category").order("sort_order");
       if (error) throw error;
@@ -109,7 +119,7 @@ function InventoryAdmin() {
       const { error } = await supabase.from("pricing_items").insert({ category: "New Category", name: "New item", price_cents: 0, unit: "each", sort_order: 0 });
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
 
   if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />;
@@ -126,7 +136,7 @@ function InventoryAdmin() {
             </tr>
           </thead>
           <tbody>
-            {items.map((it) => <InventoryRow key={it.id} item={it} />)}
+            {items.map((it) => <PricingRow key={it.id} item={it} />)}
           </tbody>
         </table>
       </div>
@@ -134,7 +144,7 @@ function InventoryAdmin() {
   );
 }
 
-function InventoryRow({ item }: { item: InvItem }) {
+function PricingRow({ item }: { item: InvItem }) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState(item);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
@@ -146,14 +156,14 @@ function InventoryRow({ item }: { item: InvItem }) {
       }).eq("id", item.id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
   const del = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.from("pricing_items").delete().eq("id", item.id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
 
   return (
