@@ -1,0 +1,288 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { Loader2, Plus, Trash2, Save, Send, ArrowLeft, AlertTriangle } from "lucide-react";
+import { toast } from "sonner";
+import { SiteLayout } from "@/components/SiteLayout";
+import { useAuth } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-admin";
+import {
+  getQuote,
+  updateQuote,
+  upsertQuoteItem,
+  deleteQuoteItem,
+  sendQuote,
+  listPricingItemsForBuilder,
+} from "@/lib/quotes.functions";
+import { StatusPill } from "./admin.quote-requests";
+
+export const Route = createFileRoute("/admin/quotes/$id/edit")({
+  head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
+  component: EditQuotePage,
+});
+
+function EditQuotePage() {
+  const { id } = Route.useParams();
+  const { user, loading } = useAuth();
+  const { isAdmin, loading: rl } = useIsAdmin();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+
+  const getFn = useServerFn(getQuote);
+  const updFn = useServerFn(updateQuote);
+  const upsertFn = useServerFn(upsertQuoteItem);
+  const delFn = useServerFn(deleteQuoteItem);
+  const sendFn = useServerFn(sendQuote);
+  const pricingFn = useServerFn(listPricingItemsForBuilder);
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["admin-quote", id],
+    queryFn: () => getFn({ data: { id } }),
+    enabled: !!user && isAdmin,
+  });
+  const { data: pricing = [] } = useQuery({
+    queryKey: ["pricing-for-builder"],
+    queryFn: () => pricingFn(),
+    enabled: !!user && isAdmin,
+  });
+
+  const send = useMutation({
+    mutationFn: () => sendFn({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Quote marked as sent. Now email the customer manually with the preview link.");
+      qc.invalidateQueries({ queryKey: ["admin-quote", id] });
+    },
+  });
+
+  if (loading || rl || isLoading) {
+    return <SiteLayout><div className="flex min-h-[60vh] items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></SiteLayout>;
+  }
+  if (!user || !isAdmin || !data) return <SiteLayout><div className="p-12 text-center">Not available.</div></SiteLayout>;
+
+  const { quote, items } = data;
+
+  return (
+    <SiteLayout>
+      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+        <Link to="/admin/quotes" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+          <ArrowLeft className="h-4 w-4" /> All quotes
+        </Link>
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="font-mono text-xs text-muted-foreground">{quote.quote_number}</div>
+            <h1 className="font-serif text-3xl text-primary">{quote.customer_name}</h1>
+            <p className="text-sm text-muted-foreground">{quote.event_type || "—"} · {quote.event_date || "—"} · {quote.event_location || "—"} · {quote.guest_count ?? "?"} guests</p>
+            <div className="mt-2"><StatusPill status={quote.status} /></div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to="/admin/quotes/$id/preview"
+              params={{ id }}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-4 py-2 text-sm hover:bg-secondary"
+            >
+              Preview
+            </Link>
+            <button
+              onClick={() => send.mutate()}
+              disabled={send.isPending || quote.status === "sent"}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+            >
+              {send.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {quote.status === "sent" ? "Sent" : "Mark Sent"}
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
+          <div className="overflow-x-auto rounded-xl border border-border bg-card">
+            <table className="w-full text-sm">
+              <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-2 py-2">Item</th>
+                  <th className="px-2 py-2 w-20">Qty</th>
+                  <th className="px-2 py-2 w-20">Unit</th>
+                  <th className="px-2 py-2 w-28">Unit $</th>
+                  <th className="px-2 py-2 w-24 text-right">Line</th>
+                  <th className="px-2 py-2 w-10"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((it) => (
+                  <ItemRow
+                    key={it.id}
+                    item={it}
+                    onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); }}
+                    onDelete={async () => {
+                      if (!confirm("Remove this line?")) return;
+                      await delFn({ data: { id: it.id, quote_id: quote.id } });
+                      refetch();
+                    }}
+                    upsertFn={upsertFn}
+                  />
+                ))}
+                {items.length === 0 && (
+                  <tr><td colSpan={6} className="px-3 py-6 text-center text-muted-foreground">No line items yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+            <div className="border-t border-border p-3">
+              <AddLine
+                quoteId={quote.id}
+                pricing={pricing}
+                onAdded={() => refetch()}
+                upsertFn={upsertFn}
+                nextSort={items.length}
+              />
+            </div>
+          </div>
+
+          <aside className="space-y-4">
+            <div className="rounded-xl border border-border bg-card p-4">
+              <h3 className="font-semibold text-foreground">Totals</h3>
+              <Totals quote={quote} updFn={updFn} onSaved={() => refetch()} />
+            </div>
+            <NotesEditor quote={quote} updFn={updFn} onSaved={() => refetch()} />
+          </aside>
+        </div>
+      </section>
+    </SiteLayout>
+  );
+}
+
+function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
+  const [draft, setDraft] = useState(item);
+  useEffect(() => setDraft(item), [item]);
+  const dirty = JSON.stringify(draft) !== JSON.stringify(item);
+  const save = useMutation({
+    mutationFn: () => upsertFn({ data: {
+      id: draft.id, quote_id: draft.quote_id,
+      pricing_item_id: draft.pricing_item_id, inventory_item_id: draft.inventory_item_id,
+      category: draft.category, name: draft.name, description: draft.description,
+      quantity: Number(draft.quantity), unit: draft.unit, unit_price_cents: Number(draft.unit_price_cents),
+      needs_pricing_review: draft.needs_pricing_review, reason: draft.reason, sort_order: draft.sort_order,
+    } }),
+    onSuccess: onSaved,
+  });
+  return (
+    <tr className="border-t border-border align-top">
+      <td className="px-2 py-2">
+        <input className="w-full rounded border border-border bg-background px-2 py-1 text-sm" value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-[10px] text-muted-foreground">{draft.category || "—"}</span>
+          {draft.needs_pricing_review && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+              <AlertTriangle className="h-2.5 w-2.5" /> Needs pricing review
+            </span>
+          )}
+        </div>
+        {draft.reason && <div className="mt-0.5 text-[10px] text-muted-foreground">{draft.reason}</div>}
+      </td>
+      <td className="px-2 py-2"><input type="number" className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" value={draft.quantity} onChange={(e) => setDraft({ ...draft, quantity: parseInt(e.target.value || "0") })} /></td>
+      <td className="px-2 py-2"><input className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" value={draft.unit} onChange={(e) => setDraft({ ...draft, unit: e.target.value })} /></td>
+      <td className="px-2 py-2"><input type="number" step="0.01" className="w-24 rounded border border-border bg-background px-2 py-1 text-sm" value={(draft.unit_price_cents / 100).toString()} onChange={(e) => setDraft({ ...draft, unit_price_cents: Math.round(parseFloat(e.target.value || "0") * 100), needs_pricing_review: false })} /></td>
+      <td className="px-2 py-2 text-right font-medium">${((draft.quantity * draft.unit_price_cents) / 100).toFixed(2)}</td>
+      <td className="px-2 py-2">
+        <div className="flex flex-col gap-1">
+          <button disabled={!dirty || save.isPending} onClick={() => save.mutate()} className="rounded bg-emerald-600 p-1 text-white disabled:opacity-30"><Save className="h-3 w-3" /></button>
+          <button onClick={onDelete} className="rounded bg-red-600 p-1 text-white"><Trash2 className="h-3 w-3" /></button>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
+function AddLine({ quoteId, pricing, onAdded, upsertFn, nextSort }: { quoteId: string; pricing: any[]; onAdded: () => void; upsertFn: any; nextSort: number }) {
+  const [pickId, setPickId] = useState("");
+  const [qty, setQty] = useState(1);
+  const [custom, setCustom] = useState("");
+  const add = useMutation({
+    mutationFn: async () => {
+      if (pickId) {
+        const p = pricing.find((x) => x.id === pickId);
+        if (!p) throw new Error("Pricing item not found");
+        return upsertFn({ data: { quote_id: quoteId, pricing_item_id: p.id, category: p.category, name: p.name, quantity: qty, unit: p.unit, unit_price_cents: p.price_cents, sort_order: nextSort } });
+      }
+      if (custom.trim()) {
+        return upsertFn({ data: { quote_id: quoteId, name: custom.trim(), quantity: qty, unit: "each", unit_price_cents: 0, needs_pricing_review: true, sort_order: nextSort } });
+      }
+      throw new Error("Pick an item or enter a custom name");
+    },
+    onSuccess: () => { setPickId(""); setCustom(""); setQty(1); onAdded(); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <select value={pickId} onChange={(e) => setPickId(e.target.value)} className="rounded border border-border bg-background px-2 py-1 text-sm">
+        <option value="">— Pricing item —</option>
+        {pricing.map((p) => (
+          <option key={p.id} value={p.id}>{p.category} · {p.name} (${(p.price_cents / 100).toFixed(2)}/{p.unit})</option>
+        ))}
+      </select>
+      <span className="text-xs text-muted-foreground">or</span>
+      <input value={custom} onChange={(e) => setCustom(e.target.value)} placeholder="Custom item name" className="rounded border border-border bg-background px-2 py-1 text-sm" />
+      <input type="number" value={qty} onChange={(e) => setQty(parseInt(e.target.value || "1"))} className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" />
+      <button onClick={() => add.mutate()} disabled={add.isPending} className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground disabled:opacity-50">
+        <Plus className="h-3 w-3" /> Add
+      </button>
+    </div>
+  );
+}
+
+function Totals({ quote, updFn, onSaved }: { quote: any; updFn: any; onSaved: () => void }) {
+  const [draft, setDraft] = useState({
+    delivery_fee_cents: quote.delivery_fee_cents,
+    cleaning_fee_cents: quote.cleaning_fee_cents,
+    discount_cents: quote.discount_cents,
+    tax_cents: quote.tax_cents,
+  });
+  useEffect(() => setDraft({ delivery_fee_cents: quote.delivery_fee_cents, cleaning_fee_cents: quote.cleaning_fee_cents, discount_cents: quote.discount_cents, tax_cents: quote.tax_cents }), [quote.delivery_fee_cents, quote.cleaning_fee_cents, quote.discount_cents, quote.tax_cents]);
+  const save = useMutation({
+    mutationFn: () => updFn({ data: { id: quote.id, patch: draft } }),
+    onSuccess: onSaved,
+  });
+  return (
+    <div className="mt-3 space-y-2 text-sm">
+      <Row label="Subtotal" value={`$${(quote.subtotal_cents / 100).toFixed(2)}`} />
+      <FeeRow label="Delivery" cents={draft.delivery_fee_cents} onChange={(v) => setDraft({ ...draft, delivery_fee_cents: v })} />
+      <FeeRow label="Cleaning" cents={draft.cleaning_fee_cents} onChange={(v) => setDraft({ ...draft, cleaning_fee_cents: v })} />
+      <FeeRow label="Discount" cents={draft.discount_cents} onChange={(v) => setDraft({ ...draft, discount_cents: v })} />
+      <FeeRow label="Tax" cents={draft.tax_cents} onChange={(v) => setDraft({ ...draft, tax_cents: v })} />
+      <div className="flex items-center justify-between border-t border-border pt-2 text-base font-semibold">
+        <span>Total</span><span>${(quote.total_cents / 100).toFixed(2)}</span>
+      </div>
+      <button onClick={() => save.mutate()} disabled={save.isPending} className="mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
+        {save.isPending && <Loader2 className="h-3 w-3 animate-spin" />} Save fees
+      </button>
+    </div>
+  );
+}
+function Row({ label, value }: { label: string; value: string }) {
+  return <div className="flex items-center justify-between"><span className="text-muted-foreground">{label}</span><span>{value}</span></div>;
+}
+function FeeRow({ label, cents, onChange }: { label: string; cents: number; onChange: (v: number) => void }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-muted-foreground">{label}</span>
+      <input type="number" step="0.01" value={(cents / 100).toString()} onChange={(e) => onChange(Math.round(parseFloat(e.target.value || "0") * 100))} className="w-24 rounded border border-border bg-background px-2 py-1 text-right text-sm" />
+    </div>
+  );
+}
+function NotesEditor({ quote, updFn, onSaved }: { quote: any; updFn: any; onSaved: () => void }) {
+  const [internal, setInternal] = useState(quote.internal_notes ?? "");
+  const [customer, setCustomer] = useState(quote.customer_notes ?? "");
+  const [terms, setTerms] = useState(quote.terms ?? "");
+  const save = useMutation({
+    mutationFn: () => updFn({ data: { id: quote.id, patch: { internal_notes: internal, customer_notes: customer, terms } } }),
+    onSuccess: onSaved,
+  });
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+      <h3 className="font-semibold text-foreground">Notes</h3>
+      <label className="block text-xs"><span className="text-muted-foreground">Internal (admin only)</span><textarea rows={3} value={internal} onChange={(e) => setInternal(e.target.value)} className="mt-1 w-full rounded border border-border bg-background px-2 py-1 text-sm" /></label>
+      <label className="block text-xs"><span className="text-muted-foreground">Customer-facing notes</span><textarea rows={3} value={customer} onChange={(e) => setCustomer(e.target.value)} className="mt-1 w-full rounded border border-border bg-background px-2 py-1 text-sm" /></label>
+      <label className="block text-xs"><span className="text-muted-foreground">Terms</span><textarea rows={2} value={terms} onChange={(e) => setTerms(e.target.value)} className="mt-1 w-full rounded border border-border bg-background px-2 py-1 text-sm" /></label>
+      <button onClick={() => save.mutate()} disabled={save.isPending} className="inline-flex w-full items-center justify-center rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">Save notes</button>
+    </div>
+  );
+}
