@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Sparkles, ShieldCheck, User } from "lucide-react";
+import { Sparkles, ShieldCheck, User, Facebook } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import logoUrl from "@/assets/logo.png";
@@ -220,7 +220,17 @@ function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
             <li><Link to="/contact" className="hover:text-[color:var(--gold)]">{t("cta.requestQuote")}</Link></li>
             <li>{t("footer.servingOregon")}</li>
-            <li>{t("footer.followFacebook")}</li>
+            <li>
+              <a
+                href="https://www.facebook.com/profile.php?id=100090833605671"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 hover:text-[color:var(--gold)]"
+              >
+                <Facebook className="h-4 w-4" />
+                {t("footer.followFacebook")}
+              </a>
+            </li>
           </ul>
         </div>
       </div>
