@@ -2,10 +2,11 @@
 // No live API calls — pure rule-based intent matching + canned responses.
 
 export type ChatAction = {
-  labelKey: string;
-  to?: string;      // internal route
-  href?: string;    // external/tel/mailto
-  intent?: string;  // jump to another intent
+  labelKey?: string; // i18n key (legacy)
+  label?: string;    // plain text label (scripted engine)
+  to?: string;       // internal route
+  href?: string;     // external/tel/mailto
+  intent?: string;   // jump to another intent
 };
 
 export type ChatAnswer = {
