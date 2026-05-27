@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Sparkles, ShieldCheck, User, X } from "lucide-react";
+import { Sparkles, ShieldCheck, User } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
@@ -64,7 +64,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       {pathname === "/" && <OpeningVideoSplash />}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-center lg:justify-between gap-6 px-4 py-4 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
               src={dynamicLogo}
@@ -161,14 +161,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             </Link>
           </div>
 
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 text-primary lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
       </header>
 
