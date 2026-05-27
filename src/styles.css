@@ -102,3 +102,16 @@
   }
   .text-balance { text-wrap: balance; }
 }
+
+/* Hide scrollbars on mobile and tablet (below lg / 1024px) */
+@media (max-width: 1023px) {
+  html, body, *::-webkit-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+}

@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import logoUrl from "@/assets/logo.png";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -56,13 +57,12 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 lg:px-8">
-          <Link to="/" className="flex flex-col leading-tight">
-            <span className="font-serif text-lg font-semibold text-primary sm:text-xl">
-              Pacific North
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:text-xs">
-              Events &amp; Tents
-            </span>
+          <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
+            <img
+              src={logoUrl}
+              alt="Pacific North Event & Tent Rentals"
+              className="h-12 w-auto sm:h-14"
+            />
           </Link>
 
           <NavigationMenu className="hidden lg:flex">
