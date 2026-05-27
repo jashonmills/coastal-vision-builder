@@ -43,24 +43,45 @@ const resources = {
 
 if (!i18n.isInitialized) {
   const isBrowser = typeof window !== "undefined";
-  const chain = i18n.use(initReactI18next);
-  if (isBrowser) chain.use(LanguageDetector);
+  // Resolve initial language synchronously so the first render matches what
+  // the user expects. Using i18next-browser-languagedetector asynchronously
+  // caused a visible flash where the page mounted in English and then
+  // re-rendered in the stored language.
+  let initialLng = "en";
+  if (isBrowser) {
+    try {
+      const supported = SUPPORTED_LANGUAGES.map((l) => l.code) as string[];
+      const stored = window.localStorage.getItem("pnet-lang");
+      if (stored && supported.includes(stored)) {
+        initialLng = stored;
+      } else {
+        const nav = (window.navigator.language || "en").slice(0, 2);
+        if (supported.includes(nav)) initialLng = nav;
+      }
+    } catch {
+      // ignore – fall back to "en"
+    }
+  }
 
-  chain.init({
+  i18n.use(initReactI18next).init({
     resources,
     fallbackLng: "en",
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
-    lng: isBrowser ? undefined : "en",
+    lng: initialLng,
     interpolation: { escapeValue: false },
-    detection: isBrowser
-      ? {
-          order: ["localStorage", "navigator"],
-          lookupLocalStorage: "pnet-lang",
-          caches: ["localStorage"],
-        }
-      : undefined,
     react: { useSuspense: false },
+    initImmediate: false,
   });
+
+  if (isBrowser) {
+    i18n.on("languageChanged", (lng) => {
+      try {
+        window.localStorage.setItem("pnet-lang", lng);
+      } catch {
+        // ignore
+      }
+    });
+  }
 }
 
 export default i18n;
