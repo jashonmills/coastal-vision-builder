@@ -39,6 +39,7 @@ function Home() {
   const heroImg = pickPhoto("home-hero");
   const eveningImg = pickPhoto("home-evening");
   const gallery = pickPhotos(6, "home-gallery");
+  const lb = useLightbox();
 
   return (
     <SiteLayout>
