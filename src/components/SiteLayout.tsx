@@ -6,6 +6,7 @@ import logoUrl from "@/assets/logo.png";
 import { OpeningVideoSplash } from "./OpeningVideoSplash";
 import { AITentPlannerPopup } from "./AITentPlannerPopup";
 import { LanguageSelector } from "./LanguageSelector";
+import { AccessibilityFontButton } from "./AccessibilityFontButton";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useSlotImage } from "@/hooks/use-site-content";
@@ -176,6 +177,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
       <MobileBottomNav onMenu={() => setOpen(true)} />
       <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
+      <AccessibilityFontButton />
     </div>
   );
 }
