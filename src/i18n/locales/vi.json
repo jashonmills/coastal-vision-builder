@@ -1,192 +1,546 @@
 {
   "language": "Ngôn ngữ",
+  "brand": "Pacific North Events & Tents",
   "nav": {
-    "home": "Trang chủ", "rentals": "Cho thuê", "tentRentals": "Cho thuê Lều",
-    "inventoryPricing": "Hàng tồn & Giá", "eventRecommender": "Đề xuất Sự kiện",
-    "services": "Dịch vụ", "allServices": "Tất cả Dịch vụ", "events": "Sự kiện",
-    "gallery": "Thư viện", "about": "Giới thiệu", "aboutUs": "Về Chúng tôi",
-    "contact": "Liên hệ", "requestQuote": "Yêu cầu Báo giá",
-    "findMyTentSize": "Tìm Kích thước Lều", "myAccount": "Tài khoản",
-    "signIn": "Đăng nhập", "admin": "Quản trị", "menu": "Menu",
-    "recommender": "Đề xuất", "quote": "Báo giá", "explore": "Khám phá",
-    "more": "Thêm", "inventory": "Hàng tồn", "closeMenu": "Đóng menu",
+    "home": "Trang chủ",
+    "rentals": "Cho thuê",
+    "tentRentals": "Cho thuê lều",
+    "inventoryPricing": "Kho hàng & Bảng giá",
+    "eventRecommender": "Lên kế hoạch lều AI",
+    "services": "Dịch vụ",
+    "allServices": "Tất cả dịch vụ",
+    "events": "Sự kiện",
+    "gallery": "Thư viện ảnh",
+    "about": "Giới thiệu",
+    "aboutUs": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "requestQuote": "Yêu cầu báo giá",
+    "findMyTentSize": "Tìm kích thước lều phù hợp",
+    "myAccount": "Tài khoản của tôi",
+    "signIn": "Đăng nhập",
+    "admin": "Quản trị",
+    "menu": "Menu",
+    "recommender": "Lên kế hoạch lều AI",
+    "quote": "Báo giá",
+    "explore": "Khám phá",
+    "more": "Thêm",
+    "inventory": "Kho hàng",
+    "closeMenu": "Đóng menu",
     "navigationMenu": "Menu điều hướng"
   },
   "navDesc": {
-    "tentRentals": "Lều khung, cột và lục giác",
-    "inventoryPricing": "Danh mục đầy đủ với bố cục mẫu",
-    "eventRecommender": "Cài đặt AI cho sự kiện của bạn",
+    "tentRentals": "Lều khung, lều cột và lều lục giác",
+    "inventoryPricing": "Danh mục đầy đủ với sơ đồ mẫu",
+    "eventRecommender": "Kế hoạch lều AI miễn phí cho sự kiện của bạn",
     "allServices": "Đám cưới, lễ hội, doanh nghiệp",
-    "events": "Sự kiện trước và nghiên cứu điển hình",
+    "events": "Sự kiện tiêu biểu và tình huống thực tế",
     "aboutUs": "Đội ngũ ven biển, câu chuyện của chúng tôi",
-    "contact": "Liên hệ"
+    "contact": "Liên hệ với chúng tôi"
   },
   "footer": {
-    "tagline": "Cho thuê lều sự kiện và hỗ trợ ven biển cho đám cưới, lễ hội, tiệc riêng và sự kiện doanh nghiệp.",
-    "servicesHeading": "Dịch vụ", "weddingTents": "Lều Đám cưới",
-    "festivalTents": "Lều Lễ hội", "privateParties": "Tiệc Riêng",
-    "corporateEvents": "Sự kiện Doanh nghiệp", "vendorTents": "Lều Bán hàng",
-    "quickLinks": "Liên kết Nhanh", "contact": "Liên hệ",
-    "servingOregon": "Phục vụ Bờ biển Oregon",
+    "tagline": "Cho thuê lều sự kiện và hỗ trợ tổ chức sự kiện ven biển cho đám cưới, lễ hội, tiệc riêng và hội họp doanh nghiệp.",
+    "servicesHeading": "Dịch vụ",
+    "weddingTents": "Lều đám cưới",
+    "festivalTents": "Lều lễ hội",
+    "privateParties": "Tiệc riêng",
+    "corporateEvents": "Sự kiện doanh nghiệp",
+    "vendorTents": "Lều gian hàng",
+    "quickLinks": "Liên kết nhanh",
+    "contact": "Liên hệ",
+    "servingOregon": "Phục vụ bờ biển Oregon",
     "followFacebook": "Theo dõi chúng tôi trên Facebook",
-    "copyright": "© 2026 Pacific North Events & Tents. Sự kiện của Bạn. Tầm nhìn của Bạn. Chúng tôi Biến nó Thành Hiện thực."
+    "copyright": "© 2026 Pacific North Events & Tents. Sự kiện của bạn. Tầm nhìn của bạn. Chúng tôi biến điều đó thành hiện thực."
   },
   "cta": {
-    "requestQuote": "Yêu cầu Báo giá", "findMyTentSize": "Tìm Kích thước Lều",
-    "viewServices": "Xem Dịch vụ", "exploreServices": "Khám phá Dịch vụ",
-    "planMySetup": "Lập Kế hoạch", "getQuote": "Nhận Báo giá",
-    "startWeddingQuote": "Bắt đầu Báo giá Cưới", "sendQuoteRequest": "Gửi Yêu cầu Báo giá",
-    "showMyRecommendation": "Hiển thị Đề xuất", "requestFinalQuote": "Yêu cầu Báo giá Cuối",
-    "startOver": "Bắt đầu Lại", "talkToUs": "Trò chuyện",
-    "readyTitle": "Sẵn sàng Thực hiện Sự kiện của Bạn?",
-    "readyDesc": "Cho chúng tôi biết ngày, địa điểm, số khách và tầm nhìn của bạn."
+    "requestQuote": "Yêu cầu báo giá",
+    "findMyTentSize": "Tìm kích thước lều phù hợp",
+    "viewServices": "Xem dịch vụ",
+    "exploreServices": "Khám phá dịch vụ",
+    "planMySetup": "Lên kế hoạch thiết lập",
+    "getQuote": "Nhận báo giá",
+    "startWeddingQuote": "Bắt đầu báo giá đám cưới",
+    "sendQuoteRequest": "Gửi yêu cầu báo giá",
+    "showMyRecommendation": "Xem đề xuất của tôi",
+    "requestFinalQuote": "Yêu cầu báo giá chính thức",
+    "startOver": "Làm lại từ đầu",
+    "talkToUs": "Liên hệ với chúng tôi",
+    "readyTitle": "Sẵn sàng để biến sự kiện của bạn thành hiện thực?",
+    "readyDesc": "Hãy cho chúng tôi biết ngày, địa điểm, số lượng khách và ý tưởng của bạn. Chúng tôi sẽ giúp bạn chọn thiết lập lều phù hợp nhất.",
+    "tryFreePlanner": "Thử công cụ lên kế hoạch lều AI miễn phí",
+    "viewOurServices": "Xem dịch vụ của chúng tôi",
+    "startMyFreeTentPlan": "Bắt đầu kế hoạch lều miễn phí",
+    "requestCustomQuote": "Yêu cầu báo giá tùy chỉnh"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Cho thuê lều sự kiện bờ biển Oregon",
+      "title": "Lều & Thiết bị cho sự kiện ven biển Oregon",
+      "subtitle": "Từ đám cưới và lễ hội đến tiệc riêng và sự kiện doanh nghiệp, Pacific North Events & Tents giúp bạn hiện thực hóa ý tưởng với những thiết bị cho thuê thời trang, đáng tin cậy và chống thời tiết."
+    },
+    "badges": {
+      "weddings": "Đám cưới",
+      "festivals": "Lễ hội",
+      "privateParties": "Tiệc riêng",
+      "corporateEvents": "Sự kiện doanh nghiệp",
+      "rainOrShine": "Thiết lập mọi thời tiết",
+      "yearRound": "Cho thuê quanh năm"
+    },
+    "intro": {
+      "eyebrow": "Cam kết của chúng tôi",
+      "titleLine1": "Sự kiện của bạn. Tầm nhìn của bạn.",
+      "titleLine2": "Chúng tôi biến điều đó thành hiện thực.",
+      "body": "Tổ chức sự kiện ngoài trời trên bờ biển Oregon mang một vẻ đẹp riêng — và cả những thách thức riêng về thời tiết. Pacific North Events & Tents cung cấp lều sự kiện chất lượng cao và hỗ trợ cho thuê được thiết kế để buổi lễ của bạn luôn thoải mái, thanh lịch và không căng thẳng."
+    },
+    "services": {
+      "title": "Những sự kiện chúng tôi hỗ trợ",
+      "exploreLink": "Khám phá dịch vụ →",
+      "weddings": { "title": "Đám cưới", "text": "Không gian lều thanh lịch cho lễ cưới, tiệc chiêu đãi, bữa tối diễn tập và cuối tuần đám cưới ven biển." },
+      "festivals": { "title": "Lễ hội & Cộng đồng", "text": "Giải pháp lều quy mô lớn cho chợ phiên, sự kiện âm nhạc, gây quỹ, hội chợ và lễ kỷ niệm cộng đồng." },
+      "privateParties": { "title": "Tiệc riêng", "text": "Không gian thoải mái và đẹp mắt cho sinh nhật, họp mặt, lễ tốt nghiệp, tiệc sân vườn và tụ họp gia đình." },
+      "corporate": { "title": "Sự kiện doanh nghiệp", "text": "Giải pháp lều và cho thuê chuyên nghiệp cho sự kiện doanh nghiệp, hội nghị, ra mắt thương hiệu và tụ họp công ty." }
+    },
+    "weather": {
+      "eyebrow": "Sẵn sàng cho mọi thời tiết ven biển",
+      "title": "Được thiết kế cho thời tiết ven biển",
+      "body": "Sự kiện trên bờ biển Oregon cần hơn một thiết lập đẹp — cần lên kế hoạch thông minh, thiết bị đáng tin cậy và mái che mang lại sự an tâm cho khách. Lều của chúng tôi giúp bảo vệ sự kiện của bạn khỏi nắng, gió và mưa, đồng thời tạo ra không gian hoàn hảo mà khách sẽ khó quên.",
+      "cta": "Lên kế hoạch thiết lập"
+    },
+    "tentCats": {
+      "eyebrow": "Cho thuê lều",
+      "title": "Lều phù hợp cho mọi quy mô sự kiện",
+      "small": { "title": "Tụ họp nhỏ", "desc": "Tiệc sân vườn, bữa tối thân mật và lễ kỷ niệm dưới 50 khách." },
+      "medium": { "title": "Sự kiện vừa", "desc": "Tiệc chiêu đãi và tụ họp gia đình cho 50–100 khách với bàn ăn và phục vụ thức ăn." },
+      "large": { "title": "Lễ kỷ niệm lớn", "desc": "Đám cưới và sự kiện doanh nghiệp cho 100–200 khách với khu ăn uống và sàn khiêu vũ." },
+      "festival": { "title": "Lều lễ hội & Gian hàng", "desc": "Chợ phiên, hội chợ và thiết lập nhiều gian hàng với mái che chống thời tiết." },
+      "wedding": { "title": "Lều tiệc cưới", "desc": "Khu ăn uống, sàn khiêu vũ, khu thư giãn và bố cục đám cưới ngoài trời thanh lịch." },
+      "custom": { "title": "Bố cục sự kiện tùy chỉnh", "desc": "Thiết lập nhiều lều, hàng gian hàng, kế hoạch thời tiết và thiết kế luồng sự kiện đầy đủ." }
+    },
+    "plannerPromo": {
+      "badge": "Công cụ miễn phí mới",
+      "eyebrow": "Lên kế hoạch sự kiện trong vài phút",
+      "title": "Thử công cụ lên kế hoạch lều AI miễn phí",
+      "body": "Không chắc lều cỡ nào, bố cục chỗ ngồi hay thiết bị nào phù hợp với sự kiện của bạn? Công cụ lên kế hoạch lều AI của chúng tôi giúp bạn tạo kế hoạch khởi đầu tùy chỉnh dựa trên số lượng khách, loại sự kiện, bề mặt, mức độ tiếp xúc thời tiết và nhu cầu thiết lập.",
+      "cards": {
+        "tentSize": { "title": "Đề xuất kích thước lều", "text": "Nhận kích thước lều được đề xuất dựa trên số lượng khách và bố cục của bạn." },
+        "equipment": { "title": "Danh sách thiết bị", "text": "Xem các bàn, ghế, tường bên, đèn chiếu sáng, sân khấu và phụ kiện được đề xuất." },
+        "blueprint": { "title": "Sơ đồ bố cục", "text": "Tạo sơ đồ bố cục trực quan làm điểm xuất phát cho thiết lập sự kiện của bạn." },
+        "quote": { "title": "Kế hoạch sẵn sàng báo giá", "text": "Gửi kế hoạch của bạn đến đội ngũ của chúng tôi để nhận báo giá tùy chỉnh và đánh giá cuối cùng." }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Cảm hứng",
+      "title": "Khám phá những gì có thể thực hiện",
+      "viewFull": "Xem toàn bộ thư viện ảnh →"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Dịch vụ",
+      "title": "Dịch vụ cho thuê thiết bị sự kiện cho mọi dịp",
+      "subtitle": "Dù bạn tổ chức buổi tụ họp nhỏ hay lễ kỷ niệm lớn ven biển, chúng tôi giúp tạo ra mái che, kết cấu và không gian mà sự kiện của bạn cần."
+    },
+    "items": {
+      "weddings": { "title": "Cho thuê lều đám cưới", "copy": "Tạo không gian có mái che đẹp cho lễ cưới, tiệc chiêu đãi, giờ cocktail hoặc toàn bộ cuối tuần đám cưới. Lều cho thuê của chúng tôi giúp biến địa điểm ngoài trời thành những không gian tổ chức sự kiện thoải mái và đáng nhớ." },
+      "festivals": { "title": "Cho thuê lều lễ hội & sự kiện cộng đồng", "copy": "Từ gian hàng đến không gian tụ họp lớn, chúng tôi hỗ trợ lễ hội, chợ phiên, gây quỹ, hội chợ và sự kiện cộng đồng với giải pháp lều thực tế, chống thời tiết." },
+      "private": { "title": "Cho thuê thiết bị tiệc riêng", "copy": "Tổ chức sinh nhật, họp mặt, lễ tốt nghiệp, kỷ niệm và tiệc sân vườn một cách tự tin. Chúng tôi giúp tạo không gian sự kiện thoải mái, có chủ đích và dễ tận hưởng." },
+      "corporate": { "title": "Cho thuê thiết bị sự kiện doanh nghiệp", "copy": "Hỗ trợ hội nghị công ty, họp mặt doanh nghiệp, ra mắt sản phẩm và sự kiện thương hiệu với thiết lập lều chuyên nghiệp giúp khách thoải mái và sự kiện trông chuyên nghiệp." },
+      "setup": { "title": "Giao hàng, lắp đặt & tháo dỡ", "copy": "Đơn giản hóa việc lên kế hoạch sự kiện với hỗ trợ lắp đặt và tháo dỡ đáng tin cậy. Đội ngũ của chúng tôi đảm nhận phần kết cấu để bạn tập trung vào trải nghiệm." }
+    },
+    "tailoredBanner": "Cần giải pháp phù hợp với sự kiện cụ thể của bạn?"
+  },
+  "tentRentals": {
+    "hero": {
+      "eyebrow": "Cho thuê lều",
+      "title": "Cho thuê lều cho sự kiện ven biển Oregon",
+      "subtitle": "Mái che thời trang, bố cục linh hoạt và khả năng bảo vệ đáng tin cậy cho đám cưới, tiệc, lễ hội và hội họp doanh nghiệp."
+    },
+    "bestFor": "Phù hợp nhất cho:",
+    "items": {
+      "popup": { "title": "Lều bật / Lều gian hàng", "best": "Chợ phiên, gian hàng, điểm đăng ký và trạm có mái che nhỏ.", "cta": "Hỏi về tình trạng còn hàng" },
+      "small": { "title": "Lều sự kiện nhỏ", "best": "Tiệc sân vườn, tụ họp nhỏ, phục vụ thức ăn và chỗ ngồi cho khách.", "cta": "Yêu cầu báo giá" },
+      "medium": { "title": "Lều sự kiện vừa", "best": "Tiệc chiêu đãi, tụ họp gia đình, tiệc riêng và sự kiện cộng đồng.", "cta": "Yêu cầu báo giá" },
+      "large": { "title": "Lều sự kiện lớn", "best": "Đám cưới, lễ hội, sự kiện doanh nghiệp và số lượng khách lớn.", "cta": "Lên kế hoạch sự kiện" },
+      "wedding": { "title": "Lều tiệc cưới", "best": "Khu ăn uống, sàn khiêu vũ, khu thư giãn và bố cục đám cưới ngoài trời thanh lịch.", "cta": "Bắt đầu báo giá đám cưới" },
+      "custom": { "title": "Bố cục sự kiện tùy chỉnh", "best": "Địa điểm phức tạp, nhiều lều, hàng gian hàng, kế hoạch thời tiết và luồng sự kiện.", "cta": "Thiết kế thiết lập của tôi" }
+    },
+    "help": {
+      "title": "Không chắc cần lều cỡ nào?",
+      "body": "Hãy cho chúng tôi biết số lượng khách, loại sự kiện, địa điểm và mục tiêu bố cục. Chúng tôi sẽ giúp đề xuất kích thước lều và thiết lập phù hợp.",
+      "cta": "Nhận hỗ trợ lựa chọn"
+    },
+    "inventory": {
+      "title": "Duyệt toàn bộ kho hàng",
+      "body": "Xem mọi kích thước lều, bàn, ghế, sàn nhảy, tùy chọn chiếu sáng, quầy bar và khu vực giao hàng — với giá thuê 3 ngày.",
+      "cta": "Xem kho hàng & bảng giá"
+    }
+  },
+  "events": {
+    "hero": {
+      "eyebrow": "Sự kiện",
+      "title": "Các sự kiện chúng tôi hỗ trợ",
+      "subtitle": "Từ đám cưới trên bờ biển đến lễ hội cộng đồng, Pacific North Events & Tents giúp tạo ra những không gian thoải mái cho những buổi tụ họp khó quên."
+    },
+    "suggestedRentals": "Thiết bị đề xuất:",
+    "items": {
+      "weddings": { "title": "Đám cưới", "desc": "Tạo không gian có mái che đẹp cho ăn uống, khiêu vũ, chỗ ngồi lễ cưới và sự thoải mái của khách.", "rentals": "Lều tiệc chiêu đãi, lều lễ cưới, lều gian hàng, mái che khu thư giãn, bố cục sẵn sàng cho đèn chiếu sáng.", "cta": "Yêu cầu báo giá đám cưới" },
+      "festivals": { "title": "Lễ hội", "desc": "Bố cục nhiều lều lớn cho lễ hội âm nhạc, ẩm thực và cộng đồng dọc bờ biển.", "rentals": "Lều sân khấu chính, hàng gian hàng, lều phục vụ thức ăn, mái che điểm đăng ký.", "cta": "Lên kế hoạch lễ hội" },
+      "private": { "title": "Tiệc riêng", "desc": "Từ sinh nhật sân vườn đến lễ kỷ niệm lớn, không gian thoải mái để tụ họp và ăn uống.", "rentals": "Lều nhỏ đến vừa, bàn, ghế, đèn chiếu sáng, tường bên.", "cta": "Yêu cầu báo giá tiệc" },
+      "corporate": { "title": "Sự kiện doanh nghiệp", "desc": "Địa điểm ngoài trời chuyên nghiệp cho hội nghị, ra mắt sản phẩm và tụ họp thương hiệu.", "rentals": "Lều tiếp tân, khu trình bày, lều gian hàng thương hiệu.", "cta": "Yêu cầu báo giá doanh nghiệp" },
+      "markets": { "title": "Chợ phiên & Sự kiện gian hàng", "desc": "Hàng gian hàng có tổ chức chịu được gió, nắng và mưa vùng Tây Bắc Thái Bình Dương.", "rentals": "Lều gian hàng 10x10 / 10x20, lều điểm đăng ký, tường bên.", "cta": "Yêu cầu báo giá gian hàng" },
+      "fundraisers": { "title": "Gây quỹ & Tụ họp cộng đồng", "desc": "Không gian thân thiện cho các buổi gây quỹ, sự kiện trường học và lễ kỷ niệm cộng đồng.", "rentals": "Lều vừa đến lớn, bàn, ghế, đèn chiếu sáng.", "cta": "Yêu cầu báo giá cộng đồng" }
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "Thư viện ảnh",
+      "title": "Thư viện ảnh cảm hứng sự kiện",
+      "subtitle": "Duyệt thiết lập lều, buổi tụ họp ngoài trời và cảm hứng sự kiện ven biển."
+    },
+    "filters": {
+      "all": "Tất cả",
+      "coastal": "Thiết lập ven biển",
+      "reception": "Tiệc chiêu đãi",
+      "lighting": "Chiếu sáng"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Giới thiệu",
+      "title": "Về Pacific North Events & Tents",
+      "subtitle": "Giúp các sự kiện ven biển Oregon thành công với thiết bị cho thuê đáng tin cậy, lên kế hoạch chu đáo và thiết lập chống thời tiết."
+    },
+    "story": {
+      "eyebrow": "Câu chuyện của chúng tôi",
+      "title": "Sự kiện địa phương xứng đáng được hỗ trợ địa phương",
+      "body": "Pacific North Events & Tents được tạo ra để giúp mọi người tổ chức những sự kiện ngoài trời tốt hơn dọc bờ biển Oregon. Chúng tôi hiểu rằng các lễ kỷ niệm ven biển cần lên kế hoạch linh hoạt, thiết bị đáng tin cậy và một đội ngũ biết rằng mỗi chi tiết đều quan trọng khi ngày trọng đại đến."
+    },
+    "values": {
+      "title": "Những gì chúng tôi đề cao",
+      "reliable": { "title": "Thiết lập đáng tin cậy", "text": "Hỗ trợ giao hàng, lắp đặt và tháo dỡ đáng tin cậy để sự kiện của bạn bắt đầu một cách tự tin." },
+      "weather": { "title": "Lên kế hoạch chống thời tiết", "text": "Sự kiện ngoài trời cần mái che thông minh. Chúng tôi giúp khách hàng lên kế hoạch cho sự thoải mái trong điều kiện thời tiết ven biển thay đổi." },
+      "flexible": { "title": "Hỗ trợ sự kiện linh hoạt", "text": "Từ buổi tụ họp thân mật đến lễ kỷ niệm lớn hơn, chúng tôi giúp khớp thiết lập với sự kiện." },
+      "local": { "title": "Dịch vụ địa phương thân thiện", "text": "Chúng tôi quan tâm đến việc giúp khách hàng tạo ra những trải nghiệm đáng nhớ mà không có căng thẳng không cần thiết." }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Liên hệ",
+      "title": "Yêu cầu báo giá",
+      "subtitle": "Hãy cho chúng tôi biết về sự kiện của bạn và chúng tôi sẽ giúp lên kế hoạch thiết lập lều phù hợp."
+    },
+    "thankYou": {
+      "title": "Cảm ơn bạn!",
+      "body": "Chúng tôi đã nhận được yêu cầu của bạn và sẽ liên hệ sớm để giúp lên kế hoạch sự kiện."
+    },
+    "fromRecommender": "Từ công cụ đề xuất của bạn:",
+    "fields": {
+      "fullName": "Họ và tên *",
+      "email": "Địa chỉ email *",
+      "phone": "Số điện thoại *",
+      "eventDate": "Ngày sự kiện *",
+      "eventLocation": "Địa điểm / Nơi tổ chức sự kiện *",
+      "eventLocationPlaceholder": "Tên địa điểm, thành phố hoặc khu vực",
+      "eventType": "Loại sự kiện *",
+      "guestCount": "Số lượng khách dự kiến *",
+      "rentalsInterest": "Bạn quan tâm đến thiết bị cho thuê nào?",
+      "preferredContact": "Phương thức liên hệ ưa thích",
+      "message": "Tin nhắn",
+      "messagePlaceholder": "Hãy kể cho chúng tôi về sự kiện, địa điểm, lịch trình và ý tưởng của bạn…"
+    },
+    "selectOption": "Chọn một tùy chọn",
+    "selectRange": "Chọn khoảng",
+    "submit": "Gửi yêu cầu báo giá",
+    "guestRanges": {
+      "under25": "Dưới 25",
+      "25_50": "25–50",
+      "50_100": "50–100",
+      "100_200": "100–200",
+      "200_plus": "200+"
+    },
+    "eventTypes": {
+      "wedding": "Đám cưới",
+      "festival": "Lễ hội",
+      "privateParty": "Tiệc riêng",
+      "corporateEvent": "Sự kiện doanh nghiệp",
+      "marketVendor": "Chợ phiên / Sự kiện gian hàng",
+      "community": "Sự kiện cộng đồng",
+      "other": "Khác"
+    },
+    "rentalOptions": {
+      "eventTent": "Lều sự kiện",
+      "vendorTent": "Lều gian hàng",
+      "weddingTent": "Lều đám cưới",
+      "tables": "Bàn",
+      "chairs": "Ghế",
+      "lighting": "Chiếu sáng",
+      "setupSupport": "Hỗ trợ lắp đặt / Tháo dỡ",
+      "notSure": "Chưa chắc"
+    },
+    "contactMethod": {
+      "email": "Email",
+      "phone": "Điện thoại",
+      "text": "Tin nhắn"
+    },
+    "sidebar": {
+      "title": "Liên hệ Pacific North Events & Tents",
+      "phonePlaceholder": "Thêm số điện thoại",
+      "emailPlaceholder": "Thêm địa chỉ email",
+      "areaServed": "Bờ biển Oregon và các khu vực lân cận",
+      "facebook": "Facebook",
+      "noteTitle": "Cho thuê quanh năm.",
+      "noteBody": "Hãy liên hệ sớm để có tình trạng sẵn hàng tốt nhất."
+    }
+  },
+  "plannerPopup": {
+    "badge": "Công cụ miễn phí mới",
+    "title": "Không chắc cần lều cỡ nào?",
+    "body": "Thử công cụ lên kế hoạch lều AI miễn phí của chúng tôi và nhận đề xuất kích thước lều tùy chỉnh, danh sách thiết bị và sơ đồ bố cục sự kiện trong vài phút.",
+    "bullets": {
+      "tentSize": "Đề xuất kích thước lều",
+      "equipment": "Bàn, ghế, sân khấu, đèn chiếu sáng & phụ kiện",
+      "blueprint": "Thiết lập dạng sơ đồ",
+      "quote": "Kế hoạch sẵn sàng báo giá"
+    },
+    "primaryCta": "Bắt đầu kế hoạch lều miễn phí",
+    "secondaryCta": "Để sau",
+    "note": "Phù hợp cho đám cưới, gây quỹ, lễ hội, tiệc riêng và sự kiện doanh nghiệp.",
+    "close": "Đóng"
   },
   "recommender": {
-    "metaTitle": "Đề xuất Sự kiện | Pacific North Events & Tents",
-    "metaDesc": "Đề xuất cài đặt sự kiện bằng AI.",
-    "heroEyebrow": "Đề xuất Sự kiện",
-    "heroTitle": "Tìm Cài đặt Phù hợp cho Sự kiện",
-    "heroSubtitle": "Trả lời vài câu hỏi nhanh và AI sẽ đề xuất kế hoạch đầy đủ.",
-    "intro": "Mỗi sự kiện đều khác nhau. Chúng tôi sẽ xem xét nhu cầu của bạn.",
+    "metaTitle": "Lên kế hoạch lều AI | Pacific North Events & Tents",
+    "metaDesc": "Công cụ lên kế hoạch lều AI miễn phí. Nhận đề xuất kích thước lều tùy chỉnh, danh sách thiết bị và sơ đồ bố cục sự kiện trong vài phút.",
+    "heroEyebrow": "Lên kế hoạch lều AI",
+    "heroTitle": "Tìm thiết lập phù hợp cho sự kiện của bạn",
+    "heroSubtitle": "Trả lời một vài câu hỏi nhanh và AI của chúng tôi sẽ đề xuất kế hoạch đầy đủ về lều, bàn, ghế và thiết bị — cùng sơ đồ bố cục của bạn.",
+    "intro": "Mỗi sự kiện đều khác nhau. Chúng tôi sẽ xem xét nhu cầu về kho hàng của bạn bao gồm lều, bàn, ghế và các vật dụng đặc biệt để bạn có cái nhìn toàn diện trước khi yêu cầu báo giá.",
     "steps": {
-      "eventBasics": "Cơ bản Sự kiện", "guestLayout": "Khách & Bố cục",
-      "extras": "Đồ ăn & Phụ kiện", "locationWeather": "Địa điểm & Thời tiết", "contact": "Thông tin"
+      "eventBasics": "Thông tin cơ bản",
+      "guestLayout": "Khách & Bố cục",
+      "extras": "Thức ăn & Phụ kiện",
+      "locationWeather": "Địa điểm & Thời tiết",
+      "contact": "Thông tin của bạn"
     },
     "fields": {
-      "eventType": "Bạn đang lên kế hoạch loại sự kiện gì?",
+      "eventType": "Bạn đang lên kế hoạch cho loại sự kiện nào?",
       "eventDate": "Ngày sự kiện của bạn là khi nào? *",
-      "eventLocation": "Sự kiện sẽ tổ chức ở đâu? *",
-      "eventLocationPlaceholder": "Tên địa điểm, sân sau, công viên, bãi biển, địa điểm kinh doanh, v.v.",
-      "outdoorIndoor": "Sự kiện ngoài trời, trong nhà hay có mái che một phần?",
+      "eventLocation": "Sự kiện sẽ được tổ chức ở đâu? *",
+      "eventLocationPlaceholder": "Tên địa điểm, sân vườn, công viên, khu vực bãi biển, địa điểm kinh doanh, v.v.",
+      "outdoorIndoor": "Sự kiện diễn ra ngoài trời, trong nhà hay có mái che một phần?",
       "guestCount": "Bạn dự kiến bao nhiêu khách? *",
-      "setupType": "Bạn cần loại bố trí nào?",
-      "seatedGuests": "Khách có ngồi ở bàn không?",
+      "setupType": "Bạn cần loại thiết lập nào?",
+      "seatedGuests": "Khách có ngồi vào bàn không?",
       "tableStyle": "Bạn thích kiểu bàn nào?",
-      "foodService": "Sẽ có đồ ăn hoặc tiệc dưới lều không?",
-      "dancing": "Bạn có cần không gian để nhảy không?",
-      "extras": "Sẽ có quầy bar, bàn quà, DJ, ban nhạc hoặc sân khấu không?",
-      "rentalItems": "Bạn quan tâm đến vật phẩm cho thuê nào?",
-      "surface": "Lều sẽ được dựng trên loại bề mặt nào?",
+      "foodService": "Có phục vụ thức ăn hoặc tiệc cưới dưới lều không?",
+      "dancing": "Bạn có cần không gian khiêu vũ không?",
+      "extras": "Có quầy bar, bàn quà, DJ, ban nhạc hay sân khấu không?",
+      "rentalItems": "Bạn quan tâm đến thiết bị cho thuê nào?",
+      "surface": "Loại bề mặt nào sẽ được dùng để dựng lều?",
       "weatherExposure": "Địa điểm có tiếp xúc với gió hoặc thời tiết ven biển không?",
-      "sidewalls": "Bạn có muốn vách bên để bảo vệ thêm không?",
+      "sidewalls": "Bạn có muốn thêm tường bên để bảo vệ thêm khỏi thời tiết không?",
       "afterSunset": "Sự kiện có tiếp tục sau khi mặt trời lặn không?",
-      "fullName": "Họ và tên *", "email": "Địa chỉ Email *", "phone": "Số Điện thoại",
-      "preferredContact": "Phương thức Liên hệ Ưa thích",
+      "fullName": "Họ và tên *",
+      "email": "Địa chỉ email *",
+      "phone": "Số điện thoại",
+      "preferredContact": "Phương thức liên hệ ưa thích",
       "message": "Có điều gì khác chúng tôi cần biết về sự kiện của bạn không?"
     },
     "options": {
       "eventTypes": {
-        "wedding": "Đám cưới", "festival": "Lễ hội", "privateParty": "Tiệc Riêng",
-        "corporateEvent": "Sự kiện Doanh nghiệp", "marketVendorEvent": "Chợ / Sự kiện Bán hàng",
-        "fundraiser": "Gây quỹ", "communityEvent": "Sự kiện Cộng đồng",
-        "graduationParty": "Tiệc Tốt nghiệp", "other": "Khác"
+        "Wedding": "Đám cưới",
+        "Festival": "Lễ hội",
+        "Private Party": "Tiệc riêng",
+        "Corporate Event": "Sự kiện doanh nghiệp",
+        "Market / Vendor Event": "Chợ phiên / Sự kiện gian hàng",
+        "Fundraiser": "Gây quỹ",
+        "Community Event": "Sự kiện cộng đồng",
+        "Graduation Party": "Tiệc tốt nghiệp",
+        "Other": "Khác"
       },
       "outdoor": {
-        "fullyOutdoors": "Hoàn toàn ngoài trời", "indoors": "Trong nhà",
-        "partiallyCovered": "Có mái che một phần", "notSureYet": "Chưa chắc chắn"
+        "Fully outdoors": "Hoàn toàn ngoài trời",
+        "Indoors": "Trong nhà",
+        "Partially covered": "Có mái che một phần",
+        "Not sure yet": "Chưa chắc"
       },
       "setup": {
-        "standingOnly": "Chỉ đứng", "ceremonySeating": "Ghế nghi lễ",
-        "seatedDining": "Ngồi ăn", "cocktailMingling": "Bàn cocktail / giao lưu",
-        "vendorBooths": "Quầy bán hàng", "foodServiceArea": "Khu vực phục vụ ăn",
-        "mixedLayout": "Bố cục hỗn hợp", "notSure": "Không chắc"
+        "Standing only": "Đứng hoàn toàn",
+        "Ceremony seating": "Chỗ ngồi lễ cưới",
+        "Seated dining": "Ăn uống ngồi bàn",
+        "Cocktail tables / mingling": "Bàn cocktail / giao lưu",
+        "Vendor booths": "Gian hàng",
+        "Food service area": "Khu phục vụ thức ăn",
+        "Mixed layout": "Bố cục kết hợp",
+        "Not sure": "Chưa chắc"
       },
       "seated": {
-        "allSeated": "Có, tất cả khách ngồi", "someSeated": "Một số ngồi, một số đứng",
-        "mostlyStanding": "Không, chủ yếu đứng", "notSure": "Không chắc"
+        "Yes, all guests seated": "Có, tất cả khách ngồi bàn",
+        "Some seated, some standing": "Một số ngồi, một số đứng",
+        "No, mostly standing": "Không, chủ yếu đứng",
+        "Not sure": "Chưa chắc"
       },
       "tableStyle": {
-        "round": "Bàn tròn", "banquet": "Bàn tiệc / chữ nhật",
-        "cocktail": "Bàn cocktail", "picnic": "Bàn kiểu dã ngoại",
-        "noTables": "Không cần bàn", "notSure": "Không chắc"
+        "Round tables": "Bàn tròn",
+        "Banquet / rectangular tables": "Bàn tiệc / bàn chữ nhật",
+        "Cocktail tables": "Bàn cocktail",
+        "Picnic-style tables": "Bàn kiểu dã ngoại",
+        "No tables needed": "Không cần bàn",
+        "Not sure": "Chưa chắc"
       },
       "food": {
-        "buffet": "Có, buffet", "plated": "Có, bữa ăn được phục vụ",
-        "foodTrucks": "Có, xe đồ ăn gần đó", "snackOnly": "Có, chỉ bàn đồ ăn nhẹ / tráng miệng",
-        "noFood": "Không có dịch vụ ăn", "notSure": "Không chắc"
+        "Yes, buffet": "Có, tiệc buffet",
+        "Yes, plated meal": "Có, bữa ăn theo phần",
+        "Yes, food trucks nearby": "Có, xe thức ăn ở gần",
+        "Yes, snack / dessert table only": "Có, chỉ bàn đồ ăn nhẹ / tráng miệng",
+        "No food service": "Không có phục vụ thức ăn",
+        "Not sure": "Chưa chắc"
       },
       "dancing": {
-        "danceFloor": "Có, cần sàn nhảy", "small": "Khu nhảy nhỏ",
-        "none": "Không có khu nhảy", "notSure": "Không chắc"
+        "Yes, dance floor area needed": "Có, cần khu vực sàn nhảy",
+        "Small dancing area": "Khu vực khiêu vũ nhỏ",
+        "No dancing area": "Không có khu vực khiêu vũ",
+        "Not sure": "Chưa chắc"
       },
       "extras": {
-        "bar": "Khu bar", "gift": "Bàn quà", "dessert": "Bàn tráng miệng",
-        "dj": "Bàn DJ", "band": "Ban nhạc trực tiếp", "stage": "Sân khấu nhỏ",
-        "speaker": "Khu loa / thông báo", "none": "Không", "notSure": "Không chắc"
+        "Bar area": "Khu vực quầy bar",
+        "Gift table": "Bàn quà tặng",
+        "Dessert table": "Bàn tráng miệng",
+        "DJ booth": "Buồng DJ",
+        "Live band": "Ban nhạc sống",
+        "Small stage": "Sân khấu nhỏ",
+        "Speaker / announcement area": "Khu vực loa / thông báo",
+        "None": "Không có",
+        "Not sure": "Chưa chắc"
       },
       "rentals": {
-        "tent": "Lều", "tables": "Bàn", "chairs": "Ghế", "linens": "Khăn trải",
-        "lighting": "Đèn", "danceFloor": "Sàn nhảy", "sidewalls": "Vách bên",
-        "heaters": "Lò sưởi", "flooring": "Sàn", "vendorTents": "Lều bán hàng",
-        "trash": "Trạm rác / tái chế", "setup": "Lắp đặt và tháo dỡ",
-        "notSure": "Chưa chắc chắn"
+        "Tent": "Lều",
+        "Tables": "Bàn",
+        "Chairs": "Ghế",
+        "Linens": "Khăn trải bàn",
+        "Lighting": "Chiếu sáng",
+        "Dance floor": "Sàn nhảy",
+        "Sidewalls": "Tường bên",
+        "Heaters": "Máy sưởi",
+        "Flooring": "Sàn",
+        "Vendor tents": "Lều gian hàng",
+        "Trash / recycling stations": "Trạm rác / tái chế",
+        "Setup and breakdown": "Lắp đặt và tháo dỡ",
+        "Not sure yet": "Chưa chắc"
       },
       "surface": {
-        "grass": "Cỏ", "gravel": "Sỏi", "concrete": "Bê tông", "asphalt": "Nhựa đường",
-        "sand": "Cát", "deckPatio": "Sàn gỗ / sân", "mixed": "Bề mặt hỗn hợp", "notSure": "Không chắc"
+        "Grass": "Cỏ",
+        "Gravel": "Sỏi",
+        "Concrete": "Bê tông",
+        "Asphalt": "Nhựa đường",
+        "Sand": "Cát",
+        "Deck / patio": "Sàn gỗ / sân hiên",
+        "Mixed surface": "Bề mặt kết hợp",
+        "Not sure": "Chưa chắc"
       },
       "exposure": {
-        "veryExposed": "Có, rất lộ thiên", "somewhatExposed": "Hơi lộ thiên",
-        "mostlyProtected": "Chủ yếu được bảo vệ", "notSure": "Không chắc"
+        "Yes, very exposed": "Có, rất dễ tiếp xúc",
+        "Somewhat exposed": "Khá dễ tiếp xúc",
+        "Mostly protected": "Được bảo vệ phần lớn",
+        "Not sure": "Chưa chắc"
       },
-      "sidewalls": { "yes": "Có", "maybe": "Có thể", "no": "Không", "notSure": "Không chắc" },
-      "afterSunset": { "yes": "Có", "no": "Không", "notSure": "Không chắc" },
-      "contactMethod": { "email": "Email", "phone": "Điện thoại", "text": "Tin nhắn" },
-      "guestCounts": {
-        "under_25": "Dưới 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
-        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      "sidewalls": {
+        "Yes": "Có",
+        "Maybe": "Có thể",
+        "No": "Không",
+        "Not sure": "Chưa chắc"
+      },
+      "afterSunset": {
+        "Yes": "Có",
+        "No": "Không",
+        "Not sure": "Chưa chắc"
+      },
+      "contactMethod": {
+        "Email": "Email",
+        "Phone": "Điện thoại",
+        "Text": "Tin nhắn"
       }
     },
     "stepTitles": {
-      "eventBasics": "Cơ bản sự kiện", "guestLayout": "Số khách & bố cục",
-      "extras": "Đồ ăn, nhảy & phụ kiện", "locationWeather": "Địa điểm & thời tiết", "contact": "Thông tin"
+      "eventBasics": "Thông tin cơ bản về sự kiện",
+      "guestLayout": "Số lượng khách & bố cục",
+      "extras": "Thức ăn, khiêu vũ & phụ kiện",
+      "locationWeather": "Địa điểm & thời tiết",
+      "contact": "Thông tin của bạn"
     },
     "buttons": {
-      "back": "Quay lại", "next": "Tiếp", "startOver": "Bắt đầu Lại",
-      "generate": "Tạo Cài đặt", "tryAgain": "Thử lại",
-      "openPdf": "Mở Trình xem PDF", "viewPdf": "Xem PDF",
-      "downloadPdf": "Tải PDF", "print": "In",
-      "closeViewer": "Đóng trình xem PDF", "saveAccount": "Lưu vào Tài khoản",
-      "createAccount": "Tạo Tài khoản để Lưu", "viewPlans": "Xem Kế hoạch",
-      "sendForQuote": "Gửi Đề xuất này để Báo giá"
+      "back": "Quay lại",
+      "next": "Tiếp theo",
+      "startOver": "Làm lại từ đầu",
+      "generate": "Tạo thiết lập của tôi",
+      "tryAgain": "Thử lại",
+      "openPdf": "Mở trình xem PDF",
+      "viewPdf": "Xem PDF",
+      "downloadPdf": "Tải PDF",
+      "print": "In",
+      "closeViewer": "Đóng trình xem PDF",
+      "saveAccount": "Lưu vào tài khoản",
+      "createAccount": "Tạo tài khoản để lưu",
+      "viewPlans": "Xem kế hoạch của tôi",
+      "sendForQuote": "Gửi đề xuất này để nhận báo giá"
     },
     "loading": {
-      "title": "Đang thiết kế cài đặt sự kiện…",
-      "subtitle": "AI của chúng tôi đang xem xét. Thường mất 15–30 giây."
+      "title": "Đang thiết kế thiết lập sự kiện của bạn…",
+      "subtitle": "AI của chúng tôi đang xem xét kho hàng và soạn sơ đồ của bạn. Quá trình này thường mất 15–30 giây."
     },
     "error": {
-      "title": "Chúng tôi không thể tạo đề xuất",
-      "generic": "Đã có lỗi xảy ra.",
-      "retryHint": "Câu trả lời được lưu bên dưới. Nhấp \"Tạo Cài đặt\" để thử lại."
+      "title": "Chúng tôi không thể tạo đề xuất của bạn",
+      "generic": "Đã xảy ra lỗi ở phía chúng tôi.",
+      "retryHint": "Câu trả lời của bạn đã được lưu bên dưới. Nhấp vào \"Tạo thiết lập của tôi\" để thử lại, hoặc \"Liên hệ với chúng tôi\" và chúng tôi sẽ lên kế hoạch thủ công."
     },
     "results": {
       "eyebrow": "Đề xuất của bạn đã sẵn sàng",
-      "thanks": "Cảm ơn {{name}} — chúng tôi đã xem xét {{eventType}} của bạn cho {{guests}} khách vào {{date}}{{locationClause}}.",
-      "atGlance": "Sự kiện trong nháy mắt", "atGlanceSub": "Tóm tắt nhanh.",
-      "extrasRequested": "Phụ kiện yêu cầu", "rentalsOfInterest": "Cho thuê quan tâm",
-      "suggestedLayout": "Bố cục Đề xuất", "blueprintSketch": "Phác thảo Bố cục",
-      "blueprintNote": "Phác thảo khái niệm — vị trí cuối cùng được xác nhận khi báo giá.",
-      "recommendedSetup": "Cài đặt Đề xuất",
-      "recommendedSetupSub": "Lựa chọn đầy đủ cho mọi danh mục.",
-      "weatherNotes": "Lưu ý Thời tiết & Cài đặt",
-      "disclaimer": "Đây là ước tính do AI tạo.",
-      "savedToAccount": "Đã lưu vào tài khoản.",
-      "dontLose": "Đừng mất đề xuất này",
-      "dontLoseDesc": "Tạo tài khoản miễn phí để lưu.",
+      "thanksLead": "Cảm ơn {{name}} — chúng tôi đã xem xét sự kiện {{eventType}} của bạn cho",
+      "guestsLabel": "{{guests}} khách",
+      "onDate": "vào",
+      "at": "tại",
+      "thanksTrail": "Dựa trên câu trả lời của bạn, đây là những gì chúng tôi đề xuất.",
+      "atGlance": "Sự kiện của bạn trong nháy mắt",
+      "atGlanceSub": "Tóm tắt nhanh những gì bạn đã cho chúng tôi biết.",
+      "extrasRequested": "Phụ kiện được yêu cầu",
+      "rentalsOfInterest": "Thiết bị cho thuê quan tâm",
+      "suggestedLayout": "Bố cục đề xuất",
+      "blueprintSketch": "Bản phác thảo sơ đồ",
+      "blueprintNote": "Phác thảo khái niệm — vị trí cuối cùng được xác nhận trong quá trình báo giá.",
+      "recommendedSetup": "Thiết lập được đề xuất",
+      "recommendedSetupSub": "Lựa chọn kho hàng đầy đủ cho mọi danh mục. Số lượng chỉ là ước tính.",
+      "weatherNotes": "Ghi chú về thời tiết & Thiết lập",
+      "disclaimer": "Đây là ước tính do AI tạo ra. Kích thước lều, số lượng và thiết bị cuối cùng có thể thay đổi dựa trên địa điểm, bề mặt, bố cục, thời tiết và tình trạng còn hàng của bạn. Không có giá được hiển thị — yêu cầu báo giá để có giá xác nhận.",
+      "savedToAccount": "Đã lưu vào tài khoản của bạn.",
+      "dontLose": "Đừng để mất đề xuất này",
+      "dontLoseDesc": "Tạo tài khoản miễn phí để lưu kế hoạch này và truy cập bất cứ lúc nào. Chúng tôi sẽ tự động lưu khi bạn đăng nhập.",
       "pdfViewer": "Trình xem PDF",
       "recapKeys": {
-        "eventType": "Loại sự kiện", "date": "Ngày", "location": "Địa điểm", "setting": "Bối cảnh",
-        "guests": "Khách", "setup": "Cài đặt", "seating": "Chỗ ngồi", "tables": "Bàn",
-        "food": "Đồ ăn", "dancing": "Nhảy", "surface": "Bề mặt", "exposure": "Tiếp xúc",
-        "sidewalls": "Vách bên", "afterSunset": "Sau hoàng hôn"
+        "eventType": "Loại sự kiện",
+        "date": "Ngày",
+        "location": "Địa điểm",
+        "setting": "Thiết lập",
+        "guests": "Khách",
+        "setup": "Thiết lập",
+        "seating": "Chỗ ngồi",
+        "tables": "Bàn",
+        "food": "Thức ăn",
+        "dancing": "Khiêu vũ",
+        "surface": "Bề mặt",
+        "exposure": "Mức độ tiếp xúc",
+        "sidewalls": "Tường bên",
+        "afterSunset": "Sau khi mặt trời lặn"
       },
-      "selectedDateFallback": "ngày bạn chọn", "noLocation": "—", "atClause": " tại "
+      "selectedDateFallback": "ngày bạn đã chọn",
+      "noLocation": "—"
     },
-    "notSureYet": { "title": "Chưa chắc? Không sao.", "desc": "Bạn không cần biết mọi chi tiết trước khi liên hệ." },
+    "notSureYet": {
+      "title": "Chưa chắc chắn? Không sao cả.",
+      "desc": "Bạn không cần biết mọi chi tiết trước khi liên hệ. Nếu bạn có ngày, địa điểm và số lượng khách tương đối, chúng tôi có thể hỗ trợ phần còn lại."
+    },
     "validation": {
-      "required": "Trường bắt buộc", "invalidEmail": "Vui lòng nhập email hợp lệ",
-      "eventDateRequired": "Vui lòng nhập ngày sự kiện",
-      "eventLocationRequired": "Vui lòng nhập địa điểm sự kiện"
+      "required": "Trường này là bắt buộc.",
+      "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ.",
+      "eventDateRequired": "Vui lòng nhập ngày sự kiện của bạn.",
+      "eventLocationRequired": "Vui lòng nhập địa điểm sự kiện của bạn."
     }
   }
 }
