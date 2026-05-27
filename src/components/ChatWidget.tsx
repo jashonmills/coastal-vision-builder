@@ -202,7 +202,7 @@ function MessageBubble({ msg }: { msg: Msg }) {
         {isBot && msg.actions && msg.actions.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1.5">
             {msg.actions.map((a, i) => {
-              const label = t(a.labelKey);
+              const label = a.label ?? (a.labelKey ? t(a.labelKey) : "");
               const isTel = a.href?.startsWith("tel:");
               const cls =
                 "inline-flex items-center gap-1 rounded-full border border-[color:var(--gold)]/40 bg-background px-2.5 py-1 text-[11px] font-medium text-foreground transition hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)]/10";
