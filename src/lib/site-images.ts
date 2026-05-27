@@ -28,7 +28,7 @@ function img(file: string, alt: string, caption?: string): SiteImage {
  */
 export const sketchImages: SiteImage[] = [
   img(
-    "474563191_529823760055406_8167397046202509944_n.jpg",
+    "474563191_565306963173752_1136886455040851362_n.jpg",
     "Floor plan: 20 by 60 foot frame tent with eight round tables and a sixteen-section dance floor",
     "20×60 Frame Tent · 8 round tables · 64 chairs · 16 dance-floor sections",
   ),
