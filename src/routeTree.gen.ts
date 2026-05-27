@@ -23,7 +23,6 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
-import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
 
 const TentRentalsRoute = TentRentalsRouteImport.update({
@@ -96,11 +95,6 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/account/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminInventoryRoute = AdminInventoryRouteImport.update({
-  id: '/inventory',
-  path: '/inventory',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AccountIdRoute = AccountIdRouteImport.update({
   id: '/account/$id',
   path: '/account/$id',
@@ -110,7 +104,7 @@ const AccountIdRoute = AccountIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
@@ -122,13 +116,12 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
-  '/admin/inventory': typeof AdminInventoryRoute
   '/account/': typeof AccountIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
@@ -140,14 +133,13 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
-  '/admin/inventory': typeof AdminInventoryRoute
   '/account': typeof AccountIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
@@ -159,7 +151,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
-  '/admin/inventory': typeof AdminInventoryRoute
   '/account/': typeof AccountIndexRoute
 }
 export interface FileRouteTypes {
@@ -179,7 +170,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tent-rentals'
     | '/account/$id'
-    | '/admin/inventory'
     | '/account/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -197,7 +187,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tent-rentals'
     | '/account/$id'
-    | '/admin/inventory'
     | '/account'
   id:
     | '__root__'
@@ -215,14 +204,13 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tent-rentals'
     | '/account/$id'
-    | '/admin/inventory'
     | '/account/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminRoute: typeof AdminRoute
   AiTentPlannerRoute: typeof AiTentPlannerRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
@@ -337,13 +325,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/inventory': {
-      id: '/admin/inventory'
-      path: '/inventory'
-      fullPath: '/admin/inventory'
-      preLoaderRoute: typeof AdminInventoryRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/account/$id': {
       id: '/account/$id'
       path: '/account/$id'
@@ -354,20 +335,10 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AdminRouteChildren {
-  AdminInventoryRoute: typeof AdminInventoryRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminInventoryRoute: AdminInventoryRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminRoute: AdminRoute,
   AiTentPlannerRoute: AiTentPlannerRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
