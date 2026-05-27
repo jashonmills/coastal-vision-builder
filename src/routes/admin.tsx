@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Box, Type, Tag, ArrowRight, FileSpreadsheet, CalendarDays } from "lucide-react";
+import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Type, Tag, ArrowRight, FileSpreadsheet, CalendarDays } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { uploadImage } from "@/lib/upload-image";
 import { TEXT_SLOTS, IMAGE_SLOTS } from "@/lib/content-slots";
 import { useAllSiteContent, useSaveSlot } from "@/hooks/use-site-content";
+import { AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin | Pacific North Events & Tents" }] }),
@@ -37,18 +38,13 @@ function AdminPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Site Content" subtitle="Manage pricing, inventory, gallery, site images and text." />
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
+        <AdminTabs active="admin" />
         <div className="mb-8 flex flex-wrap gap-2">
           {([["pricing", Tag, "Pricing"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
             <button key={k} onClick={() => setTab(k)} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${tab === k ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"}`}>
               <Icon className="h-4 w-4" /> {label}
             </button>
           ))}
-          <Link
-            to="/admin/inventory"
-            className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/50 bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-[color:var(--gold)]/10"
-          >
-            <Box className="h-4 w-4" /> Inventory <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
           <Link to="/admin/data-import" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary">
             <FileSpreadsheet className="h-4 w-4" /> Data Import <ArrowRight className="h-3.5 w-3.5" />
           </Link>

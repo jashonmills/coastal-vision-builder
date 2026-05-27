@@ -63,7 +63,19 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     const guests = data.guest_count ? `${data.guest_count} guests` : "";
     const evtType = data.event_type ?? "Event";
     const baseTitle = `New Quote Request: ${evtType}${guests ? " · " + guests : ""}`;
-    const events: Array<Record<string, unknown>> = [
+    type CalEvent = {
+      title: string;
+      event_type: string;
+      start_time: string;
+      all_day?: boolean;
+      status?: string;
+      color?: string | null;
+      quote_request_id?: string | null;
+      saved_recommendation_id?: string | null;
+      location?: string | null;
+      notes?: string | null;
+    };
+    const events: CalEvent[] = [
       {
         title: baseTitle,
         event_type: "quote_request",
@@ -434,4 +446,68 @@ export const listPricingItemsForBuilder = createServerFn({ method: "GET" })
       .order("sort_order");
     if (error) throw new Error(error.message);
     return data ?? [];
+  });
+
+/* ----------------------- inventory availability -------------------------- */
+
+// For a given quote, return availability for any line item that maps to an inventory item.
+// Map key = quote_item.id, value = { available, total_owned, inventory_name } | null
+export const getQuoteItemsAvailability = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const { data: items } = await supabase
+      .from("quote_items")
+      .select("id, pricing_item_id, inventory_item_id, name")
+      .eq("quote_id", data.quote_id);
+    if (!items || items.length === 0) return {};
+
+    // Collect inventory ids: direct link first, fallback via mappings table
+    const directIds = items.map((i) => i.inventory_item_id).filter(Boolean) as string[];
+    const pricingIds = items
+      .filter((i) => !i.inventory_item_id && i.pricing_item_id)
+      .map((i) => i.pricing_item_id) as string[];
+
+    let mappingByPricing: Record<string, string> = {};
+    if (pricingIds.length > 0) {
+      const { data: maps } = await supabase
+        .from("pricing_inventory_mappings")
+        .select("pricing_item_id, inventory_item_id, active")
+        .in("pricing_item_id", pricingIds)
+        .eq("active", true);
+      mappingByPricing = (maps ?? []).reduce<Record<string, string>>((acc, m) => {
+        if (m.pricing_item_id && m.inventory_item_id) acc[m.pricing_item_id] = m.inventory_item_id;
+        return acc;
+      }, {});
+    }
+
+    const invIds = Array.from(new Set([
+      ...directIds,
+      ...Object.values(mappingByPricing),
+    ]));
+    if (invIds.length === 0) return {};
+
+    const { data: inv } = await supabase
+      .from("inventory_items")
+      .select("id, name, total_owned_quantity, reserved_quantity, checked_out_quantity, cleaning_quantity, maintenance_quantity, damaged_missing_quantity")
+      .in("id", invIds);
+
+    const invById = new Map((inv ?? []).map((r) => [r.id, r]));
+    const result: Record<string, { available: number; total_owned: number; inventory_name: string } | null> = {};
+    for (const it of items) {
+      const invId = it.inventory_item_id ?? (it.pricing_item_id ? mappingByPricing[it.pricing_item_id] : null);
+      if (!invId) { result[it.id] = null; continue; }
+      const row = invById.get(invId);
+      if (!row) { result[it.id] = null; continue; }
+      const used =
+        (row.reserved_quantity ?? 0) +
+        (row.checked_out_quantity ?? 0) +
+        (row.cleaning_quantity ?? 0) +
+        (row.maintenance_quantity ?? 0) +
+        (row.damaged_missing_quantity ?? 0);
+      const available = Math.max(0, (row.total_owned_quantity ?? 0) - used);
+      result[it.id] = { available, total_owned: row.total_owned_quantity ?? 0, inventory_name: row.name };
+    }
+    return result;
   });

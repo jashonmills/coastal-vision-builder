@@ -14,8 +14,10 @@ import {
   deleteQuoteItem,
   sendQuote,
   listPricingItemsForBuilder,
+  getQuoteItemsAvailability,
 } from "@/lib/quotes.functions";
 import { StatusPill } from "./admin.quote-requests";
+import { Mail } from "lucide-react";
 
 export const Route = createFileRoute("/admin/quotes/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
@@ -36,6 +38,8 @@ function EditQuotePage() {
   const sendFn = useServerFn(sendQuote);
   const pricingFn = useServerFn(listPricingItemsForBuilder);
 
+  const availFn = useServerFn(getQuoteItemsAvailability);
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
     queryFn: () => getFn({ data: { id } }),
@@ -46,11 +50,16 @@ function EditQuotePage() {
     queryFn: () => pricingFn(),
     enabled: !!user && isAdmin,
   });
+  const { data: availability = {} } = useQuery({
+    queryKey: ["quote-availability", id],
+    queryFn: () => availFn({ data: { quote_id: id } }),
+    enabled: !!user && isAdmin && !!data,
+  });
 
   const send = useMutation({
     mutationFn: () => sendFn({ data: { id } }),
     onSuccess: () => {
-      toast.success("Quote marked as sent. Now email the customer manually with the preview link.");
+      toast.success("Quote marked as sent.");
       qc.invalidateQueries({ queryKey: ["admin-quote", id] });
     },
   });
@@ -84,6 +93,19 @@ function EditQuotePage() {
               Preview
             </Link>
             <button
+              onClick={() => {
+                const previewUrl = `${window.location.origin}/admin/quotes/${id}/preview`;
+                const subject = encodeURIComponent(`Your Pacific North Events Quote ${quote.quote_number}`);
+                const body = encodeURIComponent(
+                  `Hi ${quote.customer_name},\n\nThank you for considering Pacific North Events & Tents. Your quote ${quote.quote_number} is ready.\n\nView it here: ${previewUrl}\n\nTotal: $${(quote.total_cents / 100).toFixed(2)}\n\nLet us know if you have any questions.\n\n— Pacific North Events & Tents`,
+                );
+                window.location.href = `mailto:${quote.customer_email}?subject=${subject}&body=${body}`;
+              }}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-secondary"
+            >
+              <Mail className="h-4 w-4" /> Email Customer
+            </button>
+            <button
               onClick={() => send.mutate()}
               disabled={send.isPending || quote.status === "sent"}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
@@ -100,6 +122,7 @@ function EditQuotePage() {
               <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
                 <tr>
                   <th className="px-2 py-2">Item</th>
+                  <th className="px-2 py-2 w-24">Avail.</th>
                   <th className="px-2 py-2 w-20">Qty</th>
                   <th className="px-2 py-2 w-20">Unit</th>
                   <th className="px-2 py-2 w-28">Unit $</th>
@@ -112,7 +135,8 @@ function EditQuotePage() {
                   <ItemRow
                     key={it.id}
                     item={it}
-                    onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); }}
+                    avail={(availability as Record<string, { available: number; total_owned: number; inventory_name: string } | null>)[it.id] ?? null}
+                    onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); qc.invalidateQueries({ queryKey: ["quote-availability", id] }); }}
                     onDelete={async () => {
                       if (!confirm("Remove this line?")) return;
                       await delFn({ data: { id: it.id, quote_id: quote.id } });
@@ -122,7 +146,7 @@ function EditQuotePage() {
                   />
                 ))}
                 {items.length === 0 && (
-                  <tr><td colSpan={6} className="px-3 py-6 text-center text-muted-foreground">No line items yet.</td></tr>
+                  <tr><td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">No line items yet.</td></tr>
                 )}
               </tbody>
             </table>
@@ -150,7 +174,7 @@ function EditQuotePage() {
   );
 }
 
-function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
+function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
   const [draft, setDraft] = useState(item);
   useEffect(() => setDraft(item), [item]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
@@ -164,6 +188,7 @@ function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: ()
     } }),
     onSuccess: onSaved,
   });
+  const short = avail ? (draft.quantity > avail.available) : false;
   return (
     <tr className="border-t border-border align-top">
       <td className="px-2 py-2">
@@ -177,6 +202,16 @@ function ItemRow({ item, onSaved, onDelete, upsertFn }: { item: any; onSaved: ()
           )}
         </div>
         {draft.reason && <div className="mt-0.5 text-[10px] text-muted-foreground">{draft.reason}</div>}
+      </td>
+      <td className="px-2 py-2 text-xs">
+        {avail ? (
+          <div className={short ? "text-red-700 font-semibold" : "text-emerald-700"}>
+            {avail.available} / {avail.total_owned}
+            {short && <div className="text-[10px] font-normal">Short by {draft.quantity - avail.available}</div>}
+          </div>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )}
       </td>
       <td className="px-2 py-2"><input type="number" className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" value={draft.quantity} onChange={(e) => setDraft({ ...draft, quantity: parseInt(e.target.value || "0") })} /></td>
       <td className="px-2 py-2"><input className="w-16 rounded border border-border bg-background px-2 py-1 text-sm" value={draft.unit} onChange={(e) => setDraft({ ...draft, unit: e.target.value })} /></td>

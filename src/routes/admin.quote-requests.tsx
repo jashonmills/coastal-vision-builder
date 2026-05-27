@@ -10,6 +10,7 @@ import {
   listQuoteRequests,
   updateQuoteRequestStatus,
   createQuoteFromRequest,
+  countNewQuoteRequests,
 } from "@/lib/quotes.functions";
 
 export const Route = createFileRoute("/admin/quote-requests")({
@@ -187,9 +188,18 @@ export function StatusPill({ status }: { status: string }) {
 }
 
 export function AdminTabs({ active }: { active: "admin" | "quote-requests" | "quotes" | "inventory" }) {
+  const { isAdmin } = useIsAdmin();
+  const countFn = useServerFn(countNewQuoteRequests);
+  const { data: countData } = useQuery({
+    queryKey: ["new-quote-requests-count"],
+    queryFn: () => countFn(),
+    enabled: isAdmin,
+    refetchInterval: 30_000,
+  });
+  const newCount = countData?.count ?? 0;
   const tabs = [
     { key: "admin", label: "Pricing & Content", to: "/admin" as const },
-    { key: "quote-requests", label: "Quote Requests", to: "/admin/quote-requests" as const },
+    { key: "quote-requests", label: "Quote Requests", to: "/admin/quote-requests" as const, badge: newCount },
     { key: "quotes", label: "Quotes", to: "/admin/quotes" as const },
     { key: "inventory", label: "Inventory", to: "/admin/inventory" as const },
   ];
@@ -206,6 +216,13 @@ export function AdminTabs({ active }: { active: "admin" | "quote-requests" | "qu
           }`}
         >
           {t.label}
+          {"badge" in t && t.badge ? (
+            <span className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+              active === t.key ? "bg-primary-foreground text-primary" : "bg-[color:var(--gold)] text-primary"
+            }`}>
+              {t.badge}
+            </span>
+          ) : null}
         </Link>
       ))}
     </div>
