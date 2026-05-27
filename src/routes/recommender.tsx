@@ -418,11 +418,11 @@ function AIResult({
                 PDF Viewer
               </div>
               <div className="flex items-center gap-2">
-                <button type="button" onClick={downloadPdf} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)]">
-                  <Download className="h-3.5 w-3.5" /> Download PDF
+                <button type="button" onClick={handleDownload} disabled={pdfBusy !== null} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)] disabled:opacity-60">
+                  {pdfBusy === "download" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Download PDF
                 </button>
-                <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-secondary">
-                  <Printer className="h-3.5 w-3.5" /> Print
+                <button type="button" onClick={handlePrint} disabled={pdfBusy !== null} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-secondary disabled:opacity-60">
+                  {pdfBusy === "print" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Printer className="h-3.5 w-3.5" />} Print
                 </button>
                 <button type="button" onClick={() => setViewerOpen(false)} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary" aria-label="Close PDF viewer">
                   <X className="h-4 w-4" />
@@ -431,7 +431,7 @@ function AIResult({
             </div>
             <div className="flex-1 overflow-auto bg-secondary/60 p-3 sm:p-6">
               <div className="mx-auto max-w-[816px] overflow-hidden rounded-xl border border-border bg-card shadow-xl">
-                {report}
+                <RecommendationReport recommendation={recommendation} blueprintImage={blueprintImage} input={input} contactName={contact.name} />
               </div>
             </div>
           </div>
