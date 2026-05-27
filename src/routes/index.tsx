@@ -60,7 +60,7 @@ function Home() {
               <Link to="/contact" className="inline-flex items-center rounded-full bg-[color:var(--gold)] px-7 py-3.5 text-sm font-semibold text-primary shadow-lg transition-transform hover:-translate-y-0.5">
                 Request a Quote
               </Link>
-              <Link to="/recommender" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/60 bg-primary-foreground/10 px-7 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur transition-all hover:bg-[color:var(--gold)] hover:text-primary">
+              <Link to="/ai-tent-planner" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)]/60 bg-primary-foreground/10 px-7 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur transition-all hover:bg-[color:var(--gold)] hover:text-primary">
                 <Sparkles className="h-4 w-4" />
                 Event Recommender
               </Link>

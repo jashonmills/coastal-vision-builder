@@ -30,7 +30,7 @@ const navGroups: NavGroup[] = [
     children: [
       { to: "/tent-rentals", labelKey: "nav.tentRentals", descKey: "navDesc.tentRentals" },
       { to: "/inventory", labelKey: "nav.inventoryPricing", descKey: "navDesc.inventoryPricing" },
-      { to: "/recommender", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
+      { to: "/ai-tent-planner", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
     ],
   },
   {
@@ -135,7 +135,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           <div className="hidden items-center gap-2 lg:flex">
             <LanguageSelector variant="header" />
             <Link
-              to="/recommender"
+              to="/ai-tent-planner"
               className="inline-flex items-center gap-2 rounded-full border border-primary/25 px-5 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
             >
               <Sparkles className="h-4 w-4" />
@@ -304,7 +304,7 @@ export function CTASection() {
             {t("cta.requestQuote")}
           </Link>
           <Link
-            to="/recommender"
+            to="/ai-tent-planner"
             className="inline-flex items-center rounded-full border border-primary/25 bg-transparent px-7 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
           >
             {t("nav.eventRecommender")}
