@@ -15,9 +15,17 @@ export function OpeningVideoSplash() {
       return;
     }
 
+    const video = videoRef.current;
+    if (!video) return;
+
     const fallback = window.setTimeout(() => finish(), FALLBACK_MS);
-    videoRef.current?.play().catch(() => {
-      window.setTimeout(() => finish(), 1200);
+
+    // Try unmuted first, fallback to muted if autoplay policy blocks it
+    video.play().catch(() => {
+      video.muted = true;
+      video.play().catch(() => {
+        window.setTimeout(() => finish(), 1200);
+      });
     });
 
     return () => window.clearTimeout(fallback);
@@ -44,7 +52,6 @@ export function OpeningVideoSplash() {
         src={openingVideo}
         className="h-full w-full object-cover"
         autoPlay
-        muted
         playsInline
         preload="auto"
         onEnded={finish}
