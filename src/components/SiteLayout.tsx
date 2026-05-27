@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 import {
@@ -12,6 +12,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { MobileBottomNav } from "./MobileBottomNav";
+import { MobileBentoDrawer } from "./MobileBentoDrawer";
 
 type NavChild = { to: string; label: string; description?: string };
 type NavGroup = { label: string; to?: string; children?: NavChild[] };
@@ -50,7 +51,6 @@ function isGroupActive(group: NavGroup, pathname: string): boolean {
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -139,63 +139,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
-
-        {open && (
-          <div className="border-t border-border/60 bg-background lg:hidden">
-            <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
-              {navGroups.map((group) => {
-                if (!group.children) {
-                  return (
-                    <Link
-                      key={group.label}
-                      to={group.to!}
-                      onClick={() => setOpen(false)}
-                      activeOptions={{ exact: group.to === "/" }}
-                      activeProps={{ className: "bg-secondary text-primary" }}
-                      className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
-                    >
-                      {group.label}
-                    </Link>
-                  );
-                }
-                const expanded = openGroup === group.label;
-                return (
-                  <div key={group.label}>
-                    <button
-                      type="button"
-                      onClick={() => setOpenGroup(expanded ? null : group.label)}
-                      className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
-                    >
-                      {group.label}
-                      <ChevronDown className={"h-4 w-4 transition-transform " + (expanded ? "rotate-180" : "")} />
-                    </button>
-                    {expanded && (
-                      <div className="ml-3 flex flex-col gap-1 border-l border-border/60 pl-3 py-1">
-                        {group.children.map((child) => (
-                          <Link
-                            key={child.to}
-                            to={child.to}
-                            onClick={() => setOpen(false)}
-                            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-              <Link
-                to="/contact"
-                onClick={() => setOpen(false)}
-                className="mt-2 rounded-full bg-primary px-4 py-2.5 text-center text-sm font-medium text-primary-foreground"
-              >
-                Request a Quote
-              </Link>
-            </div>
-          </div>
-        )}
       </header>
 
       <main className="flex-1 pb-24 lg:pb-0">{children}</main>
@@ -203,6 +146,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <SiteFooter />
 
       <MobileBottomNav onMenu={() => setOpen(true)} />
+      <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
     </div>
   );
 }
