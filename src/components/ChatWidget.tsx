@@ -229,15 +229,3 @@ function MessageBubble({ msg }: { msg: Msg }) {
   );
 }
 
-// Map intent → quick label key suffix used in i18n
-function quickLabelKey(intent: string): string {
-  switch (intent) {
-    case "tent_size":     return "tentSize";
-    case "plan_event":    return "planEvent";
-    case "inventory":     return "rentals";
-    case "beach_event":   return "beach";
-    case "quote_request": return "quote";
-    case "contact":       return "contact";
-    default:              return intent;
-  }
-}
