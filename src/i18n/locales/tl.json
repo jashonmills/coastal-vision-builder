@@ -1,195 +1,546 @@
 {
   "language": "Wika",
+  "brand": "Pacific North Events & Tents",
   "nav": {
-    "home": "Tahanan", "rentals": "Pa-upa", "tentRentals": "Pa-upa ng Tolda",
-    "inventoryPricing": "Imbentaryo at Presyo", "eventRecommender": "Tagapagrekomenda ng Kaganapan",
-    "services": "Serbisyo", "allServices": "Lahat ng Serbisyo", "events": "Mga Kaganapan",
-    "gallery": "Galerya", "about": "Tungkol", "aboutUs": "Tungkol sa Amin",
-    "contact": "Kontak", "requestQuote": "Humiling ng Quote",
-    "findMyTentSize": "Hanapin ang Aking Sukat ng Tolda", "myAccount": "Aking Account",
-    "signIn": "Mag-sign In", "admin": "Admin", "menu": "Menu",
-    "recommender": "Tagapagrekomenda", "quote": "Quote", "explore": "Tuklasin",
-    "more": "Higit pa", "inventory": "Imbentaryo", "closeMenu": "Isara ang menu",
+    "home": "Home",
+    "rentals": "Mga Rental",
+    "tentRentals": "Mga Tent na Rental",
+    "inventoryPricing": "Imbentaryo at Presyo",
+    "eventRecommender": "AI Tent Planner",
+    "services": "Mga Serbisyo",
+    "allServices": "Lahat ng Serbisyo",
+    "events": "Mga Evento",
+    "gallery": "Galeri",
+    "about": "Tungkol Sa Amin",
+    "aboutUs": "Tungkol Sa Amin",
+    "contact": "Makipag-ugnayan",
+    "requestQuote": "Humiling ng Quote",
+    "findMyTentSize": "Hanapin ang Aking Sukat ng Tent",
+    "myAccount": "Aking Account",
+    "signIn": "Mag-sign In",
+    "admin": "Admin",
+    "menu": "Menu",
+    "recommender": "AI Tent Planner",
+    "quote": "Quote",
+    "explore": "Tuklasin",
+    "more": "Higit Pa",
+    "inventory": "Imbentaryo",
+    "closeMenu": "Isara ang menu",
     "navigationMenu": "Menu ng nabigasyon"
   },
   "navDesc": {
-    "tentRentals": "Frame, pole, at hexagon na tolda",
-    "inventoryPricing": "Buong katalogo na may sample na layout",
-    "eventRecommender": "AI-built na setup para sa iyong kaganapan",
-    "allServices": "Kasal, pista, korporasyon",
-    "events": "Mga nakaraang kaganapan at case study",
-    "aboutUs": "Coastal team, ang aming kuwento",
+    "tentRentals": "Frame, pole, at hexagon na mga tent",
+    "inventoryPricing": "Kumpletong katalogo na may mga sample na layout",
+    "eventRecommender": "Libreng AI tent plan para sa iyong evento",
+    "allServices": "Mga kasal, festival, at corporate",
+    "events": "Mga nakaraang evento at case study",
+    "aboutUs": "Aming koponan at kwento",
     "contact": "Makipag-ugnayan"
   },
   "footer": {
-    "tagline": "Pa-upa ng tolda at suporta sa kaganapan sa baybayin para sa mga kasal, pista, pribadong party at corporate gatherings.",
-    "servicesHeading": "Serbisyo", "weddingTents": "Toldang Pangkasal",
-    "festivalTents": "Toldang Pista", "privateParties": "Pribadong Party",
-    "corporateEvents": "Corporate na Kaganapan", "vendorTents": "Toldang Vendor",
-    "quickLinks": "Mabilis na Link", "contact": "Kontak",
-    "servingOregon": "Naglilingkod sa Oregon Coast",
+    "tagline": "Mga rental ng event tent at suporta para sa mga kasal, festival, pribadong party, at corporate na pagtitipon sa baybayin.",
+    "servicesHeading": "Mga Serbisyo",
+    "weddingTents": "Mga Tent para sa Kasal",
+    "festivalTents": "Mga Tent para sa Festival",
+    "privateParties": "Mga Pribadong Party",
+    "corporateEvents": "Mga Corporate na Evento",
+    "vendorTents": "Mga Tent para sa Vendor",
+    "quickLinks": "Mabilis na Mga Link",
+    "contact": "Makipag-ugnayan",
+    "servingOregon": "Naglilingkod sa Baybayin ng Oregon",
     "followFacebook": "Sundan kami sa Facebook",
-    "copyright": "© 2026 Pacific North Events & Tents. Iyong Kaganapan. Iyong Pangitain. Ginagawa Namin Itong Posible."
+    "copyright": "© 2026 Pacific North Events & Tents. Ang Iyong Evento. Ang Iyong Bisyon. Gagawin Namin Ito."
   },
   "cta": {
-    "requestQuote": "Humiling ng Quote", "findMyTentSize": "Hanapin ang Aking Sukat ng Tolda",
-    "viewServices": "Tingnan ang Serbisyo", "exploreServices": "Tuklasin ang Serbisyo",
-    "planMySetup": "Planuhin ang Aking Setup", "getQuote": "Kumuha ng Quote",
-    "startWeddingQuote": "Simulan ang Quote sa Kasal", "sendQuoteRequest": "Ipadala ang Kahilingan sa Quote",
-    "showMyRecommendation": "Ipakita ang Aking Rekomendasyon", "requestFinalQuote": "Humiling ng Pangwakas na Quote",
-    "startOver": "Magsimula Muli", "talkToUs": "Makipag-usap sa Amin",
-    "readyTitle": "Handa nang Buhayin ang Iyong Kaganapan?",
-    "readyDesc": "Sabihin sa amin ang iyong petsa, lokasyon, bilang ng bisita at pangitain."
+    "requestQuote": "Humiling ng Quote",
+    "findMyTentSize": "Hanapin ang Aking Sukat ng Tent",
+    "viewServices": "Tingnan ang mga Serbisyo",
+    "exploreServices": "Tuklasin ang mga Serbisyo",
+    "planMySetup": "Planuhin ang Aking Setup",
+    "getQuote": "Kumuha ng Quote",
+    "startWeddingQuote": "Magsimula ng Wedding Quote",
+    "sendQuoteRequest": "Ipadala ang Kahilingan sa Quote",
+    "showMyRecommendation": "Ipakita ang Aking Rekomendasyon",
+    "requestFinalQuote": "Humiling ng Panghuling Quote",
+    "startOver": "Magsimula Ulit",
+    "talkToUs": "Kausapin Kami",
+    "readyTitle": "Handa Ka Na Bang Buhayin ang Iyong Evento?",
+    "readyDesc": "Sabihin sa amin ang iyong petsa, lokasyon, bilang ng bisita, at bisyon. Tutulungan ka naming piliin ang tamang tent setup para sa iyong evento.",
+    "tryFreePlanner": "Subukan ang Aming Libreng AI Tent Planner",
+    "viewOurServices": "Tingnan ang Aming mga Serbisyo",
+    "startMyFreeTentPlan": "Simulan ang Aking Libreng Tent Plan",
+    "requestCustomQuote": "Humiling ng Custom Quote"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Mga Event Rental sa Baybayin ng Oregon",
+      "title": "Mga Event Tent at Rental para sa mga Selebrasyon sa Baybayin ng Oregon",
+      "subtitle": "Mula sa mga kasal at festival hanggang sa mga pribadong party at corporate na evento, tinutulungan ng Pacific North Events & Tents na maisakatuparan ang iyong bisyon sa pamamagitan ng mga makukulay, mapagkakatiwalaan, at weather-ready na event rental."
+    },
+    "badges": {
+      "weddings": "Mga Kasal",
+      "festivals": "Mga Festival",
+      "privateParties": "Mga Pribadong Party",
+      "corporateEvents": "Mga Corporate na Evento",
+      "rainOrShine": "Ulan o Sikat ng Araw",
+      "yearRound": "Rental Sa Buong Taon"
+    },
+    "intro": {
+      "eyebrow": "Ang Aming Pangako",
+      "titleLine1": "Ang Iyong Evento. Ang Iyong Bisyon.",
+      "titleLine2": "Gagawin Namin Ito.",
+      "body": "Ang pagpaplano ng isang outdoor na evento sa Baybayin ng Oregon ay may natatanging mahika — at natatanging uri ng panahon. Nagbibigay ang Pacific North Events & Tents ng mga de-kalidad na event tent at suporta sa rental na dinisenyo upang mapanatiling komportable, maestilo, at walang stress ang iyong selebrasyon."
+    },
+    "services": {
+      "title": "Ano ang Aming Tinutulungang I-host",
+      "exploreLink": "Tuklasin ang mga Serbisyo →",
+      "weddings": { "title": "Mga Kasal", "text": "Mga eleganteng espasyo sa tent para sa seremonya, reception, rehearsal dinner, at mga kasal na weekend sa baybayin." },
+      "festivals": { "title": "Mga Festival at Komunidad", "text": "Malalaking tent solution para sa mga palengke, music event, fundraiser, perya, at pagtitipon ng komunidad." },
+      "privateParties": { "title": "Mga Pribadong Party", "text": "Komportable at magandang setup para sa mga kaarawan, reunion, graduation, backyard party, at pagtitipon ng pamilya." },
+      "corporate": { "title": "Mga Corporate na Evento", "text": "Propesyonal na tent at rental solution para sa mga business event, retreat, brand activation, at pagtitipon ng kumpanya." }
+    },
+    "weather": {
+      "eyebrow": "Handa sa Baybayin",
+      "title": "Itinayo para sa Panahon sa Baybayin",
+      "body": "Ang mga evento sa Baybayin ng Oregon ay nangangailangan ng higit pa sa magandang setup — kailangan nila ng matalinong pagpaplano, mapagkakatiwalaang kagamitan, at tirahan na nagbibigay ng kapayapaan ng isip sa mga bisita. Ang aming mga tent ay tumutulong na protektahan ang iyong evento mula sa araw, hangin, at ulan habang nililikha ang isang maayos na espasyo na maalala ng iyong mga bisita.",
+      "cta": "Planuhin ang Iyong Setup"
+    },
+    "tentCats": {
+      "eyebrow": "Mga Tent na Rental",
+      "title": "Mga Tent para sa Bawat Sukat ng Selebrasyon",
+      "small": { "title": "Maliliit na Pagtitipon", "desc": "Mga backyard party, intimate na hapunan, at maliliit na selebrasyon na may wala pang 50 bisita." },
+      "medium": { "title": "Katamtamang Laking Evento", "desc": "Mga reception at selebrasyon ng pamilya para sa 50–100 bisita na may upuan at serbisyong pagkain." },
+      "large": { "title": "Malalaking Selebrasyon", "desc": "Mga kasal at corporate na evento para sa 100–200 bisita na may kainan at sayawan." },
+      "festival": { "title": "Mga Tent para sa Festival at Vendor", "desc": "Mga palengke, perya, at multi-booth na setup na may weather-ready na proteksyon." },
+      "wedding": { "title": "Mga Tent para sa Wedding Reception", "desc": "Kainan, sayawan, lounge area, at eleganteng outdoor na layout ng kasal." },
+      "custom": { "title": "Mga Custom na Layout ng Evento", "desc": "Multi-tent na setup, vendor row, plano sa panahon, at buong disenyo ng daloy ng evento." }
+    },
+    "plannerPromo": {
+      "badge": "Bagong Libreng Tool",
+      "eyebrow": "Planuhin ang Iyong Evento sa Ilang Minuto",
+      "title": "Subukan ang Aming Libreng AI Tent Planner",
+      "body": "Hindi sigurado kung anong sukat ng tent, layout ng upuan, o kagamitan ang kailangan ng iyong evento? Tinutulungan ka ng aming AI Tent Planner na bumuo ng custom na panimulang plano batay sa bilang ng iyong bisita, uri ng evento, ibabaw, pagkakalantad sa panahon, at mga pangangailangan sa setup.",
+      "cards": {
+        "tentSize": { "title": "Rekomendasyon sa Sukat ng Tent", "text": "Makakuha ng mungkahing sukat ng tent batay sa bilang ng iyong bisita at layout." },
+        "equipment": { "title": "Checklist ng Kagamitan", "text": "Tingnan ang mga inirerekomendang mesa, upuan, sidewall, ilaw, entablado, at iba pa." },
+        "blueprint": { "title": "Blueprint-Style na Layout", "text": "Bumuo ng biswal na panimulang layout para sa iyong event setup." },
+        "quote": { "title": "Quote-Ready na Plano", "text": "Ipadala ang iyong plano sa aming koponan para sa custom na quote at panghuling pagsusuri." }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Inspirasyon",
+      "title": "Tingnan kung Ano ang Posible",
+      "viewFull": "Tingnan ang Buong Galeri →"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Mga Serbisyo",
+      "title": "Mga Serbisyo ng Event Rental para sa Bawat Okasyon",
+      "subtitle": "Kahit nagho-host ka ng maliit na pagtitipon o malaking selebrasyon sa baybayin, tinutulungan namin na likhain ang tirahan, estruktura, at setting na kailangan ng iyong evento."
+    },
+    "items": {
+      "weddings": { "title": "Mga Tent na Rental para sa Kasal", "copy": "Lumikha ng magandang espasyong may takip para sa iyong seremonya, reception, cocktail hour, o buong wedding weekend. Tinutulungan ng aming mga tent rental na gawing komportable at di-malilimutang venue ang mga outdoor na lokasyon." },
+      "festivals": { "title": "Mga Rental para sa Festival at Community Event", "copy": "Mula sa mga vendor booth hanggang sa malalaking espasyo ng pagtitipon, sinusuportahan namin ang mga festival, palengke, fundraiser, perya, at pampublikong evento gamit ang mga praktikal at weather-ready na tent solution." },
+      "private": { "title": "Mga Rental para sa Pribadong Party", "copy": "I-host ang mga kaarawan, reunion, graduation, anibersaryo, at backyard na selebrasyon nang may tiwala. Tinutulungan namin na lumikha ng komportableng espasyo ng evento na pakiramdam ay maayos at masaya." },
+      "corporate": { "title": "Mga Rental para sa Corporate na Evento", "copy": "Suportahan ang mga company retreat, business gathering, product launch, at branded na evento gamit ang maayos na tent setup na nagpapanatiling komportable ang mga bisita at propesyonal ang hitsura ng evento." },
+      "setup": { "title": "Paghahatid, Setup, at Breakdown", "copy": "Gawing mas madali ang pagpaplano ng evento sa pamamagitan ng mapagkakatiwalaang setup at breakdown na suporta. Tinutulungan ng aming koponan na asikasuhin ang estruktura upang mapagtuunan mo ang karanasan." }
+    },
+    "tailoredBanner": "Kailangan mo ba ng isang bagay na akma sa iyong evento?"
+  },
+  "tentRentals": {
+    "hero": {
+      "eyebrow": "Mga Tent na Rental",
+      "title": "Mga Tent na Rental para sa mga Evento sa Baybayin ng Oregon",
+      "subtitle": "Makukulay na tirahan, nababaluktot na layout, at mapagkakatiwalaang proteksyon para sa mga kasal, party, festival, at corporate na pagtitipon."
+    },
+    "bestFor": "Pinakaangkop para sa:",
+    "items": {
+      "popup": { "title": "Mga Pop-Up / Vendor Tent", "best": "Mga palengke, booth, check-in, at maliliit na may takip na istasyon.", "cta": "Magtanong Tungkol sa Availability" },
+      "small": { "title": "Mga Maliit na Event Tent", "best": "Mga backyard party, maliliit na pagtitipon, serbisyong pagkain, at upuan ng bisita.", "cta": "Humiling ng Quote" },
+      "medium": { "title": "Mga Katamtamang Laking Event Tent", "best": "Mga reception, selebrasyon ng pamilya, pribadong party, at community event.", "cta": "Humiling ng Quote" },
+      "large": { "title": "Mga Malaking Event Tent", "best": "Mga kasal, festival, corporate na evento, at malalaking bilang ng bisita.", "cta": "Planuhin ang Aking Evento" },
+      "wedding": { "title": "Mga Tent para sa Wedding Reception", "best": "Kainan, sayawan, lounge area, at eleganteng outdoor na layout ng kasal.", "cta": "Magsimula ng Wedding Quote" },
+      "custom": { "title": "Mga Custom na Layout ng Evento", "best": "Mga kumplikadong venue, multi-tent na setup, vendor row, plano sa panahon, at daloy ng evento.", "cta": "Idisenyo ang Aking Setup" }
+    },
+    "help": {
+      "title": "Hindi Sigurado kung Anong Sukat ng Tent ang Kailangan Mo?",
+      "body": "Sabihin sa amin ang bilang ng iyong bisita, uri ng evento, lokasyon, at mga layunin sa layout. Tutulungan ka naming irekomenda ang tamang sukat ng tent at setup para sa iyong evento.",
+      "cta": "Kumuha ng Tulong sa Pagpili"
+    },
+    "inventory": {
+      "title": "I-browse ang Buong Imbentaryo",
+      "body": "Tingnan ang bawat sukat ng tent, mesa, upuan, dance floor, pagpipilian sa ilaw, bar, at zone ng paghahatid — na may 3-araw na presyo ng rental.",
+      "cta": "Tingnan ang Imbentaryo at Presyo"
+    }
+  },
+  "events": {
+    "hero": {
+      "eyebrow": "Mga Evento",
+      "title": "Mga Evento na Aming Sinusuportahan",
+      "subtitle": "Mula sa mga kasal sa harap ng dagat hanggang sa mga festival ng komunidad, tinutulungan ng Pacific North Events & Tents na lumikha ng komportableng espasyo para sa mga di-malilimutang pagtitipon."
+    },
+    "suggestedRentals": "Mga mungkahing rental:",
+    "items": {
+      "weddings": { "title": "Mga Kasal", "desc": "Lumikha ng magandang venue na may takip para sa kainan, sayawan, upuan sa seremonya, at kaginhawaan ng bisita.", "rentals": "Mga reception tent, ceremony tent, vendor tent, lounge coverage, layout na handa sa ilaw.", "cta": "Humiling ng Wedding Quote" },
+      "festivals": { "title": "Mga Festival", "desc": "Malalaking multi-tent na layout para sa musika, pagkain, at mga festival ng komunidad sa baybayin.", "rentals": "Mga main stage tent, vendor row, food service tent, check-in cover.", "cta": "Planuhin ang Aking Festival" },
+      "private": { "title": "Mga Pribadong Party", "desc": "Mula sa mga backyard na kaarawan hanggang sa mga mahahalagang selebrasyon, komportableng espasyo para sa pagtitipon at kainan.", "rentals": "Mga maliit hanggang katamtamang tent, mesa, upuan, ilaw, sidewall.", "cta": "Humiling ng Party Quote" },
+      "corporate": { "title": "Mga Corporate na Evento", "desc": "Maayos na outdoor na venue para sa mga retreat, product launch, at branded na pagtitipon.", "rentals": "Mga reception tent, presentation area, branded vendor tent.", "cta": "Humiling ng Corporate Quote" },
+      "markets": { "title": "Mga Palengke at Vendor Event", "desc": "Organisadong vendor row na kayang harapin ang hangin, araw, at ulan sa Pacific Northwest.", "rentals": "10x10 / 10x20 na vendor tent, check-in tent, sidewall.", "cta": "Humiling ng Vendor Quote" },
+      "fundraisers": { "title": "Mga Fundraiser at Pagtitipon ng Komunidad", "desc": "Mapagkumustang espasyo para sa mga fundraiser, school event, at selebrasyon ng komunidad.", "rentals": "Mga katamtaman hanggang malaking tent, mesa, upuan, ilaw.", "cta": "Humiling ng Community Quote" }
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "Galeri",
+      "title": "Galeri ng Inspirasyon sa Evento",
+      "subtitle": "I-browse ang mga tent setup, outdoor na pagtitipon, at inspirasyon sa evento sa baybayin."
+    },
+    "filters": {
+      "all": "Lahat",
+      "coastal": "Mga Setup sa Baybayin",
+      "reception": "Reception",
+      "lighting": "Ilaw"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Tungkol Sa Amin",
+      "title": "Tungkol sa Pacific North Events & Tents",
+      "subtitle": "Tumutulong sa mga evento sa Baybayin ng Oregon na magsama-sama gamit ang mapagkakatiwalaang rental, maingat na pagpaplano, at weather-ready na setup."
+    },
+    "story": {
+      "eyebrow": "Ang Aming Kwento",
+      "title": "Ang Mga Lokal na Evento ay Nangangailangan ng Lokal na Suporta",
+      "body": "Ang Pacific North Events & Tents ay nilikha upang tulungan ang mga tao na mag-host ng mas magagandang outdoor na evento sa Baybayin ng Oregon. Nauunawaan namin na ang mga selebrasyon sa baybayin ay nangangailangan ng nababaluktot na pagpaplano, mapagkakatiwalaang kagamitan, at isang koponan na alam kung gaano kahalaga ang bawat detalye kapag dumating na ang malaking araw."
+    },
+    "values": {
+      "title": "Ang Aming Pinapahalagahan",
+      "reliable": { "title": "Mapagkakatiwalaang Setup", "text": "Mapagkakatiwalaang suporta sa paghahatid, setup, at breakdown upang magsimula ang iyong evento nang may kumpiyansa." },
+      "weather": { "title": "Pagpaplano na Handa sa Panahon", "text": "Ang mga outdoor na evento ay nangangailangan ng matalinong tirahan. Tinutulungan namin ang mga customer na magplano para sa kaginhawaan sa nagbabagong kondisyon ng baybayin." },
+      "flexible": { "title": "Nababaluktot na Suporta sa Evento", "text": "Mula sa maliliit na pagtitipon hanggang sa malalaking selebrasyon, tinutulungan namin na itugma ang setup sa evento." },
+      "local": { "title": "Lokal at Magiliw na Serbisyo", "text": "Nagmamalasakit kami sa pagtulong sa mga customer na lumikha ng mga di-malilimutang karanasan nang walang hindi kinakailangang stress." }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Makipag-ugnayan",
+      "title": "Humiling ng Quote",
+      "subtitle": "Sabihin sa amin ang tungkol sa iyong evento at tutulungan ka naming planuhin ang tamang tent setup."
+    },
+    "thankYou": {
+      "title": "Salamat!",
+      "body": "Natanggap na namin ang iyong kahilingan at makikipag-ugnayan sa iyo sa lalong madaling panahon upang tulungang planuhin ang iyong evento."
+    },
+    "fromRecommender": "Mula sa iyong recommender:",
+    "fields": {
+      "fullName": "Buong Pangalan *",
+      "email": "Email Address *",
+      "phone": "Numero ng Telepono *",
+      "eventDate": "Petsa ng Evento *",
+      "eventLocation": "Lokasyon / Venue ng Evento *",
+      "eventLocationPlaceholder": "Venue, lungsod, o lugar",
+      "eventType": "Uri ng Evento *",
+      "guestCount": "Tinatayang Bilang ng Bisita *",
+      "rentalsInterest": "Anong rental ang interesado ka?",
+      "preferredContact": "Gustong Paraan ng Pakikipag-ugnayan",
+      "message": "Mensahe",
+      "messagePlaceholder": "Sabihin sa amin ang tungkol sa iyong evento, lokasyon, timeline, at bisyon…"
+    },
+    "selectOption": "Pumili ng opsyon",
+    "selectRange": "Pumili ng hanay",
+    "submit": "Ipadala ang Kahilingan sa Quote",
+    "guestRanges": {
+      "under25": "Wala pang 25",
+      "25_50": "25–50",
+      "50_100": "50–100",
+      "100_200": "100–200",
+      "200_plus": "200+"
+    },
+    "eventTypes": {
+      "wedding": "Kasal",
+      "festival": "Festival",
+      "privateParty": "Pribadong Party",
+      "corporateEvent": "Corporate na Evento",
+      "marketVendor": "Palengke / Vendor Event",
+      "community": "Community Event",
+      "other": "Iba pa"
+    },
+    "rentalOptions": {
+      "eventTent": "Event Tent",
+      "vendorTent": "Vendor Tent",
+      "weddingTent": "Wedding Tent",
+      "tables": "Mga Mesa",
+      "chairs": "Mga Upuan",
+      "lighting": "Ilaw",
+      "setupSupport": "Suporta sa Setup / Breakdown",
+      "notSure": "Hindi Pa Sigurado"
+    },
+    "contactMethod": {
+      "email": "Email",
+      "phone": "Telepono",
+      "text": "Text"
+    },
+    "sidebar": {
+      "title": "Makipag-ugnayan sa Pacific North Events & Tents",
+      "phonePlaceholder": "Magdagdag ng numero ng telepono",
+      "emailPlaceholder": "Magdagdag ng email address",
+      "areaServed": "Baybayin ng Oregon at mga kalapit na lugar",
+      "facebook": "Facebook",
+      "noteTitle": "Rental sa buong taon.",
+      "noteBody": "Makipag-ugnayan sa amin nang maaga para sa pinakamahusay na availability."
+    }
+  },
+  "plannerPopup": {
+    "badge": "Bagong Libreng Tool",
+    "title": "Hindi Sigurado kung Anong Sukat ng Tent ang Kailangan Mo?",
+    "body": "Subukan ang aming libreng AI Tent Planner at makakuha ng custom na rekomendasyon sa sukat ng tent, checklist ng kagamitan, at blueprint-style na layout ng evento sa ilang minuto.",
+    "bullets": {
+      "tentSize": "Rekomendasyon sa sukat ng tent",
+      "equipment": "Mga mesa, upuan, entablado, ilaw, at iba pa",
+      "blueprint": "Blueprint-style na setup",
+      "quote": "Quote-ready na plano"
+    },
+    "primaryCta": "Simulan ang Aking Libreng Tent Plan",
+    "secondaryCta": "Marahil Maya-maya",
+    "note": "Perpekto para sa mga kasal, fundraiser, festival, pribadong party, at corporate na evento.",
+    "close": "Isara"
   },
   "recommender": {
-    "metaTitle": "Tagapagrekomenda ng Kaganapan | Pacific North Events & Tents",
-    "metaDesc": "AI-powered na tagapagrekomenda ng setup ng kaganapan.",
-    "heroEyebrow": "Tagapagrekomenda ng Kaganapan",
-    "heroTitle": "Hanapin ang Tamang Setup para sa Iyong Kaganapan",
-    "heroSubtitle": "Sagutin ang ilang mabilis na tanong at magrerekomenda ang aming AI ng kumpletong plano.",
-    "intro": "Bawat kaganapan ay iba. Aming susuriin ang iyong mga pangangailangan.",
+    "metaTitle": "AI Tent Planner | Pacific North Events & Tents",
+    "metaDesc": "Libreng AI Tent Planner. Makakuha ng custom na rekomendasyon sa sukat ng tent, checklist ng kagamitan, at blueprint-style na layout ng evento sa ilang minuto.",
+    "heroEyebrow": "AI Tent Planner",
+    "heroTitle": "Hanapin ang Tamang Setup para sa Iyong Evento",
+    "heroSubtitle": "Sagutin ang ilang mabilis na tanong at magrerekomenda ang aming AI ng kumpletong plano para sa tent, mesa, upuan, at kagamitan — kasama ang blueprint ng iyong layout.",
+    "intro": "Iba-iba ang bawat evento. Susuriin namin ang iyong mga pangangailangan sa imbentaryo para sa mga tent, mesa, upuan, at espesyal na aytem upang magkaroon ka ng kumpletong larawan bago humiling ng quote.",
     "steps": {
-      "eventBasics": "Mga Pangunahing Detalye", "guestLayout": "Bisita at Layout",
-      "extras": "Pagkain at Karagdagan", "locationWeather": "Lokasyon at Panahon", "contact": "Iyong Detalye"
+      "eventBasics": "Mga Detalye ng Evento",
+      "guestLayout": "Mga Bisita at Layout",
+      "extras": "Pagkain at Iba Pa",
+      "locationWeather": "Lokasyon at Panahon",
+      "contact": "Iyong mga Detalye"
     },
     "fields": {
-      "eventType": "Anong uri ng kaganapan ang pinaplano mo?",
-      "eventDate": "Ano ang petsa ng iyong kaganapan? *",
-      "eventLocation": "Saan gaganapin ang kaganapan? *",
-      "eventLocationPlaceholder": "Pangalan ng venue, bakuran, parke, lugar sa dalampasigan, lokasyon ng negosyo, atbp.",
-      "outdoorIndoor": "Ang kaganapan ba ay sa labas, loob, o bahagyang natatakpan?",
-      "guestCount": "Ilang bisita ang iyong inaasahan? *",
+      "eventType": "Anong uri ng evento ang iyong pinaplano?",
+      "eventDate": "Ano ang petsa ng iyong evento? *",
+      "eventLocation": "Saan idaraos ang evento? *",
+      "eventLocationPlaceholder": "Pangalan ng venue, backyard, parke, lugar sa beach, lokasyon ng negosyo, atbp.",
+      "outdoorIndoor": "Ang evento ba ay outdoor, indoor, o bahagyang may takip?",
+      "guestCount": "Ilang bisita ang inaasahan mo? *",
       "setupType": "Anong uri ng setup ang kailangan mo?",
-      "seatedGuests": "Maupo ba ang mga bisita sa mga mesa?",
+      "seatedGuests": "Mauupo ba ang mga bisita sa mga mesa?",
       "tableStyle": "Anong estilo ng mesa ang gusto mo?",
-      "foodService": "May pagkain o catering ba sa ilalim ng tolda?",
-      "dancing": "Kailangan mo ba ng espasyo para sa pagsayaw?",
-      "extras": "May bar, mesa ng regalo, DJ, banda o stage ba?",
-      "rentalItems": "Anong mga item na pa-upa ang interesado ka?",
-      "surface": "Anong uri ng ibabaw ang lalagyan ng tolda?",
-      "weatherExposure": "Ang lokasyon ba ay nahaharap sa hangin o panahong baybayin?",
-      "sidewalls": "Gusto mo ba ng sidewalls para sa karagdagang proteksyon?",
-      "afterSunset": "Magpapatuloy ba ang kaganapan pagkatapos ng paglubog ng araw?",
-      "fullName": "Buong Pangalan *", "email": "Email Address *", "phone": "Telepono",
-      "preferredContact": "Gustong Paraan ng Pakikipag-ugnay",
-      "message": "May iba pa bang dapat naming malaman tungkol sa iyong kaganapan?"
+      "foodService": "Magkakaroon ba ng pagkain o catering sa ilalim ng tent?",
+      "dancing": "Kailangan mo ba ng espasyo para sa sayawan?",
+      "extras": "Magkakaroon ba ng bar, gift table, DJ, banda, o entablado?",
+      "rentalItems": "Anong rental item ang interesado ka?",
+      "surface": "Anong uri ng ibabaw ang pagtatakpan ng tent?",
+      "weatherExposure": "Ang lokasyon ba ay nakalantad sa hangin o panahon ng baybayin?",
+      "sidewalls": "Gusto mo ba ng mga sidewall para sa karagdagang proteksyon sa panahon?",
+      "afterSunset": "Magpapatuloy ba ang evento pagkatapos ng paglubog ng araw?",
+      "fullName": "Buong Pangalan *",
+      "email": "Email Address *",
+      "phone": "Numero ng Telepono",
+      "preferredContact": "Gustong Paraan ng Pakikipag-ugnayan",
+      "message": "May iba pa bang dapat naming malaman tungkol sa iyong evento?"
     },
     "options": {
       "eventTypes": {
-        "wedding": "Kasal", "festival": "Pista", "privateParty": "Pribadong Party",
-        "corporateEvent": "Corporate na Kaganapan", "marketVendorEvent": "Palengke / Vendor Event",
-        "fundraiser": "Pundraising", "communityEvent": "Komunidad na Kaganapan",
-        "graduationParty": "Graduation Party", "other": "Iba pa"
+        "Wedding": "Kasal",
+        "Festival": "Festival",
+        "Private Party": "Pribadong Party",
+        "Corporate Event": "Corporate na Evento",
+        "Market / Vendor Event": "Palengke / Vendor Event",
+        "Fundraiser": "Fundraiser",
+        "Community Event": "Community Event",
+        "Graduation Party": "Graduation Party",
+        "Other": "Iba pa"
       },
       "outdoor": {
-        "fullyOutdoors": "Buong panlabas", "indoors": "Sa loob",
-        "partiallyCovered": "Bahagyang natatakpan", "notSureYet": "Hindi pa sigurado"
+        "Fully outdoors": "Ganap na outdoor",
+        "Indoors": "Indoor",
+        "Partially covered": "Bahagyang may takip",
+        "Not sure yet": "Hindi pa sigurado"
       },
       "setup": {
-        "standingOnly": "Nakatayo lamang", "ceremonySeating": "Upuan sa seremonya",
-        "seatedDining": "Nakaupo habang kumakain", "cocktailMingling": "Cocktail tables / pakikisalamuha",
-        "vendorBooths": "Vendor booths", "foodServiceArea": "Lugar ng paghahain ng pagkain",
-        "mixedLayout": "Halu-halong layout", "notSure": "Hindi sigurado"
+        "Standing only": "Nakatayo lamang",
+        "Ceremony seating": "Upuan para sa seremonya",
+        "Seated dining": "Nakaupo na kainan",
+        "Cocktail tables / mingling": "Cocktail table / pakikipaghalubilo",
+        "Vendor booths": "Mga vendor booth",
+        "Food service area": "Lugar ng serbisyong pagkain",
+        "Mixed layout": "Mixed na layout",
+        "Not sure": "Hindi sigurado"
       },
       "seated": {
-        "allSeated": "Oo, lahat ng bisita ay nakaupo", "someSeated": "Ilan nakaupo, ilan nakatayo",
-        "mostlyStanding": "Hindi, karamihan ay nakatayo", "notSure": "Hindi sigurado"
+        "Yes, all guests seated": "Oo, lahat ng bisita ay nakaupo",
+        "Some seated, some standing": "Ilan ay nakaupo, ilan ay nakatayo",
+        "No, mostly standing": "Hindi, karamihan ay nakatayo",
+        "Not sure": "Hindi sigurado"
       },
       "tableStyle": {
-        "round": "Bilog na mesa", "banquet": "Banquet / parihabang mesa",
-        "cocktail": "Cocktail tables", "picnic": "Mesa na istilong picnic",
-        "noTables": "Walang kailangang mesa", "notSure": "Hindi sigurado"
+        "Round tables": "Mga bilog na mesa",
+        "Banquet / rectangular tables": "Banquet / rectangular na mesa",
+        "Cocktail tables": "Mga cocktail table",
+        "Picnic-style tables": "Mga picnic-style na mesa",
+        "No tables needed": "Hindi kailangan ng mesa",
+        "Not sure": "Hindi sigurado"
       },
       "food": {
-        "buffet": "Oo, buffet", "plated": "Oo, plated meal",
-        "foodTrucks": "Oo, may food trucks malapit", "snackOnly": "Oo, snack / dessert table lamang",
-        "noFood": "Walang serbisyo ng pagkain", "notSure": "Hindi sigurado"
+        "Yes, buffet": "Oo, buffet",
+        "Yes, plated meal": "Oo, plated na pagkain",
+        "Yes, food trucks nearby": "Oo, may food truck sa malapit",
+        "Yes, snack / dessert table only": "Oo, snack / dessert table lamang",
+        "No food service": "Walang serbisyong pagkain",
+        "Not sure": "Hindi sigurado"
       },
       "dancing": {
-        "danceFloor": "Oo, kailangan ng sayawan", "small": "Maliit na lugar para sa sayawan",
-        "none": "Walang lugar para sa sayawan", "notSure": "Hindi sigurado"
+        "Yes, dance floor area needed": "Oo, kailangan ng dance floor area",
+        "Small dancing area": "Maliit na lugar ng sayawan",
+        "No dancing area": "Walang lugar ng sayawan",
+        "Not sure": "Hindi sigurado"
       },
       "extras": {
-        "bar": "Bar area", "gift": "Mesa ng regalo", "dessert": "Mesa ng dessert",
-        "dj": "DJ booth", "band": "Live band", "stage": "Maliit na stage",
-        "speaker": "Lugar ng speaker / anunsyo", "none": "Wala", "notSure": "Hindi sigurado"
+        "Bar area": "Bar area",
+        "Gift table": "Gift table",
+        "Dessert table": "Dessert table",
+        "DJ booth": "DJ booth",
+        "Live band": "Live band",
+        "Small stage": "Maliit na entablado",
+        "Speaker / announcement area": "Speaker / announcement area",
+        "None": "Wala",
+        "Not sure": "Hindi sigurado"
       },
       "rentals": {
-        "tent": "Tolda", "tables": "Mesa", "chairs": "Upuan", "linens": "Linen",
-        "lighting": "Ilaw", "danceFloor": "Sayawan", "sidewalls": "Sidewalls",
-        "heaters": "Heater", "flooring": "Sahig", "vendorTents": "Toldang vendor",
-        "trash": "Estasyon ng basura / recycling", "setup": "Pag-setup at pagtanggal",
-        "notSure": "Hindi pa sigurado"
+        "Tent": "Tent",
+        "Tables": "Mga Mesa",
+        "Chairs": "Mga Upuan",
+        "Linens": "Mga Tela",
+        "Lighting": "Ilaw",
+        "Dance floor": "Dance floor",
+        "Sidewalls": "Mga Sidewall",
+        "Heaters": "Mga Pampainit",
+        "Flooring": "Sahig",
+        "Vendor tents": "Mga vendor tent",
+        "Trash / recycling stations": "Mga istasyon ng basura / recycling",
+        "Setup and breakdown": "Setup at breakdown",
+        "Not sure yet": "Hindi pa sigurado"
       },
       "surface": {
-        "grass": "Damo", "gravel": "Graba", "concrete": "Konkreto", "asphalt": "Aspalto",
-        "sand": "Buhangin", "deckPatio": "Deck / patio", "mixed": "Halu-halong ibabaw", "notSure": "Hindi sigurado"
+        "Grass": "Damo",
+        "Gravel": "Graba",
+        "Concrete": "Kongkreto",
+        "Asphalt": "Aspalto",
+        "Sand": "Buhangin",
+        "Deck / patio": "Deck / patio",
+        "Mixed surface": "Mixed na ibabaw",
+        "Not sure": "Hindi sigurado"
       },
       "exposure": {
-        "veryExposed": "Oo, sobrang nakalantad", "somewhatExposed": "Bahagyang nakalantad",
-        "mostlyProtected": "Karamihan protektado", "notSure": "Hindi sigurado"
+        "Yes, very exposed": "Oo, napaka-exposed",
+        "Somewhat exposed": "Medyo exposed",
+        "Mostly protected": "Karamihan ay protektado",
+        "Not sure": "Hindi sigurado"
       },
-      "sidewalls": { "yes": "Oo", "maybe": "Siguro", "no": "Hindi", "notSure": "Hindi sigurado" },
-      "afterSunset": { "yes": "Oo", "no": "Hindi", "notSure": "Hindi sigurado" },
-      "contactMethod": { "email": "Email", "phone": "Telepono", "text": "Text" },
-      "guestCounts": {
-        "under_25": "Mas mababa sa 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
-        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      "sidewalls": {
+        "Yes": "Oo",
+        "Maybe": "Marahil",
+        "No": "Hindi",
+        "Not sure": "Hindi sigurado"
+      },
+      "afterSunset": {
+        "Yes": "Oo",
+        "No": "Hindi",
+        "Not sure": "Hindi sigurado"
+      },
+      "contactMethod": {
+        "Email": "Email",
+        "Phone": "Telepono",
+        "Text": "Text"
       }
     },
     "stepTitles": {
-      "eventBasics": "Pangunahing detalye", "guestLayout": "Bilang ng bisita at layout",
-      "extras": "Pagkain, sayaw at karagdagan", "locationWeather": "Lokasyon at panahon", "contact": "Iyong detalye"
+      "eventBasics": "Mga detalye ng evento",
+      "guestLayout": "Bilang ng bisita at layout",
+      "extras": "Pagkain, sayawan, at iba pa",
+      "locationWeather": "Lokasyon at panahon",
+      "contact": "Iyong mga detalye"
     },
     "buttons": {
-      "back": "Bumalik", "next": "Susunod", "startOver": "Magsimula Muli",
-      "generate": "Gumawa ng Setup", "tryAgain": "Subukan Muli",
-      "openPdf": "Buksan ang PDF Viewer", "viewPdf": "Tingnan ang PDF",
-      "downloadPdf": "I-download ang PDF", "print": "I-print",
-      "closeViewer": "Isara ang PDF viewer", "saveAccount": "I-save sa Aking Account",
-      "createAccount": "Gumawa ng Account para Mag-save", "viewPlans": "Tingnan ang Aking Plano",
-      "sendForQuote": "Ipadala ang Rekomendasyon para sa Quote"
+      "back": "Bumalik",
+      "next": "Susunod",
+      "startOver": "Magsimula Ulit",
+      "generate": "Buuin ang Aking Setup",
+      "tryAgain": "Subukan Ulit",
+      "openPdf": "Buksan ang PDF Viewer",
+      "viewPdf": "Tingnan ang PDF",
+      "downloadPdf": "I-download ang PDF",
+      "print": "I-print",
+      "closeViewer": "Isara ang PDF viewer",
+      "saveAccount": "I-save sa Aking Account",
+      "createAccount": "Gumawa ng Account para I-save",
+      "viewPlans": "Tingnan ang Aking mga Plano",
+      "sendForQuote": "Ipadala ang Rekomendasyong Ito para sa Quote"
     },
     "loading": {
-      "title": "Idinidisenyo ang iyong setup…",
-      "subtitle": "Sinusuri ng aming AI ang imbentaryo. Karaniwang umaabot ito ng 15–30 segundo."
+      "title": "Idinisenyo ang iyong event setup…",
+      "subtitle": "Sinusuri ng aming AI ang imbentaryo at ginagawa ang iyong blueprint. Karaniwang tumatagal ito ng 15–30 segundo."
     },
     "error": {
-      "title": "Hindi kami makapagbigay ng rekomendasyon",
-      "generic": "May mali sa aming bahagi.",
-      "retryHint": "Naka-save ang iyong sagot sa ibaba. I-click ang \"Gumawa ng Setup\" upang subukan muli."
+      "title": "Hindi namin nabuo ang iyong rekomendasyon",
+      "generic": "May nangyaring mali sa aming panig.",
+      "retryHint": "Naka-save ang iyong mga sagot sa ibaba. I-click ang \"Buuin ang Aking Setup\" ulit para subukan muli, o \"Kausapin Kami\" at mano-manong bubuo kami ng setup."
     },
     "results": {
-      "eyebrow": "Handa na ang Iyong Rekomendasyon",
-      "thanks": "Salamat {{name}} — sinuri namin ang iyong {{eventType}} para sa {{guests}} bisita sa {{date}}{{locationClause}}.",
-      "atGlance": "Ang iyong kaganapan sa sulyap", "atGlanceSub": "Buod ng sinabi mo sa amin.",
-      "extrasRequested": "Mga karagdagang hiniling", "rentalsOfInterest": "Pa-upa na interesado",
-      "suggestedLayout": "Inirerekomendang Layout", "blueprintSketch": "Sketch ng Blueprint",
-      "blueprintNote": "Konseptong sketch — kumpirmahin ang panghuling lokasyon sa quoting.",
+      "eyebrow": "Handa Na ang Iyong Rekomendasyon",
+      "thanksLead": "Salamat {{name}} — sinuri namin ang iyong {{eventType}} para sa",
+      "guestsLabel": "{{guests}} bisita",
+      "onDate": "sa",
+      "at": "sa",
+      "thanksTrail": "Batay sa iyong mga sagot, narito ang aming irerekomenda.",
+      "atGlance": "Ang iyong evento sa isang tingin",
+      "atGlanceSub": "Isang mabilis na buod ng iyong mga sinabi.",
+      "extrasRequested": "Mga hiniling na extras",
+      "rentalsOfInterest": "Mga rental na interesado",
+      "suggestedLayout": "Mungkahing Layout",
+      "blueprintSketch": "Blueprint Sketch",
+      "blueprintNote": "Konseptwal na sketch — ang panghuling paglalagay ay kukumpirmahin sa panahon ng pagkuha ng quote.",
       "recommendedSetup": "Inirerekomendang Setup",
-      "recommendedSetupSub": "Kumpletong pagpili ng imbentaryo sa bawat kategorya.",
-      "weatherNotes": "Tala sa Panahon at Setup",
-      "disclaimer": "Ito ay AI-generated na estimasyon.",
+      "recommendedSetupSub": "Kumpletong pagpili ng imbentaryo sa bawat kategorya. Ang mga dami ay isang tinantya.",
+      "weatherNotes": "Mga Tala sa Panahon at Setup",
+      "disclaimer": "Ito ay isang tinantyang ginawa ng AI. Ang panghuling sukat ng tent, dami, at kagamitan ay maaaring magbago batay sa iyong venue, ibabaw, layout, panahon, at availability. Walang ipinapakitang presyo — humiling ng quote para sa nakumpirmang presyo.",
       "savedToAccount": "Na-save sa iyong account.",
       "dontLose": "Huwag mawala ang rekomendasyong ito",
-      "dontLoseDesc": "Gumawa ng libreng account upang i-save ang planong ito.",
+      "dontLoseDesc": "Gumawa ng libreng account upang i-save ang planong ito at ma-access ito anumang oras. Awtomatiko naming ise-save ito kapag nag-sign in ka.",
       "pdfViewer": "PDF Viewer",
       "recapKeys": {
-        "eventType": "Uri ng kaganapan", "date": "Petsa", "location": "Lokasyon", "setting": "Kapaligiran",
-        "guests": "Bisita", "setup": "Setup", "seating": "Upuan", "tables": "Mesa",
-        "food": "Pagkain", "dancing": "Sayaw", "surface": "Ibabaw", "exposure": "Pagkakalantad",
-        "sidewalls": "Sidewalls", "afterSunset": "Pagkatapos ng paglubog"
+        "eventType": "Uri ng evento",
+        "date": "Petsa",
+        "location": "Lokasyon",
+        "setting": "Setting",
+        "guests": "Mga Bisita",
+        "setup": "Setup",
+        "seating": "Upuan",
+        "tables": "Mga Mesa",
+        "food": "Pagkain",
+        "dancing": "Sayawan",
+        "surface": "Ibabaw",
+        "exposure": "Pagkakalantad",
+        "sidewalls": "Mga Sidewall",
+        "afterSunset": "Pagkatapos ng paglubog ng araw"
       },
-      "selectedDateFallback": "iyong napiling petsa", "noLocation": "—", "atClause": " sa "
+      "selectedDateFallback": "ang iyong napiling petsa",
+      "noLocation": "—"
     },
     "notSureYet": {
-      "title": "Hindi pa Sigurado? Okay lang Iyan.",
-      "desc": "Hindi mo kailangan malaman ang lahat ng detalye bago makipag-ugnayan."
+      "title": "Hindi Pa Sigurado? Okay Lang Iyon.",
+      "desc": "Hindi mo kailangang malaman ang bawat detalye bago makipag-ugnayan. Kung mayroon kang petsa, lokasyon, at tinatayang bilang ng bisita, matutulungan ka naming gabayan ang natitira."
     },
     "validation": {
-      "required": "Kailangang punan", "invalidEmail": "Mangyaring magpasok ng wastong email",
-      "eventDateRequired": "Mangyaring ipasok ang petsa ng iyong kaganapan",
-      "eventLocationRequired": "Mangyaring ipasok ang lokasyon ng iyong kaganapan"
+      "required": "Kinakailangan ang field na ito.",
+      "invalidEmail": "Mangyaring magpasok ng wastong email address.",
+      "eventDateRequired": "Mangyaring ipasok ang petsa ng iyong evento.",
+      "eventLocationRequired": "Mangyaring ipasok ang lokasyon ng iyong evento."
     }
   }
 }

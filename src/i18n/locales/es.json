@@ -1,26 +1,27 @@
 {
   "language": "Idioma",
+  "brand": "Pacific North Events & Tents",
   "nav": {
     "home": "Inicio",
     "rentals": "Alquileres",
     "tentRentals": "Alquiler de Carpas",
     "inventoryPricing": "Inventario y Precios",
-    "eventRecommender": "Recomendador de Eventos",
+    "eventRecommender": "Planificador IA de Carpas",
     "services": "Servicios",
     "allServices": "Todos los Servicios",
     "events": "Eventos",
     "gallery": "Galería",
     "about": "Nosotros",
-    "aboutUs": "Sobre Nosotros",
+    "aboutUs": "Quiénes Somos",
     "contact": "Contacto",
     "requestQuote": "Solicitar Cotización",
-    "findMyTentSize": "Encontrar Mi Carpa",
+    "findMyTentSize": "Encontrar Mi Tamaño de Carpa",
     "myAccount": "Mi Cuenta",
     "signIn": "Iniciar Sesión",
     "admin": "Admin",
     "menu": "Menú",
-    "recommender": "Recomendador",
-    "quote": "Cotizar",
+    "recommender": "Planificador IA de Carpas",
+    "quote": "Cotización",
     "explore": "Explorar",
     "more": "Más",
     "inventory": "Inventario",
@@ -28,16 +29,16 @@
     "navigationMenu": "Menú de navegación"
   },
   "navDesc": {
-    "tentRentals": "Carpas de marco, poste y hexagonales",
+    "tentRentals": "Carpas de estructura, poste y hexagonales",
     "inventoryPricing": "Catálogo completo con diseños de muestra",
-    "eventRecommender": "Configuración con IA para tu evento",
-    "allServices": "Bodas, festivales, corporativo",
+    "eventRecommender": "Plan de carpa gratuito con IA para tu evento",
+    "allServices": "Bodas, festivales, corporativos",
     "events": "Eventos pasados y casos de estudio",
-    "aboutUs": "Equipo costero, nuestra historia",
+    "aboutUs": "Nuestro equipo costero, nuestra historia",
     "contact": "Ponte en contacto"
   },
   "footer": {
-    "tagline": "Alquiler de carpas para eventos y apoyo costero para bodas, festivales, fiestas privadas y reuniones corporativas.",
+    "tagline": "Alquiler de carpas para eventos y apoyo en eventos costeros para bodas, festivales, fiestas privadas y reuniones corporativas.",
     "servicesHeading": "Servicios",
     "weddingTents": "Carpas para Bodas",
     "festivalTents": "Carpas para Festivales",
@@ -46,35 +47,274 @@
     "vendorTents": "Carpas para Vendedores",
     "quickLinks": "Enlaces Rápidos",
     "contact": "Contacto",
-    "servingOregon": "Sirviendo la Costa de Oregón",
+    "servingOregon": "Atendiendo la Costa de Oregón",
     "followFacebook": "Síguenos en Facebook",
     "copyright": "© 2026 Pacific North Events & Tents. Tu Evento. Tu Visión. Lo Hacemos Realidad."
   },
   "cta": {
     "requestQuote": "Solicitar Cotización",
-    "findMyTentSize": "Encontrar Mi Carpa",
+    "findMyTentSize": "Encontrar Mi Tamaño de Carpa",
     "viewServices": "Ver Servicios",
     "exploreServices": "Explorar Servicios",
     "planMySetup": "Planificar Mi Montaje",
     "getQuote": "Obtener Cotización",
     "startWeddingQuote": "Iniciar Cotización de Boda",
     "sendQuoteRequest": "Enviar Solicitud de Cotización",
-    "showMyRecommendation": "Mostrar Mi Recomendación",
+    "showMyRecommendation": "Ver Mi Recomendación",
     "requestFinalQuote": "Solicitar Cotización Final",
-    "startOver": "Empezar de Nuevo",
+    "startOver": "Comenzar de Nuevo",
     "talkToUs": "Habla con Nosotros",
-    "readyTitle": "¿Listo para Dar Vida a tu Evento?",
-    "readyDesc": "Cuéntanos sobre tu fecha, ubicación, número de invitados y visión. Te ayudaremos a elegir la carpa adecuada para tu evento."
+    "readyTitle": "¿Listo para Dar Vida a Tu Evento?",
+    "readyDesc": "Cuéntanos sobre tu fecha, ubicación, número de invitados y visión. Te ayudaremos a elegir el montaje de carpa adecuado para tu evento.",
+    "tryFreePlanner": "Prueba Nuestro Planificador IA Gratuito",
+    "viewOurServices": "Ver Nuestros Servicios",
+    "startMyFreeTentPlan": "Iniciar Mi Plan de Carpa Gratuito",
+    "requestCustomQuote": "Solicitar una Cotización Personalizada"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Alquiler de Eventos en la Costa de Oregón",
+      "title": "Carpas y Alquileres para Celebraciones en la Costa de Oregón",
+      "subtitle": "Desde bodas y festivales hasta fiestas privadas y eventos corporativos, Pacific North Events & Tents ayuda a dar vida a tu visión con alquileres de eventos elegantes, confiables y preparados para cualquier clima."
+    },
+    "badges": {
+      "weddings": "Bodas",
+      "festivals": "Festivales",
+      "privateParties": "Fiestas Privadas",
+      "corporateEvents": "Eventos Corporativos",
+      "rainOrShine": "Montajes para Lluvia o Sol",
+      "yearRound": "Alquileres Todo el Año"
+    },
+    "intro": {
+      "eyebrow": "Nuestra Promesa",
+      "titleLine1": "Tu Evento. Tu Visión.",
+      "titleLine2": "Lo Hacemos Realidad.",
+      "body": "Planificar un evento al aire libre en la Costa de Oregón tiene una magia única — y un clima único. Pacific North Events & Tents ofrece carpas para eventos de alta calidad y soporte de alquiler diseñados para mantener tu celebración cómoda, elegante y sin estrés."
+    },
+    "services": {
+      "title": "Qué Tipo de Eventos Apoyamos",
+      "exploreLink": "Explorar Servicios →",
+      "weddings": { "title": "Bodas", "text": "Espacios elegantes con carpa para ceremonias, recepciones, cenas de ensayo y fines de semana de boda costera." },
+      "festivals": { "title": "Festivales y Comunidad", "text": "Soluciones de carpas a gran escala para mercados, eventos musicales, recaudaciones de fondos, ferias y celebraciones comunitarias." },
+      "privateParties": { "title": "Fiestas Privadas", "text": "Montajes cómodos y hermosos para cumpleaños, reuniones, graduaciones, fiestas en el jardín y reuniones familiares." },
+      "corporate": { "title": "Eventos Corporativos", "text": "Soluciones profesionales de carpas y alquileres para eventos empresariales, retiros, activaciones de marca y reuniones corporativas." }
+    },
+    "weather": {
+      "eyebrow": "Preparado para la Costa",
+      "title": "Diseñado para el Clima Costero",
+      "body": "Los eventos en la Costa de Oregón necesitan más que un montaje bonito — requieren planificación inteligente, equipo confiable y refugio que brinde tranquilidad a los invitados. Nuestras carpas ayudan a proteger tu evento del sol, el viento y la lluvia, creando un espacio elegante que tus invitados recordarán.",
+      "cta": "Planifica Tu Montaje"
+    },
+    "tentCats": {
+      "eyebrow": "Alquiler de Carpas",
+      "title": "Carpas para Celebraciones de Todo Tamaño",
+      "small": { "title": "Reuniones Pequeñas", "desc": "Fiestas en el jardín, cenas íntimas y celebraciones pequeñas de menos de 50 invitados." },
+      "medium": { "title": "Eventos Medianos", "desc": "Recepciones y celebraciones familiares para 50–100 invitados con asientos y servicio de comida." },
+      "large": { "title": "Celebraciones Grandes", "desc": "Bodas y eventos corporativos para 100–200 invitados con comedor y pista de baile." },
+      "festival": { "title": "Carpas para Festivales y Vendedores", "desc": "Mercados, ferias y montajes de múltiples puestos con protección contra el clima." },
+      "wedding": { "title": "Carpas para Recepciones de Boda", "desc": "Comedor, pista de baile, áreas de descanso y elegantes diseños para bodas al aire libre." },
+      "custom": { "title": "Diseños Personalizados para Eventos", "desc": "Montajes de múltiples carpas, filas de vendedores, planes climáticos y diseño completo del flujo del evento." }
+    },
+    "plannerPromo": {
+      "badge": "Nueva Herramienta Gratuita",
+      "eyebrow": "Planifica Tu Evento en Minutos",
+      "title": "Prueba Nuestro Planificador IA Gratuito de Carpas",
+      "body": "¿No sabes qué tamaño de carpa, distribución de asientos o equipo necesita tu evento? Nuestro Planificador IA de Carpas te ayuda a crear un plan de inicio personalizado basado en el número de invitados, tipo de evento, superficie, exposición al clima y necesidades de montaje.",
+      "cards": {
+        "tentSize": { "title": "Recomendación de Tamaño de Carpa", "text": "Obtén un tamaño de carpa sugerido según tu número de invitados y distribución." },
+        "equipment": { "title": "Lista de Equipamiento", "text": "Consulta las mesas, sillas, paredes laterales, iluminación, escenario y extras recomendados." },
+        "blueprint": { "title": "Diseño Estilo Plano", "text": "Genera un diseño visual inicial para el montaje de tu evento." },
+        "quote": { "title": "Plan Listo para Cotización", "text": "Envía tu plan a nuestro equipo para una cotización personalizada y revisión final." }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Inspiración",
+      "title": "Mira lo que es Posible",
+      "viewFull": "Ver Galería Completa →"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Servicios",
+      "title": "Servicios de Alquiler para Eventos de Toda Ocasión",
+      "subtitle": "Ya sea que organices una reunión íntima o una gran celebración costera, te ayudamos a crear el refugio, la estructura y el ambiente que tu evento necesita."
+    },
+    "items": {
+      "weddings": { "title": "Alquiler de Carpas para Bodas", "copy": "Crea un hermoso espacio cubierto para tu ceremonia, recepción, hora del cóctel o fin de semana de boda completo. Nuestras carpas de alquiler ayudan a convertir ubicaciones al aire libre en venues cómodos y memorables." },
+      "festivals": { "title": "Alquiler para Festivales y Eventos Comunitarios", "copy": "Desde puestos de vendedores hasta grandes espacios de reunión, apoyamos festivales, mercados, recaudaciones de fondos, ferias y eventos públicos con soluciones de carpas prácticas y resistentes al clima." },
+      "private": { "title": "Alquiler para Fiestas Privadas", "copy": "Organiza cumpleaños, reuniones, graduaciones, aniversarios y celebraciones en el jardín con confianza. Te ayudamos a crear un espacio de evento cómodo que se sienta cuidado y fácil de disfrutar." },
+      "corporate": { "title": "Alquiler para Eventos Corporativos", "copy": "Apoya retiros empresariales, reuniones de negocios, lanzamientos de productos y eventos de marca con montajes de carpas elegantes que mantienen a los invitados cómodos y el evento con aspecto profesional." },
+      "setup": { "title": "Entrega, Montaje y Desmontaje", "copy": "Facilita la planificación del evento con soporte confiable de montaje y desmontaje. Nuestro equipo se encarga de la estructura para que puedas concentrarte en la experiencia." }
+    },
+    "tailoredBanner": "¿Necesitas algo adaptado a tu evento?"
+  },
+  "tentRentals": {
+    "hero": {
+      "eyebrow": "Alquiler de Carpas",
+      "title": "Alquiler de Carpas para Eventos en la Costa de Oregón",
+      "subtitle": "Refugio elegante, distribuciones flexibles y protección confiable para bodas, fiestas, festivales y reuniones corporativas."
+    },
+    "bestFor": "Ideal para:",
+    "items": {
+      "popup": { "title": "Carpas Pop-Up / para Vendedores", "best": "Mercados, puestos, registros y pequeñas estaciones cubiertas.", "cta": "Consultar Disponibilidad" },
+      "small": { "title": "Carpas para Eventos Pequeños", "best": "Fiestas en el jardín, reuniones pequeñas, servicio de comida y asientos para invitados.", "cta": "Solicitar Cotización" },
+      "medium": { "title": "Carpas para Eventos Medianos", "best": "Recepciones, celebraciones familiares, fiestas privadas y eventos comunitarios.", "cta": "Solicitar Cotización" },
+      "large": { "title": "Carpas para Eventos Grandes", "best": "Bodas, festivales, eventos corporativos y grandes grupos de invitados.", "cta": "Planificar Mi Evento" },
+      "wedding": { "title": "Carpas para Recepciones de Boda", "best": "Comedor, pista de baile, áreas de descanso y elegantes diseños para bodas al aire libre.", "cta": "Iniciar Cotización de Boda" },
+      "custom": { "title": "Diseños Personalizados para Eventos", "best": "Venues complejos, montajes de múltiples carpas, filas de vendedores, planes climáticos y flujo del evento.", "cta": "Diseñar Mi Montaje" }
+    },
+    "help": {
+      "title": "¿No Sabes Qué Tamaño de Carpa Necesitas?",
+      "body": "Cuéntanos el número de invitados, tipo de evento, ubicación y objetivos de distribución. Te ayudaremos a recomendar el tamaño y montaje de carpa adecuados para tu evento.",
+      "cta": "Obtener Ayuda para Elegir"
+    },
+    "inventory": {
+      "title": "Explora el Inventario Completo",
+      "body": "Consulta cada tamaño de carpa, mesa, silla, pista de baile, opción de iluminación, barra y zona de entrega — con precios de alquiler por 3 días.",
+      "cta": "Ver Inventario y Precios"
+    }
+  },
+  "events": {
+    "hero": {
+      "eyebrow": "Eventos",
+      "title": "Eventos que Apoyamos",
+      "subtitle": "Desde bodas frente al océano hasta festivales comunitarios, Pacific North Events & Tents ayuda a crear espacios cómodos para reuniones inolvidables."
+    },
+    "suggestedRentals": "Alquileres sugeridos:",
+    "items": {
+      "weddings": { "title": "Bodas", "desc": "Crea un hermoso venue cubierto para comedor, pista de baile, asientos para la ceremonia y comodidad de los invitados.", "rentals": "Carpas para recepción, carpas para ceremonia, carpas para vendedores, cobertura para área de descanso, diseños con iluminación.", "cta": "Solicitar Cotización de Boda" },
+      "festivals": { "title": "Festivales", "desc": "Grandes diseños de múltiples carpas para festivales de música, gastronomía y comunidad a lo largo de la costa.", "rentals": "Carpas para escenario principal, filas de vendedores, carpas para servicio de comida, coberturas de registro.", "cta": "Planificar Mi Festival" },
+      "private": { "title": "Fiestas Privadas", "desc": "Desde cumpleaños en el jardín hasta celebraciones de hitos, espacio cómodo para reunirse y cenar.", "rentals": "Carpas pequeñas a medianas, mesas, sillas, iluminación, paredes laterales.", "cta": "Solicitar Cotización para Fiesta" },
+      "corporate": { "title": "Eventos Corporativos", "desc": "Venues al aire libre elegantes para retiros, lanzamientos de productos y reuniones de marca.", "rentals": "Carpas para recepción, áreas de presentación, carpas de marca para vendedores.", "cta": "Solicitar Cotización Corporativa" },
+      "markets": { "title": "Mercados y Eventos para Vendedores", "desc": "Filas organizadas de vendedores que soportan el viento, el sol y la lluvia del Noroeste del Pacífico.", "rentals": "Carpas para vendedores 10x10 / 10x20, carpas de registro, paredes laterales.", "cta": "Solicitar Cotización para Vendedor" },
+      "fundraisers": { "title": "Recaudaciones de Fondos y Reuniones Comunitarias", "desc": "Espacios acogedores para recaudaciones de fondos, eventos escolares y celebraciones comunitarias.", "rentals": "Carpas medianas a grandes, mesas, sillas, iluminación.", "cta": "Solicitar Cotización Comunitaria" }
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "Galería",
+      "title": "Galería de Inspiración para Eventos",
+      "subtitle": "Explora montajes de carpas, reuniones al aire libre e inspiración para eventos costeros."
+    },
+    "filters": {
+      "all": "Todos",
+      "coastal": "Montajes Costeros",
+      "reception": "Recepción",
+      "lighting": "Iluminación"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Nosotros",
+      "title": "Acerca de Pacific North Events & Tents",
+      "subtitle": "Ayudando a que los eventos de la Costa de Oregón se realicen con alquileres confiables, planificación cuidadosa y montajes preparados para el clima."
+    },
+    "story": {
+      "eyebrow": "Nuestra Historia",
+      "title": "Los Eventos Locales Merecen Apoyo Local",
+      "body": "Pacific North Events & Tents fue creada para ayudar a las personas a organizar mejores eventos al aire libre a lo largo de la Costa de Oregón. Entendemos que las celebraciones costeras necesitan planificación flexible, equipo confiable y un equipo que sabe lo importante que se siente cada detalle cuando llega el gran día."
+    },
+    "values": {
+      "title": "Lo que Defendemos",
+      "reliable": { "title": "Montaje Confiable", "text": "Soporte confiable de entrega, montaje y desmontaje para que tu evento comience con confianza." },
+      "weather": { "title": "Planificación para el Clima", "text": "Los eventos al aire libre necesitan refugio inteligente. Ayudamos a los clientes a planificar para la comodidad en condiciones costeras cambiantes." },
+      "flexible": { "title": "Apoyo Flexible para Eventos", "text": "Desde reuniones íntimas hasta celebraciones más grandes, ayudamos a adaptar el montaje al evento." },
+      "local": { "title": "Servicio Local y Amigable", "text": "Nos importa ayudar a los clientes a crear experiencias memorables sin estrés innecesario." }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contacto",
+      "title": "Solicitar una Cotización",
+      "subtitle": "Cuéntanos sobre tu evento y te ayudaremos a planificar el montaje de carpa adecuado."
+    },
+    "thankYou": {
+      "title": "¡Gracias!",
+      "body": "Hemos recibido tu solicitud y nos pondremos en contacto contigo pronto para ayudarte a planificar tu evento."
+    },
+    "fromRecommender": "Desde tu recomendador:",
+    "fields": {
+      "fullName": "Nombre Completo *",
+      "email": "Dirección de Correo Electrónico *",
+      "phone": "Número de Teléfono *",
+      "eventDate": "Fecha del Evento *",
+      "eventLocation": "Ubicación / Venue del Evento *",
+      "eventLocationPlaceholder": "Venue, ciudad o área",
+      "eventType": "Tipo de Evento *",
+      "guestCount": "Número Estimado de Invitados *",
+      "rentalsInterest": "¿Qué alquileres te interesan?",
+      "preferredContact": "Método de Contacto Preferido",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntanos sobre tu evento, ubicación, cronograma y visión…"
+    },
+    "selectOption": "Selecciona una opción",
+    "selectRange": "Selecciona un rango",
+    "submit": "Enviar Solicitud de Cotización",
+    "guestRanges": {
+      "under25": "Menos de 25",
+      "25_50": "25–50",
+      "50_100": "50–100",
+      "100_200": "100–200",
+      "200_plus": "200+"
+    },
+    "eventTypes": {
+      "wedding": "Boda",
+      "festival": "Festival",
+      "privateParty": "Fiesta Privada",
+      "corporateEvent": "Evento Corporativo",
+      "marketVendor": "Mercado / Evento de Vendedores",
+      "community": "Evento Comunitario",
+      "other": "Otro"
+    },
+    "rentalOptions": {
+      "eventTent": "Carpa para Evento",
+      "vendorTent": "Carpa para Vendedor",
+      "weddingTent": "Carpa para Boda",
+      "tables": "Mesas",
+      "chairs": "Sillas",
+      "lighting": "Iluminación",
+      "setupSupport": "Apoyo de Montaje / Desmontaje",
+      "notSure": "Aún No Estoy Seguro"
+    },
+    "contactMethod": {
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "text": "Mensaje de Texto"
+    },
+    "sidebar": {
+      "title": "Contactar a Pacific North Events & Tents",
+      "phonePlaceholder": "Agregar número de teléfono",
+      "emailPlaceholder": "Agregar dirección de correo electrónico",
+      "areaServed": "Costa de Oregón y áreas circundantes",
+      "facebook": "Facebook",
+      "noteTitle": "Alquileres todo el año.",
+      "noteBody": "Contáctanos con anticipación para la mejor disponibilidad."
+    }
+  },
+  "plannerPopup": {
+    "badge": "Nueva Herramienta Gratuita",
+    "title": "¿No Sabes Qué Tamaño de Carpa Necesitas?",
+    "body": "Prueba nuestro Planificador IA gratuito de Carpas y obtén una recomendación personalizada de tamaño de carpa, lista de equipamiento y diseño de evento estilo plano en minutos.",
+    "bullets": {
+      "tentSize": "Recomendación de tamaño de carpa",
+      "equipment": "Mesas, sillas, escenario, iluminación y extras",
+      "blueprint": "Montaje estilo plano",
+      "quote": "Plan listo para cotización"
+    },
+    "primaryCta": "Iniciar Mi Plan de Carpa Gratuito",
+    "secondaryCta": "Quizás Después",
+    "note": "Perfecto para bodas, recaudaciones de fondos, festivales, fiestas privadas y eventos corporativos.",
+    "close": "Cerrar"
   },
   "recommender": {
-    "metaTitle": "Recomendador de Eventos | Pacific North Events & Tents",
-    "metaDesc": "Recomendador de configuración de eventos con IA. Obtén un plan completo de carpa, mesas, sillas y equipo con un diseño para tu evento.",
-    "heroEyebrow": "Recomendador de Eventos",
-    "heroTitle": "Encuentra la Configuración Correcta para tu Evento",
-    "heroSubtitle": "Responde algunas preguntas rápidas y nuestra IA recomendará un plan completo de carpa, mesas, sillas y equipo, además de un diseño de tu distribución.",
-    "intro": "Cada evento es diferente. Revisaremos tus necesidades de inventario en carpas, mesas, sillas y artículos especiales para que tengas una imagen completa antes de solicitar una cotización.",
+    "metaTitle": "Planificador IA de Carpas | Pacific North Events & Tents",
+    "metaDesc": "Planificador IA gratuito de Carpas. Obtén una recomendación personalizada de tamaño de carpa, lista de equipamiento y diseño de evento estilo plano en minutos.",
+    "heroEyebrow": "Planificador IA de Carpas",
+    "heroTitle": "Encuentra el Montaje Adecuado para Tu Evento",
+    "heroSubtitle": "Responde unas cuantas preguntas rápidas y nuestra IA recomendará un plan completo de carpa, mesa, silla y equipamiento — más un plano de tu distribución.",
+    "intro": "Cada evento es diferente. Revisaremos tus necesidades de inventario en carpas, mesas, sillas y artículos especiales para que tengas un panorama completo antes de solicitar una cotización.",
     "steps": {
-      "eventBasics": "Detalles del Evento",
+      "eventBasics": "Datos del Evento",
       "guestLayout": "Invitados y Distribución",
       "extras": "Comida y Extras",
       "locationWeather": "Ubicación y Clima",
@@ -84,153 +324,143 @@
       "eventType": "¿Qué tipo de evento estás planeando?",
       "eventDate": "¿Cuál es la fecha de tu evento? *",
       "eventLocation": "¿Dónde se realizará el evento? *",
-      "eventLocationPlaceholder": "Nombre del lugar, patio, parque, playa, ubicación comercial, etc.",
-      "outdoorIndoor": "¿El evento es al aire libre, interior o parcialmente cubierto?",
+      "eventLocationPlaceholder": "Nombre del venue, jardín, parque, área de playa, ubicación del negocio, etc.",
+      "outdoorIndoor": "¿El evento es al aire libre, en interior o parcialmente cubierto?",
       "guestCount": "¿Cuántos invitados esperas? *",
       "setupType": "¿Qué tipo de montaje necesitas?",
       "seatedGuests": "¿Los invitados estarán sentados en mesas?",
-      "tableStyle": "¿Qué estilo de mesa prefieres?",
+      "tableStyle": "¿Qué estilo de mesas prefieres?",
       "foodService": "¿Habrá comida o catering bajo la carpa?",
       "dancing": "¿Necesitas espacio para bailar?",
-      "extras": "¿Habrá un bar, mesa de regalos, DJ, banda o escenario?",
+      "extras": "¿Habrá barra, mesa de regalos, DJ, banda o escenario?",
       "rentalItems": "¿Qué artículos de alquiler te interesan?",
-      "surface": "¿En qué tipo de superficie se montará la carpa?",
-      "weatherExposure": "¿La ubicación está expuesta al viento o clima costero?",
-      "sidewalls": "¿Deseas paredes laterales para protección adicional?",
+      "surface": "¿Sobre qué tipo de superficie se instalará la carpa?",
+      "weatherExposure": "¿La ubicación está expuesta al viento o al clima costero?",
+      "sidewalls": "¿Te gustaría paredes laterales para protección adicional contra el clima?",
       "afterSunset": "¿El evento continuará después del atardecer?",
       "fullName": "Nombre Completo *",
-      "email": "Correo Electrónico *",
+      "email": "Dirección de Correo Electrónico *",
       "phone": "Número de Teléfono",
       "preferredContact": "Método de Contacto Preferido",
-      "message": "¿Algo más que debamos saber sobre tu evento?"
+      "message": "¿Hay algo más que debamos saber sobre tu evento?"
     },
     "options": {
       "eventTypes": {
-        "wedding": "Boda",
-        "festival": "Festival",
-        "privateParty": "Fiesta Privada",
-        "corporateEvent": "Evento Corporativo",
-        "marketVendorEvent": "Mercado / Evento de Vendedores",
-        "fundraiser": "Recaudación de Fondos",
-        "communityEvent": "Evento Comunitario",
-        "graduationParty": "Fiesta de Graduación",
-        "other": "Otro"
+        "Wedding": "Boda",
+        "Festival": "Festival",
+        "Private Party": "Fiesta Privada",
+        "Corporate Event": "Evento Corporativo",
+        "Market / Vendor Event": "Mercado / Evento de Vendedores",
+        "Fundraiser": "Recaudación de Fondos",
+        "Community Event": "Evento Comunitario",
+        "Graduation Party": "Fiesta de Graduación",
+        "Other": "Otro"
       },
       "outdoor": {
-        "fullyOutdoors": "Totalmente al aire libre",
-        "indoors": "Interior",
-        "partiallyCovered": "Parcialmente cubierto",
-        "notSureYet": "Aún no estoy seguro"
+        "Fully outdoors": "Completamente al aire libre",
+        "Indoors": "En interior",
+        "Partially covered": "Parcialmente cubierto",
+        "Not sure yet": "Aún no estoy seguro"
       },
       "setup": {
-        "standingOnly": "Solo de pie",
-        "ceremonySeating": "Asientos de ceremonia",
-        "seatedDining": "Cena con asientos",
-        "cocktailMingling": "Mesas de cóctel / convivencia",
-        "vendorBooths": "Puestos de vendedores",
-        "foodServiceArea": "Área de servicio de comida",
-        "mixedLayout": "Diseño mixto",
-        "notSure": "No estoy seguro"
+        "Standing only": "Solo de pie",
+        "Ceremony seating": "Asientos para ceremonia",
+        "Seated dining": "Comedor sentado",
+        "Cocktail tables / mingling": "Mesas de cóctel / convivencia",
+        "Vendor booths": "Puestos de vendedores",
+        "Food service area": "Área de servicio de comida",
+        "Mixed layout": "Distribución mixta",
+        "Not sure": "No estoy seguro"
       },
       "seated": {
-        "allSeated": "Sí, todos los invitados sentados",
-        "someSeated": "Algunos sentados, algunos de pie",
-        "mostlyStanding": "No, mayormente de pie",
-        "notSure": "No estoy seguro"
+        "Yes, all guests seated": "Sí, todos los invitados sentados",
+        "Some seated, some standing": "Algunos sentados, algunos de pie",
+        "No, mostly standing": "No, principalmente de pie",
+        "Not sure": "No estoy seguro"
       },
       "tableStyle": {
-        "round": "Mesas redondas",
-        "banquet": "Mesas de banquete / rectangulares",
-        "cocktail": "Mesas de cóctel",
-        "picnic": "Mesas estilo picnic",
-        "noTables": "No se necesitan mesas",
-        "notSure": "No estoy seguro"
+        "Round tables": "Mesas redondas",
+        "Banquet / rectangular tables": "Mesas de banquete / rectangulares",
+        "Cocktail tables": "Mesas de cóctel",
+        "Picnic-style tables": "Mesas estilo picnic",
+        "No tables needed": "No se necesitan mesas",
+        "Not sure": "No estoy seguro"
       },
       "food": {
-        "buffet": "Sí, buffet",
-        "plated": "Sí, comida emplatada",
-        "foodTrucks": "Sí, food trucks cerca",
-        "snackOnly": "Sí, solo mesa de bocadillos / postres",
-        "noFood": "Sin servicio de comida",
-        "notSure": "No estoy seguro"
+        "Yes, buffet": "Sí, buffet",
+        "Yes, plated meal": "Sí, comida servida en plato",
+        "Yes, food trucks nearby": "Sí, food trucks cercanos",
+        "Yes, snack / dessert table only": "Sí, solo mesa de bocadillos / postres",
+        "No food service": "Sin servicio de comida",
+        "Not sure": "No estoy seguro"
       },
       "dancing": {
-        "danceFloor": "Sí, se necesita pista de baile",
-        "small": "Pequeña área de baile",
-        "none": "Sin área de baile",
-        "notSure": "No estoy seguro"
+        "Yes, dance floor area needed": "Sí, se necesita área de pista de baile",
+        "Small dancing area": "Área pequeña para bailar",
+        "No dancing area": "Sin área de baile",
+        "Not sure": "No estoy seguro"
       },
       "extras": {
-        "bar": "Área de bar",
-        "gift": "Mesa de regalos",
-        "dessert": "Mesa de postres",
-        "dj": "Cabina de DJ",
-        "band": "Banda en vivo",
-        "stage": "Escenario pequeño",
-        "speaker": "Área de altavoces / anuncios",
-        "none": "Ninguno",
-        "notSure": "No estoy seguro"
+        "Bar area": "Área de barra",
+        "Gift table": "Mesa de regalos",
+        "Dessert table": "Mesa de postres",
+        "DJ booth": "Cabina de DJ",
+        "Live band": "Banda en vivo",
+        "Small stage": "Escenario pequeño",
+        "Speaker / announcement area": "Área de oradores / anuncios",
+        "None": "Ninguno",
+        "Not sure": "No estoy seguro"
       },
       "rentals": {
-        "tent": "Carpa",
-        "tables": "Mesas",
-        "chairs": "Sillas",
-        "linens": "Manteles",
-        "lighting": "Iluminación",
-        "danceFloor": "Pista de baile",
-        "sidewalls": "Paredes laterales",
-        "heaters": "Calefactores",
-        "flooring": "Piso",
-        "vendorTents": "Carpas para vendedores",
-        "trash": "Estaciones de basura / reciclaje",
-        "setup": "Montaje y desmontaje",
-        "notSure": "Aún no estoy seguro"
+        "Tent": "Carpa",
+        "Tables": "Mesas",
+        "Chairs": "Sillas",
+        "Linens": "Manteles",
+        "Lighting": "Iluminación",
+        "Dance floor": "Pista de baile",
+        "Sidewalls": "Paredes laterales",
+        "Heaters": "Calefactores",
+        "Flooring": "Piso",
+        "Vendor tents": "Carpas para vendedores",
+        "Trash / recycling stations": "Estaciones de basura / reciclaje",
+        "Setup and breakdown": "Montaje y desmontaje",
+        "Not sure yet": "Aún no estoy seguro"
       },
       "surface": {
-        "grass": "Césped",
-        "gravel": "Grava",
-        "concrete": "Concreto",
-        "asphalt": "Asfalto",
-        "sand": "Arena",
-        "deckPatio": "Terraza / patio",
-        "mixed": "Superficie mixta",
-        "notSure": "No estoy seguro"
+        "Grass": "Césped",
+        "Gravel": "Grava",
+        "Concrete": "Concreto",
+        "Asphalt": "Asfalto",
+        "Sand": "Arena",
+        "Deck / patio": "Terraza / patio",
+        "Mixed surface": "Superficie mixta",
+        "Not sure": "No estoy seguro"
       },
       "exposure": {
-        "veryExposed": "Sí, muy expuesto",
-        "somewhatExposed": "Algo expuesto",
-        "mostlyProtected": "Mayormente protegido",
-        "notSure": "No estoy seguro"
+        "Yes, very exposed": "Sí, muy expuesto",
+        "Somewhat exposed": "Algo expuesto",
+        "Mostly protected": "Mayormente protegido",
+        "Not sure": "No estoy seguro"
       },
       "sidewalls": {
-        "yes": "Sí",
-        "maybe": "Tal vez",
-        "no": "No",
-        "notSure": "No estoy seguro"
+        "Yes": "Sí",
+        "Maybe": "Quizás",
+        "No": "No",
+        "Not sure": "No estoy seguro"
       },
       "afterSunset": {
-        "yes": "Sí",
-        "no": "No",
-        "notSure": "No estoy seguro"
+        "Yes": "Sí",
+        "No": "No",
+        "Not sure": "No estoy seguro"
       },
       "contactMethod": {
-        "email": "Correo electrónico",
-        "phone": "Teléfono",
-        "text": "Mensaje de texto"
-      },
-      "guestCounts": {
-        "under_25": "Menos de 25",
-        "25_50": "25–50",
-        "50_75": "50–75",
-        "75_100": "75–100",
-        "100_150": "100–150",
-        "150_200": "150–200",
-        "200_300": "200–300",
-        "300_plus": "300+"
+        "Email": "Correo Electrónico",
+        "Phone": "Teléfono",
+        "Text": "Mensaje de Texto"
       }
     },
     "stepTitles": {
-      "eventBasics": "Detalles del evento",
+      "eventBasics": "Datos del evento",
       "guestLayout": "Número de invitados y distribución",
       "extras": "Comida, baile y extras",
       "locationWeather": "Ubicación y clima",
@@ -239,51 +469,55 @@
     "buttons": {
       "back": "Atrás",
       "next": "Siguiente",
-      "startOver": "Empezar de Nuevo",
+      "startOver": "Comenzar de Nuevo",
       "generate": "Generar Mi Montaje",
       "tryAgain": "Intentar de Nuevo",
-      "openPdf": "Abrir Visor PDF",
+      "openPdf": "Abrir Visor de PDF",
       "viewPdf": "Ver PDF",
       "downloadPdf": "Descargar PDF",
       "print": "Imprimir",
-      "closeViewer": "Cerrar visor PDF",
+      "closeViewer": "Cerrar visor de PDF",
       "saveAccount": "Guardar en Mi Cuenta",
       "createAccount": "Crear Cuenta para Guardar",
       "viewPlans": "Ver Mis Planes",
       "sendForQuote": "Enviar Esta Recomendación para Cotización"
     },
     "loading": {
-      "title": "Diseñando tu montaje del evento…",
-      "subtitle": "Nuestra IA está revisando el inventario y diseñando tu plan. Suele tardar 15–30 segundos."
+      "title": "Diseñando el montaje de tu evento…",
+      "subtitle": "Nuestra IA está revisando el inventario y elaborando tu plano. Esto generalmente toma entre 15 y 30 segundos."
     },
     "error": {
       "title": "No pudimos generar tu recomendación",
       "generic": "Algo salió mal de nuestro lado.",
-      "retryHint": "Tus respuestas están guardadas abajo. Haz clic en \"Generar Mi Montaje\" para reintentar, o \"Habla con Nosotros\" y crearemos un montaje manualmente."
+      "retryHint": "Tus respuestas están guardadas abajo. Haz clic en \"Generar Mi Montaje\" nuevamente para reintentar, o en \"Habla con Nosotros\" y crearemos un montaje manualmente."
     },
     "results": {
       "eyebrow": "Tu Recomendación Está Lista",
-      "thanks": "Gracias {{name}} — revisamos tu {{eventType}} para {{guests}} invitados el {{date}}{{locationClause}}. Basado en tus respuestas, esto es lo que recomendamos.",
-      "atGlance": "Tu evento en un vistazo",
-      "atGlanceSub": "Un resumen rápido de lo que nos dijiste.",
+      "thanksLead": "Gracias {{name}} — revisamos tu {{eventType}} para",
+      "guestsLabel": "{{guests}} invitados",
+      "onDate": "el",
+      "at": "en",
+      "thanksTrail": "Basándonos en tus respuestas, esto es lo que recomendamos.",
+      "atGlance": "Tu evento en resumen",
+      "atGlanceSub": "Un resumen rápido de lo que nos contaste.",
       "extrasRequested": "Extras solicitados",
       "rentalsOfInterest": "Alquileres de interés",
-      "suggestedLayout": "Diseño Sugerido",
+      "suggestedLayout": "Distribución Sugerida",
       "blueprintSketch": "Boceto del Plano",
-      "blueprintNote": "Boceto conceptual — el emplazamiento final se confirma durante la cotización.",
+      "blueprintNote": "Boceto conceptual — la disposición final se confirma durante la cotización.",
       "recommendedSetup": "Montaje Recomendado",
-      "recommendedSetupSub": "Una selección completa de inventario en cada categoría. Las cantidades son estimadas.",
-      "weatherNotes": "Notas de Clima y Montaje",
-      "disclaimer": "Esta es una estimación generada por IA. El tamaño final de la carpa, cantidades y equipo pueden cambiar según tu lugar, superficie, distribución, clima y disponibilidad. No se muestra precio — solicita una cotización para precios confirmados.",
+      "recommendedSetupSub": "Una selección completa del inventario en todas las categorías. Las cantidades son una estimación.",
+      "weatherNotes": "Notas sobre Clima y Montaje",
+      "disclaimer": "Esta es una estimación generada por IA. El tamaño final de la carpa, las cantidades y el equipamiento pueden cambiar según tu venue, superficie, distribución, clima y disponibilidad. No se muestran precios — solicita una cotización para precios confirmados.",
       "savedToAccount": "Guardado en tu cuenta.",
       "dontLose": "No pierdas esta recomendación",
-      "dontLoseDesc": "Crea una cuenta gratuita para guardar este plan y acceder en cualquier momento. Lo guardaremos automáticamente cuando inicies sesión.",
-      "pdfViewer": "Visor PDF",
+      "dontLoseDesc": "Crea una cuenta gratuita para guardar este plan y acceder a él en cualquier momento. Lo guardaremos automáticamente una vez que inicies sesión.",
+      "pdfViewer": "Visor de PDF",
       "recapKeys": {
         "eventType": "Tipo de evento",
         "date": "Fecha",
         "location": "Ubicación",
-        "setting": "Entorno",
+        "setting": "Ambiente",
         "guests": "Invitados",
         "setup": "Montaje",
         "seating": "Asientos",
@@ -296,18 +530,17 @@
         "afterSunset": "Después del atardecer"
       },
       "selectedDateFallback": "tu fecha seleccionada",
-      "noLocation": "—",
-      "atClause": " en "
+      "noLocation": "—"
     },
     "notSureYet": {
       "title": "¿Aún No Estás Seguro? Está Bien.",
-      "desc": "No necesitas saber cada detalle antes de contactarnos. Si tienes una fecha, ubicación y un número aproximado de invitados, podemos guiar el resto."
+      "desc": "No necesitas conocer cada detalle antes de contactarnos. Si tienes una fecha, una ubicación y un número aproximado de invitados, podemos ayudarte con el resto."
     },
     "validation": {
-      "required": "Campo obligatorio",
-      "invalidEmail": "Por favor ingresa un correo electrónico válido",
-      "eventDateRequired": "Por favor ingresa la fecha de tu evento",
-      "eventLocationRequired": "Por favor ingresa la ubicación de tu evento"
+      "required": "Este campo es obligatorio.",
+      "invalidEmail": "Por favor ingresa una dirección de correo electrónico válida.",
+      "eventDateRequired": "Por favor ingresa la fecha de tu evento.",
+      "eventLocationRequired": "Por favor ingresa la ubicación de tu evento."
     }
   }
 }

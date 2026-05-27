@@ -1,191 +1,546 @@
 {
   "language": "语言",
+  "brand": "Pacific North Events & Tents",
   "nav": {
-    "home": "首页", "rentals": "租赁", "tentRentals": "帐篷租赁",
-    "inventoryPricing": "库存与价格", "eventRecommender": "活动推荐器",
-    "services": "服务", "allServices": "所有服务", "events": "活动",
-    "gallery": "图库", "about": "关于", "aboutUs": "关于我们",
-    "contact": "联系", "requestQuote": "申请报价",
-    "findMyTentSize": "查找我的帐篷尺寸", "myAccount": "我的账户",
-    "signIn": "登录", "admin": "管理", "menu": "菜单",
-    "recommender": "推荐器", "quote": "报价", "explore": "探索",
-    "more": "更多", "inventory": "库存", "closeMenu": "关闭菜单",
+    "home": "首页",
+    "rentals": "租赁",
+    "tentRentals": "帐篷租赁",
+    "inventoryPricing": "库存与价格",
+    "eventRecommender": "AI 帐篷规划师",
+    "services": "服务",
+    "allServices": "全部服务",
+    "events": "活动",
+    "gallery": "图库",
+    "about": "关于",
+    "aboutUs": "关于我们",
+    "contact": "联系我们",
+    "requestQuote": "获取报价",
+    "findMyTentSize": "查找帐篷尺寸",
+    "myAccount": "我的账户",
+    "signIn": "登录",
+    "admin": "管理",
+    "menu": "菜单",
+    "recommender": "AI 帐篷规划师",
+    "quote": "报价",
+    "explore": "探索",
+    "more": "更多",
+    "inventory": "库存",
+    "closeMenu": "关闭菜单",
     "navigationMenu": "导航菜单"
   },
   "navDesc": {
-    "tentRentals": "框架式、立柱式和六角形帐篷",
-    "inventoryPricing": "包含样本布局的完整目录",
-    "eventRecommender": "为您的活动量身打造的 AI 设置",
+    "tentRentals": "框架、杆式和六角形帐篷",
+    "inventoryPricing": "完整目录及示例布局",
+    "eventRecommender": "免费 AI 定制帐篷方案",
     "allServices": "婚礼、节庆、企业活动",
-    "events": "过往活动和案例研究",
-    "aboutUs": "海岸团队,我们的故事",
+    "events": "往期活动与案例",
+    "aboutUs": "海岸团队与我们的故事",
     "contact": "与我们联系"
   },
   "footer": {
-    "tagline": "为婚礼、节庆、私人聚会和企业活动提供活动帐篷租赁及海岸活动支持。",
-    "servicesHeading": "服务", "weddingTents": "婚礼帐篷",
-    "festivalTents": "节庆帐篷", "privateParties": "私人聚会",
-    "corporateEvents": "企业活动", "vendorTents": "供应商帐篷",
-    "quickLinks": "快速链接", "contact": "联系",
+    "tagline": "为婚礼、节庆、私人派对和企业聚会提供活动帐篷租赁及海岸活动支持。",
+    "servicesHeading": "服务",
+    "weddingTents": "婚礼帐篷",
+    "festivalTents": "节庆帐篷",
+    "privateParties": "私人派对",
+    "corporateEvents": "企业活动",
+    "vendorTents": "摊位帐篷",
+    "quickLinks": "快速链接",
+    "contact": "联系我们",
     "servingOregon": "服务俄勒冈海岸",
-    "followFacebook": "在 Facebook 关注我们",
-    "copyright": "© 2026 Pacific North Events & Tents。您的活动。您的愿景。我们让它成真。"
+    "followFacebook": "在 Facebook 上关注我们",
+    "copyright": "© 2026 Pacific North Events & Tents. 您的活动。您的愿景。我们来实现。"
   },
   "cta": {
-    "requestQuote": "申请报价", "findMyTentSize": "查找我的帐篷尺寸",
-    "viewServices": "查看服务", "exploreServices": "探索服务",
-    "planMySetup": "规划我的布置", "getQuote": "获取报价",
-    "startWeddingQuote": "开始婚礼报价", "sendQuoteRequest": "发送报价请求",
-    "showMyRecommendation": "显示我的推荐", "requestFinalQuote": "申请最终报价",
-    "startOver": "重新开始", "talkToUs": "与我们交谈",
-    "readyTitle": "准备好让您的活动焕发生机了吗?",
-    "readyDesc": "告诉我们日期、地点、宾客人数和愿景。"
+    "requestQuote": "获取报价",
+    "findMyTentSize": "查找帐篷尺寸",
+    "viewServices": "查看服务",
+    "exploreServices": "探索服务",
+    "planMySetup": "规划我的方案",
+    "getQuote": "获取报价",
+    "startWeddingQuote": "开始婚礼报价",
+    "sendQuoteRequest": "发送报价申请",
+    "showMyRecommendation": "显示推荐方案",
+    "requestFinalQuote": "申请最终报价",
+    "startOver": "重新开始",
+    "talkToUs": "联系我们",
+    "readyTitle": "准备好让您的活动精彩呈现了吗？",
+    "readyDesc": "告诉我们您的日期、地点、宾客人数和愿景，我们将帮您选择最合适的帐篷方案。",
+    "tryFreePlanner": "体验免费 AI 帐篷规划师",
+    "viewOurServices": "查看我们的服务",
+    "startMyFreeTentPlan": "开始免费帐篷规划",
+    "requestCustomQuote": "申请定制报价"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "俄勒冈海岸活动租赁",
+      "title": "俄勒冈海岸庆典活动帐篷与租赁",
+      "subtitle": "无论是婚礼、节庆、私人派对还是企业活动，Pacific North Events & Tents 都将帮助您以时尚、可靠、抗风雨的活动租赁装备将愿景变为现实。"
+    },
+    "badges": {
+      "weddings": "婚礼",
+      "festivals": "节庆",
+      "privateParties": "私人派对",
+      "corporateEvents": "企业活动",
+      "rainOrShine": "雨天晴天均可",
+      "yearRound": "全年租赁"
+    },
+    "intro": {
+      "eyebrow": "我们的承诺",
+      "titleLine1": "您的活动。您的愿景。",
+      "titleLine2": "我们来实现。",
+      "body": "在俄勒冈海岸策划户外活动，既充满独特魅力，也伴随独特的天气挑战。Pacific North Events & Tents 提供高品质活动帐篷及租赁支持，让您的庆典舒适、优雅、无忧无虑。"
+    },
+    "services": {
+      "title": "我们支持的活动类型",
+      "exploreLink": "探索服务 →",
+      "weddings": { "title": "婚礼", "text": "为婚礼仪式、宴会、彩排晚宴和海岸婚礼周末打造优雅的帐篷空间。" },
+      "festivals": { "title": "节庆与社区活动", "text": "为集市、音乐活动、募捐活动、展会和社区庆典提供大型帐篷解决方案。" },
+      "privateParties": { "title": "私人派对", "text": "为生日、聚会、毕业典礼、庭院派对和家庭聚会打造舒适美观的场地。" },
+      "corporate": { "title": "企业活动", "text": "为商业活动、团队拓展、品牌推广和公司聚会提供专业帐篷及租赁解决方案。" }
+    },
+    "weather": {
+      "eyebrow": "海岸就绪",
+      "title": "专为海岸天气而生",
+      "body": "俄勒冈海岸活动不仅需要漂亮的布置，更需要周全的规划、可靠的设备和让宾客安心的遮蔽设施。我们的帐篷能有效抵御阳光、风雨，同时为宾客营造一个令人难忘的精致空间。",
+      "cta": "规划您的方案"
+    },
+    "tentCats": {
+      "eyebrow": "帐篷租赁",
+      "title": "适合各种规模庆典的帐篷",
+      "small": { "title": "小型聚会", "desc": "庭院派对、私密晚宴及 50 人以内的小型庆典。" },
+      "medium": { "title": "中型活动", "desc": "50–100 人的宴会和家庭庆典，含座位及餐饮服务。" },
+      "large": { "title": "大型庆典", "desc": "100–200 人的婚礼和企业活动，含餐饮和舞池。" },
+      "festival": { "title": "节庆与摊位帐篷", "desc": "集市、展会和多摊位布局，提供防风雨保护。" },
+      "wedding": { "title": "婚礼宴会帐篷", "desc": "餐饮、舞池、休闲区及优雅的户外婚礼布局。" },
+      "custom": { "title": "定制活动布局", "desc": "多帐篷组合、摊位排列、天气预案及完整活动流程设计。" }
+    },
+    "plannerPromo": {
+      "badge": "全新免费工具",
+      "eyebrow": "几分钟内规划您的活动",
+      "title": "体验免费 AI 帐篷规划师",
+      "body": "不确定活动需要什么尺寸的帐篷、座位布局或设备？我们的 AI 帐篷规划师将根据您的宾客人数、活动类型、场地、天气情况和布置需求，帮您制定定制化起始方案。",
+      "cards": {
+        "tentSize": { "title": "帐篷尺寸推荐", "text": "根据宾客人数和布局获取建议帐篷尺寸。" },
+        "equipment": { "title": "设备清单", "text": "查看推荐的桌椅、侧墙、照明、舞台及其他配件。" },
+        "blueprint": { "title": "蓝图式布局", "text": "生成活动场地的可视化起始布局图。" },
+        "quote": { "title": "报价就绪方案", "text": "将您的方案发送给我们的团队，获取定制报价和最终审核。" }
+      }
+    },
+    "gallery": {
+      "eyebrow": "灵感来源",
+      "title": "看看能实现什么",
+      "viewFull": "查看完整图库 →"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "服务",
+      "title": "适合各类场合的活动租赁服务",
+      "subtitle": "无论您举办的是亲密聚会还是大型海岸庆典，我们都将帮您打造活动所需的遮蔽、结构和环境。"
+    },
+    "items": {
+      "weddings": { "title": "婚礼帐篷租赁", "copy": "为您的婚礼仪式、宴会、鸡尾酒时间或整个婚礼周末打造精美的遮蔽空间。我们的帐篷租赁服务将户外场地变为舒适、难忘的宴会厅。" },
+      "festivals": { "title": "节庆与社区活动租赁", "copy": "从摊位到大型聚集空间，我们为节庆、集市、募捐活动、展会和公共活动提供实用的防风雨帐篷解决方案。" },
+      "private": { "title": "私人派对租赁", "copy": "自信地举办生日、聚会、毕业典礼、周年纪念和庭院庆典。我们帮您打造一个舒适、精心布置且轻松享受的活动空间。" },
+      "corporate": { "title": "企业活动租赁", "copy": "为公司拓展、商业聚会、产品发布和品牌活动提供精致的帐篷布置，让宾客舒适，活动看起来专业。" },
+      "setup": { "title": "配送、搭建与撤场", "copy": "借助可靠的搭建和撤场支持，让活动策划更轻松。我们的团队负责处理结构问题，让您专注于活动体验。" }
+    },
+    "tailoredBanner": "需要为您的活动量身定制方案吗？"
+  },
+  "tentRentals": {
+    "hero": {
+      "eyebrow": "帐篷租赁",
+      "title": "俄勒冈海岸活动帐篷租赁",
+      "subtitle": "为婚礼、派对、节庆和企业聚会提供时尚遮蔽、灵活布局和可靠防护。"
+    },
+    "bestFor": "适用于：",
+    "items": {
+      "popup": { "title": "折叠式 / 摊位帐篷", "best": "集市、摊位、签到处及小型遮蔽站。", "cta": "咨询库存情况" },
+      "small": { "title": "小型活动帐篷", "best": "庭院派对、小型聚会、餐饮服务及宾客座位。", "cta": "申请报价" },
+      "medium": { "title": "中型活动帐篷", "best": "宴会、家庭庆典、私人派对和社区活动。", "cta": "申请报价" },
+      "large": { "title": "大型活动帐篷", "best": "婚礼、节庆、企业活动及大型宾客人数。", "cta": "规划我的活动" },
+      "wedding": { "title": "婚礼宴会帐篷", "best": "餐饮、舞池、休闲区及优雅的户外婚礼布局。", "cta": "开始婚礼报价" },
+      "custom": { "title": "定制活动布局", "best": "复杂场地、多帐篷组合、摊位排列、天气预案及活动流程。", "cta": "设计我的方案" }
+    },
+    "help": {
+      "title": "不确定需要什么尺寸的帐篷？",
+      "body": "告诉我们您的宾客人数、活动类型、地点和布局目标，我们将帮您推荐合适的帐篷尺寸和布置方案。",
+      "cta": "获取选购帮助"
+    },
+    "inventory": {
+      "title": "浏览完整库存",
+      "body": "查看所有帐篷尺寸、桌椅、舞池、照明方案、吧台及配送区域——含 3 天租赁价格。",
+      "cta": "查看库存与价格"
+    }
+  },
+  "events": {
+    "hero": {
+      "eyebrow": "活动",
+      "title": "我们支持的活动",
+      "subtitle": "从海滨婚礼到社区节庆，Pacific North Events & Tents 帮助打造舒适空间，成就难忘聚会。"
+    },
+    "suggestedRentals": "推荐租赁：",
+    "items": {
+      "weddings": { "title": "婚礼", "desc": "为餐饮、舞池、仪式座位和宾客舒适体验打造精美的遮蔽场地。", "rentals": "宴会帐篷、仪式帐篷、摊位帐篷、休闲遮蔽区、照明就绪布局。", "cta": "申请婚礼报价" },
+      "festivals": { "title": "节庆", "desc": "沿海岸举办音乐、美食和社区节庆的大型多帐篷布局。", "rentals": "主舞台帐篷、摊位排列、餐饮服务帐篷、签到遮蔽区。", "cta": "规划我的节庆" },
+      "private": { "title": "私人派对", "desc": "从庭院生日聚会到里程碑庆典，提供舒适的聚会和用餐空间。", "rentals": "小至中型帐篷、桌椅、照明、侧墙。", "cta": "申请派对报价" },
+      "corporate": { "title": "企业活动", "desc": "为拓展活动、产品发布和品牌聚会打造精致的户外场地。", "rentals": "宴会帐篷、演示区、品牌摊位帐篷。", "cta": "申请企业报价" },
+      "markets": { "title": "集市与摊贩活动", "desc": "能够抵御风、日晒和太平洋西北部降雨的有序摊位排列。", "rentals": "10x10 / 10x20 摊位帐篷、签到帐篷、侧墙。", "cta": "申请摊位报价" },
+      "fundraisers": { "title": "募捐活动与社区聚会", "desc": "为募捐活动、学校活动和社区庆典提供温馨的聚会空间。", "rentals": "中至大型帐篷、桌椅、照明。", "cta": "申请社区报价" }
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "图库",
+      "title": "活动灵感图库",
+      "subtitle": "浏览帐篷布置、户外聚会及海岸活动灵感。"
+    },
+    "filters": {
+      "all": "全部",
+      "coastal": "海岸布置",
+      "reception": "宴会",
+      "lighting": "照明"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "关于",
+      "title": "关于 Pacific North Events & Tents",
+      "subtitle": "以可靠的租赁、周全的规划和防风雨布置，助力俄勒冈海岸活动圆满举行。"
+    },
+    "story": {
+      "eyebrow": "我们的故事",
+      "title": "本地活动值得本地支持",
+      "body": "Pacific North Events & Tents 的创立初衷是帮助人们在俄勒冈海岸举办更出色的户外活动。我们深知，海岸庆典需要灵活的规划、可靠的设备，以及一支充分理解每个细节重要性的团队——尤其是在重要的大日子到来之际。"
+    },
+    "values": {
+      "title": "我们的价值观",
+      "reliable": { "title": "可靠的布置", "text": "值得信赖的配送、搭建和撤场支持，让您的活动自信开场。" },
+      "weather": { "title": "天气应对规划", "text": "户外活动需要明智的遮蔽方案。我们帮助客户在多变的海岸天气中保持舒适。" },
+      "flexible": { "title": "灵活的活动支持", "text": "从亲密聚会到大型庆典，我们帮助将布置与活动完美匹配。" },
+      "local": { "title": "本地友好服务", "text": "我们致力于帮助客户创造难忘的体验，同时避免不必要的压力。" }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "联系我们",
+      "title": "申请报价",
+      "subtitle": "告诉我们您的活动详情，我们将帮您规划合适的帐篷布置方案。"
+    },
+    "thankYou": {
+      "title": "感谢您！",
+      "body": "我们已收到您的申请，将尽快联系您协助规划活动。"
+    },
+    "fromRecommender": "来自您的推荐方案：",
+    "fields": {
+      "fullName": "全名 *",
+      "email": "电子邮件地址 *",
+      "phone": "电话号码 *",
+      "eventDate": "活动日期 *",
+      "eventLocation": "活动地点 / 场地 *",
+      "eventLocationPlaceholder": "场地名称、城市或区域",
+      "eventType": "活动类型 *",
+      "guestCount": "预计宾客人数 *",
+      "rentalsInterest": "您对哪些租赁项目感兴趣？",
+      "preferredContact": "首选联系方式",
+      "message": "留言",
+      "messagePlaceholder": "请告诉我们您的活动、地点、时间安排和愿景……"
+    },
+    "selectOption": "请选择",
+    "selectRange": "选择范围",
+    "submit": "发送报价申请",
+    "guestRanges": {
+      "under25": "25 人以下",
+      "25_50": "25–50",
+      "50_100": "50–100",
+      "100_200": "100–200",
+      "200_plus": "200+"
+    },
+    "eventTypes": {
+      "wedding": "婚礼",
+      "festival": "节庆",
+      "privateParty": "私人派对",
+      "corporateEvent": "企业活动",
+      "marketVendor": "集市 / 摊贩活动",
+      "community": "社区活动",
+      "other": "其他"
+    },
+    "rentalOptions": {
+      "eventTent": "活动帐篷",
+      "vendorTent": "摊位帐篷",
+      "weddingTent": "婚礼帐篷",
+      "tables": "桌子",
+      "chairs": "椅子",
+      "lighting": "照明",
+      "setupSupport": "搭建 / 撤场支持",
+      "notSure": "尚不确定"
+    },
+    "contactMethod": {
+      "email": "电子邮件",
+      "phone": "电话",
+      "text": "短信"
+    },
+    "sidebar": {
+      "title": "联系 Pacific North Events & Tents",
+      "phonePlaceholder": "添加电话号码",
+      "emailPlaceholder": "添加电子邮件地址",
+      "areaServed": "俄勒冈海岸及周边地区",
+      "facebook": "Facebook",
+      "noteTitle": "全年提供租赁服务。",
+      "noteBody": "请提前联系我们以获得最佳档期。"
+    }
+  },
+  "plannerPopup": {
+    "badge": "全新免费工具",
+    "title": "不确定需要什么尺寸的帐篷？",
+    "body": "体验我们的免费 AI 帐篷规划师，几分钟内获取定制帐篷尺寸推荐、设备清单和蓝图式活动布局。",
+    "bullets": {
+      "tentSize": "帐篷尺寸推荐",
+      "equipment": "桌椅、舞台、照明及其他配件",
+      "blueprint": "蓝图式布置",
+      "quote": "报价就绪方案"
+    },
+    "primaryCta": "开始免费帐篷规划",
+    "secondaryCta": "稍后再说",
+    "note": "适用于婚礼、募捐活动、节庆、私人派对和企业活动。",
+    "close": "关闭"
   },
   "recommender": {
-    "metaTitle": "活动推荐器 | Pacific North Events & Tents",
-    "metaDesc": "AI 驱动的活动布置推荐器。",
-    "heroEyebrow": "活动推荐器",
-    "heroTitle": "为您的活动找到合适的布置",
-    "heroSubtitle": "回答几个快速问题,我们的 AI 将推荐完整的帐篷、桌椅和设备计划。",
-    "intro": "每个活动都不同。我们将审查您的库存需求。",
+    "metaTitle": "AI 帐篷规划师 | Pacific North Events & Tents",
+    "metaDesc": "免费 AI 帐篷规划师。几分钟内获取定制帐篷尺寸推荐、设备清单和蓝图式活动布局。",
+    "heroEyebrow": "AI 帐篷规划师",
+    "heroTitle": "为您的活动找到最合适的方案",
+    "heroSubtitle": "回答几个简单问题，我们的 AI 将推荐完整的帐篷、桌椅和设备方案——并附上布局蓝图。",
+    "intro": "每个活动都各有不同。我们将全面评估您对帐篷、桌椅及特色物品的库存需求，让您在申请报价前有完整清晰的了解。",
     "steps": {
-      "eventBasics": "活动基本信息", "guestLayout": "宾客与布局",
-      "extras": "餐饮与附加项", "locationWeather": "地点与天气", "contact": "您的资料"
+      "eventBasics": "活动基本信息",
+      "guestLayout": "宾客与布局",
+      "extras": "餐饮与附加设施",
+      "locationWeather": "地点与天气",
+      "contact": "您的信息"
     },
     "fields": {
-      "eventType": "您计划什么类型的活动?", "eventDate": "您的活动日期是? *",
-      "eventLocation": "活动将在哪里举行? *",
-      "eventLocationPlaceholder": "场地名称、后院、公园、海滩区、商业地点等。",
-      "outdoorIndoor": "活动是户外、室内还是部分有遮盖?",
-      "guestCount": "您预计有多少宾客? *",
-      "setupType": "您需要哪种类型的布置?",
-      "seatedGuests": "宾客会坐在桌子旁吗?",
-      "tableStyle": "您偏好哪种桌子风格?",
-      "foodService": "帐篷下会有餐饮或外烩吗?",
-      "dancing": "您需要跳舞的空间吗?",
-      "extras": "会有酒吧、礼物桌、DJ、乐队或舞台吗?",
-      "rentalItems": "您对哪些租赁物品感兴趣?",
-      "surface": "帐篷将搭建在什么类型的表面上?",
-      "weatherExposure": "地点是否暴露于风或海岸天气?",
-      "sidewalls": "您是否需要侧墙以获得额外天气保护?",
-      "afterSunset": "活动会在日落后继续吗?",
-      "fullName": "全名 *", "email": "电子邮件 *", "phone": "电话号码",
+      "eventType": "您计划举办什么类型的活动？",
+      "eventDate": "您的活动日期是？ *",
+      "eventLocation": "活动将在哪里举行？ *",
+      "eventLocationPlaceholder": "场地名称、庭院、公园、海滩区域、商业地址等",
+      "outdoorIndoor": "活动是户外、室内还是半遮蔽？",
+      "guestCount": "预计有多少宾客？ *",
+      "setupType": "您需要哪种布置方式？",
+      "seatedGuests": "宾客是否需要就座？",
+      "tableStyle": "您偏好哪种桌子风格？",
+      "foodService": "帐篷内是否有餐饮服务？",
+      "dancing": "是否需要舞池空间？",
+      "extras": "是否有吧台、礼品桌、DJ、乐队或舞台？",
+      "rentalItems": "您对哪些租赁物品感兴趣？",
+      "surface": "帐篷将搭建在什么类型的地面上？",
+      "weatherExposure": "场地是否暴露于风或海岸天气？",
+      "sidewalls": "是否需要侧墙以增强防风雨保护？",
+      "afterSunset": "活动是否会延续到日落之后？",
+      "fullName": "全名 *",
+      "email": "电子邮件地址 *",
+      "phone": "电话号码",
       "preferredContact": "首选联系方式",
-      "message": "关于您的活动还有什么需要告诉我们的吗?"
+      "message": "关于您的活动，还有什么需要告诉我们的吗？"
     },
     "options": {
       "eventTypes": {
-        "wedding": "婚礼", "festival": "节庆", "privateParty": "私人聚会",
-        "corporateEvent": "企业活动", "marketVendorEvent": "市集 / 供应商活动",
-        "fundraiser": "筹款活动", "communityEvent": "社区活动",
-        "graduationParty": "毕业派对", "other": "其他"
+        "Wedding": "婚礼",
+        "Festival": "节庆",
+        "Private Party": "私人派对",
+        "Corporate Event": "企业活动",
+        "Market / Vendor Event": "集市 / 摊贩活动",
+        "Fundraiser": "募捐活动",
+        "Community Event": "社区活动",
+        "Graduation Party": "毕业派对",
+        "Other": "其他"
       },
       "outdoor": {
-        "fullyOutdoors": "完全户外", "indoors": "室内",
-        "partiallyCovered": "部分有遮盖", "notSureYet": "尚未确定"
+        "Fully outdoors": "完全户外",
+        "Indoors": "室内",
+        "Partially covered": "半遮蔽",
+        "Not sure yet": "尚不确定"
       },
       "setup": {
-        "standingOnly": "仅站立", "ceremonySeating": "仪式座位",
-        "seatedDining": "就座用餐", "cocktailMingling": "鸡尾酒桌 / 社交",
-        "vendorBooths": "供应商摊位", "foodServiceArea": "餐饮服务区",
-        "mixedLayout": "混合布局", "notSure": "不确定"
+        "Standing only": "仅站立",
+        "Ceremony seating": "仪式座位",
+        "Seated dining": "坐式用餐",
+        "Cocktail tables / mingling": "鸡尾酒桌 / 交流区",
+        "Vendor booths": "摊位",
+        "Food service area": "餐饮服务区",
+        "Mixed layout": "混合布局",
+        "Not sure": "不确定"
       },
       "seated": {
-        "allSeated": "是的,所有宾客就座", "someSeated": "一些就座,一些站立",
-        "mostlyStanding": "不,主要是站立", "notSure": "不确定"
+        "Yes, all guests seated": "是，所有宾客就座",
+        "Some seated, some standing": "部分就座，部分站立",
+        "No, mostly standing": "否，大多数站立",
+        "Not sure": "不确定"
       },
       "tableStyle": {
-        "round": "圆桌", "banquet": "宴会 / 长方桌", "cocktail": "鸡尾酒桌",
-        "picnic": "野餐式桌子", "noTables": "不需要桌子", "notSure": "不确定"
+        "Round tables": "圆桌",
+        "Banquet / rectangular tables": "宴会桌 / 长方形桌",
+        "Cocktail tables": "鸡尾酒桌",
+        "Picnic-style tables": "野餐式桌",
+        "No tables needed": "不需要桌子",
+        "Not sure": "不确定"
       },
       "food": {
-        "buffet": "是,自助餐", "plated": "是,套餐", "foodTrucks": "是,附近有餐车",
-        "snackOnly": "是,仅小吃 / 甜点桌", "noFood": "无餐饮服务", "notSure": "不确定"
+        "Yes, buffet": "是，自助餐",
+        "Yes, plated meal": "是，分盘餐",
+        "Yes, food trucks nearby": "是，附近有餐车",
+        "Yes, snack / dessert table only": "是，仅小食 / 甜点桌",
+        "No food service": "无餐饮服务",
+        "Not sure": "不确定"
       },
       "dancing": {
-        "danceFloor": "是,需要舞池", "small": "小舞蹈区",
-        "none": "无舞蹈区", "notSure": "不确定"
+        "Yes, dance floor area needed": "是，需要舞池区域",
+        "Small dancing area": "小型舞池",
+        "No dancing area": "不需要舞池",
+        "Not sure": "不确定"
       },
       "extras": {
-        "bar": "酒吧区", "gift": "礼物桌", "dessert": "甜点桌",
-        "dj": "DJ 台", "band": "现场乐队", "stage": "小舞台",
-        "speaker": "扬声器 / 公告区", "none": "无", "notSure": "不确定"
+        "Bar area": "吧台区",
+        "Gift table": "礼品桌",
+        "Dessert table": "甜点桌",
+        "DJ booth": "DJ 台",
+        "Live band": "现场乐队",
+        "Small stage": "小型舞台",
+        "Speaker / announcement area": "扬声器 / 广播区",
+        "None": "无",
+        "Not sure": "不确定"
       },
       "rentals": {
-        "tent": "帐篷", "tables": "桌子", "chairs": "椅子", "linens": "桌布",
-        "lighting": "照明", "danceFloor": "舞池", "sidewalls": "侧墙",
-        "heaters": "加热器", "flooring": "地板", "vendorTents": "供应商帐篷",
-        "trash": "垃圾 / 回收站", "setup": "搭建和拆除", "notSure": "尚未确定"
+        "Tent": "帐篷",
+        "Tables": "桌子",
+        "Chairs": "椅子",
+        "Linens": "桌布",
+        "Lighting": "照明",
+        "Dance floor": "舞池",
+        "Sidewalls": "侧墙",
+        "Heaters": "取暖器",
+        "Flooring": "地板",
+        "Vendor tents": "摊位帐篷",
+        "Trash / recycling stations": "垃圾 / 回收站",
+        "Setup and breakdown": "搭建与撤场",
+        "Not sure yet": "尚不确定"
       },
       "surface": {
-        "grass": "草地", "gravel": "碎石", "concrete": "混凝土", "asphalt": "沥青",
-        "sand": "沙地", "deckPatio": "甲板 / 露台", "mixed": "混合表面", "notSure": "不确定"
+        "Grass": "草地",
+        "Gravel": "砾石",
+        "Concrete": "混凝土",
+        "Asphalt": "沥青",
+        "Sand": "沙地",
+        "Deck / patio": "甲板 / 庭院",
+        "Mixed surface": "混合地面",
+        "Not sure": "不确定"
       },
       "exposure": {
-        "veryExposed": "是,非常暴露", "somewhatExposed": "有些暴露",
-        "mostlyProtected": "大部分受保护", "notSure": "不确定"
+        "Yes, very exposed": "是，非常暴露",
+        "Somewhat exposed": "稍微暴露",
+        "Mostly protected": "基本有遮蔽",
+        "Not sure": "不确定"
       },
-      "sidewalls": { "yes": "是", "maybe": "也许", "no": "否", "notSure": "不确定" },
-      "afterSunset": { "yes": "是", "no": "否", "notSure": "不确定" },
-      "contactMethod": { "email": "电子邮件", "phone": "电话", "text": "短信" },
-      "guestCounts": {
-        "under_25": "少于 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
-        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      "sidewalls": {
+        "Yes": "是",
+        "Maybe": "也许",
+        "No": "否",
+        "Not sure": "不确定"
+      },
+      "afterSunset": {
+        "Yes": "是",
+        "No": "否",
+        "Not sure": "不确定"
+      },
+      "contactMethod": {
+        "Email": "电子邮件",
+        "Phone": "电话",
+        "Text": "短信"
       }
     },
     "stepTitles": {
-      "eventBasics": "活动基本信息", "guestLayout": "宾客人数与布局",
-      "extras": "餐饮、舞蹈与附加项", "locationWeather": "地点与天气", "contact": "您的资料"
+      "eventBasics": "活动基本信息",
+      "guestLayout": "宾客人数与布局",
+      "extras": "餐饮、舞池与附加设施",
+      "locationWeather": "地点与天气",
+      "contact": "您的信息"
     },
     "buttons": {
-      "back": "返回", "next": "下一步", "startOver": "重新开始",
-      "generate": "生成我的布置", "tryAgain": "再试一次",
-      "openPdf": "打开 PDF 查看器", "viewPdf": "查看 PDF",
-      "downloadPdf": "下载 PDF", "print": "打印",
-      "closeViewer": "关闭 PDF 查看器", "saveAccount": "保存到我的账户",
-      "createAccount": "创建账户以保存", "viewPlans": "查看我的计划",
-      "sendForQuote": "发送此推荐以获取报价"
+      "back": "上一步",
+      "next": "下一步",
+      "startOver": "重新开始",
+      "generate": "生成我的方案",
+      "tryAgain": "重试",
+      "openPdf": "打开 PDF 查看器",
+      "viewPdf": "查看 PDF",
+      "downloadPdf": "下载 PDF",
+      "print": "打印",
+      "closeViewer": "关闭 PDF 查看器",
+      "saveAccount": "保存到我的账户",
+      "createAccount": "创建账户以保存",
+      "viewPlans": "查看我的方案",
+      "sendForQuote": "发送此推荐方案申请报价"
     },
     "loading": {
-      "title": "正在设计您的活动布置…",
-      "subtitle": "我们的 AI 正在审查库存。通常需要 15–30 秒。"
+      "title": "正在设计您的活动方案……",
+      "subtitle": "我们的 AI 正在审核库存并起草您的蓝图，通常需要 15–30 秒。"
     },
     "error": {
-      "title": "我们无法生成您的推荐",
-      "generic": "我们这边出了点问题。",
-      "retryHint": "您的答案已保存在下方。点击「生成我的布置」重试。"
+      "title": "无法生成您的推荐方案",
+      "generic": "我们这边出现了一些问题。",
+      "retryHint": "您的回答已保存在下方。请再次点击\"生成我的方案\"重试，或点击\"联系我们\"，我们将手动为您制定方案。"
     },
     "results": {
-      "eyebrow": "您的推荐已准备就绪",
-      "thanks": "谢谢 {{name}} — 我们已审查您在 {{date}}{{locationClause}} 为 {{guests}} 位宾客举办的 {{eventType}}。",
-      "atGlance": "您的活动一览", "atGlanceSub": "您告诉我们的内容简要总结。",
-      "extrasRequested": "请求的附加项", "rentalsOfInterest": "感兴趣的租赁项",
-      "suggestedLayout": "建议布局", "blueprintSketch": "蓝图草图",
-      "blueprintNote": "概念草图 — 最终位置在报价时确认。",
-      "recommendedSetup": "推荐布置",
-      "recommendedSetupSub": "每个类别的完整库存选择。",
-      "weatherNotes": "天气与布置说明",
-      "disclaimer": "这是 AI 生成的估算。最终尺寸、数量和设备可能会变更。",
+      "eyebrow": "您的推荐方案已就绪",
+      "thanksLead": "感谢您，{{name}} — 我们已审核您的 {{eventType}}，活动日期为",
+      "guestsLabel": "{{guests}} 位宾客",
+      "onDate": "于",
+      "at": "在",
+      "thanksTrail": "根据您的回答，以下是我们的推荐方案。",
+      "atGlance": "您的活动概览",
+      "atGlanceSub": "您所提供信息的快速摘要。",
+      "extrasRequested": "已申请的附加设施",
+      "rentalsOfInterest": "感兴趣的租赁项目",
+      "suggestedLayout": "建议布局",
+      "blueprintSketch": "蓝图草图",
+      "blueprintNote": "概念草图——最终布置将在报价阶段确认。",
+      "recommendedSetup": "推荐方案",
+      "recommendedSetupSub": "涵盖各类别的完整库存选择，数量为估算值。",
+      "weatherNotes": "天气与布置注意事项",
+      "disclaimer": "此为 AI 生成的估算方案。最终帐篷尺寸、数量和设备可能根据场地、地面、布局、天气和库存情况有所调整。方案中不含价格——请申请报价以获取确认价格。",
       "savedToAccount": "已保存到您的账户。",
-      "dontLose": "不要丢失此推荐",
-      "dontLoseDesc": "创建免费账户以保存此计划。",
+      "dontLose": "不要丢失此推荐方案",
+      "dontLoseDesc": "创建免费账户以保存此方案，随时查阅。登录后我们将自动为您保存。",
       "pdfViewer": "PDF 查看器",
       "recapKeys": {
-        "eventType": "活动类型", "date": "日期", "location": "地点", "setting": "环境",
-        "guests": "宾客", "setup": "布置", "seating": "座位", "tables": "桌子",
-        "food": "餐饮", "dancing": "舞蹈", "surface": "表面", "exposure": "暴露",
-        "sidewalls": "侧墙", "afterSunset": "日落后"
+        "eventType": "活动类型",
+        "date": "日期",
+        "location": "地点",
+        "setting": "环境",
+        "guests": "宾客",
+        "setup": "布置方式",
+        "seating": "座位",
+        "tables": "桌子",
+        "food": "餐饮",
+        "dancing": "舞池",
+        "surface": "地面",
+        "exposure": "风雨暴露",
+        "sidewalls": "侧墙",
+        "afterSunset": "日落后"
       },
-      "selectedDateFallback": "您选择的日期", "noLocation": "—", "atClause": " 于 "
+      "selectedDateFallback": "您所选的日期",
+      "noLocation": "—"
     },
     "notSureYet": {
-      "title": "还不确定?没关系。",
-      "desc": "在联系我们之前,您不需要知道每个细节。"
+      "title": "还不确定？没关系。",
+      "desc": "您无需在联系我们之前了解每一个细节。如果您有日期、地点和大致宾客人数，我们就能帮您规划其余的一切。"
     },
     "validation": {
-      "required": "必填字段", "invalidEmail": "请输入有效的电子邮件地址",
-      "eventDateRequired": "请输入您的活动日期",
-      "eventLocationRequired": "请输入您的活动地点"
+      "required": "此字段为必填项。",
+      "invalidEmail": "请输入有效的电子邮件地址。",
+      "eventDateRequired": "请输入您的活动日期。",
+      "eventLocationRequired": "请输入您的活动地点。"
     }
   }
 }
