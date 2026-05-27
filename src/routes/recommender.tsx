@@ -57,6 +57,14 @@ function RecommenderPage() {
   const generateFn = useServerFn(generateRecommendation);
   const mutation = useMutation({
     mutationFn: (input: RecommenderInput) => generateFn({ data: input }),
+    onError: (err) => {
+      console.error("[recommender] generateRecommendation failed:", err);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    onSuccess: (res) => {
+      console.log("[recommender] success", res);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
   });
 
   function set<K extends keyof RecommenderInput>(k: K, v: RecommenderInput[K]) {
@@ -90,7 +98,7 @@ function RecommenderPage() {
   function sendToQuote() {
     const r = mutation.data?.recommendation;
     if (!r) return;
-    const picksSummary = r.picks
+    const picksSummary = (r.picks ?? [])
       .map((p) => `${p.quantity}× ${p.item_name} (${p.category})`)
       .join("; ");
     const prefill = `AI Recommendation: ${r.headline}. ${r.summary} Items: ${picksSummary}. Event: ${data.eventType}, ${data.guestCount} guests, ${data.eventDate} at ${data.location}.`;
@@ -98,7 +106,8 @@ function RecommenderPage() {
   }
 
   const result = mutation.data;
-  const showForm = !result && !mutation.isPending;
+  const hasValidResult = !!result?.recommendation?.picks;
+  const showForm = !hasValidResult && !mutation.isPending;
 
   return (
     <SiteLayout>
@@ -234,6 +243,23 @@ function RecommenderPage() {
           </>
         )}
 
+        {showForm && mutation.isError && (
+          <div className="mb-8 rounded-2xl border-2 border-destructive/50 bg-destructive/10 p-6 text-center shadow-md">
+            <p className="font-serif text-xl text-destructive">We couldn't generate your recommendation</p>
+            <p className="mt-2 text-sm text-foreground">
+              {(mutation.error as Error)?.message ?? "Something went wrong on our end."}
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">Your answers are saved below. Click "Generate My Setup" again to retry, or "Talk to Us" and we'll build a setup manually.</p>
+            <button
+              type="button"
+              onClick={() => mutation.mutate(data)}
+              className="mt-4 inline-flex items-center gap-1 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground"
+            >
+              Try Again
+            </button>
+          </div>
+        )}
+
         {mutation.isPending && (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-16 text-center">
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
@@ -242,7 +268,7 @@ function RecommenderPage() {
           </div>
         )}
 
-        {result && (
+        {hasValidResult && result && (
           <AIResult
             recommendation={result.recommendation}
             blueprintImage={result.blueprintImage}
@@ -253,6 +279,8 @@ function RecommenderPage() {
           />
         )}
       </section>
+
+
 
       <section className="bg-secondary/40">
         <div className="mx-auto max-w-3xl px-4 py-20 text-center lg:px-8">
@@ -285,7 +313,7 @@ function AIResult({
   onSend: () => void;
 }) {
   const grouped = new Map<string, Pick[]>();
-  for (const p of recommendation.picks) {
+  for (const p of recommendation.picks ?? []) {
     const arr = grouped.get(p.category) ?? [];
     arr.push(p);
     grouped.set(p.category, arr);
@@ -417,11 +445,11 @@ function AIResult({
           ))}
         </div>
 
-        {recommendation.weather_notes.length > 0 && (
+        {(recommendation.weather_notes?.length ?? 0) > 0 && (
           <div className="mt-8 rounded-xl border border-border bg-background p-5">
             <h4 className="font-serif text-lg text-primary">Weather & Setup Notes</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              {recommendation.weather_notes.map((n, i) => (
+              {(recommendation.weather_notes ?? []).map((n, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 text-[color:var(--forest)]" />
                   <span>{n}</span>
