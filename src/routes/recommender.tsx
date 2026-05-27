@@ -313,7 +313,7 @@ function AIResult({
   onSend: () => void;
 }) {
   const grouped = new Map<string, Pick[]>();
-  for (const p of recommendation.picks) {
+  for (const p of recommendation.picks ?? []) {
     const arr = grouped.get(p.category) ?? [];
     arr.push(p);
     grouped.set(p.category, arr);
