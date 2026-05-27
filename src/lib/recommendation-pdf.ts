@@ -327,11 +327,29 @@ export async function downloadRecommendationPdf(args: BuildArgs, fileName: strin
 
 export async function printRecommendationPdf(args: BuildArgs) {
   const pdf = await buildRecommendationPdf(args);
-  const blobUrl = pdf.output("bloburl") as unknown as string;
-  const w = window.open(blobUrl, "_blank");
-  if (w) {
-    w.addEventListener("load", () => {
-      try { w.focus(); w.print(); } catch { /* noop */ }
-    });
-  }
+  const blob = pdf.output("blob") as Blob;
+  const url = URL.createObjectURL(blob);
+  const iframe = document.createElement("iframe");
+  iframe.style.position = "fixed";
+  iframe.style.right = "0";
+  iframe.style.bottom = "0";
+  iframe.style.width = "0";
+  iframe.style.height = "0";
+  iframe.style.border = "0";
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.src = url;
+  iframe.onload = () => {
+    try {
+      iframe.contentWindow?.focus();
+      iframe.contentWindow?.print();
+    } catch {
+      /* noop */
+    }
+  };
+  document.body.appendChild(iframe);
+  setTimeout(() => {
+    try { document.body.removeChild(iframe); } catch { /* noop */ }
+    URL.revokeObjectURL(url);
+  }, 60000);
 }
+
