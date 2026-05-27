@@ -19,6 +19,11 @@ import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
 
+// Types haven't been regenerated for the new admin inventory tables yet,
+// so we cast through `any` at the query boundary.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db: any = supabase;
+
 export const Route = createFileRoute("/admin/inventory")({
   head: () => ({ meta: [{ title: "Inventory Management | Admin" }] }),
   component: InventoryAdminPage,
