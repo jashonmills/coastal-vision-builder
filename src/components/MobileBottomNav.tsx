@@ -62,7 +62,9 @@ export function MobileBottomNav({ onMenu }: Props) {
                 active ? "text-primary" : "text-muted-foreground"
               }`}
             >
-              <Icon className="h-5 w-5" />
+              <span className={item.to === "/ai-tent-planner" ? "text-[color:var(--gold)]" : ""} style={item.to === "/ai-tent-planner" ? { animation: 'ai-sparkle-pulse 2s ease-in-out infinite' } : undefined}>
+                <Icon className="h-5 w-5" />
+              </span>
               <span>{t(item.labelKey)}</span>
             </Link>
           );
