@@ -38,6 +38,8 @@ function EditQuotePage() {
   const sendFn = useServerFn(sendQuote);
   const pricingFn = useServerFn(listPricingItemsForBuilder);
 
+  const availFn = useServerFn(getQuoteItemsAvailability);
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
     queryFn: () => getFn({ data: { id } }),
@@ -48,11 +50,16 @@ function EditQuotePage() {
     queryFn: () => pricingFn(),
     enabled: !!user && isAdmin,
   });
+  const { data: availability = {} } = useQuery({
+    queryKey: ["quote-availability", id],
+    queryFn: () => availFn({ data: { quote_id: id } }),
+    enabled: !!user && isAdmin && !!data,
+  });
 
   const send = useMutation({
     mutationFn: () => sendFn({ data: { id } }),
     onSuccess: () => {
-      toast.success("Quote marked as sent. Now email the customer manually with the preview link.");
+      toast.success("Quote marked as sent.");
       qc.invalidateQueries({ queryKey: ["admin-quote", id] });
     },
   });
