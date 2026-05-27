@@ -260,11 +260,26 @@ function RecommenderPage() {
           </div>
         )}
 
-        {showForm && (
-          <>
-            <p className="mb-8 text-center text-muted-foreground">
-              Every event is different. We'll review your inventory needs across tents, tables, chairs, and specialty items so you have a complete picture before requesting a quote.
-            </p>
+        {mutation.isPending && (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-16 text-center">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <p className="mt-6 font-serif text-2xl text-primary">Designing your event setup…</p>
+            <p className="mt-2 text-sm text-muted-foreground">Our AI is reviewing inventory and drafting your blueprint. This usually takes 15–30 seconds.</p>
+          </div>
+        )}
+
+        {hasValidResult && result && (
+          <AIResult
+            recommendation={result.recommendation}
+            blueprintImage={result.blueprintImage}
+            input={data}
+            contact={contact}
+            onReset={reset}
+            onSend={sendToQuote}
+          />
+        )}
+      </section>
+
 
 
       <section className="bg-secondary/40">
