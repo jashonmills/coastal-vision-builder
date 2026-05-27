@@ -1,25 +1,26 @@
 {
   "language": "Sprache",
+  "brand": "Pacific North Events & Tents",
   "nav": {
     "home": "Startseite",
     "rentals": "Vermietung",
     "tentRentals": "Zeltvermietung",
     "inventoryPricing": "Inventar & Preise",
-    "eventRecommender": "Event-Empfehlung",
-    "services": "Dienstleistungen",
-    "allServices": "Alle Dienstleistungen",
+    "eventRecommender": "KI-Zeltplaner",
+    "services": "Leistungen",
+    "allServices": "Alle Leistungen",
     "events": "Veranstaltungen",
     "gallery": "Galerie",
     "about": "Über uns",
     "aboutUs": "Über uns",
     "contact": "Kontakt",
-    "requestQuote": "Angebot anfordern",
+    "requestQuote": "Angebot anfragen",
     "findMyTentSize": "Meine Zeltgröße finden",
     "myAccount": "Mein Konto",
     "signIn": "Anmelden",
     "admin": "Admin",
     "menu": "Menü",
-    "recommender": "Empfehlung",
+    "recommender": "KI-Zeltplaner",
     "quote": "Angebot",
     "explore": "Entdecken",
     "more": "Mehr",
@@ -28,248 +29,518 @@
     "navigationMenu": "Navigationsmenü"
   },
   "navDesc": {
-    "tentRentals": "Rahmen-, Stangen- und Sechseckzelte",
+    "tentRentals": "Rahmen-, Stangen- und Hexagonzelte",
     "inventoryPricing": "Vollständiger Katalog mit Beispiellayouts",
-    "eventRecommender": "KI-Setup für Ihre Veranstaltung",
+    "eventRecommender": "Kostenloser KI-Zeltplan für Ihre Veranstaltung",
     "allServices": "Hochzeiten, Festivals, Firmenfeiern",
-    "events": "Vergangene Events und Fallstudien",
-    "aboutUs": "Küstenteam, unsere Geschichte",
+    "events": "Vergangene Veranstaltungen und Fallstudien",
+    "aboutUs": "Unser Küstenteam, unsere Geschichte",
     "contact": "Kontakt aufnehmen"
   },
   "footer": {
-    "tagline": "Zeltvermietung und Event-Support für Hochzeiten, Festivals, private Feiern und Firmenveranstaltungen.",
-    "servicesHeading": "Dienstleistungen",
+    "tagline": "Zeltvermietung für Veranstaltungen und Küsten-Event-Support für Hochzeiten, Festivals, Privatpartys und Firmenveranstaltungen.",
+    "servicesHeading": "Leistungen",
     "weddingTents": "Hochzeitszelte",
     "festivalTents": "Festivalzelte",
-    "privateParties": "Private Feiern",
+    "privateParties": "Privatpartys",
     "corporateEvents": "Firmenveranstaltungen",
-    "vendorTents": "Anbieterzelte",
-    "quickLinks": "Schnellzugriff",
+    "vendorTents": "Händlerzelte",
+    "quickLinks": "Schnelllinks",
     "contact": "Kontakt",
     "servingOregon": "Wir bedienen die Oregon-Küste",
     "followFacebook": "Folgen Sie uns auf Facebook",
     "copyright": "© 2026 Pacific North Events & Tents. Ihr Event. Ihre Vision. Wir machen es möglich."
   },
   "cta": {
-    "requestQuote": "Angebot anfordern",
+    "requestQuote": "Angebot anfragen",
     "findMyTentSize": "Meine Zeltgröße finden",
-    "viewServices": "Dienstleistungen ansehen",
-    "exploreServices": "Dienstleistungen erkunden",
+    "viewServices": "Leistungen ansehen",
+    "exploreServices": "Leistungen entdecken",
     "planMySetup": "Mein Setup planen",
-    "getQuote": "Angebot erhalten",
+    "getQuote": "Angebot einholen",
     "startWeddingQuote": "Hochzeitsangebot starten",
     "sendQuoteRequest": "Angebotsanfrage senden",
     "showMyRecommendation": "Meine Empfehlung anzeigen",
-    "requestFinalQuote": "Endgültiges Angebot anfordern",
+    "requestFinalQuote": "Endgültiges Angebot anfragen",
     "startOver": "Neu beginnen",
     "talkToUs": "Sprechen Sie mit uns",
-    "readyTitle": "Bereit, Ihr Event zum Leben zu erwecken?",
-    "readyDesc": "Erzählen Sie uns von Datum, Ort, Gästezahl und Vision. Wir helfen Ihnen, das richtige Zeltsetup auszuwählen."
+    "readyTitle": "Bereit, Ihre Veranstaltung zum Leben zu erwecken?",
+    "readyDesc": "Teilen Sie uns Datum, Ort, Gästezahl und Ihre Vision mit. Wir helfen Ihnen, das richtige Zelt-Setup für Ihre Veranstaltung zu wählen.",
+    "tryFreePlanner": "Unseren kostenlosen KI-Zeltplaner ausprobieren",
+    "viewOurServices": "Unsere Leistungen ansehen",
+    "startMyFreeTentPlan": "Meinen kostenlosen Zeltplan starten",
+    "requestCustomQuote": "Individuelles Angebot anfragen"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Veranstaltungsvermietung an der Oregon-Küste",
+      "title": "Veranstaltungszelte & Vermietung für Feiern an der Oregon-Küste",
+      "subtitle": "Von Hochzeiten und Festivals bis hin zu Privatpartys und Firmenveranstaltungen – Pacific North Events & Tents hilft Ihnen, Ihre Vision mit stilvollen, zuverlässigen und wetterfesten Veranstaltungsmieten umzusetzen."
+    },
+    "badges": {
+      "weddings": "Hochzeiten",
+      "festivals": "Festivals",
+      "privateParties": "Privatpartys",
+      "corporateEvents": "Firmenveranstaltungen",
+      "rainOrShine": "Bei jedem Wetter",
+      "yearRound": "Ganzjährige Vermietung"
+    },
+    "intro": {
+      "eyebrow": "Unser Versprechen",
+      "titleLine1": "Ihr Event. Ihre Vision.",
+      "titleLine2": "Wir machen es möglich.",
+      "body": "Die Planung einer Outdoor-Veranstaltung an der Oregon-Küste ist mit einem ganz besonderen Zauber verbunden – und einem ganz besonderen Wetter. Pacific North Events & Tents bietet hochwertige Veranstaltungszelte und Mietsupport, damit Ihre Feier komfortabel, stilvoll und stressfrei wird."
+    },
+    "services": {
+      "title": "Was wir für Sie organisieren",
+      "exploreLink": "Leistungen entdecken →",
+      "weddings": { "title": "Hochzeiten", "text": "Elegante Zelträume für Zeremonien, Empfänge, Rehearsal Dinners und Hochzeitswochenenden an der Küste." },
+      "festivals": { "title": "Festivals & Gemeinschaft", "text": "Großflächige Zeltlösungen für Märkte, Musikveranstaltungen, Spendenaktionen, Messen und Gemeinschaftsfeiern." },
+      "privateParties": { "title": "Privatpartys", "text": "Komfortable, wunderschöne Setups für Geburtstage, Treffen, Abschlusspartys, Gartenpartys und Familienfeiern." },
+      "corporate": { "title": "Firmenveranstaltungen", "text": "Professionelle Zelt- und Mietlösungen für Geschäftsveranstaltungen, Retreats, Markenaktionen und Firmenfeiern." }
+    },
+    "weather": {
+      "eyebrow": "Küstentauglich",
+      "title": "Gebaut für das Küstenklima",
+      "body": "Veranstaltungen an der Oregon-Küste brauchen mehr als ein schönes Setup – sie brauchen clevere Planung, zuverlässige Ausstattung und Schutz, der Ihren Gästen Sicherheit gibt. Unsere Zelte schützen Ihre Veranstaltung vor Sonne, Wind und Regen und schaffen gleichzeitig einen gepflegten Raum, den Ihre Gäste nicht vergessen werden.",
+      "cta": "Mein Setup planen"
+    },
+    "tentCats": {
+      "eyebrow": "Zeltvermietung",
+      "title": "Zelte für jede Feiergröße",
+      "small": { "title": "Kleine Feiern", "desc": "Gartenpartys, intime Abendessen und kleine Feiern mit unter 50 Gästen." },
+      "medium": { "title": "Mittelgroße Veranstaltungen", "desc": "Empfänge und Familienfeiern für 50–100 Gäste mit Bestuhlung und Bewirtung." },
+      "large": { "title": "Große Feiern", "desc": "Hochzeiten und Firmenveranstaltungen für 100–200 Gäste mit Dining und Tanz." },
+      "festival": { "title": "Festival- & Händlerzelte", "desc": "Märkte, Messen und Mehrbooth-Setups mit wetterfestem Schutz." },
+      "wedding": { "title": "Hochzeitsempfangszelte", "desc": "Dining, Tanzfläche, Loungebereiche und elegante Outdoor-Hochzeitslayouts." },
+      "custom": { "title": "Individuelle Event-Layouts", "desc": "Mehrzelt-Setups, Händlerreihen, Wetterpläne und vollständige Event-Flow-Gestaltung." }
+    },
+    "plannerPromo": {
+      "badge": "Neues kostenloses Tool",
+      "eyebrow": "Planen Sie Ihre Veranstaltung in Minuten",
+      "title": "Unseren kostenlosen KI-Zeltplaner ausprobieren",
+      "body": "Sie wissen nicht, welche Zeltgröße, welches Sitzlayout oder welche Ausstattung Ihre Veranstaltung benötigt? Unser KI-Zeltplaner hilft Ihnen, einen individuellen Startplan basierend auf Ihrer Gästezahl, dem Veranstaltungstyp, dem Untergrund, der Wetterexposition und den Aufbauanforderungen zu erstellen.",
+      "cards": {
+        "tentSize": { "title": "Zeltgrößenempfehlung", "text": "Erhalten Sie eine vorgeschlagene Zeltgröße basierend auf Ihrer Gästezahl und dem Layout." },
+        "equipment": { "title": "Ausstattungs-Checkliste", "text": "Sehen Sie empfohlene Tische, Stühle, Seitenwände, Beleuchtung, Bühnen und Extras." },
+        "blueprint": { "title": "Blaupausen-Layout", "text": "Generieren Sie ein visuelles Ausgangslayout für Ihr Event-Setup." },
+        "quote": { "title": "Angebotsreifer Plan", "text": "Senden Sie Ihren Plan an unser Team für ein individuelles Angebot und eine abschließende Überprüfung." }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Inspiration",
+      "title": "Sehen Sie, was möglich ist",
+      "viewFull": "Vollständige Galerie ansehen →"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Leistungen",
+      "title": "Veranstaltungsvermietung für jeden Anlass",
+      "subtitle": "Ob Sie ein intimes Treffen oder eine große Küstenfeier planen – wir helfen Ihnen, den richtigen Schutz, die richtige Struktur und das passende Ambiente für Ihre Veranstaltung zu schaffen."
+    },
+    "items": {
+      "weddings": { "title": "Hochzeitszeltvermietung", "copy": "Schaffen Sie einen schönen überdachten Raum für Ihre Zeremonie, Ihren Empfang, die Cocktailstunde oder das gesamte Hochzeitswochenende. Unsere Zeltvermietung verwandelt Outdoor-Locations in komfortable, unvergessliche Veranstaltungsorte." },
+      "festivals": { "title": "Festival- & Gemeinschaftsveranstaltungsvermietung", "copy": "Von Händlerständen bis hin zu großen Versammlungsräumen – wir unterstützen Festivals, Märkte, Spendenaktionen, Messen und öffentliche Veranstaltungen mit praktischen, wetterfesten Zeltlösungen." },
+      "private": { "title": "Privatpartyvermietung", "copy": "Feiern Sie Geburtstage, Reunions, Abschlüsse, Jubiläen und Gartenpartys mit Zuversicht. Wir helfen Ihnen, einen komfortablen Veranstaltungsraum zu schaffen, der durchdacht und einladend wirkt." },
+      "corporate": { "title": "Firmenveranstaltungsvermietung", "copy": "Unterstützen Sie Firmen-Retreats, Geschäftsveranstaltungen, Produkteinführungen und Markenevents mit professionellen Zelt-Setups, die Ihre Gäste komfortabel unterbringen und die Veranstaltung professionell wirken lassen." },
+      "setup": { "title": "Lieferung, Aufbau & Abbau", "copy": "Vereinfachen Sie die Veranstaltungsplanung mit zuverlässigem Aufbau- und Abbau-Support. Unser Team kümmert sich um die Struktur, damit Sie sich auf das Erlebnis konzentrieren können." }
+    },
+    "tailoredBanner": "Benötigen Sie etwas Maßgeschneidertes für Ihre Veranstaltung?"
+  },
+  "tentRentals": {
+    "hero": {
+      "eyebrow": "Zeltvermietung",
+      "title": "Zeltvermietung für Veranstaltungen an der Oregon-Küste",
+      "subtitle": "Stilvoller Schutz, flexible Layouts und zuverlässige Abschirmung für Hochzeiten, Partys, Festivals und Firmenveranstaltungen."
+    },
+    "bestFor": "Am besten geeignet für:",
+    "items": {
+      "popup": { "title": "Pop-Up- / Händlerzelte", "best": "Märkte, Stände, Check-ins und kleine überdachte Stationen.", "cta": "Nach Verfügbarkeit fragen" },
+      "small": { "title": "Kleine Veranstaltungszelte", "best": "Gartenpartys, kleine Feiern, Bewirtung und Gästebestuhlung.", "cta": "Angebot anfragen" },
+      "medium": { "title": "Mittelgroße Veranstaltungszelte", "best": "Empfänge, Familienfeiern, Privatpartys und Gemeinschaftsveranstaltungen.", "cta": "Angebot anfragen" },
+      "large": { "title": "Große Veranstaltungszelte", "best": "Hochzeiten, Festivals, Firmenveranstaltungen und große Gästezahlen.", "cta": "Mein Event planen" },
+      "wedding": { "title": "Hochzeitsempfangszelte", "best": "Dining, Tanzfläche, Loungebereiche und elegante Outdoor-Hochzeitslayouts.", "cta": "Hochzeitsangebot starten" },
+      "custom": { "title": "Individuelle Event-Layouts", "best": "Komplexe Veranstaltungsorte, Mehrzelt-Setups, Händlerreihen, Wetterpläne und Event-Flow.", "cta": "Mein Setup gestalten" }
+    },
+    "help": {
+      "title": "Sie wissen nicht, welche Zeltgröße Sie benötigen?",
+      "body": "Teilen Sie uns Ihre Gästezahl, den Veranstaltungstyp, den Ort und die Layout-Ziele mit. Wir empfehlen Ihnen die richtige Zeltgröße und das passende Setup.",
+      "cta": "Hilfe bei der Auswahl"
+    },
+    "inventory": {
+      "title": "Vollständiges Inventar durchsuchen",
+      "body": "Sehen Sie jede Zeltgröße, Tische, Stühle, Tanzflächen, Beleuchtungsoptionen, Bars und Lieferzonen – mit 3-Tage-Mietpreisen.",
+      "cta": "Inventar & Preise ansehen"
+    }
+  },
+  "events": {
+    "hero": {
+      "eyebrow": "Veranstaltungen",
+      "title": "Veranstaltungen, die wir unterstützen",
+      "subtitle": "Von Hochzeiten am Meer bis hin zu Gemeinschaftsfestivals – Pacific North Events & Tents hilft, komfortable Räume für unvergessliche Feiern zu schaffen."
+    },
+    "suggestedRentals": "Empfohlene Mietartikel:",
+    "items": {
+      "weddings": { "title": "Hochzeiten", "desc": "Schaffen Sie einen wunderschönen überdachten Veranstaltungsort für Dining, Tanzen, Zeremoniesitzplätze und Gästekomfort.", "rentals": "Empfangszelte, Zeremoniezelte, Händlerzelte, Loungeabdeckung, beleuchtungsfertige Layouts.", "cta": "Hochzeitsangebot anfragen" },
+      "festivals": { "title": "Festivals", "desc": "Große Mehrzelt-Layouts für Musik-, Food- und Gemeinschaftsfestivals entlang der Küste.", "rentals": "Hauptbühnenzelte, Händlerreihen, Bewirtungszelte, Check-in-Überdachungen.", "cta": "Mein Festival planen" },
+      "private": { "title": "Privatpartys", "desc": "Von Gartengeburtstagen bis zu Meilensteinfeiern – komfortabler Raum zum Zusammenkommen und Speisen.", "rentals": "Kleine bis mittelgroße Zelte, Tische, Stühle, Beleuchtung, Seitenwände.", "cta": "Partyangebobot anfragen" },
+      "corporate": { "title": "Firmenveranstaltungen", "desc": "Gepflegte Outdoor-Veranstaltungsorte für Retreats, Produkteinführungen und Markenveranstaltungen.", "rentals": "Empfangszelte, Präsentationsbereiche, gebrandete Händlerzelte.", "cta": "Firmenangebot anfragen" },
+      "markets": { "title": "Märkte & Händlerveranstaltungen", "desc": "Organisierte Händlerreihen, die Wind, Sonne und den pazifischen Nordwest-Regen standhalten.", "rentals": "10x10 / 10x20 Händlerzelte, Check-in-Zelte, Seitenwände.", "cta": "Händlerangebot anfragen" },
+      "fundraisers": { "title": "Spendenaktionen & Gemeinschaftsfeiern", "desc": "Einladende Räume für Spendenaktionen, Schulveranstaltungen und Gemeinschaftsfeiern.", "rentals": "Mittelgroße bis große Zelte, Tische, Stühle, Beleuchtung.", "cta": "Gemeinschaftsangebot anfragen" }
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "Galerie",
+      "title": "Veranstaltungs-Inspirationsgalerie",
+      "subtitle": "Durchstöbern Sie Zelt-Setups, Outdoor-Feiern und Küsten-Event-Inspirationen."
+    },
+    "filters": {
+      "all": "Alle",
+      "coastal": "Küsten-Setups",
+      "reception": "Empfang",
+      "lighting": "Beleuchtung"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Über uns",
+      "title": "Über Pacific North Events & Tents",
+      "subtitle": "Wir helfen dabei, Veranstaltungen an der Oregon-Küste mit zuverlässiger Vermietung, durchdachter Planung und wetterfesten Setups zu realisieren."
+    },
+    "story": {
+      "eyebrow": "Unsere Geschichte",
+      "title": "Lokale Veranstaltungen verdienen lokale Unterstützung",
+      "body": "Pacific North Events & Tents wurde gegründet, um Menschen dabei zu helfen, bessere Outdoor-Veranstaltungen entlang der Oregon-Küste zu veranstalten. Wir verstehen, dass Küstenfeiern flexible Planung, zuverlässige Ausstattung und ein Team erfordern, das weiß, wie wichtig jedes Detail ist, wenn der große Tag kommt."
+    },
+    "values": {
+      "title": "Wofür wir stehen",
+      "reliable": { "title": "Zuverlässiger Aufbau", "text": "Verlässliche Lieferung, Auf- und Abbau-Support, damit Ihre Veranstaltung mit Vertrauen beginnt." },
+      "weather": { "title": "Wetterfeste Planung", "text": "Outdoor-Veranstaltungen brauchen cleveren Schutz. Wir helfen Kunden, bei wechselnden Küstenbedingungen für Komfort zu planen." },
+      "flexible": { "title": "Flexibler Veranstaltungs-Support", "text": "Von intimen Treffen bis zu größeren Feiern – wir helfen dabei, das Setup an die Veranstaltung anzupassen." },
+      "local": { "title": "Lokaler, freundlicher Service", "text": "Uns liegt es am Herzen, unseren Kunden dabei zu helfen, unvergessliche Erlebnisse ohne unnötigen Stress zu schaffen." }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Kontakt",
+      "title": "Angebot anfragen",
+      "subtitle": "Erzählen Sie uns von Ihrer Veranstaltung und wir helfen Ihnen, das richtige Zelt-Setup zu planen."
+    },
+    "thankYou": {
+      "title": "Vielen Dank!",
+      "body": "Wir haben Ihre Anfrage erhalten und werden uns in Kürze melden, um Ihre Veranstaltung zu planen."
+    },
+    "fromRecommender": "Aus Ihrem Empfehlungstool:",
+    "fields": {
+      "fullName": "Vollständiger Name *",
+      "email": "E-Mail-Adresse *",
+      "phone": "Telefonnummer *",
+      "eventDate": "Veranstaltungsdatum *",
+      "eventLocation": "Veranstaltungsort / Venue *",
+      "eventLocationPlaceholder": "Venue, Stadt oder Gebiet",
+      "eventType": "Art der Veranstaltung *",
+      "guestCount": "Geschätzte Gästezahl *",
+      "rentalsInterest": "Welche Mietartikel interessieren Sie?",
+      "preferredContact": "Bevorzugte Kontaktmethode",
+      "message": "Nachricht",
+      "messagePlaceholder": "Erzählen Sie uns von Ihrer Veranstaltung, dem Ort, dem Zeitplan und Ihrer Vision…"
+    },
+    "selectOption": "Option auswählen",
+    "selectRange": "Bereich auswählen",
+    "submit": "Angebotsanfrage senden",
+    "guestRanges": {
+      "under25": "Unter 25",
+      "25_50": "25–50",
+      "50_100": "50–100",
+      "100_200": "100–200",
+      "200_plus": "200+"
+    },
+    "eventTypes": {
+      "wedding": "Hochzeit",
+      "festival": "Festival",
+      "privateParty": "Privatparty",
+      "corporateEvent": "Firmenveranstaltung",
+      "marketVendor": "Markt- / Händlerveranstaltung",
+      "community": "Gemeinschaftsveranstaltung",
+      "other": "Sonstiges"
+    },
+    "rentalOptions": {
+      "eventTent": "Veranstaltungszelt",
+      "vendorTent": "Händlerzelt",
+      "weddingTent": "Hochzeitszelt",
+      "tables": "Tische",
+      "chairs": "Stühle",
+      "lighting": "Beleuchtung",
+      "setupSupport": "Aufbau- / Abbau-Support",
+      "notSure": "Noch nicht sicher"
+    },
+    "contactMethod": {
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "text": "SMS"
+    },
+    "sidebar": {
+      "title": "Kontaktieren Sie Pacific North Events & Tents",
+      "phonePlaceholder": "Telefonnummer hinzufügen",
+      "emailPlaceholder": "E-Mail-Adresse hinzufügen",
+      "areaServed": "Oregon-Küste und umliegende Gebiete",
+      "facebook": "Facebook",
+      "noteTitle": "Ganzjährige Vermietung.",
+      "noteBody": "Kontaktieren Sie uns frühzeitig für die beste Verfügbarkeit."
+    }
+  },
+  "plannerPopup": {
+    "badge": "Neues kostenloses Tool",
+    "title": "Sie wissen nicht, welche Zeltgröße Sie benötigen?",
+    "body": "Probieren Sie unseren kostenlosen KI-Zeltplaner und erhalten Sie in wenigen Minuten eine individuelle Zeltgrößenempfehlung, eine Ausstattungs-Checkliste und ein blaupausenartiges Event-Layout.",
+    "bullets": {
+      "tentSize": "Zeltgrößenempfehlung",
+      "equipment": "Tische, Stühle, Bühne, Beleuchtung & Extras",
+      "blueprint": "Blaupausen-Setup",
+      "quote": "Angebotsreifer Plan"
+    },
+    "primaryCta": "Meinen kostenlosen Zeltplan starten",
+    "secondaryCta": "Vielleicht später",
+    "note": "Perfekt für Hochzeiten, Spendenaktionen, Festivals, Privatpartys und Firmenveranstaltungen.",
+    "close": "Schließen"
   },
   "recommender": {
-    "metaTitle": "Event-Empfehlung | Pacific North Events & Tents",
-    "metaDesc": "KI-gestützte Event-Setup-Empfehlung. Holen Sie sich einen kompletten Plan für Zelt, Tische, Stühle und Ausrüstung.",
-    "heroEyebrow": "Event-Empfehlung",
-    "heroTitle": "Finden Sie das richtige Setup für Ihr Event",
-    "heroSubtitle": "Beantworten Sie einige kurze Fragen und unsere KI empfiehlt einen kompletten Zelt-, Tisch-, Stuhl- und Ausrüstungsplan – plus ein Layout.",
-    "intro": "Jedes Event ist anders. Wir prüfen Ihren Bedarf an Zelten, Tischen, Stühlen und Spezialartikeln, damit Sie ein vollständiges Bild haben.",
+    "metaTitle": "KI-Zeltplaner | Pacific North Events & Tents",
+    "metaDesc": "Kostenloser KI-Zeltplaner. Erhalten Sie in wenigen Minuten eine individuelle Zeltgrößenempfehlung, eine Ausstattungs-Checkliste und ein blaupausenartiges Event-Layout.",
+    "heroEyebrow": "KI-Zeltplaner",
+    "heroTitle": "Das richtige Setup für Ihre Veranstaltung finden",
+    "heroSubtitle": "Beantworten Sie einige kurze Fragen und unsere KI empfiehlt Ihnen einen vollständigen Plan für Zelt, Tische, Stühle und Ausstattung – plus eine Blaupause Ihres Layouts.",
+    "intro": "Jede Veranstaltung ist anders. Wir überprüfen Ihren Inventarbedarf für Zelte, Tische, Stühle und Spezialausstattung, damit Sie ein vollständiges Bild haben, bevor Sie ein Angebot anfragen.",
     "steps": {
-      "eventBasics": "Event-Grundlagen",
+      "eventBasics": "Grundlegende Infos",
       "guestLayout": "Gäste & Layout",
-      "extras": "Essen & Extras",
+      "extras": "Verpflegung & Extras",
       "locationWeather": "Ort & Wetter",
-      "contact": "Ihre Daten"
+      "contact": "Ihre Angaben"
     },
     "fields": {
-      "eventType": "Welche Art von Event planen Sie?",
-      "eventDate": "Wann ist Ihr Event? *",
-      "eventLocation": "Wo findet das Event statt? *",
-      "eventLocationPlaceholder": "Veranstaltungsort, Garten, Park, Strand, Geschäftsstandort usw.",
-      "outdoorIndoor": "Ist das Event draußen, drinnen oder teilweise überdacht?",
+      "eventType": "Was für eine Veranstaltung planen Sie?",
+      "eventDate": "Was ist Ihr Veranstaltungsdatum? *",
+      "eventLocation": "Wo findet die Veranstaltung statt? *",
+      "eventLocationPlaceholder": "Veranstaltungsname, Garten, Park, Strandbereich, Geschäftsadresse usw.",
+      "outdoorIndoor": "Findet die Veranstaltung draußen, drinnen oder teilweise überdacht statt?",
       "guestCount": "Wie viele Gäste erwarten Sie? *",
       "setupType": "Welche Art von Setup benötigen Sie?",
       "seatedGuests": "Werden die Gäste an Tischen sitzen?",
       "tableStyle": "Welchen Tischstil bevorzugen Sie?",
-      "foodService": "Wird es Essen oder Catering unter dem Zelt geben?",
+      "foodService": "Wird unter dem Zelt Essen oder Catering angeboten?",
       "dancing": "Benötigen Sie Platz zum Tanzen?",
-      "extras": "Wird es eine Bar, Geschenketisch, DJ, Band oder Bühne geben?",
+      "extras": "Wird es eine Bar, einen Geschenketisch, einen DJ, eine Band oder eine Bühne geben?",
       "rentalItems": "Welche Mietartikel interessieren Sie?",
-      "surface": "Auf welchem Untergrund wird das Zelt aufgebaut?",
-      "weatherExposure": "Ist der Standort Wind oder Küstenwetter ausgesetzt?",
+      "surface": "Auf welchem Untergrund wird das Zelt aufgestellt?",
+      "weatherExposure": "Ist der Ort Wind oder Küstenwetter ausgesetzt?",
       "sidewalls": "Möchten Sie Seitenwände für zusätzlichen Wetterschutz?",
-      "afterSunset": "Geht das Event nach Sonnenuntergang weiter?",
+      "afterSunset": "Findet die Veranstaltung auch nach Sonnenuntergang statt?",
       "fullName": "Vollständiger Name *",
       "email": "E-Mail-Adresse *",
       "phone": "Telefonnummer",
       "preferredContact": "Bevorzugte Kontaktmethode",
-      "message": "Möchten Sie uns sonst noch etwas mitteilen?"
+      "message": "Gibt es etwas, das wir über Ihre Veranstaltung wissen sollten?"
     },
     "options": {
       "eventTypes": {
-        "wedding": "Hochzeit",
-        "festival": "Festival",
-        "privateParty": "Private Feier",
-        "corporateEvent": "Firmenveranstaltung",
-        "marketVendorEvent": "Markt / Anbieter-Event",
-        "fundraiser": "Spendenaktion",
-        "communityEvent": "Gemeinschaftsevent",
-        "graduationParty": "Abschlussfeier",
-        "other": "Andere"
+        "Wedding": "Hochzeit",
+        "Festival": "Festival",
+        "Private Party": "Privatparty",
+        "Corporate Event": "Firmenveranstaltung",
+        "Market / Vendor Event": "Markt- / Händlerveranstaltung",
+        "Fundraiser": "Spendenaktion",
+        "Community Event": "Gemeinschaftsveranstaltung",
+        "Graduation Party": "Abschlussfeier",
+        "Other": "Sonstiges"
       },
       "outdoor": {
-        "fullyOutdoors": "Komplett draußen",
-        "indoors": "Drinnen",
-        "partiallyCovered": "Teilweise überdacht",
-        "notSureYet": "Noch unsicher"
+        "Fully outdoors": "Vollständig im Freien",
+        "Indoors": "Drinnen",
+        "Partially covered": "Teilweise überdacht",
+        "Not sure yet": "Noch nicht sicher"
       },
       "setup": {
-        "standingOnly": "Nur Stehen",
-        "ceremonySeating": "Zeremonie-Bestuhlung",
-        "seatedDining": "Sitzplätze zum Essen",
-        "cocktailMingling": "Cocktailtische / Stehempfang",
-        "vendorBooths": "Anbieterstände",
-        "foodServiceArea": "Essensbereich",
-        "mixedLayout": "Gemischtes Layout",
-        "notSure": "Unsicher"
+        "Standing only": "Nur Stehplätze",
+        "Ceremony seating": "Zeremoniesitzplätze",
+        "Seated dining": "Sitzessen",
+        "Cocktail tables / mingling": "Cocktailtische / Stehempfang",
+        "Vendor booths": "Händlerstände",
+        "Food service area": "Bewirtungsbereich",
+        "Mixed layout": "Gemischtes Layout",
+        "Not sure": "Nicht sicher"
       },
       "seated": {
-        "allSeated": "Ja, alle Gäste sitzen",
-        "someSeated": "Einige sitzen, einige stehen",
-        "mostlyStanding": "Nein, meistens stehend",
-        "notSure": "Unsicher"
+        "Yes, all guests seated": "Ja, alle Gäste sitzen",
+        "Some seated, some standing": "Teils sitzend, teils stehend",
+        "No, mostly standing": "Nein, überwiegend stehend",
+        "Not sure": "Nicht sicher"
       },
       "tableStyle": {
-        "round": "Runde Tische",
-        "banquet": "Bankett- / Rechtecktische",
-        "cocktail": "Cocktailtische",
-        "picnic": "Picknicktische",
-        "noTables": "Keine Tische nötig",
-        "notSure": "Unsicher"
+        "Round tables": "Runde Tische",
+        "Banquet / rectangular tables": "Bankett- / rechteckige Tische",
+        "Cocktail tables": "Cocktailtische",
+        "Picnic-style tables": "Picknicktische",
+        "No tables needed": "Keine Tische benötigt",
+        "Not sure": "Nicht sicher"
       },
       "food": {
-        "buffet": "Ja, Buffet",
-        "plated": "Ja, gedeckte Mahlzeit",
-        "foodTrucks": "Ja, Foodtrucks in der Nähe",
-        "snackOnly": "Ja, nur Snack- / Dessertisch",
-        "noFood": "Kein Essensservice",
-        "notSure": "Unsicher"
+        "Yes, buffet": "Ja, Buffet",
+        "Yes, plated meal": "Ja, serviertes Menü",
+        "Yes, food trucks nearby": "Ja, Food Trucks in der Nähe",
+        "Yes, snack / dessert table only": "Ja, nur Snack- / Desserttisch",
+        "No food service": "Keine Bewirtung",
+        "Not sure": "Nicht sicher"
       },
       "dancing": {
-        "danceFloor": "Ja, Tanzfläche benötigt",
-        "small": "Kleiner Tanzbereich",
-        "none": "Kein Tanzbereich",
-        "notSure": "Unsicher"
+        "Yes, dance floor area needed": "Ja, Tanzfläche benötigt",
+        "Small dancing area": "Kleine Tanzfläche",
+        "No dancing area": "Keine Tanzfläche",
+        "Not sure": "Nicht sicher"
       },
       "extras": {
-        "bar": "Barbereich",
-        "gift": "Geschenketisch",
-        "dessert": "Desserttisch",
-        "dj": "DJ-Pult",
-        "band": "Live-Band",
-        "stage": "Kleine Bühne",
-        "speaker": "Lautsprecher- / Ansagebereich",
-        "none": "Keine",
-        "notSure": "Unsicher"
+        "Bar area": "Barbereich",
+        "Gift table": "Geschenketisch",
+        "Dessert table": "Desserttisch",
+        "DJ booth": "DJ-Pult",
+        "Live band": "Liveband",
+        "Small stage": "Kleine Bühne",
+        "Speaker / announcement area": "Redner- / Ansagebereich",
+        "None": "Keines",
+        "Not sure": "Nicht sicher"
       },
       "rentals": {
-        "tent": "Zelt",
-        "tables": "Tische",
-        "chairs": "Stühle",
-        "linens": "Tischwäsche",
-        "lighting": "Beleuchtung",
-        "danceFloor": "Tanzfläche",
-        "sidewalls": "Seitenwände",
-        "heaters": "Heizgeräte",
-        "flooring": "Bodenbelag",
-        "vendorTents": "Anbieterzelte",
-        "trash": "Müll- / Recyclingstationen",
-        "setup": "Auf- und Abbau",
-        "notSure": "Noch unsicher"
+        "Tent": "Zelt",
+        "Tables": "Tische",
+        "Chairs": "Stühle",
+        "Linens": "Tischwäsche",
+        "Lighting": "Beleuchtung",
+        "Dance floor": "Tanzfläche",
+        "Sidewalls": "Seitenwände",
+        "Heaters": "Heizgeräte",
+        "Flooring": "Bodenbelag",
+        "Vendor tents": "Händlerzelte",
+        "Trash / recycling stations": "Müll- / Recyclingstation",
+        "Setup and breakdown": "Auf- und Abbau",
+        "Not sure yet": "Noch nicht sicher"
       },
       "surface": {
-        "grass": "Gras",
-        "gravel": "Kies",
-        "concrete": "Beton",
-        "asphalt": "Asphalt",
-        "sand": "Sand",
-        "deckPatio": "Terrasse / Patio",
-        "mixed": "Gemischter Untergrund",
-        "notSure": "Unsicher"
+        "Grass": "Rasen",
+        "Gravel": "Kies",
+        "Concrete": "Beton",
+        "Asphalt": "Asphalt",
+        "Sand": "Sand",
+        "Deck / patio": "Terrasse / Patio",
+        "Mixed surface": "Gemischter Untergrund",
+        "Not sure": "Nicht sicher"
       },
       "exposure": {
-        "veryExposed": "Ja, sehr exponiert",
-        "somewhatExposed": "Etwas exponiert",
-        "mostlyProtected": "Größtenteils geschützt",
-        "notSure": "Unsicher"
+        "Yes, very exposed": "Ja, sehr exponiert",
+        "Somewhat exposed": "Etwas exponiert",
+        "Mostly protected": "Überwiegend geschützt",
+        "Not sure": "Nicht sicher"
       },
-      "sidewalls": { "yes": "Ja", "maybe": "Vielleicht", "no": "Nein", "notSure": "Unsicher" },
-      "afterSunset": { "yes": "Ja", "no": "Nein", "notSure": "Unsicher" },
-      "contactMethod": { "email": "E-Mail", "phone": "Telefon", "text": "SMS" },
-      "guestCounts": {
-        "under_25": "Unter 25", "25_50": "25–50", "50_75": "50–75", "75_100": "75–100",
-        "100_150": "100–150", "150_200": "150–200", "200_300": "200–300", "300_plus": "300+"
+      "sidewalls": {
+        "Yes": "Ja",
+        "Maybe": "Vielleicht",
+        "No": "Nein",
+        "Not sure": "Nicht sicher"
+      },
+      "afterSunset": {
+        "Yes": "Ja",
+        "No": "Nein",
+        "Not sure": "Nicht sicher"
+      },
+      "contactMethod": {
+        "Email": "E-Mail",
+        "Phone": "Telefon",
+        "Text": "SMS"
       }
     },
     "stepTitles": {
-      "eventBasics": "Event-Grundlagen",
+      "eventBasics": "Grundlegende Infos",
       "guestLayout": "Gästezahl & Layout",
-      "extras": "Essen, Tanzen & Extras",
+      "extras": "Verpflegung, Tanzen & Extras",
       "locationWeather": "Ort & Wetter",
-      "contact": "Ihre Daten"
+      "contact": "Ihre Angaben"
     },
     "buttons": {
-      "back": "Zurück", "next": "Weiter", "startOver": "Neu beginnen", "generate": "Mein Setup generieren",
-      "tryAgain": "Erneut versuchen", "openPdf": "PDF-Viewer öffnen", "viewPdf": "PDF anzeigen",
-      "downloadPdf": "PDF herunterladen", "print": "Drucken", "closeViewer": "PDF-Viewer schließen",
-      "saveAccount": "In meinem Konto speichern", "createAccount": "Konto erstellen zum Speichern",
-      "viewPlans": "Meine Pläne ansehen", "sendForQuote": "Diese Empfehlung für ein Angebot senden"
+      "back": "Zurück",
+      "next": "Weiter",
+      "startOver": "Neu beginnen",
+      "generate": "Mein Setup generieren",
+      "tryAgain": "Erneut versuchen",
+      "openPdf": "PDF-Viewer öffnen",
+      "viewPdf": "PDF ansehen",
+      "downloadPdf": "PDF herunterladen",
+      "print": "Drucken",
+      "closeViewer": "PDF-Viewer schließen",
+      "saveAccount": "In meinem Konto speichern",
+      "createAccount": "Konto erstellen zum Speichern",
+      "viewPlans": "Meine Pläne ansehen",
+      "sendForQuote": "Diese Empfehlung für ein Angebot einsenden"
     },
     "loading": {
-      "title": "Ihr Event-Setup wird entworfen…",
-      "subtitle": "Unsere KI prüft das Inventar und erstellt Ihr Layout. Dies dauert normalerweise 15–30 Sekunden."
+      "title": "Ihr Event-Setup wird erstellt…",
+      "subtitle": "Unsere KI überprüft das Inventar und erstellt Ihre Blaupause. Das dauert in der Regel 15–30 Sekunden."
     },
     "error": {
       "title": "Wir konnten Ihre Empfehlung nicht generieren",
-      "generic": "Etwas ist auf unserer Seite schiefgelaufen.",
-      "retryHint": "Ihre Antworten sind unten gespeichert. Klicken Sie auf \"Mein Setup generieren\" zum erneuten Versuchen oder \"Sprechen Sie mit uns\" und wir erstellen ein Setup manuell."
+      "generic": "Bei uns ist etwas schiefgelaufen.",
+      "retryHint": "Ihre Antworten sind unten gespeichert. Klicken Sie erneut auf „Mein Setup generieren", um es noch einmal zu versuchen, oder auf „Sprechen Sie mit uns" und wir erstellen ein Setup manuell."
     },
     "results": {
       "eyebrow": "Ihre Empfehlung ist bereit",
-      "thanks": "Danke {{name}} — wir haben Ihre {{eventType}} für {{guests}} Gäste am {{date}}{{locationClause}} geprüft. Basierend auf Ihren Antworten empfehlen wir Folgendes.",
-      "atGlance": "Ihr Event auf einen Blick",
+      "thanksLead": "Danke, {{name}} – wir haben Ihre {{eventType}} für",
+      "guestsLabel": "{{guests}} Gäste",
+      "onDate": "am",
+      "at": "in",
+      "thanksTrail": "Basierend auf Ihren Antworten empfehlen wir Folgendes.",
+      "atGlance": "Ihre Veranstaltung auf einen Blick",
       "atGlanceSub": "Eine kurze Zusammenfassung Ihrer Angaben.",
       "extrasRequested": "Angeforderte Extras",
-      "rentalsOfInterest": "Interessante Mietartikel",
+      "rentalsOfInterest": "Gewünschte Mietartikel",
       "suggestedLayout": "Vorgeschlagenes Layout",
-      "blueprintSketch": "Layout-Skizze",
-      "blueprintNote": "Konzeptskizze — endgültige Platzierung wird beim Angebot bestätigt.",
+      "blueprintSketch": "Blaupausen-Skizze",
+      "blueprintNote": "Konzeptskizze – die endgültige Platzierung wird während der Angebotserstellung bestätigt.",
       "recommendedSetup": "Empfohlenes Setup",
-      "recommendedSetupSub": "Eine vollständige Inventarauswahl in jeder Kategorie. Mengen sind eine Schätzung.",
+      "recommendedSetupSub": "Eine vollständige Inventarauswahl über alle Kategorien. Mengenangaben sind Schätzwerte.",
       "weatherNotes": "Wetter- & Setup-Hinweise",
-      "disclaimer": "Dies ist eine KI-generierte Schätzung. Endgültige Zeltgröße, Mengen und Ausrüstung können je nach Ort, Untergrund, Layout, Wetter und Verfügbarkeit variieren. Kein Preis angezeigt — fordern Sie ein Angebot für bestätigte Preise an.",
+      "disclaimer": "Dies ist eine KI-generierte Schätzung. Die endgültige Zeltgröße, Mengen und Ausstattung können je nach Veranstaltungsort, Untergrund, Layout, Wetter und Verfügbarkeit variieren. Es werden keine Preise angezeigt – fordern Sie ein Angebot für bestätigte Preise an.",
       "savedToAccount": "In Ihrem Konto gespeichert.",
-      "dontLose": "Verlieren Sie diese Empfehlung nicht",
-      "dontLoseDesc": "Erstellen Sie ein kostenloses Konto, um diesen Plan zu speichern. Wir speichern ihn automatisch nach der Anmeldung.",
+      "dontLose": "Diese Empfehlung nicht verlieren",
+      "dontLoseDesc": "Erstellen Sie ein kostenloses Konto, um diesen Plan zu speichern und jederzeit darauf zugreifen zu können. Wir speichern ihn automatisch, sobald Sie sich anmelden.",
       "pdfViewer": "PDF-Viewer",
       "recapKeys": {
-        "eventType": "Event-Typ", "date": "Datum", "location": "Ort", "setting": "Umgebung",
-        "guests": "Gäste", "setup": "Setup", "seating": "Sitzplätze", "tables": "Tische",
-        "food": "Essen", "dancing": "Tanzen", "surface": "Untergrund", "exposure": "Exposition",
-        "sidewalls": "Seitenwände", "afterSunset": "Nach Sonnenuntergang"
+        "eventType": "Veranstaltungstyp",
+        "date": "Datum",
+        "location": "Ort",
+        "setting": "Umgebung",
+        "guests": "Gäste",
+        "setup": "Setup",
+        "seating": "Bestuhlung",
+        "tables": "Tische",
+        "food": "Verpflegung",
+        "dancing": "Tanzen",
+        "surface": "Untergrund",
+        "exposure": "Exposition",
+        "sidewalls": "Seitenwände",
+        "afterSunset": "Nach Sonnenuntergang"
       },
       "selectedDateFallback": "Ihr gewähltes Datum",
-      "noLocation": "—",
-      "atClause": " in "
+      "noLocation": "—"
     },
     "notSureYet": {
-      "title": "Noch unsicher? Das ist in Ordnung.",
-      "desc": "Sie müssen nicht jedes Detail kennen, bevor Sie uns kontaktieren. Mit Datum, Ort und ungefährer Gästezahl helfen wir Ihnen beim Rest."
+      "title": "Noch nicht sicher? Das ist in Ordnung.",
+      "desc": "Sie müssen nicht jedes Detail kennen, bevor Sie sich melden. Wenn Sie ein Datum, einen Ort und eine ungefähre Gästezahl haben, können wir beim Rest helfen."
     },
     "validation": {
-      "required": "Pflichtfeld",
-      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-      "eventDateRequired": "Bitte geben Sie Ihr Event-Datum ein",
-      "eventLocationRequired": "Bitte geben Sie Ihren Event-Ort ein"
+      "required": "Dieses Feld ist erforderlich.",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "eventDateRequired": "Bitte geben Sie Ihr Veranstaltungsdatum ein.",
+      "eventLocationRequired": "Bitte geben Sie Ihren Veranstaltungsort ein."
     }
   }
 }
