@@ -100,6 +100,24 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
   pdf.text(prepLines, margin, y);
   y += prepLines.length * 13 + 16;
 
+  // ---------- Pre-group picks (needed for summary line + sections) ----------
+  const grouped = new Map<string, Pick[]>();
+  for (const p of recommendation.picks ?? []) {
+    const arr = grouped.get(p.category) ?? [];
+    arr.push(p);
+    grouped.set(p.category, arr);
+  }
+  const orderedCategories = [
+    ...CATEGORY_ORDER.filter((c) => grouped.has(c)),
+    ...Array.from(grouped.keys()).filter((c) => !CATEGORY_ORDER.includes(c)),
+  ];
+  const equipmentSummary = orderedCategories
+    .map((cat) => {
+      const total = grouped.get(cat)!.reduce((s, p) => s + (p.quantity || 0), 0);
+      return `${total}x ${cat}`;
+    })
+    .join("  ·  ");
+
   // ---------- BLUEPRINT ----------
   if (blueprintImage) {
     const img = await loadImageDataUrl(blueprintImage);
@@ -118,7 +136,18 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
         pdf.setTextColor(...muted);
         const cap = pdf.splitTextToSize(recommendation.layout_caption, contentW - 40);
         pdf.text(cap, pageW / 2, y, { align: "center" });
-        y += cap.length * 12 + 20;
+        y += cap.length * 12 + 10;
+      }
+
+      if (equipmentSummary) {
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(9);
+        pdf.setTextColor(...muted);
+        const sLines = pdf.splitTextToSize(equipmentSummary, contentW);
+        pdf.text(sLines, pageW / 2, y, { align: "center", charSpace: 0.8 });
+        y += sLines.length * 12 + 14;
+      } else {
+        y += 6;
       }
     }
   }
@@ -135,7 +164,7 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
     y += 16;
   };
 
-  // ---------- EVENT DETAILS (keep together) ----------
+  // ---------- EVENT DETAILS (2-column compact grid) ----------
   const recapRows: Array<[string, string]> = [
     ["Event type", input.eventType],
     ["Date", eventDateLabel],
@@ -152,23 +181,32 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
     ["Sidewalls", input.sidewalls],
     ["After sunset", input.afterSunset],
   ];
-  // Measure block
-  const rowH = 20;
-  const detailsBlockH = 30 + recapRows.length * rowH + 10;
+
+  const colGap = 24;
+  const colW = (contentW - colGap) / 2;
+  const cellH = 18;
+  const numRows = Math.ceil(recapRows.length / 2);
+  const detailsBlockH = 30 + numRows * cellH + 10;
   if (remaining() < detailsBlockH) newPage();
 
   sectionHeading("Event Details");
   pdf.setFontSize(10);
-  for (const [k, v] of recapRows) {
-    pdf.setFont("helvetica", "normal");
-    pdf.setTextColor(...muted);
-    pdf.text(k, margin, y);
-    pdf.setFont("helvetica", "bold");
-    pdf.setTextColor(...navy);
-    const vLines = pdf.splitTextToSize(String(v), contentW - 160);
-    pdf.text(vLines, pageW - margin, y, { align: "right" });
-    const used = Math.max(vLines.length * 12, rowH - 6);
-    y += used + 2;
+  for (let r = 0; r < numRows; r++) {
+    const rowY = y;
+    for (let c = 0; c < 2; c++) {
+      const idx = r * 2 + c;
+      if (idx >= recapRows.length) continue;
+      const [k, v] = recapRows[idx];
+      const cellX = margin + c * (colW + colGap);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(...muted);
+      pdf.text(k, cellX, rowY + 11);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(...navy);
+      const vStr = pdf.splitTextToSize(String(v), colW - 90)[0] ?? String(v);
+      pdf.text(vStr, cellX + colW, rowY + 11, { align: "right" });
+    }
+    y += cellH - 4;
     pdf.setDrawColor(240, 240, 240);
     pdf.line(margin, y, pageW - margin, y);
     y += 4;
@@ -176,16 +214,8 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
   y += 14;
 
   // ---------- RECOMMENDED SETUP ----------
-  const grouped = new Map<string, Pick[]>();
-  for (const p of recommendation.picks ?? []) {
-    const arr = grouped.get(p.category) ?? [];
-    arr.push(p);
-    grouped.set(p.category, arr);
-  }
-  const orderedCategories = [
-    ...CATEGORY_ORDER.filter((c) => grouped.has(c)),
-    ...Array.from(grouped.keys()).filter((c) => !CATEGORY_ORDER.includes(c)),
-  ];
+  // (grouped + orderedCategories already computed above)
+
 
   // Heading + measure first item to keep heading with first item
   const measureItem = (p: Pick) => {

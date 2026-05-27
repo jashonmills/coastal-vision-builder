@@ -1,44 +1,55 @@
-# Plan
+# Redesign Recommendation Layout (Stacked, Full-Width)
 
-Two independent additions. No backend changes, no business-logic changes.
+## Where the change happens
 
-## 1. Accessibility Font Chooser (floating button + panel)
+Two files render the proposal:
 
-**New files**
-- `src/components/AccessibilityFontButton.tsx` — floating button + popover panel, all logic colocated.
-- `src/hooks/useAccessibilityFont.ts` — reads/writes `localStorage["pacificNorthPreferredFont"]`, sets `--accessibility-font` CSS var on `document.documentElement`, applies on mount before paint.
+1. `src/components/RecommendationViewer.tsx` — the on-screen "PDF Viewer" modal (this is what the screenshot shows).
+2. `src/lib/recommendation-pdf.ts` — the actual jsPDF download/print output.
 
-**Edits**
-- `src/styles.css` — `@import` Google Fonts (Atkinson Hyperlegible, Lexend, Inter) and `@font-face` for OpenDyslexic from a CDN (gutenberg/jsDelivr). Add `body { font-family: var(--accessibility-font, <current site font stack>); }` so the variable cascades, leaving headings/brand marks untouched where they set their own font.
-- `src/components/SiteLayout.tsx` — mount `<AccessibilityFontButton />` once so it appears on every page.
+Both currently split Event Details and Recommended Setup. The jsPDF version already stacks them but renders Event Details as 14 single-row entries (too tall). The on-screen viewer uses an explicit `lg:grid-cols-[0.9fr_1.1fr]` two-column section — this is what's making the left column end while the right column scrolls forever.
 
-**Behavior**
-- Bottom-left fixed, 24px inset, z-index above nav. Deep navy bg, cream icon (lucide `Accessibility`), seafoam focus ring.
-- Click toggles a Radix Popover panel anchored above the button (shadcn `Popover` already in project).
-- Panel: title "Text Accessibility", description, RadioGroup with 5 options (Default, OpenDyslexic, Atkinson Hyperlegible, Lexend, Verdana — Inter omitted per "Recommended active options"). Each option preview-rendered in its own font. Selection applies immediately and persists. "Reset to Default" button. Close X. Escape closes, focus returns to button. `aria-expanded`, `aria-controls`, proper RadioGroup semantics.
-- If OpenDyslexic `@font-face` fails to load (detect via `document.fonts.check`), disable that option with "Available soon" note.
-- Selected font drives `--accessibility-font`; body and descendants that don't explicitly set `font-family` (forms, modals, AI Tent Planner, popup, quote forms, translated content) inherit it. Logo/brand display fonts are untouched.
-- Mobile: panel `max-width: calc(100vw - 32px)`.
+## Changes
 
-## 2. AI Tent Planner Popup — Top Illustration
+### 1. `RecommendationReport` in `RecommendationViewer.tsx`
 
-**Edit only**
-- `src/components/AITentPlannerPopup.tsx` — insert a new illustration block between the "NEW FREE TOOL" badge and the headline. All existing text/CTAs/structure preserved.
+- Remove the two-column wrapper `<section className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">`.
+- Move the "Event Blueprint" intro/diagram + caption to render an "equipment summary" line below the caption (e.g. "1× Canopy · 10× Tables · 55× Chairs …" derived from `recommendation.picks`).
+- New stacked order:
+  1. Header / logo / brand
+  2. Headline + summary
+  3. Event Blueprint section (intro line + diagram + caption + equipment summary line)
+  4. **Event Details** — full-width compact grid, 2 columns on print/desktop, 1 column on narrow mobile:
+     - Use `grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2`
+     - Each row: muted label left, bold value right, light divider beneath
+     - Wrap section in `break-inside-avoid print:break-inside-avoid`
+  5. **Recommended Setup** — full width, grouped by category. Each item is a compact row:
+     - `grid grid-cols-[44px_1fr]` with circular quantity badge on the left, bold name + muted description on the right
+     - Cream background (`bg-secondary/35`), rounded, subtle border, tight padding
+     - `break-inside-avoid` on each category block and item
+  6. Weather & Setup Notes (already full-width, keep, add `break-inside-avoid`)
+  7. Disclaimer
 
-**Illustration approach**
-- Inline SVG component (no asset generation needed) composed of three layered groups within one horizontal band:
-  - Left: faded watercolor-wash tree silhouette (low-opacity sage/seafoam path).
-  - Center: line-art high-peak sailcloth tent with 3 peaks, tiny pennant flags, thin navy strokes, faint guy lines.
-  - Right: small blueprint inset — bordered square, 4 round tables as circles with chair tick marks, dimension lines with arrowheads, small "20'×20'" label.
-  - Background: very faint blueprint grid (CSS background or SVG `<pattern>`), pale gold/sand accent rule.
-- Colors pulled from existing tokens (navy, cream, seafoam, sand, gold) — kept low-contrast so headline remains dominant.
-- Sizing: ~full popup width, ~140px tall on desktop, ~110px on mobile, with breathing room above headline. Does not push CTA off-screen.
-- `aria-hidden="true"` (decorative).
+### 2. `buildRecommendationPdf` in `recommendation-pdf.ts`
 
-## Out of scope
-- No text-to-speech, no audio, no AI changes.
-- No i18n key changes (panel labels are UI chrome; can be added to en.json + other locales if desired — will include English-only by default unless you want translations too).
-- No changes to planner logic or quote flow.
+- Replace the current 14-row vertical Event Details list with a 2-column grid (7 rows × 2 cols), drawing label (muted) above value (bold navy) in each cell, with a thin divider below each row. Recompute `detailsBlockH` accordingly.
+- Add an "equipment summary" line (one-liner derived from picks) right under the blueprint caption.
+- Keep existing page-break helpers (`ensureSpace`, "keep heading with first item"). Confirm `break` reservations for: section heading + first item, category heading + first item, weather heading + first note.
+- Reduce equipment row vertical padding slightly (smaller badge, tighter line-height) to match the screen card.
 
-## Open question
-Add the panel strings ("Text Accessibility", option labels, "Reset to Default") to all 10 locale files, or English-only for now?
+### 3. Page-break / print CSS
+
+Add Tailwind print utilities (`print:break-inside-avoid`, `print:break-after-avoid`) on:
+- Event Details grid container
+- Each Recommended Setup category block
+- Each equipment row
+- Weather & Setup Notes block
+
+No changes to data, server functions, i18n, or routing.
+
+## Acceptance
+
+- No side-by-side Event Details / Recommended Setup anywhere.
+- Event Details renders as a compact 2-column grid (full width).
+- Recommended Setup spans full width below Event Details, with compact rows.
+- Downloaded PDF mirrors the on-screen layout and breaks cleanly across pages.
