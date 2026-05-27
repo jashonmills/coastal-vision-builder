@@ -25,6 +25,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
+import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
 
 const TentRentalsRoute = TentRentalsRouteImport.update({
   id: '/tent-rentals',
@@ -106,6 +107,11 @@ const AccountIdRoute = AccountIdRouteImport.update({
   path: '/account/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminInventoryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -122,8 +128,9 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
-  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/account/': typeof AccountIndexRoute
+  '/admin/inventory/$id': typeof AdminInventoryIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,8 +147,9 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
-  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/account': typeof AccountIndexRoute
+  '/admin/inventory/$id': typeof AdminInventoryIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -159,8 +167,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
-  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/account/': typeof AccountIndexRoute
+  '/admin/inventory/$id': typeof AdminInventoryIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/account/$id'
     | '/admin/inventory'
     | '/account/'
+    | '/admin/inventory/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/account/$id'
     | '/admin/inventory'
     | '/account'
+    | '/admin/inventory/$id'
   id:
     | '__root__'
     | '/'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/account/$id'
     | '/admin/inventory'
     | '/account/'
+    | '/admin/inventory/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -351,15 +363,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/inventory/$id': {
+      id: '/admin/inventory/$id'
+      path: '/$id'
+      fullPath: '/admin/inventory/$id'
+      preLoaderRoute: typeof AdminInventoryIdRouteImport
+      parentRoute: typeof AdminInventoryRoute
+    }
   }
 }
 
+interface AdminInventoryRouteChildren {
+  AdminInventoryIdRoute: typeof AdminInventoryIdRoute
+}
+
+const AdminInventoryRouteChildren: AdminInventoryRouteChildren = {
+  AdminInventoryIdRoute: AdminInventoryIdRoute,
+}
+
+const AdminInventoryRouteWithChildren = AdminInventoryRoute._addFileChildren(
+  AdminInventoryRouteChildren,
+)
+
 interface AdminRouteChildren {
-  AdminInventoryRoute: typeof AdminInventoryRoute
+  AdminInventoryRoute: typeof AdminInventoryRouteWithChildren
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminInventoryRoute: AdminInventoryRoute,
+  AdminInventoryRoute: AdminInventoryRouteWithChildren,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
