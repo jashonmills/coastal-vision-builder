@@ -3,12 +3,16 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { MessageCircle, X, Send, Phone } from "lucide-react";
 import {
-  CHAT_ANSWERS,
   PAGE_HINTS,
   QUICK_STARTS,
-  matchIntent,
   type ChatAction,
 } from "@/data/chatKnowledgeBase";
+import {
+  parseUserMessage,
+  generateScriptedResponse,
+  respondByIntent,
+  type ScriptedIntent,
+} from "@/data/chatEngine";
 import { useAuth } from "@/hooks/use-auth";
 
 type Msg = {
@@ -61,32 +65,31 @@ export function ChatWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 60);
   }, [open]);
 
-  function answerFor(intent: string): Msg {
-    const a = CHAT_ANSWERS[intent] ?? CHAT_ANSWERS.unknown;
-    let actions = a.actions ?? [];
+  function botFromResponse(text: string, actions: ChatAction[]): Msg {
     // Inject saved-plans shortcut for logged-in users on quote/saved intents
-    if (user && (intent === "quote_request" || intent === "saved_plans")) {
-      actions = [{ labelKey: "chat.actions.viewMyPlans", to: "/account" }, ...actions];
-    }
-    return { id: uid(), role: "bot", text: t(a.bodyKey), actions };
+    return { id: uid(), role: "bot", text, actions };
   }
 
   function send(text: string) {
     const trimmed = text.trim();
     if (!trimmed) return;
     const userMsg: Msg = { id: uid(), role: "user", text: trimmed };
-    const intent = matchIntent(trimmed);
-    const botMsg = answerFor(intent);
-    setMessages((m) => [...m, userMsg, botMsg]);
+    const parsed = parseUserMessage(trimmed);
+    const resp = generateScriptedResponse(parsed);
+    let actions = resp.actions;
+    if (user && (parsed.intent === "quote_request" || parsed.intent === "saved_plans")) {
+      actions = [{ label: "View My Plans", to: "/account" }, ...actions];
+    }
+    setMessages((m) => [...m, userMsg, botFromResponse(resp.text, actions)]);
     setInput("");
   }
 
-  function handleQuick(intent: string) {
-    const a = CHAT_ANSWERS[intent] ?? CHAT_ANSWERS.unknown;
+  function handleQuick(intent: ScriptedIntent, label: string) {
+    const resp = respondByIntent(intent);
     setMessages((m) => [
       ...m,
-      { id: uid(), role: "user", text: t(`chat.quick.${quickLabelKey(intent)}` , { defaultValue: intent }) },
-      answerFor(intent),
+      { id: uid(), role: "user", text: label },
+      botFromResponse(resp.text, resp.actions),
     ]);
   }
 
@@ -140,16 +143,20 @@ export function ChatWidget() {
 
           {/* Quick starts (always visible above input) */}
           <div className="flex flex-wrap gap-1.5 border-t border-border bg-muted/40 px-3 py-2">
-            {QUICK_STARTS.map((q) => (
-              <button
-                key={q.intent}
-                type="button"
-                onClick={() => handleQuick(q.intent)}
-                className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-foreground/80 transition hover:border-[color:var(--gold)] hover:text-foreground"
-              >
-                {t(q.labelKey)}
-              </button>
-            ))}
+            {QUICK_STARTS.map((q) => {
+              const label = t(q.labelKey);
+              const intent = (q.intent === "plan_event" ? "generic_event" : q.intent) as ScriptedIntent;
+              return (
+                <button
+                  key={q.intent}
+                  type="button"
+                  onClick={() => handleQuick(intent, label)}
+                  className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-foreground/80 transition hover:border-[color:var(--gold)] hover:text-foreground"
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Input */}
@@ -195,7 +202,7 @@ function MessageBubble({ msg }: { msg: Msg }) {
         {isBot && msg.actions && msg.actions.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1.5">
             {msg.actions.map((a, i) => {
-              const label = t(a.labelKey);
+              const label = a.label ?? (a.labelKey ? t(a.labelKey) : "");
               const isTel = a.href?.startsWith("tel:");
               const cls =
                 "inline-flex items-center gap-1 rounded-full border border-[color:var(--gold)]/40 bg-background px-2.5 py-1 text-[11px] font-medium text-foreground transition hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)]/10";
@@ -222,15 +229,3 @@ function MessageBubble({ msg }: { msg: Msg }) {
   );
 }
 
-// Map intent → quick label key suffix used in i18n
-function quickLabelKey(intent: string): string {
-  switch (intent) {
-    case "tent_size":     return "tentSize";
-    case "plan_event":    return "planEvent";
-    case "inventory":     return "rentals";
-    case "beach_event":   return "beach";
-    case "quote_request": return "quote";
-    case "contact":       return "contact";
-    default:              return intent;
-  }
-}
