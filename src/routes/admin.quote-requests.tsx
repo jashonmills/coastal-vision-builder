@@ -10,6 +10,7 @@ import {
   listQuoteRequests,
   updateQuoteRequestStatus,
   createQuoteFromRequest,
+  countNewQuoteRequests,
 } from "@/lib/quotes.functions";
 
 export const Route = createFileRoute("/admin/quote-requests")({
