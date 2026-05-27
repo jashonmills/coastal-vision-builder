@@ -144,6 +144,15 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <User className="h-4 w-4" />
               {user ? "My Account" : "Sign In"}
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 transition-all hover:border-amber-500 hover:bg-amber-100"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
             <Link
               to="/contact"
               className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-[color:var(--navy-soft)]"
