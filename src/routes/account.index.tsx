@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { listMyRecommendations, deleteRecommendation } from "@/lib/saved-recommendations.functions";
 import { FileText, Loader2, LogOut, Trash2 } from "lucide-react";
 
-export const Route = createFileRoute("/account")({
+export const Route = createFileRoute("/account/")({
   head: () => ({ meta: [{ title: "My Account | Pacific North Events & Tents" }] }),
   component: AccountPage,
 });
