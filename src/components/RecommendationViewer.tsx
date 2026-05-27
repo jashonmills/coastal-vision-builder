@@ -206,14 +206,12 @@ export function RecommendationViewer({
         </div>
         <div className="flex-1 overflow-auto bg-secondary/60 p-3 sm:p-6">
           <div className="mx-auto max-w-[816px] overflow-hidden rounded-xl border border-border bg-card shadow-xl">
-            <div ref={reportRef}>
-              <RecommendationReport
-                recommendation={recommendation}
-                blueprintImage={blueprintImage}
-                input={input}
-                contactName={contactName}
-              />
-            </div>
+            <RecommendationReport
+              recommendation={recommendation}
+              blueprintImage={blueprintImage}
+              input={input}
+              contactName={contactName}
+            />
           </div>
         </div>
       </div>
