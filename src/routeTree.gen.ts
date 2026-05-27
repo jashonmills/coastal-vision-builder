@@ -23,10 +23,15 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
+import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
+import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-requests'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
+import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
+import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes.$id.preview'
+import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes.$id.edit'
 
 const TentRentalsRoute = TentRentalsRouteImport.update({
   id: '/tent-rentals',
@@ -98,6 +103,16 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/account/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminQuotesRoute = AdminQuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQuoteRequestsRoute = AdminQuoteRequestsRouteImport.update({
+  id: '/quote-requests',
+  path: '/quote-requests',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPricingRoute = AdminPricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -113,10 +128,25 @@ const AccountIdRoute = AccountIdRouteImport.update({
   path: '/account/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminQuoteRequestsRoute,
+} as any)
 const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AdminInventoryRoute,
+} as any)
+const AdminQuotesIdPreviewRoute = AdminQuotesIdPreviewRouteImport.update({
+  id: '/$id/preview',
+  path: '/$id/preview',
+  getParentRoute: () => AdminQuotesRoute,
+} as any)
+const AdminQuotesIdEditRoute = AdminQuotesIdEditRouteImport.update({
+  id: '/$id/edit',
+  path: '/$id/edit',
+  getParentRoute: () => AdminQuotesRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -136,8 +166,13 @@ export interface FileRoutesByFullPath {
   '/account/$id': typeof AccountIdRoute
   '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
+  '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
+  '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/account/': typeof AccountIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
+  '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -156,8 +191,13 @@ export interface FileRoutesByTo {
   '/account/$id': typeof AccountIdRoute
   '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
+  '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
+  '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/account': typeof AccountIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
+  '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -177,8 +217,13 @@ export interface FileRoutesById {
   '/account/$id': typeof AccountIdRoute
   '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
+  '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
+  '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/account/': typeof AccountIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
+  '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -199,8 +244,13 @@ export interface FileRouteTypes {
     | '/account/$id'
     | '/admin/inventory'
     | '/admin/pricing'
+    | '/admin/quote-requests'
+    | '/admin/quotes'
     | '/account/'
     | '/admin/inventory/$id'
+    | '/admin/quote-requests/$id'
+    | '/admin/quotes/$id/edit'
+    | '/admin/quotes/$id/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -219,8 +269,13 @@ export interface FileRouteTypes {
     | '/account/$id'
     | '/admin/inventory'
     | '/admin/pricing'
+    | '/admin/quote-requests'
+    | '/admin/quotes'
     | '/account'
     | '/admin/inventory/$id'
+    | '/admin/quote-requests/$id'
+    | '/admin/quotes/$id/edit'
+    | '/admin/quotes/$id/preview'
   id:
     | '__root__'
     | '/'
@@ -239,8 +294,13 @@ export interface FileRouteTypes {
     | '/account/$id'
     | '/admin/inventory'
     | '/admin/pricing'
+    | '/admin/quote-requests'
+    | '/admin/quotes'
     | '/account/'
     | '/admin/inventory/$id'
+    | '/admin/quote-requests/$id'
+    | '/admin/quotes/$id/edit'
+    | '/admin/quotes/$id/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -361,6 +421,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/quotes': {
+      id: '/admin/quotes'
+      path: '/quotes'
+      fullPath: '/admin/quotes'
+      preLoaderRoute: typeof AdminQuotesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/quote-requests': {
+      id: '/admin/quote-requests'
+      path: '/quote-requests'
+      fullPath: '/admin/quote-requests'
+      preLoaderRoute: typeof AdminQuoteRequestsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/pricing': {
       id: '/admin/pricing'
       path: '/pricing'
@@ -382,12 +456,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/quote-requests/$id': {
+      id: '/admin/quote-requests/$id'
+      path: '/$id'
+      fullPath: '/admin/quote-requests/$id'
+      preLoaderRoute: typeof AdminQuoteRequestsIdRouteImport
+      parentRoute: typeof AdminQuoteRequestsRoute
+    }
     '/admin/inventory/$id': {
       id: '/admin/inventory/$id'
       path: '/$id'
       fullPath: '/admin/inventory/$id'
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminInventoryRoute
+    }
+    '/admin/quotes/$id/preview': {
+      id: '/admin/quotes/$id/preview'
+      path: '/$id/preview'
+      fullPath: '/admin/quotes/$id/preview'
+      preLoaderRoute: typeof AdminQuotesIdPreviewRouteImport
+      parentRoute: typeof AdminQuotesRoute
+    }
+    '/admin/quotes/$id/edit': {
+      id: '/admin/quotes/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/admin/quotes/$id/edit'
+      preLoaderRoute: typeof AdminQuotesIdEditRouteImport
+      parentRoute: typeof AdminQuotesRoute
     }
   }
 }
@@ -404,14 +499,43 @@ const AdminInventoryRouteWithChildren = AdminInventoryRoute._addFileChildren(
   AdminInventoryRouteChildren,
 )
 
+interface AdminQuoteRequestsRouteChildren {
+  AdminQuoteRequestsIdRoute: typeof AdminQuoteRequestsIdRoute
+}
+
+const AdminQuoteRequestsRouteChildren: AdminQuoteRequestsRouteChildren = {
+  AdminQuoteRequestsIdRoute: AdminQuoteRequestsIdRoute,
+}
+
+const AdminQuoteRequestsRouteWithChildren =
+  AdminQuoteRequestsRoute._addFileChildren(AdminQuoteRequestsRouteChildren)
+
+interface AdminQuotesRouteChildren {
+  AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
+  AdminQuotesIdPreviewRoute: typeof AdminQuotesIdPreviewRoute
+}
+
+const AdminQuotesRouteChildren: AdminQuotesRouteChildren = {
+  AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
+  AdminQuotesIdPreviewRoute: AdminQuotesIdPreviewRoute,
+}
+
+const AdminQuotesRouteWithChildren = AdminQuotesRoute._addFileChildren(
+  AdminQuotesRouteChildren,
+)
+
 interface AdminRouteChildren {
   AdminInventoryRoute: typeof AdminInventoryRouteWithChildren
   AdminPricingRoute: typeof AdminPricingRoute
+  AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRouteWithChildren
+  AdminQuotesRoute: typeof AdminQuotesRouteWithChildren
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminInventoryRoute: AdminInventoryRouteWithChildren,
   AdminPricingRoute: AdminPricingRoute,
+  AdminQuoteRequestsRoute: AdminQuoteRequestsRouteWithChildren,
+  AdminQuotesRoute: AdminQuotesRouteWithChildren,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

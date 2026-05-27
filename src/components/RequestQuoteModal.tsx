@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Send, X } from "lucide-react";
 import { toast } from "sonner";
 import { requestQuoteForRecommendation } from "@/lib/saved-recommendations.functions";
+import { createQuoteRequest } from "@/lib/quotes.functions";
 import { openQuoteRequestMailto } from "@/lib/quote-request";
 import type { AIRecommendation } from "@/lib/recommender.functions";
 import type { RecommenderInput } from "@/lib/recommender";
