@@ -116,7 +116,9 @@ export const updateQuoteRequestStatus = createServerFn({ method: "POST" })
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = { status: data.status };
+    const patch: { status: typeof data.status; admin_notes?: string | null } = {
+      status: data.status,
+    };
     if (data.admin_notes !== undefined) patch.admin_notes = data.admin_notes;
     const { error } = await context.supabase
       .from("quote_requests")
