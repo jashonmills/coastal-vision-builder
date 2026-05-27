@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { uploadImage } from "@/lib/upload-image";
 import { TEXT_SLOTS, IMAGE_SLOTS } from "@/lib/content-slots";
 import { useAllSiteContent, useSaveSlot } from "@/hooks/use-site-content";
+import { AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin | Pacific North Events & Tents" }] }),
