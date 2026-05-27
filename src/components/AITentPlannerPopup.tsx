@@ -66,7 +66,7 @@ export function AITentPlannerPopup() {
 
   return (
     <div
-      className="fixed inset-0 z-[95] flex items-center justify-center bg-primary/70 p-4 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-[95] flex items-start justify-center overflow-y-auto bg-primary/70 p-4 pt-16 backdrop-blur-sm animate-in fade-in duration-300 sm:items-center sm:pt-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="tent-planner-popup-title"
