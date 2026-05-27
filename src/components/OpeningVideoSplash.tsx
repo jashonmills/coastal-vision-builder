@@ -1,0 +1,54 @@
+import { useEffect, useRef, useState } from "react";
+import openingVideo from "@/assets/opening-video.mp4";
+
+const SPLASH_SEEN_KEY = "pnet-opening-video-seen";
+const FALLBACK_MS = 12500;
+
+export function OpeningVideoSplash() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [visible, setVisible] = useState(true);
+  const [exiting, setExiting] = useState(false);
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem(SPLASH_SEEN_KEY) === "true") {
+      setVisible(false);
+      return;
+    }
+
+    const fallback = window.setTimeout(() => finish(), FALLBACK_MS);
+    videoRef.current?.play().catch(() => {
+      window.setTimeout(() => finish(), 1200);
+    });
+
+    return () => window.clearTimeout(fallback);
+  }, []);
+
+  function finish() {
+    if (exiting) return;
+    window.sessionStorage.setItem(SPLASH_SEEN_KEY, "true");
+    setExiting(true);
+    window.setTimeout(() => setVisible(false), 900);
+  }
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-primary transition-opacity duration-700 ${
+        exiting ? "pointer-events-none opacity-0" : "opacity-100"
+      }`}
+      aria-label="Opening video"
+    >
+      <video
+        ref={videoRef}
+        src={openingVideo}
+        className="h-full w-full object-cover"
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onEnded={finish}
+      />
+    </div>
+  );
+}
