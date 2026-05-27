@@ -1,14 +1,17 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
-import { recommend, type RecommenderInput } from "@/lib/recommender";
-import { Check, ChevronLeft, ChevronRight, RefreshCw, Sparkles } from "lucide-react";
+import type { RecommenderInput } from "@/lib/recommender";
+import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
+import { Check, ChevronLeft, ChevronRight, Loader2, RefreshCw, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/recommender")({
   head: () => ({
     meta: [
-      { title: "Event Tent Size Recommender | Pacific North Events & Tents" },
-      { name: "description", content: "Use Pacific North Events & Tents' event setup recommender to estimate tent size, layout needs, and rental equipment for weddings, parties, festivals, and Oregon Coast events." },
+      { title: "Event Recommender | Pacific North Events & Tents" },
+      { name: "description", content: "AI-powered event setup recommender. Get a tent, table, chair, and equipment plan with a blueprint layout for your Oregon Coast event." },
     ],
   }),
   component: RecommenderPage,
@@ -35,12 +38,26 @@ const empty: RecommenderInput = {
 
 const STEPS = ["Event Basics", "Guests & Layout", "Food & Extras", "Location & Weather", "Your Details"];
 
+const CATEGORY_ORDER = [
+  "Canopy",
+  "Canopy Options",
+  "Canopy Cleaning Fee",
+  "Tables",
+  "Chairs",
+  "Specialty Items",
+  "Delivery",
+];
+
 function RecommenderPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<RecommenderInput>(empty);
   const [contact, setContact] = useState({ name: "", email: "", phone: "", method: "Email", notes: "" });
-  const [result, setResult] = useState<ReturnType<typeof recommend> | null>(null);
+
+  const generateFn = useServerFn(generateRecommendation);
+  const mutation = useMutation({
+    mutationFn: (input: RecommenderInput) => generateFn({ data: input }),
+  });
 
   function set<K extends keyof RecommenderInput>(k: K, v: RecommenderInput[K]) {
     setData((d) => ({ ...d, [k]: v }));
@@ -56,37 +73,48 @@ function RecommenderPage() {
     if (step === 0 && (!data.eventDate || !data.location)) return;
     if (step === STEPS.length - 1) {
       if (!contact.name || !contact.email) return;
-      setResult(recommend(data));
+      mutation.mutate(data);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
   }
   function back() { setStep((s) => Math.max(0, s - 1)); }
-  function reset() { setData(empty); setContact({ name: "", email: "", phone: "", method: "Email", notes: "" }); setResult(null); setStep(0); }
+  function reset() {
+    setData(empty);
+    setContact({ name: "", email: "", phone: "", method: "Email", notes: "" });
+    mutation.reset();
+    setStep(0);
+  }
 
   function sendToQuote() {
-    if (!result) return;
-    const prefill = `Recommended tent: ${result.tentSize}. Layout: ${result.layoutType}. Equipment: ${result.equipment.join(", ")}. Event: ${data.eventType}, ${data.guestCount} guests, ${data.eventDate} at ${data.location}.`;
+    const r = mutation.data?.recommendation;
+    if (!r) return;
+    const picksSummary = r.picks
+      .map((p) => `${p.quantity}× ${p.item_name} (${p.category})`)
+      .join("; ");
+    const prefill = `AI Recommendation: ${r.headline}. ${r.summary} Items: ${picksSummary}. Event: ${data.eventType}, ${data.guestCount} guests, ${data.eventDate} at ${data.location}.`;
     navigate({ to: "/contact", search: { prefill } });
   }
+
+  const result = mutation.data;
+  const showForm = !result && !mutation.isPending;
 
   return (
     <SiteLayout>
       <PageHero
         eyebrow="Event Recommender"
-        title="Find the Right Tent for Your Event"
-        subtitle="Answer a few quick questions and we'll recommend a tent size, layout style, and equipment checklist for your event."
+        title="Find the Right Setup for Your Event"
+        subtitle="Answer a few quick questions and our AI will recommend a complete tent, table, chair, and equipment plan — plus a blueprint of your layout."
       />
 
       <section className="mx-auto max-w-4xl px-4 py-16 lg:px-8">
-        {!result ? (
+        {showForm && (
           <>
             <p className="mb-8 text-center text-muted-foreground">
-              Every event is different. Guest count, seating style, food service, dancing, weather, and location all affect the setup. This tool gives you a helpful starting point before we finalize your quote.
+              Every event is different. We'll review your inventory needs across tents, tables, chairs, and specialty items so you have a complete picture before requesting a quote.
             </p>
 
-            {/* Progress */}
             <ol className="mb-10 flex flex-wrap items-center gap-2 text-xs">
               {STEPS.map((s, i) => (
                 <li key={s} className="flex items-center gap-2">
@@ -182,6 +210,12 @@ function RecommenderPage() {
                 </Step>
               )}
 
+              {mutation.isError && (
+                <p className="mt-6 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                  {(mutation.error as Error)?.message ?? "Something went wrong. Please try again."}
+                </p>
+              )}
+
               <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
                 <button type="button" onClick={back} disabled={step === 0} className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary disabled:opacity-30">
                   <ChevronLeft className="h-4 w-4" /> Back
@@ -191,15 +225,30 @@ function RecommenderPage() {
                     <RefreshCw className="h-3.5 w-3.5" /> Start Over
                   </button>
                   <button type="button" onClick={next} className="inline-flex items-center gap-1 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
-                    {step === STEPS.length - 1 ? "Show My Recommendation" : "Next"}
+                    {step === STEPS.length - 1 ? "Generate My Setup" : "Next"}
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
               </div>
             </div>
           </>
-        ) : (
-          <Result result={result} onReset={reset} onSend={sendToQuote} />
+        )}
+
+        {mutation.isPending && (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-16 text-center">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <p className="mt-6 font-serif text-2xl text-primary">Designing your event setup…</p>
+            <p className="mt-2 text-sm text-muted-foreground">Our AI is reviewing inventory and drafting your blueprint. This usually takes 15–30 seconds.</p>
+          </div>
+        )}
+
+        {result && (
+          <AIResult
+            recommendation={result.recommendation}
+            blueprintImage={result.blueprintImage}
+            onReset={reset}
+            onSend={sendToQuote}
+          />
         )}
       </section>
 
@@ -218,56 +267,107 @@ function RecommenderPage() {
   );
 }
 
-function Result({ result, onReset, onSend }: { result: ReturnType<typeof recommend>; onReset: () => void; onSend: () => void }) {
+function AIResult({
+  recommendation,
+  blueprintImage,
+  onReset,
+  onSend,
+}: {
+  recommendation: AIRecommendation;
+  blueprintImage: string | null;
+  onReset: () => void;
+  onSend: () => void;
+}) {
+  const grouped = new Map<string, Pick[]>();
+  for (const p of recommendation.picks) {
+    const arr = grouped.get(p.category) ?? [];
+    arr.push(p);
+    grouped.set(p.category, arr);
+  }
+  const orderedCategories = [
+    ...CATEGORY_ORDER.filter((c) => grouped.has(c)),
+    ...Array.from(grouped.keys()).filter((c) => !CATEGORY_ORDER.includes(c)),
+  ];
+
   return (
-    <div className="rounded-2xl border border-border bg-card p-8 shadow-md sm:p-12">
-      <div className="text-center">
-        <Sparkles className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
-        <h2 className="mt-4 font-serif text-3xl text-primary sm:text-4xl">Your Event Setup Recommendation</h2>
-        <p className="mt-3 text-muted-foreground">Based on your answers, here's a strong starting point for your event.</p>
-      </div>
-
-      <div className="mt-10 rounded-2xl bg-primary p-8 text-primary-foreground">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">Recommended Starting Tent Size</p>
-        <p className="mt-3 font-serif text-4xl sm:text-5xl">{result.tentSize}</p>
-        <p className="mt-3 text-sm text-primary-foreground/80">Layout: {result.layoutType}</p>
-      </div>
-
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-background p-6">
-          <h3 className="font-serif text-lg text-primary">Suggested Equipment</h3>
-          <ul className="mt-4 space-y-2 text-sm">
-            {result.equipment.map((e) => (
-              <li key={e} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-4 w-4 text-[color:var(--forest)]" />
-                <span>{e}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6">
-          <h3 className="font-serif text-lg text-primary">Weather &amp; Setup Notes</h3>
-          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-            {result.weatherNotes.map((n, i) => <li key={i}>• {n}</li>)}
-          </ul>
+    <div className="space-y-8">
+      <div className="rounded-2xl border border-border bg-card p-8 shadow-md sm:p-10">
+        <div className="text-center">
+          <Sparkles className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
+          <h2 className="mt-4 font-serif text-3xl text-primary sm:text-4xl">{recommendation.headline}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{recommendation.summary}</p>
         </div>
       </div>
 
-      <p className="mt-8 rounded-lg bg-secondary/60 p-4 text-xs text-muted-foreground">
-        This recommendation is a helpful starting point. Final tent size and equipment needs may change based on your venue, surface, layout, guest count, weather exposure, and availability.
-      </p>
+      {blueprintImage && (
+        <div className="overflow-hidden rounded-2xl border border-border bg-primary shadow-md">
+          <div className="border-b border-primary-foreground/10 px-6 py-4 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--gold)]">AI-Generated Blueprint</p>
+            <p className="mt-1 font-serif text-xl text-primary-foreground">Suggested Layout</p>
+          </div>
+          <img src={blueprintImage} alt="AI-generated event blueprint" className="w-full" />
+          <p className="px-6 py-3 text-center text-xs text-primary-foreground/70">
+            Conceptual layout for illustration. Final placement confirmed during quoting.
+          </p>
+        </div>
+      )}
 
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <button onClick={onSend} className="inline-flex items-center rounded-full bg-[color:var(--gold)] px-7 py-3 text-sm font-semibold text-primary hover:-translate-y-0.5 transition-transform">
-          Send This Recommendation for a Quote
-        </button>
-        <button onClick={onReset} className="inline-flex items-center gap-1 rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-secondary">
-          <RefreshCw className="h-4 w-4" /> Start Over
-        </button>
+      <div className="rounded-2xl border border-border bg-card p-8 shadow-md sm:p-10">
+        <h3 className="font-serif text-2xl text-primary">Recommended Setup</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          A complete inventory selection across every category. Quantities are an estimate.
+        </p>
+
+        <div className="mt-6 space-y-6">
+          {orderedCategories.map((cat) => (
+            <div key={cat}>
+              <h4 className="border-b border-border pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">
+                {cat}
+              </h4>
+              <ul className="mt-3 space-y-2">
+                {grouped.get(cat)!.map((p, i) => (
+                  <li key={`${p.item_id}-${i}`} className="flex items-start gap-3 rounded-lg bg-secondary/40 px-3 py-2.5 text-sm">
+                    <span className="inline-flex min-w-[2.25rem] justify-center rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
+                      {p.quantity}×
+                    </span>
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground">{p.item_name}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{p.reason}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {recommendation.weather_notes.length > 0 && (
+          <div className="mt-8 rounded-xl border border-border bg-background p-5">
+            <h4 className="font-serif text-lg text-primary">Weather & Setup Notes</h4>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {recommendation.weather_notes.map((n, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <Check className="mt-0.5 h-4 w-4 text-[color:var(--forest)]" />
+                  <span>{n}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <p className="mt-6 rounded-lg bg-secondary/60 p-4 text-xs text-muted-foreground">
+          This is an AI-generated estimate. Final tent size, quantities, and equipment may change based on your venue, surface, layout, weather, and availability. No pricing is shown — request a quote for confirmed pricing.
+        </p>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <button onClick={onSend} className="inline-flex items-center rounded-full bg-[color:var(--gold)] px-7 py-3 text-sm font-semibold text-primary hover:-translate-y-0.5 transition-transform">
+            Send This Recommendation for a Quote
+          </button>
+          <button onClick={onReset} className="inline-flex items-center gap-1 rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-secondary">
+            <RefreshCw className="h-4 w-4" /> Start Over
+          </button>
+        </div>
       </div>
-      <p className="mt-6 text-center text-xs text-muted-foreground">
-        Need help deciding? Send us your recommendation and we'll review it with you.
-      </p>
     </div>
   );
 }
