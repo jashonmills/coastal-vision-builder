@@ -1,18 +1,20 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Tent, Send, Sparkles, Menu } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onMenu: () => void;
 }
 
 const items = [
-  { to: "/", label: "Home", icon: Home, exact: true },
-  { to: "/tent-rentals", label: "Rentals", icon: Tent, exact: false },
-  { to: "/recommender", label: "Recommender", icon: Sparkles, exact: false },
+  { to: "/", labelKey: "nav.home", icon: Home, exact: true },
+  { to: "/tent-rentals", labelKey: "nav.rentals", icon: Tent, exact: false },
+  { to: "/recommender", labelKey: "nav.recommender", icon: Sparkles, exact: false },
 ] as const;
 
 export function MobileBottomNav({ onMenu }: Props) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { t } = useTranslation();
 
   const isActive = (to: string, exact: boolean) =>
     exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
@@ -35,7 +37,7 @@ export function MobileBottomNav({ onMenu }: Props) {
               }`}
             >
               <Icon className="h-5 w-5" />
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </Link>
           );
         })}
@@ -46,7 +48,7 @@ export function MobileBottomNav({ onMenu }: Props) {
           className="-mt-6 mx-auto flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-background"
         >
           <Send className="h-5 w-5" />
-          <span className="text-[9px] font-semibold uppercase tracking-wide">Quote</span>
+          <span className="text-[9px] font-semibold uppercase tracking-wide">{t("nav.quote")}</span>
         </Link>
 
         {items.slice(2).map((item) => {
@@ -61,7 +63,7 @@ export function MobileBottomNav({ onMenu }: Props) {
               }`}
             >
               <Icon className="h-5 w-5" />
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </Link>
           );
         })}
@@ -72,7 +74,7 @@ export function MobileBottomNav({ onMenu }: Props) {
           className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
         >
           <Menu className="h-5 w-5" />
-          <span>Menu</span>
+          <span>{t("nav.menu")}</span>
         </button>
       </div>
     </div>
