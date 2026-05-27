@@ -103,10 +103,10 @@ function ClaimAdmin() {
 
 type InvItem = { id: string; category: string; name: string; price_cents: number; unit: string; notes: string | null; sort_order: number };
 
-function InventoryAdmin() {
+function PricingAdmin() {
   const qc = useQueryClient();
   const { data: items = [], isLoading } = useQuery({
-    queryKey: ["admin-inventory"],
+    queryKey: ["admin-pricing"],
     queryFn: async () => {
       const { data, error } = await supabase.from("pricing_items").select("*").order("category").order("sort_order");
       if (error) throw error;
@@ -119,7 +119,7 @@ function InventoryAdmin() {
       const { error } = await supabase.from("pricing_items").insert({ category: "New Category", name: "New item", price_cents: 0, unit: "each", sort_order: 0 });
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
 
   if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />;
@@ -136,7 +136,7 @@ function InventoryAdmin() {
             </tr>
           </thead>
           <tbody>
-            {items.map((it) => <InventoryRow key={it.id} item={it} />)}
+            {items.map((it) => <PricingRow key={it.id} item={it} />)}
           </tbody>
         </table>
       </div>
@@ -144,7 +144,7 @@ function InventoryAdmin() {
   );
 }
 
-function InventoryRow({ item }: { item: InvItem }) {
+function PricingRow({ item }: { item: InvItem }) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState(item);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
@@ -156,14 +156,14 @@ function InventoryRow({ item }: { item: InvItem }) {
       }).eq("id", item.id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
   const del = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.from("pricing_items").delete().eq("id", item.id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
 
   return (
