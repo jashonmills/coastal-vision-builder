@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import festivalImg from "@/assets/festival-tents.jpg";
@@ -64,7 +64,7 @@ export const Route = createFileRoute("/inventory")({
       },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(inventoryQuery),
+  loader: () => null,
   component: InventoryPage,
 });
 
@@ -74,7 +74,7 @@ function formatPrice(cents: number) {
 }
 
 function InventoryPage() {
-  const { data: items } = useSuspenseQuery(inventoryQuery);
+  const { data: items = [], isLoading, error } = useQuery(inventoryQuery);
 
   const grouped = new Map<string, InventoryItem[]>();
   for (const item of items) {
@@ -97,6 +97,8 @@ function InventoryPage() {
       />
 
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+        {isLoading && <p className="text-center text-muted-foreground">Loading inventory…</p>}
+        {error && <p className="text-center text-destructive">Could not load inventory.</p>}
         <div className="mb-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-secondary/40 px-6 py-5">
           <div>
             <p className="font-serif text-lg text-primary">Pricing includes a 3-day rental</p>
