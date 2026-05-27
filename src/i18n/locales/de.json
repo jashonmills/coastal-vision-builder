@@ -489,7 +489,7 @@
     "error": {
       "title": "Wir konnten Ihre Empfehlung nicht generieren",
       "generic": "Bei uns ist etwas schiefgelaufen.",
-      "retryHint": "Ihre Antworten sind unten gespeichert. Klicken Sie erneut auf „Mein Setup generieren", um es noch einmal zu versuchen, oder auf „Sprechen Sie mit uns" und wir erstellen ein Setup manuell."
+      "retryHint": "Ihre Antworten sind unten gespeichert. Klicken Sie erneut auf „Mein Setup generieren\", um es noch einmal zu versuchen, oder auf „Sprechen Sie mit uns\" und wir erstellen ein Setup manuell."
     },
     "results": {
       "eyebrow": "Ihre Empfehlung ist bereit",
