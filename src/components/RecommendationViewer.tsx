@@ -3,7 +3,8 @@ import logoUrl from "@/assets/logo.png";
 import type { AIRecommendation, Pick } from "@/lib/recommender.functions";
 import type { RecommenderInput } from "@/lib/recommender";
 import { downloadRecommendationPdf, printRecommendationPdf } from "@/lib/recommendation-pdf";
-import { Check, Download, FileText, Loader2, Printer, X } from "lucide-react";
+import { Check, Download, FileText, Loader2, Printer, Send, X } from "lucide-react";
+import { RequestQuoteModal, StatusBadge, type PlanStatus } from "@/components/RequestQuoteModal";
 
 const CATEGORY_ORDER = ["Canopy", "Canopy Options", "Canopy Cleaning Fee", "Tables", "Chairs", "Specialty Items", "Delivery"];
 
@@ -160,6 +161,11 @@ export function RecommendationViewer({
   input,
   contactName,
   fileName,
+  recommendationId,
+  contact,
+  userEmail,
+  status,
+  quoteRequestedAt,
 }: {
   open: boolean;
   onClose: () => void;
@@ -168,8 +174,14 @@ export function RecommendationViewer({
   input: RecommenderInput;
   contactName?: string;
   fileName: string;
+  recommendationId?: string;
+  contact?: { name?: string; email?: string; phone?: string; preferredContact?: string } | null;
+  userEmail?: string | null;
+  status?: PlanStatus | string;
+  quoteRequestedAt?: string | null;
 }) {
   const [busy, setBusy] = useState<null | "download" | "print">(null);
+  const [quoteOpen, setQuoteOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -202,15 +214,28 @@ export function RecommendationViewer({
 
   if (!open) return null;
 
+  const requested = status === "quote_requested" || status === "quote_sent" || status === "booked" || !!quoteRequestedAt;
+  const canRequestQuote = !!recommendationId;
+
   return (
     <div className="fixed inset-0 z-[90] bg-primary/80 p-3 backdrop-blur-sm sm:p-5" role="dialog" aria-modal="true">
       <div className="mx-auto flex h-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-4 py-3 sm:px-5">
           <div className="flex items-center gap-2 text-sm font-semibold text-primary">
             <FileText className="h-4 w-4" /> PDF Viewer
+            {status && <StatusBadge status={status} className="ml-1" />}
           </div>
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={handleDownload} disabled={busy !== null} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)] disabled:opacity-60">
+          <div className="flex flex-wrap items-center gap-2">
+            {canRequestQuote && (requested ? (
+              <button type="button" disabled className="inline-flex cursor-not-allowed items-center gap-1 rounded-full bg-muted px-4 py-2 text-xs font-semibold text-muted-foreground">
+                <Send className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Quote Requested</span><span className="sm:hidden">Quoted</span>
+              </button>
+            ) : (
+              <button type="button" onClick={() => setQuoteOpen(true)} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
+                <Send className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Request Quote</span><span className="sm:hidden">Quote</span>
+              </button>
+            ))}
+            <button type="button" onClick={handleDownload} disabled={busy !== null} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-secondary disabled:opacity-60">
               {busy === "download" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Download PDF
             </button>
             <button type="button" onClick={handlePrint} disabled={busy !== null} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-secondary disabled:opacity-60">
@@ -232,6 +257,17 @@ export function RecommendationViewer({
           </div>
         </div>
       </div>
+      {canRequestQuote && recommendationId && (
+        <RequestQuoteModal
+          open={quoteOpen}
+          onClose={() => setQuoteOpen(false)}
+          recommendationId={recommendationId}
+          input={input}
+          recommendation={recommendation}
+          contact={contact ?? null}
+          userEmail={userEmail}
+        />
+      )}
     </div>
   );
 }

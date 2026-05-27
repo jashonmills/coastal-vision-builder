@@ -104,39 +104,63 @@ export type Database = {
       saved_recommendations: {
         Row: {
           blueprint_image: string | null
+          booked_at: string | null
           contact: Json | null
           created_at: string
+          customer_confirmation_sent_at: string | null
+          deleted_at: string | null
           event_date: string | null
           id: string
           input: Json
           location: string | null
+          quote_request_email_sent_at: string | null
+          quote_request_note: string | null
+          quote_requested_at: string | null
+          quote_sent_at: string | null
           recommendation: Json
+          status: string
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
           blueprint_image?: string | null
+          booked_at?: string | null
           contact?: Json | null
           created_at?: string
+          customer_confirmation_sent_at?: string | null
+          deleted_at?: string | null
           event_date?: string | null
           id?: string
           input: Json
           location?: string | null
+          quote_request_email_sent_at?: string | null
+          quote_request_note?: string | null
+          quote_requested_at?: string | null
+          quote_sent_at?: string | null
           recommendation: Json
+          status?: string
           title: string
           updated_at?: string
           user_id: string
         }
         Update: {
           blueprint_image?: string | null
+          booked_at?: string | null
           contact?: Json | null
           created_at?: string
+          customer_confirmation_sent_at?: string | null
+          deleted_at?: string | null
           event_date?: string | null
           id?: string
           input?: Json
           location?: string | null
+          quote_request_email_sent_at?: string | null
+          quote_request_note?: string | null
+          quote_requested_at?: string | null
+          quote_sent_at?: string | null
           recommendation?: Json
+          status?: string
           title?: string
           updated_at?: string
           user_id?: string
