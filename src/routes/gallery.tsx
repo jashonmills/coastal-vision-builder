@@ -30,6 +30,7 @@ function tagsFor(alt: string): Filter[] {
 function GalleryPage() {
   const [filter, setFilter] = useState<Filter>("All");
   const hero = pickPhoto("gallery-hero");
+  const lb = useLightbox();
 
   const shown = filter === "All"
     ? photoImages
