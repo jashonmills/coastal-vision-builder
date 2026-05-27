@@ -3,12 +3,16 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { MessageCircle, X, Send, Phone } from "lucide-react";
 import {
-  CHAT_ANSWERS,
   PAGE_HINTS,
   QUICK_STARTS,
-  matchIntent,
   type ChatAction,
 } from "@/data/chatKnowledgeBase";
+import {
+  parseUserMessage,
+  generateScriptedResponse,
+  respondByIntent,
+  type ScriptedIntent,
+} from "@/data/chatEngine";
 import { useAuth } from "@/hooks/use-auth";
 
 type Msg = {
