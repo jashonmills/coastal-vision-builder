@@ -43,7 +43,7 @@ function AdminPage() {
       </div>
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
         <div className="mb-8 flex flex-wrap gap-2">
-          {([["inventory", Box, "Inventory"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
+          {([["inventory", Box, "Pricing"], ["gallery", ImageIcon, "Gallery"], ["images", Upload, "Site Images"], ["text", Type, "Site Text"]] as const).map(([k, Icon, label]) => (
             <button key={k} onClick={() => setTab(k)} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${tab === k ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"}`}>
               <Icon className="h-4 w-4" /> {label}
             </button>
@@ -103,7 +103,7 @@ function InventoryAdmin() {
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["admin-inventory"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("inventory_items").select("*").order("category").order("sort_order");
+      const { data, error } = await supabase.from("pricing_items").select("*").order("category").order("sort_order");
       if (error) throw error;
       return data as InvItem[];
     },
@@ -111,7 +111,7 @@ function InventoryAdmin() {
 
   const add = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("inventory_items").insert({ category: "New Category", name: "New item", price_cents: 0, unit: "each", sort_order: 0 });
+      const { error } = await supabase.from("pricing_items").insert({ category: "New Category", name: "New item", price_cents: 0, unit: "each", sort_order: 0 });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),
@@ -146,7 +146,7 @@ function InventoryRow({ item }: { item: InvItem }) {
 
   const save = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("inventory_items").update({
+      const { error } = await supabase.from("pricing_items").update({
         category: draft.category, name: draft.name, price_cents: draft.price_cents, unit: draft.unit, notes: draft.notes, sort_order: draft.sort_order, updated_at: new Date().toISOString(),
       }).eq("id", item.id);
       if (error) throw error;
@@ -155,7 +155,7 @@ function InventoryRow({ item }: { item: InvItem }) {
   });
   const del = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("inventory_items").delete().eq("id", item.id);
+      const { error } = await supabase.from("pricing_items").delete().eq("id", item.id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory"] }),

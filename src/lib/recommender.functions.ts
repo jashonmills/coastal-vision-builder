@@ -47,7 +47,7 @@ export const generateRecommendation = createServerFn({ method: "POST" })
 
     // 1. Load inventory
     const { data: inventory, error: invErr } = await supabaseAdmin
-      .from("inventory_items")
+      .from("pricing_items")
       .select("id, category, name, unit, notes, price_cents")
       .order("category")
       .order("sort_order");

@@ -2,25 +2,18 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Loader2,
-  Plus,
-  Pencil,
-  Box,
-  Boxes,
-  AlertTriangle,
-  Wrench,
-  Sparkles,
-  PackageCheck,
-  Trash2,
-  X,
+  Loader2, Plus, Box, Boxes, AlertTriangle, Wrench, Sparkles, PackageCheck,
+  Archive, ArrowRight, Search,
 } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  computeAvailable, ITEM_TYPE_LABEL, ITEM_TYPES, type InventoryCategory, type InventoryItem, type ItemType,
+} from "@/lib/inventory";
+import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
 
-// Types haven't been regenerated for the new admin inventory tables yet,
-// so we cast through `any` at the query boundary.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
 
@@ -28,54 +21,6 @@ export const Route = createFileRoute("/admin/inventory")({
   head: () => ({ meta: [{ title: "Inventory Management | Admin" }] }),
   component: InventoryAdminPage,
 });
-
-type MasterItem = {
-  id: string;
-  name: string;
-  category: string;
-  description: string | null;
-  sku: string | null;
-  unit_type: string;
-  total_quantity: number;
-  reserved_quantity: number;
-  checked_out_quantity: number;
-  cleaning_quantity: number;
-  maintenance_quantity: number;
-  replacement_cost_cents: number;
-  rental_price_cents: number | null;
-  requires_cleaning: boolean;
-  beach_cleaning_fee_applicable: boolean;
-  requires_anchoring: boolean;
-  notes: string | null;
-  active: boolean;
-  created_at: string;
-  updated_at: string;
-};
-
-const CATEGORIES = [
-  "Tents / Canopies",
-  "Canopy Accessories",
-  "Tables",
-  "Chairs",
-  "Dance Floors",
-  "Staging",
-  "Audio / PA",
-  "Bars / Food Service",
-  "Anchoring / Weights",
-  "Delivery / Fees",
-  "Cleaning Fees",
-  "Miscellaneous",
-];
-
-const available = (i: MasterItem) =>
-  Math.max(
-    0,
-    i.total_quantity -
-      i.reserved_quantity -
-      i.checked_out_quantity -
-      i.cleaning_quantity -
-      i.maintenance_quantity,
-  );
 
 function InventoryAdminPage() {
   const { user, loading: authLoading } = useAuth();
@@ -116,55 +61,89 @@ function InventoryAdminPage() {
       <PageHero
         eyebrow="Admin"
         title="Inventory Management"
-        subtitle="Track rental stock, reservations, and check-in/check-out status."
+        subtitle="Rental operating system: stock, status, reservations, and lifecycle."
       />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <InventoryDashboard />
+        <Dashboard />
       </section>
     </SiteLayout>
   );
 }
 
-function InventoryDashboard() {
+function Dashboard() {
   const qc = useQueryClient();
-  const [editing, setEditing] = useState<MasterItem | null>(null);
   const [creating, setCreating] = useState(false);
-  const [filterCat, setFilterCat] = useState<string>("");
+  const [adjustItem, setAdjustItem] = useState<InventoryItem | null>(null);
+  const [filterCat, setFilterCat] = useState("");
+  const [filterType, setFilterType] = useState<"" | ItemType>("");
+  const [filterActive, setFilterActive] = useState<"all" | "active" | "archived">("active");
+  const [filterPlanner, setFilterPlanner] = useState(false);
+  const [filterChat, setFilterChat] = useState(false);
+  const [search, setSearch] = useState("");
 
-  const { data: items = [], isLoading } = useQuery({
-    queryKey: ["admin-inventory-master"],
-    queryFn: async (): Promise<MasterItem[]> => {
+  const { data: categories = [] } = useQuery({
+    queryKey: ["admin-inventory-categories"],
+    queryFn: async (): Promise<InventoryCategory[]> => {
       const { data, error } = await db
-        .from("inventory_master_items")
-        .select("*")
-        .order("category")
-        .order("name");
+        .from("inventory_categories").select("*").order("sort_order");
       if (error) throw error;
-      return (data ?? []) as unknown as MasterItem[];
+      return data ?? [];
     },
   });
 
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: ["admin-inventory-items"],
+    queryFn: async (): Promise<InventoryItem[]> => {
+      const { data, error } = await db
+        .from("inventory_items").select("*").order("name");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const catMap = useMemo(() => Object.fromEntries(categories.map((c) => [c.id, c])), [categories]);
+
+  const filtered = useMemo(() => {
+    return items.filter((i) => {
+      if (filterCat && i.category_id !== filterCat) return false;
+      if (filterType && i.item_type !== filterType) return false;
+      if (filterActive === "active" && (!i.active || i.deleted_at)) return false;
+      if (filterActive === "archived" && i.active && !i.deleted_at) return false;
+      if (filterPlanner && !i.visible_to_planner) return false;
+      if (filterChat && !i.visible_to_chat) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        if (!i.name.toLowerCase().includes(q) && !(i.sku ?? "").toLowerCase().includes(q)) return false;
+      }
+      return true;
+    });
+  }, [items, filterCat, filterType, filterActive, filterPlanner, filterChat, search]);
+
   const summary = useMemo(() => {
-    const total = items.reduce((s, i) => s + i.total_quantity, 0);
-    const checkedOut = items.reduce((s, i) => s + i.checked_out_quantity, 0);
-    const cleaning = items.reduce((s, i) => s + i.cleaning_quantity, 0);
-    const maintenance = items.reduce((s, i) => s + i.maintenance_quantity, 0);
-    const reserved = items.reduce((s, i) => s + i.reserved_quantity, 0);
-    const lowAvail = items.filter((i) => i.active && available(i) <= Math.max(1, Math.floor(i.total_quantity * 0.1))).length;
-    return { total, checkedOut, cleaning, maintenance, reserved, lowAvail };
+    let owned = 0, available = 0, reserved = 0, out = 0, cleaning = 0, maint = 0, damaged = 0;
+    let negative = 0, plannerNoStock = 0;
+    for (const i of items) {
+      owned += i.total_owned_quantity;
+      reserved += i.reserved_quantity;
+      out += i.checked_out_quantity;
+      cleaning += i.cleaning_quantity;
+      maint += i.maintenance_quantity;
+      damaged += i.damaged_missing_quantity;
+      const av = computeAvailable(i);
+      available += Math.max(0, av);
+      if (av < 0) negative += 1;
+      if (i.active && i.visible_to_planner && i.total_owned_quantity === 0) plannerNoStock += 1;
+    }
+    return { owned, available, reserved, out, cleaning, maint, damaged, negative, plannerNoStock };
   }, [items]);
 
-  const filtered = useMemo(
-    () => (filterCat ? items.filter((i) => i.category === filterCat) : items),
-    [items, filterCat],
-  );
-
-  const deleteMut = useMutation({
+  const archive = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await db.from("inventory_master_items").delete().eq("id", id);
+      const { error } = await db.from("inventory_items")
+        .update({ active: false, deleted_at: new Date().toISOString() }).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory-master"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inventory-items"] }),
   });
 
   if (isLoading) {
@@ -178,45 +157,74 @@ function InventoryDashboard() {
   return (
     <div className="space-y-8">
       {/* Summary cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-        <SummaryCard icon={<Boxes className="h-5 w-5" />} label="Total items" value={items.length} />
-        <SummaryCard icon={<Box className="h-5 w-5" />} label="Total units" value={summary.total} />
-        <SummaryCard icon={<PackageCheck className="h-5 w-5" />} label="Reserved" value={summary.reserved} />
-        <SummaryCard icon={<Box className="h-5 w-5" />} label="Checked out" value={summary.checkedOut} />
-        <SummaryCard icon={<Sparkles className="h-5 w-5" />} label="Needs cleaning" value={summary.cleaning} />
-        <SummaryCard icon={<Wrench className="h-5 w-5" />} label="Maintenance" value={summary.maintenance} />
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+        <SummaryCard icon={<Boxes className="h-4 w-4" />} label="Items" value={items.length} />
+        <SummaryCard icon={<Box className="h-4 w-4" />} label="Owned" value={summary.owned} />
+        <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="Available" value={summary.available} />
+        <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="Reserved" value={summary.reserved} />
+        <SummaryCard icon={<Box className="h-4 w-4" />} label="Checked out" value={summary.out} />
+        <SummaryCard icon={<Sparkles className="h-4 w-4" />} label="Cleaning" value={summary.cleaning} />
+        <SummaryCard icon={<Wrench className="h-4 w-4" />} label="Maintenance" value={summary.maint} />
+        <SummaryCard icon={<AlertTriangle className="h-4 w-4" />} label="Damaged/Missing" value={summary.damaged} />
       </div>
 
-      {summary.lowAvail > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-amber-400/40 bg-amber-50/50 p-4 text-sm text-amber-900 dark:bg-amber-900/10 dark:text-amber-200">
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-          <p>
-            {summary.lowAvail} item{summary.lowAvail === 1 ? "" : "s"} have low availability. Review before
-            accepting new reservations.
-          </p>
+      {/* Warnings */}
+      {(summary.plannerNoStock > 0 || summary.negative > 0) && (
+        <div className="space-y-2">
+          {summary.plannerNoStock > 0 && (
+            <Warning>
+              {summary.plannerNoStock} planner-visible item{summary.plannerNoStock === 1 ? "" : "s"} have owned quantity 0. Configure real stock counts before promising availability.
+            </Warning>
+          )}
+          {summary.negative > 0 && (
+            <Warning tone="error">
+              {summary.negative} item{summary.negative === 1 ? "" : "s"} have a negative available quantity. Review buckets immediately.
+            </Warning>
+          )}
         </div>
       )}
 
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3">
-        <select
-          value={filterCat}
-          onChange={(e) => setFilterCat(e.target.value)}
-          className="rounded-md border border-border bg-background px-3 py-2 text-sm"
-        >
+      {/* Filter bar */}
+      <div className="grid gap-3 rounded-xl border border-border bg-card p-4 md:grid-cols-2 lg:grid-cols-6">
+        <label className="relative md:col-span-2">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            placeholder="Search name or SKU"
+            value={search} onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-md border border-border bg-background py-2 pl-9 pr-3 text-sm"
+          />
+        </label>
+        <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)}
+          className="rounded-md border border-border bg-background px-2 py-2 text-sm">
           <option value="">All categories</option>
-          {CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
+          {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
-        <div className="flex-1" />
-        <button
-          type="button"
-          onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-        >
+        <select value={filterType} onChange={(e) => setFilterType(e.target.value as ItemType | "")}
+          className="rounded-md border border-border bg-background px-2 py-2 text-sm">
+          <option value="">All types</option>
+          {ITEM_TYPES.map((t) => <option key={t} value={t}>{ITEM_TYPE_LABEL[t]}</option>)}
+        </select>
+        <select value={filterActive} onChange={(e) => setFilterActive(e.target.value as typeof filterActive)}
+          className="rounded-md border border-border bg-background px-2 py-2 text-sm">
+          <option value="active">Active only</option>
+          <option value="archived">Archived only</option>
+          <option value="all">All</option>
+        </select>
+        <div className="flex items-center gap-3 text-sm">
+          <label className="inline-flex items-center gap-1">
+            <input type="checkbox" checked={filterPlanner} onChange={(e) => setFilterPlanner(e.target.checked)} />
+            Planner
+          </label>
+          <label className="inline-flex items-center gap-1">
+            <input type="checkbox" checked={filterChat} onChange={(e) => setFilterChat(e.target.checked)} />
+            Chat
+          </label>
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button onClick={() => setCreating(true)}
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
           <Plus className="h-4 w-4" /> Add item
         </button>
       </div>
@@ -228,73 +236,62 @@ function InventoryDashboard() {
             <tr>
               <th className="px-3 py-2">Item</th>
               <th className="px-3 py-2">Category</th>
-              <th className="px-3 py-2 text-right">Total</th>
-              <th className="px-3 py-2 text-right">Available</th>
+              <th className="px-3 py-2">Type</th>
+              <th className="px-3 py-2 text-right">Owned</th>
+              <th className="px-3 py-2 text-right">Avail</th>
               <th className="px-3 py-2 text-right">Reserved</th>
               <th className="px-3 py-2 text-right">Out</th>
               <th className="px-3 py-2 text-right">Cleaning</th>
-              <th className="px-3 py-2 text-right">Maint.</th>
+              <th className="px-3 py-2 text-right">Maint</th>
+              <th className="px-3 py-2 text-right">Damaged</th>
               <th className="px-3 py-2">Status</th>
-              <th className="px-3 py-2"></th>
+              <th className="px-3 py-2 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 && (
-              <tr>
-                <td colSpan={10} className="px-3 py-12 text-center text-muted-foreground">
-                  No items yet. Click <strong>Add item</strong> to get started.
-                </td>
-              </tr>
+              <tr><td colSpan={12} className="px-3 py-12 text-center text-muted-foreground">No items match these filters.</td></tr>
             )}
             {filtered.map((i) => {
-              const avail = available(i);
-              const low = i.active && avail <= Math.max(1, Math.floor(i.total_quantity * 0.1));
+              const av = computeAvailable(i);
+              const cat = i.category_id ? catMap[i.category_id] : null;
               return (
                 <tr key={i.id} className="border-t border-border hover:bg-muted/30">
                   <td className="px-3 py-2">
-                    <div className="font-medium text-foreground">{i.name}</div>
+                    <Link to="/admin/inventory/$id" params={{ id: i.id }} className="font-medium text-foreground hover:underline">
+                      {i.name}
+                    </Link>
                     {i.sku && <div className="text-xs text-muted-foreground">SKU: {i.sku}</div>}
                   </td>
-                  <td className="px-3 py-2 text-muted-foreground">{i.category}</td>
-                  <td className="px-3 py-2 text-right">{i.total_quantity}</td>
-                  <td className={`px-3 py-2 text-right font-medium ${low ? "text-amber-600" : ""}`}>
-                    {avail}
-                  </td>
+                  <td className="px-3 py-2 text-muted-foreground">{cat?.name ?? "—"}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{ITEM_TYPE_LABEL[i.item_type]}</td>
+                  <td className="px-3 py-2 text-right">{i.total_owned_quantity}</td>
+                  <td className={`px-3 py-2 text-right font-medium ${av < 0 ? "text-destructive" : ""}`}>{av}</td>
                   <td className="px-3 py-2 text-right">{i.reserved_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.checked_out_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.cleaning_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.maintenance_quantity}</td>
+                  <td className="px-3 py-2 text-right">{i.damaged_missing_quantity}</td>
                   <td className="px-3 py-2">
-                    {i.active ? (
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800">
-                        Active
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                        Archived
-                      </span>
-                    )}
+                    {i.deleted_at ? <Badge tone="muted">Archived</Badge>
+                      : i.active ? <Badge tone="success">Active</Badge>
+                      : <Badge tone="muted">Inactive</Badge>}
                   </td>
-                  <td className="px-3 py-2 text-right">
+                  <td className="px-3 py-2">
                     <div className="flex justify-end gap-1">
-                      <button
-                        onClick={() => setEditing(i)}
-                        className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-                        aria-label="Edit"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (confirm(`Delete "${i.name}"? This cannot be undone.`)) {
-                            deleteMut.mutate(i.id);
-                          }
-                        }}
-                        className="rounded p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                        aria-label="Delete"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <button onClick={() => setAdjustItem(i)}
+                        className="rounded px-2 py-1 text-xs hover:bg-muted">Adjust</button>
+                      <Link to="/admin/inventory/$id" params={{ id: i.id }}
+                        className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs hover:bg-muted">
+                        Open <ArrowRight className="h-3 w-3" />
+                      </Link>
+                      {!i.deleted_at && (
+                        <button onClick={() => { if (confirm(`Archive "${i.name}"?`)) archive.mutate(i.id); }}
+                          className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          aria-label="Archive">
+                          <Archive className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -304,254 +301,97 @@ function InventoryDashboard() {
         </table>
       </div>
 
-      {(editing || creating) && (
-        <ItemEditor
-          item={editing}
-          onClose={() => {
-            setEditing(null);
-            setCreating(false);
-          }}
-        />
-      )}
+      {creating && <CreateItemModal categories={categories} onClose={() => setCreating(false)} />}
+      {adjustItem && <AdjustQuantityModal item={adjustItem} onClose={() => setAdjustItem(null)} />}
     </div>
   );
 }
 
-function SummaryCard({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-}) {
+function SummaryCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
+    <div className="rounded-lg border border-border bg-card p-3">
       <div className="flex items-center gap-2 text-muted-foreground">
-        {icon}
-        <span className="text-xs uppercase tracking-wide">{label}</span>
+        {icon}<span className="text-[10px] uppercase tracking-wider">{label}</span>
       </div>
-      <div className="mt-2 font-serif text-2xl text-primary">{value}</div>
+      <div className="mt-1 font-serif text-xl text-primary">{value}</div>
     </div>
   );
 }
 
-function ItemEditor({ item, onClose }: { item: MasterItem | null; onClose: () => void }) {
+function Badge({ children, tone }: { children: React.ReactNode; tone: "success" | "muted" | "warning" }) {
+  const cls = tone === "success" ? "bg-emerald-100 text-emerald-800"
+    : tone === "warning" ? "bg-amber-100 text-amber-900"
+    : "bg-muted text-muted-foreground";
+  return <span className={`rounded-full px-2 py-0.5 text-xs ${cls}`}>{children}</span>;
+}
+
+function Warning({ children, tone = "warning" }: { children: React.ReactNode; tone?: "warning" | "error" }) {
+  const cls = tone === "error"
+    ? "border-destructive/40 bg-destructive/10 text-destructive"
+    : "border-amber-400/40 bg-amber-50/50 text-amber-900 dark:bg-amber-900/10 dark:text-amber-200";
+  return (
+    <div className={`flex items-start gap-3 rounded-lg border p-3 text-sm ${cls}`}>
+      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+      <p>{children}</p>
+    </div>
+  );
+}
+
+function CreateItemModal({ categories, onClose }: { categories: InventoryCategory[]; onClose: () => void }) {
   const qc = useQueryClient();
-  const [form, setForm] = useState({
-    name: item?.name ?? "",
-    category: item?.category ?? CATEGORIES[0],
-    description: item?.description ?? "",
-    sku: item?.sku ?? "",
-    unit_type: item?.unit_type ?? "each",
-    total_quantity: item?.total_quantity ?? 0,
-    reserved_quantity: item?.reserved_quantity ?? 0,
-    checked_out_quantity: item?.checked_out_quantity ?? 0,
-    cleaning_quantity: item?.cleaning_quantity ?? 0,
-    maintenance_quantity: item?.maintenance_quantity ?? 0,
-    replacement_cost_cents: item?.replacement_cost_cents ?? 0,
-    rental_price_cents: item?.rental_price_cents ?? null,
-    requires_cleaning: item?.requires_cleaning ?? false,
-    beach_cleaning_fee_applicable: item?.beach_cleaning_fee_applicable ?? false,
-    requires_anchoring: item?.requires_anchoring ?? false,
-    notes: item?.notes ?? "",
-    active: item?.active ?? true,
-  });
+  const [name, setName] = useState("");
+  const [categoryId, setCategoryId] = useState(categories[0]?.id ?? "");
+  const [itemType, setItemType] = useState<ItemType>("physical_rental");
   const [err, setErr] = useState<string | null>(null);
 
-  const saveMut = useMutation({
+  const create = useMutation({
     mutationFn: async () => {
-      const payload = {
-        ...form,
-        sku: form.sku || null,
-        description: form.description || null,
-        notes: form.notes || null,
-      };
-      if (item) {
-        const { error } = await db
-          .from("inventory_master_items")
-          .update(payload)
-          .eq("id", item.id);
-        if (error) throw error;
-      } else {
-        const { error } = await db.from("inventory_master_items").insert(payload);
-        if (error) throw error;
-      }
+      if (!name.trim()) throw new Error("Name is required.");
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Math.random().toString(36).slice(2, 7);
+      const { error } = await db.from("inventory_items").insert({
+        name: name.trim(), slug, category_id: categoryId || null, item_type: itemType,
+      });
+      if (error) throw error;
     },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-inventory-master"] });
-      onClose();
-    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-inventory-items"] }); onClose(); },
     onError: (e: Error) => setErr(e.message),
   });
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/50 p-4">
-      <div className="w-full max-w-2xl rounded-2xl border border-border bg-popover p-6 text-popover-foreground shadow-2xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-serif text-xl text-primary">{item ? "Edit item" : "Add inventory item"}</h3>
-          <button onClick={onClose} className="rounded p-1 text-muted-foreground hover:bg-muted">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setErr(null);
-            saveMut.mutate();
-          }}
-          className="grid gap-3 sm:grid-cols-2"
-        >
-          <Field label="Name" required>
-            <input
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="input"
-            />
-          </Field>
-          <Field label="Category">
-            <select
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              className="input"
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c}>{c}</option>
-              ))}
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/60 p-4">
+      <div className="mt-12 w-full max-w-md rounded-2xl border border-border bg-popover p-6 text-popover-foreground shadow-2xl">
+        <h3 className="mb-4 font-serif text-xl text-primary">Add inventory item</h3>
+        <form onSubmit={(e) => { e.preventDefault(); create.mutate(); }} className="space-y-3">
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium">Name</span>
+            <input required value={name} onChange={(e) => setName(e.target.value)} maxLength={200}
+              className="w-full rounded-md border border-border bg-background px-3 py-2" />
+          </label>
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium">Category</span>
+            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}
+              className="w-full rounded-md border border-border bg-background px-3 py-2">
+              <option value="">(uncategorized)</option>
+              {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
-          </Field>
-          <Field label="SKU">
-            <input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} className="input" />
-          </Field>
-          <Field label="Unit type">
-            <input
-              value={form.unit_type}
-              onChange={(e) => setForm({ ...form, unit_type: e.target.value })}
-              className="input"
-            />
-          </Field>
-          <Field label="Description" wide>
-            <textarea
-              rows={2}
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="input"
-            />
-          </Field>
-
-          <Field label="Total quantity">
-            <NumberInput value={form.total_quantity} onChange={(v) => setForm({ ...form, total_quantity: v })} />
-          </Field>
-          <Field label="Reserved">
-            <NumberInput
-              value={form.reserved_quantity}
-              onChange={(v) => setForm({ ...form, reserved_quantity: v })}
-            />
-          </Field>
-          <Field label="Checked out">
-            <NumberInput
-              value={form.checked_out_quantity}
-              onChange={(v) => setForm({ ...form, checked_out_quantity: v })}
-            />
-          </Field>
-          <Field label="Cleaning">
-            <NumberInput
-              value={form.cleaning_quantity}
-              onChange={(v) => setForm({ ...form, cleaning_quantity: v })}
-            />
-          </Field>
-          <Field label="Maintenance">
-            <NumberInput
-              value={form.maintenance_quantity}
-              onChange={(v) => setForm({ ...form, maintenance_quantity: v })}
-            />
-          </Field>
-
-          <Field label="Replacement cost (cents)">
-            <NumberInput
-              value={form.replacement_cost_cents}
-              onChange={(v) => setForm({ ...form, replacement_cost_cents: v })}
-            />
-          </Field>
-          <Field label="Rental price (cents, optional)">
-            <NumberInput
-              value={form.rental_price_cents ?? 0}
-              onChange={(v) => setForm({ ...form, rental_price_cents: v || null })}
-            />
-          </Field>
-
-          <Field label="Flags" wide>
-            <div className="flex flex-wrap gap-4 text-sm">
-              <Check label="Requires cleaning" checked={form.requires_cleaning} onChange={(v) => setForm({ ...form, requires_cleaning: v })} />
-              <Check label="Beach cleaning fee" checked={form.beach_cleaning_fee_applicable} onChange={(v) => setForm({ ...form, beach_cleaning_fee_applicable: v })} />
-              <Check label="Requires anchoring" checked={form.requires_anchoring} onChange={(v) => setForm({ ...form, requires_anchoring: v })} />
-              <Check label="Active" checked={form.active} onChange={(v) => setForm({ ...form, active: v })} />
-            </div>
-          </Field>
-
-          <Field label="Notes" wide>
-            <textarea
-              rows={2}
-              value={form.notes}
-              onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="input"
-            />
-          </Field>
-
-          {err && <p className="sm:col-span-2 text-sm text-destructive">{err}</p>}
-
-          <div className="sm:col-span-2 mt-2 flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="rounded-full border border-border px-4 py-2 text-sm">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saveMut.isPending}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
-            >
-              {saveMut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-              {item ? "Save changes" : "Create item"}
+          </label>
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium">Type</span>
+            <select value={itemType} onChange={(e) => setItemType(e.target.value as ItemType)}
+              className="w-full rounded-md border border-border bg-background px-3 py-2">
+              {ITEM_TYPES.map((t) => <option key={t} value={t}>{ITEM_TYPE_LABEL[t]}</option>)}
+            </select>
+          </label>
+          {err && <p className="text-sm text-destructive">{err}</p>}
+          <div className="flex justify-end gap-2 pt-2">
+            <button type="button" onClick={onClose} className="rounded-full border border-border px-4 py-2 text-sm">Cancel</button>
+            <button type="submit" disabled={create.isPending}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">
+              {create.isPending && <Loader2 className="h-4 w-4 animate-spin" />} Create
             </button>
           </div>
         </form>
-
-        <style>{`.input{width:100%;border:1px solid hsl(var(--border));background:hsl(var(--background));border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;outline:none}.input:focus{border-color:var(--gold)}`}</style>
       </div>
     </div>
-  );
-}
-
-function Field({ label, children, required, wide }: { label: string; children: React.ReactNode; required?: boolean; wide?: boolean }) {
-  return (
-    <label className={`block ${wide ? "sm:col-span-2" : ""}`}>
-      <span className="mb-1 block text-xs font-medium text-muted-foreground">
-        {label} {required && <span className="text-destructive">*</span>}
-      </span>
-      {children}
-    </label>
-  );
-}
-
-function NumberInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
-  return (
-    <input
-      type="number"
-      min={0}
-      value={value}
-      onChange={(e) => onChange(parseInt(e.target.value || "0", 10) || 0)}
-      className="input"
-    />
-  );
-}
-
-function Check({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <label className="inline-flex items-center gap-2">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
-      {label}
-    </label>
   );
 }

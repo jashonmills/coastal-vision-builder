@@ -38,7 +38,209 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory_categories: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       inventory_items: {
+        Row: {
+          active: boolean
+          admin_notes: string | null
+          beach_cleaning_fee_cents: number | null
+          beach_compatible: boolean
+          category_id: string | null
+          checked_out_quantity: number
+          cleaning_fee_cents: number | null
+          cleaning_quantity: number
+          created_at: string
+          damaged_missing_quantity: number
+          default_quantity_unit: string
+          default_rental_price_cents: number | null
+          deleted_at: string | null
+          description: string | null
+          id: string
+          item_type: string
+          maintenance_quantity: number
+          name: string
+          replacement_cost_cents: number
+          requires_anchoring: boolean
+          requires_cleaning: boolean
+          reserved_quantity: number
+          setup_required: boolean
+          short_description: string | null
+          sku: string | null
+          slug: string
+          total_owned_quantity: number
+          unit_label: string
+          updated_at: string
+          visible_to_chat: boolean
+          visible_to_planner: boolean
+          wind_sensitive: boolean
+        }
+        Insert: {
+          active?: boolean
+          admin_notes?: string | null
+          beach_cleaning_fee_cents?: number | null
+          beach_compatible?: boolean
+          category_id?: string | null
+          checked_out_quantity?: number
+          cleaning_fee_cents?: number | null
+          cleaning_quantity?: number
+          created_at?: string
+          damaged_missing_quantity?: number
+          default_quantity_unit?: string
+          default_rental_price_cents?: number | null
+          deleted_at?: string | null
+          description?: string | null
+          id?: string
+          item_type?: string
+          maintenance_quantity?: number
+          name: string
+          replacement_cost_cents?: number
+          requires_anchoring?: boolean
+          requires_cleaning?: boolean
+          reserved_quantity?: number
+          setup_required?: boolean
+          short_description?: string | null
+          sku?: string | null
+          slug: string
+          total_owned_quantity?: number
+          unit_label?: string
+          updated_at?: string
+          visible_to_chat?: boolean
+          visible_to_planner?: boolean
+          wind_sensitive?: boolean
+        }
+        Update: {
+          active?: boolean
+          admin_notes?: string | null
+          beach_cleaning_fee_cents?: number | null
+          beach_compatible?: boolean
+          category_id?: string | null
+          checked_out_quantity?: number
+          cleaning_fee_cents?: number | null
+          cleaning_quantity?: number
+          created_at?: string
+          damaged_missing_quantity?: number
+          default_quantity_unit?: string
+          default_rental_price_cents?: number | null
+          deleted_at?: string | null
+          description?: string | null
+          id?: string
+          item_type?: string
+          maintenance_quantity?: number
+          name?: string
+          replacement_cost_cents?: number
+          requires_anchoring?: boolean
+          requires_cleaning?: boolean
+          reserved_quantity?: number
+          setup_required?: boolean
+          short_description?: string | null
+          sku?: string | null
+          slug?: string
+          total_owned_quantity?: number
+          unit_label?: string
+          updated_at?: string
+          visible_to_chat?: boolean
+          visible_to_planner?: boolean
+          wind_sensitive?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_transactions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          from_status: string | null
+          id: string
+          inventory_item_id: string
+          notes: string | null
+          quantity: number
+          related_event_id: string | null
+          related_order_id: string | null
+          related_quote_id: string | null
+          related_recommendation_id: string | null
+          to_status: string | null
+          transaction_type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          from_status?: string | null
+          id?: string
+          inventory_item_id: string
+          notes?: string | null
+          quantity: number
+          related_event_id?: string | null
+          related_order_id?: string | null
+          related_quote_id?: string | null
+          related_recommendation_id?: string | null
+          to_status?: string | null
+          transaction_type: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          from_status?: string | null
+          id?: string
+          inventory_item_id?: string
+          notes?: string | null
+          quantity?: number
+          related_event_id?: string | null
+          related_order_id?: string | null
+          related_quote_id?: string | null
+          related_recommendation_id?: string | null
+          to_status?: string | null
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_transactions_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pricing_items: {
         Row: {
           category: string
           created_at: string
@@ -74,192 +276,6 @@ export type Database = {
         }
         Relationships: []
       }
-      inventory_master_items: {
-        Row: {
-          active: boolean
-          beach_cleaning_fee_applicable: boolean
-          category: string
-          checked_out_quantity: number
-          cleaning_quantity: number
-          created_at: string
-          description: string | null
-          id: string
-          maintenance_quantity: number
-          name: string
-          notes: string | null
-          rental_price_cents: number | null
-          replacement_cost_cents: number
-          requires_anchoring: boolean
-          requires_cleaning: boolean
-          reserved_quantity: number
-          sku: string | null
-          total_quantity: number
-          unit_type: string
-          updated_at: string
-        }
-        Insert: {
-          active?: boolean
-          beach_cleaning_fee_applicable?: boolean
-          category: string
-          checked_out_quantity?: number
-          cleaning_quantity?: number
-          created_at?: string
-          description?: string | null
-          id?: string
-          maintenance_quantity?: number
-          name: string
-          notes?: string | null
-          rental_price_cents?: number | null
-          replacement_cost_cents?: number
-          requires_anchoring?: boolean
-          requires_cleaning?: boolean
-          reserved_quantity?: number
-          sku?: string | null
-          total_quantity?: number
-          unit_type?: string
-          updated_at?: string
-        }
-        Update: {
-          active?: boolean
-          beach_cleaning_fee_applicable?: boolean
-          category?: string
-          checked_out_quantity?: number
-          cleaning_quantity?: number
-          created_at?: string
-          description?: string | null
-          id?: string
-          maintenance_quantity?: number
-          name?: string
-          notes?: string | null
-          rental_price_cents?: number | null
-          replacement_cost_cents?: number
-          requires_anchoring?: boolean
-          requires_cleaning?: boolean
-          reserved_quantity?: number
-          sku?: string | null
-          total_quantity?: number
-          unit_type?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      inventory_reservations: {
-        Row: {
-          created_at: string
-          end_date: string
-          event_date: string | null
-          event_id: string | null
-          id: string
-          inventory_item_id: string
-          notes: string | null
-          quantity_reserved: number
-          quote_id: string | null
-          recommendation_id: string | null
-          start_date: string
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          end_date: string
-          event_date?: string | null
-          event_id?: string | null
-          id?: string
-          inventory_item_id: string
-          notes?: string | null
-          quantity_reserved: number
-          quote_id?: string | null
-          recommendation_id?: string | null
-          start_date: string
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          end_date?: string
-          event_date?: string | null
-          event_id?: string | null
-          id?: string
-          inventory_item_id?: string
-          notes?: string | null
-          quantity_reserved?: number
-          quote_id?: string | null
-          recommendation_id?: string | null
-          start_date?: string
-          status?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "inventory_reservations_inventory_item_id_fkey"
-            columns: ["inventory_item_id"]
-            isOneToOne: false
-            referencedRelation: "inventory_master_items"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "inventory_reservations_recommendation_id_fkey"
-            columns: ["recommendation_id"]
-            isOneToOne: false
-            referencedRelation: "saved_recommendations"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      inventory_transactions: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          event_id: string | null
-          id: string
-          inventory_item_id: string
-          notes: string | null
-          quantity: number
-          recommendation_id: string | null
-          status: string | null
-          transaction_type: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          event_id?: string | null
-          id?: string
-          inventory_item_id: string
-          notes?: string | null
-          quantity: number
-          recommendation_id?: string | null
-          status?: string | null
-          transaction_type: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          event_id?: string | null
-          id?: string
-          inventory_item_id?: string
-          notes?: string | null
-          quantity?: number
-          recommendation_id?: string | null
-          status?: string | null
-          transaction_type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "inventory_transactions_inventory_item_id_fkey"
-            columns: ["inventory_item_id"]
-            isOneToOne: false
-            referencedRelation: "inventory_master_items"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "inventory_transactions_recommendation_id_fkey"
-            columns: ["recommendation_id"]
-            isOneToOne: false
-            referencedRelation: "saved_recommendations"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -294,11 +310,13 @@ export type Database = {
           contact: Json | null
           created_at: string
           customer_confirmation_sent_at: string | null
+          customer_id: string | null
           deleted_at: string | null
           event_date: string | null
           id: string
           input: Json
           location: string | null
+          pdf_url: string | null
           quote_request_email_sent_at: string | null
           quote_request_note: string | null
           quote_requested_at: string | null
@@ -315,11 +333,13 @@ export type Database = {
           contact?: Json | null
           created_at?: string
           customer_confirmation_sent_at?: string | null
+          customer_id?: string | null
           deleted_at?: string | null
           event_date?: string | null
           id?: string
           input: Json
           location?: string | null
+          pdf_url?: string | null
           quote_request_email_sent_at?: string | null
           quote_request_note?: string | null
           quote_requested_at?: string | null
@@ -336,11 +356,13 @@ export type Database = {
           contact?: Json | null
           created_at?: string
           customer_confirmation_sent_at?: string | null
+          customer_id?: string | null
           deleted_at?: string | null
           event_date?: string | null
           id?: string
           input?: Json
           location?: string | null
+          pdf_url?: string | null
           quote_request_email_sent_at?: string | null
           quote_request_note?: string | null
           quote_requested_at?: string | null
