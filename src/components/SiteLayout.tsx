@@ -64,7 +64,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       {pathname === "/" && <OpeningVideoSplash />}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-center lg:justify-between gap-6 px-4 py-4 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
               src={dynamicLogo}
