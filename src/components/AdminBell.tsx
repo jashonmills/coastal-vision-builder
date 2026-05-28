@@ -9,6 +9,7 @@ import {
   markNotificationRead,
   markAllNotificationsRead,
 } from "@/lib/notifications.functions";
+import { useIsAdmin } from "@/hooks/use-admin";
 
 const ICONS: Record<string, typeof Bell> = {
   quote_request: Inbox,
@@ -22,6 +23,7 @@ export function AdminBell() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const qc = useQueryClient();
+  const { isAdmin } = useIsAdmin();
   const listFn = useServerFn(listNotifications);
   const countFn = useServerFn(countUnreadNotifications);
   const readFn = useServerFn(markNotificationRead);
@@ -30,12 +32,15 @@ export function AdminBell() {
   const { data: count } = useQuery({
     queryKey: ["admin-notifications-count"],
     queryFn: () => countFn(),
-    refetchInterval: 30_000,
+    refetchInterval: 60_000,
+    enabled: isAdmin,
+    retry: false,
   });
   const { data: items = [] } = useQuery({
     queryKey: ["admin-notifications"],
     queryFn: () => listFn(),
-    enabled: open,
+    enabled: open && isAdmin,
+    retry: false,
   });
 
   const markOne = useMutation({
