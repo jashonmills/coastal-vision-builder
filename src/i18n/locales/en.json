@@ -26,7 +26,8 @@
     "more": "More",
     "inventory": "Inventory",
     "closeMenu": "Close menu",
-    "navigationMenu": "Navigation menu"
+    "navigationMenu": "Navigation menu",
+    "plannerShort": "Planner"
   },
   "navDesc": {
     "tentRentals": "Frame, pole, and hexagon tents",
