@@ -40,6 +40,13 @@ export function ChatWidget() {
     return hit?.bodyKey;
   }, [router]);
 
+  // Listen for external open requests (e.g. from MobileHelpButton)
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("open-chat-widget", onOpen);
+    return () => window.removeEventListener("open-chat-widget", onOpen);
+  }, []);
+
   // Seed conversation when first opened
   useEffect(() => {
     if (!open || messages.length > 0) return;
