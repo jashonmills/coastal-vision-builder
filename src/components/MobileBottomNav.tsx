@@ -9,7 +9,7 @@ interface Props {
 const items = [
   { to: "/", labelKey: "nav.home", icon: Home, exact: true },
   { to: "/tent-rentals", labelKey: "nav.rentals", icon: Tent, exact: false },
-  { to: "/ai-tent-planner", labelKey: "nav.recommender", icon: Sparkles, exact: false },
+  { to: "/ai-tent-planner", labelKey: "nav.plannerShort", icon: Sparkles, exact: false },
 ] as const;
 
 export function MobileBottomNav({ onMenu }: Props) {
@@ -21,7 +21,7 @@ export function MobileBottomNav({ onMenu }: Props) {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur-md lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-40 border-t border-border/60 bg-[color:var(--sand)] shadow-[0_-8px_24px_-12px_rgba(15,23,42,0.18)] rounded-t-2xl lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto grid max-w-2xl grid-cols-5 items-end px-2 py-2">
@@ -45,7 +45,8 @@ export function MobileBottomNav({ onMenu }: Props) {
         {/* Center prominent CTA */}
         <Link
           to="/contact"
-          className="-mt-6 mx-auto flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-background"
+          className="-mt-6 mx-auto flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-[color:var(--sand)] shadow-lg ring-2 ring-[color:var(--gold)]/70 ring-offset-2 ring-offset-[color:var(--sand)]"
+          aria-label="Request a quote"
         >
           <Send className="h-5 w-5" />
           <span className="text-[9px] font-semibold uppercase tracking-wide">{t("nav.quote")}</span>

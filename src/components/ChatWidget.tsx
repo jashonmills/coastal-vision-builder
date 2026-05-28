@@ -40,6 +40,13 @@ export function ChatWidget() {
     return hit?.bodyKey;
   }, [router]);
 
+  // Listen for external open requests (e.g. from MobileHelpButton)
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("open-chat-widget", onOpen);
+    return () => window.removeEventListener("open-chat-widget", onOpen);
+  }, []);
+
   // Seed conversation when first opened
   useEffect(() => {
     if (!open || messages.length > 0) return;
@@ -102,7 +109,7 @@ export function ChatWidget() {
           onClick={() => setOpen(true)}
           aria-label={t("chat.buttonLabel", { defaultValue: "Chat" })}
           suppressHydrationWarning
-          className="fixed bottom-24 right-6 z-[90] inline-flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-[color:var(--sand)] shadow-xl ring-2 ring-transparent transition-all hover:-translate-y-0.5 hover:ring-[color:var(--gold)]/60 focus:outline-none focus-visible:ring-[color:var(--gold)] lg:bottom-6"
+          className="fixed bottom-24 right-6 z-[90] hidden lg:inline-flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-[color:var(--sand)] shadow-xl ring-2 ring-transparent transition-all hover:-translate-y-0.5 hover:ring-[color:var(--gold)]/60 focus:outline-none focus-visible:ring-[color:var(--gold)] lg:bottom-6"
         >
           <MessageCircle className="h-5 w-5" />
           <span className="hidden text-sm font-medium sm:inline" suppressHydrationWarning>

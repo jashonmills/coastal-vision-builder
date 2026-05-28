@@ -26,7 +26,8 @@
     "more": "Thêm",
     "inventory": "Kho hàng",
     "closeMenu": "Đóng menu",
-    "navigationMenu": "Menu điều hướng"
+    "navigationMenu": "Menu điều hướng",
+    "plannerShort": "Planner"
   },
   "navDesc": {
     "tentRentals": "Lều khung, lều cột và lều lục giác",
@@ -94,10 +95,22 @@
     "services": {
       "title": "Những sự kiện chúng tôi hỗ trợ",
       "exploreLink": "Khám phá dịch vụ →",
-      "weddings": { "title": "Đám cưới", "text": "Không gian lều thanh lịch cho lễ cưới, tiệc chiêu đãi, bữa tối diễn tập và cuối tuần đám cưới ven biển." },
-      "festivals": { "title": "Lễ hội & Cộng đồng", "text": "Giải pháp lều quy mô lớn cho chợ phiên, sự kiện âm nhạc, gây quỹ, hội chợ và lễ kỷ niệm cộng đồng." },
-      "privateParties": { "title": "Tiệc riêng", "text": "Không gian thoải mái và đẹp mắt cho sinh nhật, họp mặt, lễ tốt nghiệp, tiệc sân vườn và tụ họp gia đình." },
-      "corporate": { "title": "Sự kiện doanh nghiệp", "text": "Giải pháp lều và cho thuê chuyên nghiệp cho sự kiện doanh nghiệp, hội nghị, ra mắt thương hiệu và tụ họp công ty." }
+      "weddings": {
+        "title": "Đám cưới",
+        "text": "Không gian lều thanh lịch cho lễ cưới, tiệc chiêu đãi, bữa tối diễn tập và cuối tuần đám cưới ven biển."
+      },
+      "festivals": {
+        "title": "Lễ hội & Cộng đồng",
+        "text": "Giải pháp lều quy mô lớn cho chợ phiên, sự kiện âm nhạc, gây quỹ, hội chợ và lễ kỷ niệm cộng đồng."
+      },
+      "privateParties": {
+        "title": "Tiệc riêng",
+        "text": "Không gian thoải mái và đẹp mắt cho sinh nhật, họp mặt, lễ tốt nghiệp, tiệc sân vườn và tụ họp gia đình."
+      },
+      "corporate": {
+        "title": "Sự kiện doanh nghiệp",
+        "text": "Giải pháp lều và cho thuê chuyên nghiệp cho sự kiện doanh nghiệp, hội nghị, ra mắt thương hiệu và tụ họp công ty."
+      }
     },
     "weather": {
       "eyebrow": "Sẵn sàng cho mọi thời tiết ven biển",
@@ -108,12 +121,30 @@
     "tentCats": {
       "eyebrow": "Cho thuê lều",
       "title": "Lều phù hợp cho mọi quy mô sự kiện",
-      "small": { "title": "Tụ họp nhỏ", "desc": "Tiệc sân vườn, bữa tối thân mật và lễ kỷ niệm dưới 50 khách." },
-      "medium": { "title": "Sự kiện vừa", "desc": "Tiệc chiêu đãi và tụ họp gia đình cho 50–100 khách với bàn ăn và phục vụ thức ăn." },
-      "large": { "title": "Lễ kỷ niệm lớn", "desc": "Đám cưới và sự kiện doanh nghiệp cho 100–200 khách với khu ăn uống và sàn khiêu vũ." },
-      "festival": { "title": "Lều lễ hội & Gian hàng", "desc": "Chợ phiên, hội chợ và thiết lập nhiều gian hàng với mái che chống thời tiết." },
-      "wedding": { "title": "Lều tiệc cưới", "desc": "Khu ăn uống, sàn khiêu vũ, khu thư giãn và bố cục đám cưới ngoài trời thanh lịch." },
-      "custom": { "title": "Bố cục sự kiện tùy chỉnh", "desc": "Thiết lập nhiều lều, hàng gian hàng, kế hoạch thời tiết và thiết kế luồng sự kiện đầy đủ." }
+      "small": {
+        "title": "Tụ họp nhỏ",
+        "desc": "Tiệc sân vườn, bữa tối thân mật và lễ kỷ niệm dưới 50 khách."
+      },
+      "medium": {
+        "title": "Sự kiện vừa",
+        "desc": "Tiệc chiêu đãi và tụ họp gia đình cho 50–100 khách với bàn ăn và phục vụ thức ăn."
+      },
+      "large": {
+        "title": "Lễ kỷ niệm lớn",
+        "desc": "Đám cưới và sự kiện doanh nghiệp cho 100–200 khách với khu ăn uống và sàn khiêu vũ."
+      },
+      "festival": {
+        "title": "Lều lễ hội & Gian hàng",
+        "desc": "Chợ phiên, hội chợ và thiết lập nhiều gian hàng với mái che chống thời tiết."
+      },
+      "wedding": {
+        "title": "Lều tiệc cưới",
+        "desc": "Khu ăn uống, sàn khiêu vũ, khu thư giãn và bố cục đám cưới ngoài trời thanh lịch."
+      },
+      "custom": {
+        "title": "Bố cục sự kiện tùy chỉnh",
+        "desc": "Thiết lập nhiều lều, hàng gian hàng, kế hoạch thời tiết và thiết kế luồng sự kiện đầy đủ."
+      }
     },
     "plannerPromo": {
       "badge": "Công cụ miễn phí mới",
@@ -121,10 +152,22 @@
       "title": "Thử công cụ lên kế hoạch lều AI miễn phí",
       "body": "Không chắc lều cỡ nào, bố cục chỗ ngồi hay thiết bị nào phù hợp với sự kiện của bạn? Công cụ lên kế hoạch lều AI của chúng tôi giúp bạn tạo kế hoạch khởi đầu tùy chỉnh dựa trên số lượng khách, loại sự kiện, bề mặt, mức độ tiếp xúc thời tiết và nhu cầu thiết lập.",
       "cards": {
-        "tentSize": { "title": "Đề xuất kích thước lều", "text": "Nhận kích thước lều được đề xuất dựa trên số lượng khách và bố cục của bạn." },
-        "equipment": { "title": "Danh sách thiết bị", "text": "Xem các bàn, ghế, tường bên, đèn chiếu sáng, sân khấu và phụ kiện được đề xuất." },
-        "blueprint": { "title": "Sơ đồ bố cục", "text": "Tạo sơ đồ bố cục trực quan làm điểm xuất phát cho thiết lập sự kiện của bạn." },
-        "quote": { "title": "Kế hoạch sẵn sàng báo giá", "text": "Gửi kế hoạch của bạn đến đội ngũ của chúng tôi để nhận báo giá tùy chỉnh và đánh giá cuối cùng." }
+        "tentSize": {
+          "title": "Đề xuất kích thước lều",
+          "text": "Nhận kích thước lều được đề xuất dựa trên số lượng khách và bố cục của bạn."
+        },
+        "equipment": {
+          "title": "Danh sách thiết bị",
+          "text": "Xem các bàn, ghế, tường bên, đèn chiếu sáng, sân khấu và phụ kiện được đề xuất."
+        },
+        "blueprint": {
+          "title": "Sơ đồ bố cục",
+          "text": "Tạo sơ đồ bố cục trực quan làm điểm xuất phát cho thiết lập sự kiện của bạn."
+        },
+        "quote": {
+          "title": "Kế hoạch sẵn sàng báo giá",
+          "text": "Gửi kế hoạch của bạn đến đội ngũ của chúng tôi để nhận báo giá tùy chỉnh và đánh giá cuối cùng."
+        }
       }
     },
     "gallery": {
@@ -140,11 +183,26 @@
       "subtitle": "Dù bạn tổ chức buổi tụ họp nhỏ hay lễ kỷ niệm lớn ven biển, chúng tôi giúp tạo ra mái che, kết cấu và không gian mà sự kiện của bạn cần."
     },
     "items": {
-      "weddings": { "title": "Cho thuê lều đám cưới", "copy": "Tạo không gian có mái che đẹp cho lễ cưới, tiệc chiêu đãi, giờ cocktail hoặc toàn bộ cuối tuần đám cưới. Lều cho thuê của chúng tôi giúp biến địa điểm ngoài trời thành những không gian tổ chức sự kiện thoải mái và đáng nhớ." },
-      "festivals": { "title": "Cho thuê lều lễ hội & sự kiện cộng đồng", "copy": "Từ gian hàng đến không gian tụ họp lớn, chúng tôi hỗ trợ lễ hội, chợ phiên, gây quỹ, hội chợ và sự kiện cộng đồng với giải pháp lều thực tế, chống thời tiết." },
-      "private": { "title": "Cho thuê thiết bị tiệc riêng", "copy": "Tổ chức sinh nhật, họp mặt, lễ tốt nghiệp, kỷ niệm và tiệc sân vườn một cách tự tin. Chúng tôi giúp tạo không gian sự kiện thoải mái, có chủ đích và dễ tận hưởng." },
-      "corporate": { "title": "Cho thuê thiết bị sự kiện doanh nghiệp", "copy": "Hỗ trợ hội nghị công ty, họp mặt doanh nghiệp, ra mắt sản phẩm và sự kiện thương hiệu với thiết lập lều chuyên nghiệp giúp khách thoải mái và sự kiện trông chuyên nghiệp." },
-      "setup": { "title": "Giao hàng, lắp đặt & tháo dỡ", "copy": "Đơn giản hóa việc lên kế hoạch sự kiện với hỗ trợ lắp đặt và tháo dỡ đáng tin cậy. Đội ngũ của chúng tôi đảm nhận phần kết cấu để bạn tập trung vào trải nghiệm." }
+      "weddings": {
+        "title": "Cho thuê lều đám cưới",
+        "copy": "Tạo không gian có mái che đẹp cho lễ cưới, tiệc chiêu đãi, giờ cocktail hoặc toàn bộ cuối tuần đám cưới. Lều cho thuê của chúng tôi giúp biến địa điểm ngoài trời thành những không gian tổ chức sự kiện thoải mái và đáng nhớ."
+      },
+      "festivals": {
+        "title": "Cho thuê lều lễ hội & sự kiện cộng đồng",
+        "copy": "Từ gian hàng đến không gian tụ họp lớn, chúng tôi hỗ trợ lễ hội, chợ phiên, gây quỹ, hội chợ và sự kiện cộng đồng với giải pháp lều thực tế, chống thời tiết."
+      },
+      "private": {
+        "title": "Cho thuê thiết bị tiệc riêng",
+        "copy": "Tổ chức sinh nhật, họp mặt, lễ tốt nghiệp, kỷ niệm và tiệc sân vườn một cách tự tin. Chúng tôi giúp tạo không gian sự kiện thoải mái, có chủ đích và dễ tận hưởng."
+      },
+      "corporate": {
+        "title": "Cho thuê thiết bị sự kiện doanh nghiệp",
+        "copy": "Hỗ trợ hội nghị công ty, họp mặt doanh nghiệp, ra mắt sản phẩm và sự kiện thương hiệu với thiết lập lều chuyên nghiệp giúp khách thoải mái và sự kiện trông chuyên nghiệp."
+      },
+      "setup": {
+        "title": "Giao hàng, lắp đặt & tháo dỡ",
+        "copy": "Đơn giản hóa việc lên kế hoạch sự kiện với hỗ trợ lắp đặt và tháo dỡ đáng tin cậy. Đội ngũ của chúng tôi đảm nhận phần kết cấu để bạn tập trung vào trải nghiệm."
+      }
     },
     "tailoredBanner": "Cần giải pháp phù hợp với sự kiện cụ thể của bạn?"
   },
@@ -156,12 +214,36 @@
     },
     "bestFor": "Phù hợp nhất cho:",
     "items": {
-      "popup": { "title": "Lều bật / Lều gian hàng", "best": "Chợ phiên, gian hàng, điểm đăng ký và trạm có mái che nhỏ.", "cta": "Hỏi về tình trạng còn hàng" },
-      "small": { "title": "Lều sự kiện nhỏ", "best": "Tiệc sân vườn, tụ họp nhỏ, phục vụ thức ăn và chỗ ngồi cho khách.", "cta": "Yêu cầu báo giá" },
-      "medium": { "title": "Lều sự kiện vừa", "best": "Tiệc chiêu đãi, tụ họp gia đình, tiệc riêng và sự kiện cộng đồng.", "cta": "Yêu cầu báo giá" },
-      "large": { "title": "Lều sự kiện lớn", "best": "Đám cưới, lễ hội, sự kiện doanh nghiệp và số lượng khách lớn.", "cta": "Lên kế hoạch sự kiện" },
-      "wedding": { "title": "Lều tiệc cưới", "best": "Khu ăn uống, sàn khiêu vũ, khu thư giãn và bố cục đám cưới ngoài trời thanh lịch.", "cta": "Bắt đầu báo giá đám cưới" },
-      "custom": { "title": "Bố cục sự kiện tùy chỉnh", "best": "Địa điểm phức tạp, nhiều lều, hàng gian hàng, kế hoạch thời tiết và luồng sự kiện.", "cta": "Thiết kế thiết lập của tôi" }
+      "popup": {
+        "title": "Lều bật / Lều gian hàng",
+        "best": "Chợ phiên, gian hàng, điểm đăng ký và trạm có mái che nhỏ.",
+        "cta": "Hỏi về tình trạng còn hàng"
+      },
+      "small": {
+        "title": "Lều sự kiện nhỏ",
+        "best": "Tiệc sân vườn, tụ họp nhỏ, phục vụ thức ăn và chỗ ngồi cho khách.",
+        "cta": "Yêu cầu báo giá"
+      },
+      "medium": {
+        "title": "Lều sự kiện vừa",
+        "best": "Tiệc chiêu đãi, tụ họp gia đình, tiệc riêng và sự kiện cộng đồng.",
+        "cta": "Yêu cầu báo giá"
+      },
+      "large": {
+        "title": "Lều sự kiện lớn",
+        "best": "Đám cưới, lễ hội, sự kiện doanh nghiệp và số lượng khách lớn.",
+        "cta": "Lên kế hoạch sự kiện"
+      },
+      "wedding": {
+        "title": "Lều tiệc cưới",
+        "best": "Khu ăn uống, sàn khiêu vũ, khu thư giãn và bố cục đám cưới ngoài trời thanh lịch.",
+        "cta": "Bắt đầu báo giá đám cưới"
+      },
+      "custom": {
+        "title": "Bố cục sự kiện tùy chỉnh",
+        "best": "Địa điểm phức tạp, nhiều lều, hàng gian hàng, kế hoạch thời tiết và luồng sự kiện.",
+        "cta": "Thiết kế thiết lập của tôi"
+      }
     },
     "help": {
       "title": "Không chắc cần lều cỡ nào?",
@@ -182,12 +264,42 @@
     },
     "suggestedRentals": "Thiết bị đề xuất:",
     "items": {
-      "weddings": { "title": "Đám cưới", "desc": "Tạo không gian có mái che đẹp cho ăn uống, khiêu vũ, chỗ ngồi lễ cưới và sự thoải mái của khách.", "rentals": "Lều tiệc chiêu đãi, lều lễ cưới, lều gian hàng, mái che khu thư giãn, bố cục sẵn sàng cho đèn chiếu sáng.", "cta": "Yêu cầu báo giá đám cưới" },
-      "festivals": { "title": "Lễ hội", "desc": "Bố cục nhiều lều lớn cho lễ hội âm nhạc, ẩm thực và cộng đồng dọc bờ biển.", "rentals": "Lều sân khấu chính, hàng gian hàng, lều phục vụ thức ăn, mái che điểm đăng ký.", "cta": "Lên kế hoạch lễ hội" },
-      "private": { "title": "Tiệc riêng", "desc": "Từ sinh nhật sân vườn đến lễ kỷ niệm lớn, không gian thoải mái để tụ họp và ăn uống.", "rentals": "Lều nhỏ đến vừa, bàn, ghế, đèn chiếu sáng, tường bên.", "cta": "Yêu cầu báo giá tiệc" },
-      "corporate": { "title": "Sự kiện doanh nghiệp", "desc": "Địa điểm ngoài trời chuyên nghiệp cho hội nghị, ra mắt sản phẩm và tụ họp thương hiệu.", "rentals": "Lều tiếp tân, khu trình bày, lều gian hàng thương hiệu.", "cta": "Yêu cầu báo giá doanh nghiệp" },
-      "markets": { "title": "Chợ phiên & Sự kiện gian hàng", "desc": "Hàng gian hàng có tổ chức chịu được gió, nắng và mưa vùng Tây Bắc Thái Bình Dương.", "rentals": "Lều gian hàng 10x10 / 10x20, lều điểm đăng ký, tường bên.", "cta": "Yêu cầu báo giá gian hàng" },
-      "fundraisers": { "title": "Gây quỹ & Tụ họp cộng đồng", "desc": "Không gian thân thiện cho các buổi gây quỹ, sự kiện trường học và lễ kỷ niệm cộng đồng.", "rentals": "Lều vừa đến lớn, bàn, ghế, đèn chiếu sáng.", "cta": "Yêu cầu báo giá cộng đồng" }
+      "weddings": {
+        "title": "Đám cưới",
+        "desc": "Tạo không gian có mái che đẹp cho ăn uống, khiêu vũ, chỗ ngồi lễ cưới và sự thoải mái của khách.",
+        "rentals": "Lều tiệc chiêu đãi, lều lễ cưới, lều gian hàng, mái che khu thư giãn, bố cục sẵn sàng cho đèn chiếu sáng.",
+        "cta": "Yêu cầu báo giá đám cưới"
+      },
+      "festivals": {
+        "title": "Lễ hội",
+        "desc": "Bố cục nhiều lều lớn cho lễ hội âm nhạc, ẩm thực và cộng đồng dọc bờ biển.",
+        "rentals": "Lều sân khấu chính, hàng gian hàng, lều phục vụ thức ăn, mái che điểm đăng ký.",
+        "cta": "Lên kế hoạch lễ hội"
+      },
+      "private": {
+        "title": "Tiệc riêng",
+        "desc": "Từ sinh nhật sân vườn đến lễ kỷ niệm lớn, không gian thoải mái để tụ họp và ăn uống.",
+        "rentals": "Lều nhỏ đến vừa, bàn, ghế, đèn chiếu sáng, tường bên.",
+        "cta": "Yêu cầu báo giá tiệc"
+      },
+      "corporate": {
+        "title": "Sự kiện doanh nghiệp",
+        "desc": "Địa điểm ngoài trời chuyên nghiệp cho hội nghị, ra mắt sản phẩm và tụ họp thương hiệu.",
+        "rentals": "Lều tiếp tân, khu trình bày, lều gian hàng thương hiệu.",
+        "cta": "Yêu cầu báo giá doanh nghiệp"
+      },
+      "markets": {
+        "title": "Chợ phiên & Sự kiện gian hàng",
+        "desc": "Hàng gian hàng có tổ chức chịu được gió, nắng và mưa vùng Tây Bắc Thái Bình Dương.",
+        "rentals": "Lều gian hàng 10x10 / 10x20, lều điểm đăng ký, tường bên.",
+        "cta": "Yêu cầu báo giá gian hàng"
+      },
+      "fundraisers": {
+        "title": "Gây quỹ & Tụ họp cộng đồng",
+        "desc": "Không gian thân thiện cho các buổi gây quỹ, sự kiện trường học và lễ kỷ niệm cộng đồng.",
+        "rentals": "Lều vừa đến lớn, bàn, ghế, đèn chiếu sáng.",
+        "cta": "Yêu cầu báo giá cộng đồng"
+      }
     }
   },
   "gallery": {
@@ -216,10 +328,22 @@
     },
     "values": {
       "title": "Những gì chúng tôi đề cao",
-      "reliable": { "title": "Thiết lập đáng tin cậy", "text": "Hỗ trợ giao hàng, lắp đặt và tháo dỡ đáng tin cậy để sự kiện của bạn bắt đầu một cách tự tin." },
-      "weather": { "title": "Lên kế hoạch chống thời tiết", "text": "Sự kiện ngoài trời cần mái che thông minh. Chúng tôi giúp khách hàng lên kế hoạch cho sự thoải mái trong điều kiện thời tiết ven biển thay đổi." },
-      "flexible": { "title": "Hỗ trợ sự kiện linh hoạt", "text": "Từ buổi tụ họp thân mật đến lễ kỷ niệm lớn hơn, chúng tôi giúp khớp thiết lập với sự kiện." },
-      "local": { "title": "Dịch vụ địa phương thân thiện", "text": "Chúng tôi quan tâm đến việc giúp khách hàng tạo ra những trải nghiệm đáng nhớ mà không có căng thẳng không cần thiết." }
+      "reliable": {
+        "title": "Thiết lập đáng tin cậy",
+        "text": "Hỗ trợ giao hàng, lắp đặt và tháo dỡ đáng tin cậy để sự kiện của bạn bắt đầu một cách tự tin."
+      },
+      "weather": {
+        "title": "Lên kế hoạch chống thời tiết",
+        "text": "Sự kiện ngoài trời cần mái che thông minh. Chúng tôi giúp khách hàng lên kế hoạch cho sự thoải mái trong điều kiện thời tiết ven biển thay đổi."
+      },
+      "flexible": {
+        "title": "Hỗ trợ sự kiện linh hoạt",
+        "text": "Từ buổi tụ họp thân mật đến lễ kỷ niệm lớn hơn, chúng tôi giúp khớp thiết lập với sự kiện."
+      },
+      "local": {
+        "title": "Dịch vụ địa phương thân thiện",
+        "text": "Chúng tôi quan tâm đến việc giúp khách hàng tạo ra những trải nghiệm đáng nhớ mà không có căng thẳng không cần thiết."
+      }
     }
   },
   "contact": {

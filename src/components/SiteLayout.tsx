@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { MobileBentoDrawer } from "./MobileBentoDrawer";
+import { MobileHelpButton } from "./MobileHelpButton";
 
 type NavChild = { to: string; labelKey: string; descKey?: string };
 type NavGroup = { labelKey: string; to?: string; children?: NavChild[] };
@@ -183,12 +184,17 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1 pb-24 lg:pb-0">{children}</main>
+      <main
+        className="flex-1 pb-[calc(110px+env(safe-area-inset-bottom))] lg:pb-0"
+      >
+        {children}
+      </main>
 
       <SiteFooter />
 
       <MobileBottomNav onMenu={() => setOpen(true)} />
       <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
+      <MobileHelpButton />
       <AccessibilityFontButton />
       <ChatWidget />
     </div>

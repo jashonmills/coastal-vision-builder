@@ -26,7 +26,8 @@
     "more": "Mehr",
     "inventory": "Inventar",
     "closeMenu": "Menü schließen",
-    "navigationMenu": "Navigationsmenü"
+    "navigationMenu": "Navigationsmenü",
+    "plannerShort": "Planner"
   },
   "navDesc": {
     "tentRentals": "Rahmen-, Stangen- und Hexagonzelte",
@@ -94,10 +95,22 @@
     "services": {
       "title": "Was wir für Sie organisieren",
       "exploreLink": "Leistungen entdecken →",
-      "weddings": { "title": "Hochzeiten", "text": "Elegante Zelträume für Zeremonien, Empfänge, Rehearsal Dinners und Hochzeitswochenenden an der Küste." },
-      "festivals": { "title": "Festivals & Gemeinschaft", "text": "Großflächige Zeltlösungen für Märkte, Musikveranstaltungen, Spendenaktionen, Messen und Gemeinschaftsfeiern." },
-      "privateParties": { "title": "Privatpartys", "text": "Komfortable, wunderschöne Setups für Geburtstage, Treffen, Abschlusspartys, Gartenpartys und Familienfeiern." },
-      "corporate": { "title": "Firmenveranstaltungen", "text": "Professionelle Zelt- und Mietlösungen für Geschäftsveranstaltungen, Retreats, Markenaktionen und Firmenfeiern." }
+      "weddings": {
+        "title": "Hochzeiten",
+        "text": "Elegante Zelträume für Zeremonien, Empfänge, Rehearsal Dinners und Hochzeitswochenenden an der Küste."
+      },
+      "festivals": {
+        "title": "Festivals & Gemeinschaft",
+        "text": "Großflächige Zeltlösungen für Märkte, Musikveranstaltungen, Spendenaktionen, Messen und Gemeinschaftsfeiern."
+      },
+      "privateParties": {
+        "title": "Privatpartys",
+        "text": "Komfortable, wunderschöne Setups für Geburtstage, Treffen, Abschlusspartys, Gartenpartys und Familienfeiern."
+      },
+      "corporate": {
+        "title": "Firmenveranstaltungen",
+        "text": "Professionelle Zelt- und Mietlösungen für Geschäftsveranstaltungen, Retreats, Markenaktionen und Firmenfeiern."
+      }
     },
     "weather": {
       "eyebrow": "Küstentauglich",
@@ -108,12 +121,30 @@
     "tentCats": {
       "eyebrow": "Zeltvermietung",
       "title": "Zelte für jede Feiergröße",
-      "small": { "title": "Kleine Feiern", "desc": "Gartenpartys, intime Abendessen und kleine Feiern mit unter 50 Gästen." },
-      "medium": { "title": "Mittelgroße Veranstaltungen", "desc": "Empfänge und Familienfeiern für 50–100 Gäste mit Bestuhlung und Bewirtung." },
-      "large": { "title": "Große Feiern", "desc": "Hochzeiten und Firmenveranstaltungen für 100–200 Gäste mit Dining und Tanz." },
-      "festival": { "title": "Festival- & Händlerzelte", "desc": "Märkte, Messen und Mehrbooth-Setups mit wetterfestem Schutz." },
-      "wedding": { "title": "Hochzeitsempfangszelte", "desc": "Dining, Tanzfläche, Loungebereiche und elegante Outdoor-Hochzeitslayouts." },
-      "custom": { "title": "Individuelle Event-Layouts", "desc": "Mehrzelt-Setups, Händlerreihen, Wetterpläne und vollständige Event-Flow-Gestaltung." }
+      "small": {
+        "title": "Kleine Feiern",
+        "desc": "Gartenpartys, intime Abendessen und kleine Feiern mit unter 50 Gästen."
+      },
+      "medium": {
+        "title": "Mittelgroße Veranstaltungen",
+        "desc": "Empfänge und Familienfeiern für 50–100 Gäste mit Bestuhlung und Bewirtung."
+      },
+      "large": {
+        "title": "Große Feiern",
+        "desc": "Hochzeiten und Firmenveranstaltungen für 100–200 Gäste mit Dining und Tanz."
+      },
+      "festival": {
+        "title": "Festival- & Händlerzelte",
+        "desc": "Märkte, Messen und Mehrbooth-Setups mit wetterfestem Schutz."
+      },
+      "wedding": {
+        "title": "Hochzeitsempfangszelte",
+        "desc": "Dining, Tanzfläche, Loungebereiche und elegante Outdoor-Hochzeitslayouts."
+      },
+      "custom": {
+        "title": "Individuelle Event-Layouts",
+        "desc": "Mehrzelt-Setups, Händlerreihen, Wetterpläne und vollständige Event-Flow-Gestaltung."
+      }
     },
     "plannerPromo": {
       "badge": "Neues kostenloses Tool",
@@ -121,10 +152,22 @@
       "title": "Unseren kostenlosen KI-Zeltplaner ausprobieren",
       "body": "Sie wissen nicht, welche Zeltgröße, welches Sitzlayout oder welche Ausstattung Ihre Veranstaltung benötigt? Unser KI-Zeltplaner hilft Ihnen, einen individuellen Startplan basierend auf Ihrer Gästezahl, dem Veranstaltungstyp, dem Untergrund, der Wetterexposition und den Aufbauanforderungen zu erstellen.",
       "cards": {
-        "tentSize": { "title": "Zeltgrößenempfehlung", "text": "Erhalten Sie eine vorgeschlagene Zeltgröße basierend auf Ihrer Gästezahl und dem Layout." },
-        "equipment": { "title": "Ausstattungs-Checkliste", "text": "Sehen Sie empfohlene Tische, Stühle, Seitenwände, Beleuchtung, Bühnen und Extras." },
-        "blueprint": { "title": "Blaupausen-Layout", "text": "Generieren Sie ein visuelles Ausgangslayout für Ihr Event-Setup." },
-        "quote": { "title": "Angebotsreifer Plan", "text": "Senden Sie Ihren Plan an unser Team für ein individuelles Angebot und eine abschließende Überprüfung." }
+        "tentSize": {
+          "title": "Zeltgrößenempfehlung",
+          "text": "Erhalten Sie eine vorgeschlagene Zeltgröße basierend auf Ihrer Gästezahl und dem Layout."
+        },
+        "equipment": {
+          "title": "Ausstattungs-Checkliste",
+          "text": "Sehen Sie empfohlene Tische, Stühle, Seitenwände, Beleuchtung, Bühnen und Extras."
+        },
+        "blueprint": {
+          "title": "Blaupausen-Layout",
+          "text": "Generieren Sie ein visuelles Ausgangslayout für Ihr Event-Setup."
+        },
+        "quote": {
+          "title": "Angebotsreifer Plan",
+          "text": "Senden Sie Ihren Plan an unser Team für ein individuelles Angebot und eine abschließende Überprüfung."
+        }
       }
     },
     "gallery": {
@@ -140,11 +183,26 @@
       "subtitle": "Ob Sie ein intimes Treffen oder eine große Küstenfeier planen – wir helfen Ihnen, den richtigen Schutz, die richtige Struktur und das passende Ambiente für Ihre Veranstaltung zu schaffen."
     },
     "items": {
-      "weddings": { "title": "Hochzeitszeltvermietung", "copy": "Schaffen Sie einen schönen überdachten Raum für Ihre Zeremonie, Ihren Empfang, die Cocktailstunde oder das gesamte Hochzeitswochenende. Unsere Zeltvermietung verwandelt Outdoor-Locations in komfortable, unvergessliche Veranstaltungsorte." },
-      "festivals": { "title": "Festival- & Gemeinschaftsveranstaltungsvermietung", "copy": "Von Händlerständen bis hin zu großen Versammlungsräumen – wir unterstützen Festivals, Märkte, Spendenaktionen, Messen und öffentliche Veranstaltungen mit praktischen, wetterfesten Zeltlösungen." },
-      "private": { "title": "Privatpartyvermietung", "copy": "Feiern Sie Geburtstage, Reunions, Abschlüsse, Jubiläen und Gartenpartys mit Zuversicht. Wir helfen Ihnen, einen komfortablen Veranstaltungsraum zu schaffen, der durchdacht und einladend wirkt." },
-      "corporate": { "title": "Firmenveranstaltungsvermietung", "copy": "Unterstützen Sie Firmen-Retreats, Geschäftsveranstaltungen, Produkteinführungen und Markenevents mit professionellen Zelt-Setups, die Ihre Gäste komfortabel unterbringen und die Veranstaltung professionell wirken lassen." },
-      "setup": { "title": "Lieferung, Aufbau & Abbau", "copy": "Vereinfachen Sie die Veranstaltungsplanung mit zuverlässigem Aufbau- und Abbau-Support. Unser Team kümmert sich um die Struktur, damit Sie sich auf das Erlebnis konzentrieren können." }
+      "weddings": {
+        "title": "Hochzeitszeltvermietung",
+        "copy": "Schaffen Sie einen schönen überdachten Raum für Ihre Zeremonie, Ihren Empfang, die Cocktailstunde oder das gesamte Hochzeitswochenende. Unsere Zeltvermietung verwandelt Outdoor-Locations in komfortable, unvergessliche Veranstaltungsorte."
+      },
+      "festivals": {
+        "title": "Festival- & Gemeinschaftsveranstaltungsvermietung",
+        "copy": "Von Händlerständen bis hin zu großen Versammlungsräumen – wir unterstützen Festivals, Märkte, Spendenaktionen, Messen und öffentliche Veranstaltungen mit praktischen, wetterfesten Zeltlösungen."
+      },
+      "private": {
+        "title": "Privatpartyvermietung",
+        "copy": "Feiern Sie Geburtstage, Reunions, Abschlüsse, Jubiläen und Gartenpartys mit Zuversicht. Wir helfen Ihnen, einen komfortablen Veranstaltungsraum zu schaffen, der durchdacht und einladend wirkt."
+      },
+      "corporate": {
+        "title": "Firmenveranstaltungsvermietung",
+        "copy": "Unterstützen Sie Firmen-Retreats, Geschäftsveranstaltungen, Produkteinführungen und Markenevents mit professionellen Zelt-Setups, die Ihre Gäste komfortabel unterbringen und die Veranstaltung professionell wirken lassen."
+      },
+      "setup": {
+        "title": "Lieferung, Aufbau & Abbau",
+        "copy": "Vereinfachen Sie die Veranstaltungsplanung mit zuverlässigem Aufbau- und Abbau-Support. Unser Team kümmert sich um die Struktur, damit Sie sich auf das Erlebnis konzentrieren können."
+      }
     },
     "tailoredBanner": "Benötigen Sie etwas Maßgeschneidertes für Ihre Veranstaltung?"
   },
@@ -156,12 +214,36 @@
     },
     "bestFor": "Am besten geeignet für:",
     "items": {
-      "popup": { "title": "Pop-Up- / Händlerzelte", "best": "Märkte, Stände, Check-ins und kleine überdachte Stationen.", "cta": "Nach Verfügbarkeit fragen" },
-      "small": { "title": "Kleine Veranstaltungszelte", "best": "Gartenpartys, kleine Feiern, Bewirtung und Gästebestuhlung.", "cta": "Angebot anfragen" },
-      "medium": { "title": "Mittelgroße Veranstaltungszelte", "best": "Empfänge, Familienfeiern, Privatpartys und Gemeinschaftsveranstaltungen.", "cta": "Angebot anfragen" },
-      "large": { "title": "Große Veranstaltungszelte", "best": "Hochzeiten, Festivals, Firmenveranstaltungen und große Gästezahlen.", "cta": "Mein Event planen" },
-      "wedding": { "title": "Hochzeitsempfangszelte", "best": "Dining, Tanzfläche, Loungebereiche und elegante Outdoor-Hochzeitslayouts.", "cta": "Hochzeitsangebot starten" },
-      "custom": { "title": "Individuelle Event-Layouts", "best": "Komplexe Veranstaltungsorte, Mehrzelt-Setups, Händlerreihen, Wetterpläne und Event-Flow.", "cta": "Mein Setup gestalten" }
+      "popup": {
+        "title": "Pop-Up- / Händlerzelte",
+        "best": "Märkte, Stände, Check-ins und kleine überdachte Stationen.",
+        "cta": "Nach Verfügbarkeit fragen"
+      },
+      "small": {
+        "title": "Kleine Veranstaltungszelte",
+        "best": "Gartenpartys, kleine Feiern, Bewirtung und Gästebestuhlung.",
+        "cta": "Angebot anfragen"
+      },
+      "medium": {
+        "title": "Mittelgroße Veranstaltungszelte",
+        "best": "Empfänge, Familienfeiern, Privatpartys und Gemeinschaftsveranstaltungen.",
+        "cta": "Angebot anfragen"
+      },
+      "large": {
+        "title": "Große Veranstaltungszelte",
+        "best": "Hochzeiten, Festivals, Firmenveranstaltungen und große Gästezahlen.",
+        "cta": "Mein Event planen"
+      },
+      "wedding": {
+        "title": "Hochzeitsempfangszelte",
+        "best": "Dining, Tanzfläche, Loungebereiche und elegante Outdoor-Hochzeitslayouts.",
+        "cta": "Hochzeitsangebot starten"
+      },
+      "custom": {
+        "title": "Individuelle Event-Layouts",
+        "best": "Komplexe Veranstaltungsorte, Mehrzelt-Setups, Händlerreihen, Wetterpläne und Event-Flow.",
+        "cta": "Mein Setup gestalten"
+      }
     },
     "help": {
       "title": "Sie wissen nicht, welche Zeltgröße Sie benötigen?",
@@ -182,12 +264,42 @@
     },
     "suggestedRentals": "Empfohlene Mietartikel:",
     "items": {
-      "weddings": { "title": "Hochzeiten", "desc": "Schaffen Sie einen wunderschönen überdachten Veranstaltungsort für Dining, Tanzen, Zeremoniesitzplätze und Gästekomfort.", "rentals": "Empfangszelte, Zeremoniezelte, Händlerzelte, Loungeabdeckung, beleuchtungsfertige Layouts.", "cta": "Hochzeitsangebot anfragen" },
-      "festivals": { "title": "Festivals", "desc": "Große Mehrzelt-Layouts für Musik-, Food- und Gemeinschaftsfestivals entlang der Küste.", "rentals": "Hauptbühnenzelte, Händlerreihen, Bewirtungszelte, Check-in-Überdachungen.", "cta": "Mein Festival planen" },
-      "private": { "title": "Privatpartys", "desc": "Von Gartengeburtstagen bis zu Meilensteinfeiern – komfortabler Raum zum Zusammenkommen und Speisen.", "rentals": "Kleine bis mittelgroße Zelte, Tische, Stühle, Beleuchtung, Seitenwände.", "cta": "Partyangebobot anfragen" },
-      "corporate": { "title": "Firmenveranstaltungen", "desc": "Gepflegte Outdoor-Veranstaltungsorte für Retreats, Produkteinführungen und Markenveranstaltungen.", "rentals": "Empfangszelte, Präsentationsbereiche, gebrandete Händlerzelte.", "cta": "Firmenangebot anfragen" },
-      "markets": { "title": "Märkte & Händlerveranstaltungen", "desc": "Organisierte Händlerreihen, die Wind, Sonne und den pazifischen Nordwest-Regen standhalten.", "rentals": "10x10 / 10x20 Händlerzelte, Check-in-Zelte, Seitenwände.", "cta": "Händlerangebot anfragen" },
-      "fundraisers": { "title": "Spendenaktionen & Gemeinschaftsfeiern", "desc": "Einladende Räume für Spendenaktionen, Schulveranstaltungen und Gemeinschaftsfeiern.", "rentals": "Mittelgroße bis große Zelte, Tische, Stühle, Beleuchtung.", "cta": "Gemeinschaftsangebot anfragen" }
+      "weddings": {
+        "title": "Hochzeiten",
+        "desc": "Schaffen Sie einen wunderschönen überdachten Veranstaltungsort für Dining, Tanzen, Zeremoniesitzplätze und Gästekomfort.",
+        "rentals": "Empfangszelte, Zeremoniezelte, Händlerzelte, Loungeabdeckung, beleuchtungsfertige Layouts.",
+        "cta": "Hochzeitsangebot anfragen"
+      },
+      "festivals": {
+        "title": "Festivals",
+        "desc": "Große Mehrzelt-Layouts für Musik-, Food- und Gemeinschaftsfestivals entlang der Küste.",
+        "rentals": "Hauptbühnenzelte, Händlerreihen, Bewirtungszelte, Check-in-Überdachungen.",
+        "cta": "Mein Festival planen"
+      },
+      "private": {
+        "title": "Privatpartys",
+        "desc": "Von Gartengeburtstagen bis zu Meilensteinfeiern – komfortabler Raum zum Zusammenkommen und Speisen.",
+        "rentals": "Kleine bis mittelgroße Zelte, Tische, Stühle, Beleuchtung, Seitenwände.",
+        "cta": "Partyangebobot anfragen"
+      },
+      "corporate": {
+        "title": "Firmenveranstaltungen",
+        "desc": "Gepflegte Outdoor-Veranstaltungsorte für Retreats, Produkteinführungen und Markenveranstaltungen.",
+        "rentals": "Empfangszelte, Präsentationsbereiche, gebrandete Händlerzelte.",
+        "cta": "Firmenangebot anfragen"
+      },
+      "markets": {
+        "title": "Märkte & Händlerveranstaltungen",
+        "desc": "Organisierte Händlerreihen, die Wind, Sonne und den pazifischen Nordwest-Regen standhalten.",
+        "rentals": "10x10 / 10x20 Händlerzelte, Check-in-Zelte, Seitenwände.",
+        "cta": "Händlerangebot anfragen"
+      },
+      "fundraisers": {
+        "title": "Spendenaktionen & Gemeinschaftsfeiern",
+        "desc": "Einladende Räume für Spendenaktionen, Schulveranstaltungen und Gemeinschaftsfeiern.",
+        "rentals": "Mittelgroße bis große Zelte, Tische, Stühle, Beleuchtung.",
+        "cta": "Gemeinschaftsangebot anfragen"
+      }
     }
   },
   "gallery": {
@@ -216,10 +328,22 @@
     },
     "values": {
       "title": "Wofür wir stehen",
-      "reliable": { "title": "Zuverlässiger Aufbau", "text": "Verlässliche Lieferung, Auf- und Abbau-Support, damit Ihre Veranstaltung mit Vertrauen beginnt." },
-      "weather": { "title": "Wetterfeste Planung", "text": "Outdoor-Veranstaltungen brauchen cleveren Schutz. Wir helfen Kunden, bei wechselnden Küstenbedingungen für Komfort zu planen." },
-      "flexible": { "title": "Flexibler Veranstaltungs-Support", "text": "Von intimen Treffen bis zu größeren Feiern – wir helfen dabei, das Setup an die Veranstaltung anzupassen." },
-      "local": { "title": "Lokaler, freundlicher Service", "text": "Uns liegt es am Herzen, unseren Kunden dabei zu helfen, unvergessliche Erlebnisse ohne unnötigen Stress zu schaffen." }
+      "reliable": {
+        "title": "Zuverlässiger Aufbau",
+        "text": "Verlässliche Lieferung, Auf- und Abbau-Support, damit Ihre Veranstaltung mit Vertrauen beginnt."
+      },
+      "weather": {
+        "title": "Wetterfeste Planung",
+        "text": "Outdoor-Veranstaltungen brauchen cleveren Schutz. Wir helfen Kunden, bei wechselnden Küstenbedingungen für Komfort zu planen."
+      },
+      "flexible": {
+        "title": "Flexibler Veranstaltungs-Support",
+        "text": "Von intimen Treffen bis zu größeren Feiern – wir helfen dabei, das Setup an die Veranstaltung anzupassen."
+      },
+      "local": {
+        "title": "Lokaler, freundlicher Service",
+        "text": "Uns liegt es am Herzen, unseren Kunden dabei zu helfen, unvergessliche Erlebnisse ohne unnötigen Stress zu schaffen."
+      }
     }
   },
   "contact": {

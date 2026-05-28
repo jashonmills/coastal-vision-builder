@@ -26,7 +26,8 @@
     "more": "Higit Pa",
     "inventory": "Imbentaryo",
     "closeMenu": "Isara ang menu",
-    "navigationMenu": "Menu ng nabigasyon"
+    "navigationMenu": "Menu ng nabigasyon",
+    "plannerShort": "Planner"
   },
   "navDesc": {
     "tentRentals": "Frame, pole, at hexagon na mga tent",
@@ -94,10 +95,22 @@
     "services": {
       "title": "Ano ang Aming Tinutulungang I-host",
       "exploreLink": "Tuklasin ang mga Serbisyo →",
-      "weddings": { "title": "Mga Kasal", "text": "Mga eleganteng espasyo sa tent para sa seremonya, reception, rehearsal dinner, at mga kasal na weekend sa baybayin." },
-      "festivals": { "title": "Mga Festival at Komunidad", "text": "Malalaking tent solution para sa mga palengke, music event, fundraiser, perya, at pagtitipon ng komunidad." },
-      "privateParties": { "title": "Mga Pribadong Party", "text": "Komportable at magandang setup para sa mga kaarawan, reunion, graduation, backyard party, at pagtitipon ng pamilya." },
-      "corporate": { "title": "Mga Corporate na Evento", "text": "Propesyonal na tent at rental solution para sa mga business event, retreat, brand activation, at pagtitipon ng kumpanya." }
+      "weddings": {
+        "title": "Mga Kasal",
+        "text": "Mga eleganteng espasyo sa tent para sa seremonya, reception, rehearsal dinner, at mga kasal na weekend sa baybayin."
+      },
+      "festivals": {
+        "title": "Mga Festival at Komunidad",
+        "text": "Malalaking tent solution para sa mga palengke, music event, fundraiser, perya, at pagtitipon ng komunidad."
+      },
+      "privateParties": {
+        "title": "Mga Pribadong Party",
+        "text": "Komportable at magandang setup para sa mga kaarawan, reunion, graduation, backyard party, at pagtitipon ng pamilya."
+      },
+      "corporate": {
+        "title": "Mga Corporate na Evento",
+        "text": "Propesyonal na tent at rental solution para sa mga business event, retreat, brand activation, at pagtitipon ng kumpanya."
+      }
     },
     "weather": {
       "eyebrow": "Handa sa Baybayin",
@@ -108,12 +121,30 @@
     "tentCats": {
       "eyebrow": "Mga Tent na Rental",
       "title": "Mga Tent para sa Bawat Sukat ng Selebrasyon",
-      "small": { "title": "Maliliit na Pagtitipon", "desc": "Mga backyard party, intimate na hapunan, at maliliit na selebrasyon na may wala pang 50 bisita." },
-      "medium": { "title": "Katamtamang Laking Evento", "desc": "Mga reception at selebrasyon ng pamilya para sa 50–100 bisita na may upuan at serbisyong pagkain." },
-      "large": { "title": "Malalaking Selebrasyon", "desc": "Mga kasal at corporate na evento para sa 100–200 bisita na may kainan at sayawan." },
-      "festival": { "title": "Mga Tent para sa Festival at Vendor", "desc": "Mga palengke, perya, at multi-booth na setup na may weather-ready na proteksyon." },
-      "wedding": { "title": "Mga Tent para sa Wedding Reception", "desc": "Kainan, sayawan, lounge area, at eleganteng outdoor na layout ng kasal." },
-      "custom": { "title": "Mga Custom na Layout ng Evento", "desc": "Multi-tent na setup, vendor row, plano sa panahon, at buong disenyo ng daloy ng evento." }
+      "small": {
+        "title": "Maliliit na Pagtitipon",
+        "desc": "Mga backyard party, intimate na hapunan, at maliliit na selebrasyon na may wala pang 50 bisita."
+      },
+      "medium": {
+        "title": "Katamtamang Laking Evento",
+        "desc": "Mga reception at selebrasyon ng pamilya para sa 50–100 bisita na may upuan at serbisyong pagkain."
+      },
+      "large": {
+        "title": "Malalaking Selebrasyon",
+        "desc": "Mga kasal at corporate na evento para sa 100–200 bisita na may kainan at sayawan."
+      },
+      "festival": {
+        "title": "Mga Tent para sa Festival at Vendor",
+        "desc": "Mga palengke, perya, at multi-booth na setup na may weather-ready na proteksyon."
+      },
+      "wedding": {
+        "title": "Mga Tent para sa Wedding Reception",
+        "desc": "Kainan, sayawan, lounge area, at eleganteng outdoor na layout ng kasal."
+      },
+      "custom": {
+        "title": "Mga Custom na Layout ng Evento",
+        "desc": "Multi-tent na setup, vendor row, plano sa panahon, at buong disenyo ng daloy ng evento."
+      }
     },
     "plannerPromo": {
       "badge": "Bagong Libreng Tool",
@@ -121,10 +152,22 @@
       "title": "Subukan ang Aming Libreng AI Tent Planner",
       "body": "Hindi sigurado kung anong sukat ng tent, layout ng upuan, o kagamitan ang kailangan ng iyong evento? Tinutulungan ka ng aming AI Tent Planner na bumuo ng custom na panimulang plano batay sa bilang ng iyong bisita, uri ng evento, ibabaw, pagkakalantad sa panahon, at mga pangangailangan sa setup.",
       "cards": {
-        "tentSize": { "title": "Rekomendasyon sa Sukat ng Tent", "text": "Makakuha ng mungkahing sukat ng tent batay sa bilang ng iyong bisita at layout." },
-        "equipment": { "title": "Checklist ng Kagamitan", "text": "Tingnan ang mga inirerekomendang mesa, upuan, sidewall, ilaw, entablado, at iba pa." },
-        "blueprint": { "title": "Blueprint-Style na Layout", "text": "Bumuo ng biswal na panimulang layout para sa iyong event setup." },
-        "quote": { "title": "Quote-Ready na Plano", "text": "Ipadala ang iyong plano sa aming koponan para sa custom na quote at panghuling pagsusuri." }
+        "tentSize": {
+          "title": "Rekomendasyon sa Sukat ng Tent",
+          "text": "Makakuha ng mungkahing sukat ng tent batay sa bilang ng iyong bisita at layout."
+        },
+        "equipment": {
+          "title": "Checklist ng Kagamitan",
+          "text": "Tingnan ang mga inirerekomendang mesa, upuan, sidewall, ilaw, entablado, at iba pa."
+        },
+        "blueprint": {
+          "title": "Blueprint-Style na Layout",
+          "text": "Bumuo ng biswal na panimulang layout para sa iyong event setup."
+        },
+        "quote": {
+          "title": "Quote-Ready na Plano",
+          "text": "Ipadala ang iyong plano sa aming koponan para sa custom na quote at panghuling pagsusuri."
+        }
       }
     },
     "gallery": {
@@ -140,11 +183,26 @@
       "subtitle": "Kahit nagho-host ka ng maliit na pagtitipon o malaking selebrasyon sa baybayin, tinutulungan namin na likhain ang tirahan, estruktura, at setting na kailangan ng iyong evento."
     },
     "items": {
-      "weddings": { "title": "Mga Tent na Rental para sa Kasal", "copy": "Lumikha ng magandang espasyong may takip para sa iyong seremonya, reception, cocktail hour, o buong wedding weekend. Tinutulungan ng aming mga tent rental na gawing komportable at di-malilimutang venue ang mga outdoor na lokasyon." },
-      "festivals": { "title": "Mga Rental para sa Festival at Community Event", "copy": "Mula sa mga vendor booth hanggang sa malalaking espasyo ng pagtitipon, sinusuportahan namin ang mga festival, palengke, fundraiser, perya, at pampublikong evento gamit ang mga praktikal at weather-ready na tent solution." },
-      "private": { "title": "Mga Rental para sa Pribadong Party", "copy": "I-host ang mga kaarawan, reunion, graduation, anibersaryo, at backyard na selebrasyon nang may tiwala. Tinutulungan namin na lumikha ng komportableng espasyo ng evento na pakiramdam ay maayos at masaya." },
-      "corporate": { "title": "Mga Rental para sa Corporate na Evento", "copy": "Suportahan ang mga company retreat, business gathering, product launch, at branded na evento gamit ang maayos na tent setup na nagpapanatiling komportable ang mga bisita at propesyonal ang hitsura ng evento." },
-      "setup": { "title": "Paghahatid, Setup, at Breakdown", "copy": "Gawing mas madali ang pagpaplano ng evento sa pamamagitan ng mapagkakatiwalaang setup at breakdown na suporta. Tinutulungan ng aming koponan na asikasuhin ang estruktura upang mapagtuunan mo ang karanasan." }
+      "weddings": {
+        "title": "Mga Tent na Rental para sa Kasal",
+        "copy": "Lumikha ng magandang espasyong may takip para sa iyong seremonya, reception, cocktail hour, o buong wedding weekend. Tinutulungan ng aming mga tent rental na gawing komportable at di-malilimutang venue ang mga outdoor na lokasyon."
+      },
+      "festivals": {
+        "title": "Mga Rental para sa Festival at Community Event",
+        "copy": "Mula sa mga vendor booth hanggang sa malalaking espasyo ng pagtitipon, sinusuportahan namin ang mga festival, palengke, fundraiser, perya, at pampublikong evento gamit ang mga praktikal at weather-ready na tent solution."
+      },
+      "private": {
+        "title": "Mga Rental para sa Pribadong Party",
+        "copy": "I-host ang mga kaarawan, reunion, graduation, anibersaryo, at backyard na selebrasyon nang may tiwala. Tinutulungan namin na lumikha ng komportableng espasyo ng evento na pakiramdam ay maayos at masaya."
+      },
+      "corporate": {
+        "title": "Mga Rental para sa Corporate na Evento",
+        "copy": "Suportahan ang mga company retreat, business gathering, product launch, at branded na evento gamit ang maayos na tent setup na nagpapanatiling komportable ang mga bisita at propesyonal ang hitsura ng evento."
+      },
+      "setup": {
+        "title": "Paghahatid, Setup, at Breakdown",
+        "copy": "Gawing mas madali ang pagpaplano ng evento sa pamamagitan ng mapagkakatiwalaang setup at breakdown na suporta. Tinutulungan ng aming koponan na asikasuhin ang estruktura upang mapagtuunan mo ang karanasan."
+      }
     },
     "tailoredBanner": "Kailangan mo ba ng isang bagay na akma sa iyong evento?"
   },
@@ -156,12 +214,36 @@
     },
     "bestFor": "Pinakaangkop para sa:",
     "items": {
-      "popup": { "title": "Mga Pop-Up / Vendor Tent", "best": "Mga palengke, booth, check-in, at maliliit na may takip na istasyon.", "cta": "Magtanong Tungkol sa Availability" },
-      "small": { "title": "Mga Maliit na Event Tent", "best": "Mga backyard party, maliliit na pagtitipon, serbisyong pagkain, at upuan ng bisita.", "cta": "Humiling ng Quote" },
-      "medium": { "title": "Mga Katamtamang Laking Event Tent", "best": "Mga reception, selebrasyon ng pamilya, pribadong party, at community event.", "cta": "Humiling ng Quote" },
-      "large": { "title": "Mga Malaking Event Tent", "best": "Mga kasal, festival, corporate na evento, at malalaking bilang ng bisita.", "cta": "Planuhin ang Aking Evento" },
-      "wedding": { "title": "Mga Tent para sa Wedding Reception", "best": "Kainan, sayawan, lounge area, at eleganteng outdoor na layout ng kasal.", "cta": "Magsimula ng Wedding Quote" },
-      "custom": { "title": "Mga Custom na Layout ng Evento", "best": "Mga kumplikadong venue, multi-tent na setup, vendor row, plano sa panahon, at daloy ng evento.", "cta": "Idisenyo ang Aking Setup" }
+      "popup": {
+        "title": "Mga Pop-Up / Vendor Tent",
+        "best": "Mga palengke, booth, check-in, at maliliit na may takip na istasyon.",
+        "cta": "Magtanong Tungkol sa Availability"
+      },
+      "small": {
+        "title": "Mga Maliit na Event Tent",
+        "best": "Mga backyard party, maliliit na pagtitipon, serbisyong pagkain, at upuan ng bisita.",
+        "cta": "Humiling ng Quote"
+      },
+      "medium": {
+        "title": "Mga Katamtamang Laking Event Tent",
+        "best": "Mga reception, selebrasyon ng pamilya, pribadong party, at community event.",
+        "cta": "Humiling ng Quote"
+      },
+      "large": {
+        "title": "Mga Malaking Event Tent",
+        "best": "Mga kasal, festival, corporate na evento, at malalaking bilang ng bisita.",
+        "cta": "Planuhin ang Aking Evento"
+      },
+      "wedding": {
+        "title": "Mga Tent para sa Wedding Reception",
+        "best": "Kainan, sayawan, lounge area, at eleganteng outdoor na layout ng kasal.",
+        "cta": "Magsimula ng Wedding Quote"
+      },
+      "custom": {
+        "title": "Mga Custom na Layout ng Evento",
+        "best": "Mga kumplikadong venue, multi-tent na setup, vendor row, plano sa panahon, at daloy ng evento.",
+        "cta": "Idisenyo ang Aking Setup"
+      }
     },
     "help": {
       "title": "Hindi Sigurado kung Anong Sukat ng Tent ang Kailangan Mo?",
@@ -182,12 +264,42 @@
     },
     "suggestedRentals": "Mga mungkahing rental:",
     "items": {
-      "weddings": { "title": "Mga Kasal", "desc": "Lumikha ng magandang venue na may takip para sa kainan, sayawan, upuan sa seremonya, at kaginhawaan ng bisita.", "rentals": "Mga reception tent, ceremony tent, vendor tent, lounge coverage, layout na handa sa ilaw.", "cta": "Humiling ng Wedding Quote" },
-      "festivals": { "title": "Mga Festival", "desc": "Malalaking multi-tent na layout para sa musika, pagkain, at mga festival ng komunidad sa baybayin.", "rentals": "Mga main stage tent, vendor row, food service tent, check-in cover.", "cta": "Planuhin ang Aking Festival" },
-      "private": { "title": "Mga Pribadong Party", "desc": "Mula sa mga backyard na kaarawan hanggang sa mga mahahalagang selebrasyon, komportableng espasyo para sa pagtitipon at kainan.", "rentals": "Mga maliit hanggang katamtamang tent, mesa, upuan, ilaw, sidewall.", "cta": "Humiling ng Party Quote" },
-      "corporate": { "title": "Mga Corporate na Evento", "desc": "Maayos na outdoor na venue para sa mga retreat, product launch, at branded na pagtitipon.", "rentals": "Mga reception tent, presentation area, branded vendor tent.", "cta": "Humiling ng Corporate Quote" },
-      "markets": { "title": "Mga Palengke at Vendor Event", "desc": "Organisadong vendor row na kayang harapin ang hangin, araw, at ulan sa Pacific Northwest.", "rentals": "10x10 / 10x20 na vendor tent, check-in tent, sidewall.", "cta": "Humiling ng Vendor Quote" },
-      "fundraisers": { "title": "Mga Fundraiser at Pagtitipon ng Komunidad", "desc": "Mapagkumustang espasyo para sa mga fundraiser, school event, at selebrasyon ng komunidad.", "rentals": "Mga katamtaman hanggang malaking tent, mesa, upuan, ilaw.", "cta": "Humiling ng Community Quote" }
+      "weddings": {
+        "title": "Mga Kasal",
+        "desc": "Lumikha ng magandang venue na may takip para sa kainan, sayawan, upuan sa seremonya, at kaginhawaan ng bisita.",
+        "rentals": "Mga reception tent, ceremony tent, vendor tent, lounge coverage, layout na handa sa ilaw.",
+        "cta": "Humiling ng Wedding Quote"
+      },
+      "festivals": {
+        "title": "Mga Festival",
+        "desc": "Malalaking multi-tent na layout para sa musika, pagkain, at mga festival ng komunidad sa baybayin.",
+        "rentals": "Mga main stage tent, vendor row, food service tent, check-in cover.",
+        "cta": "Planuhin ang Aking Festival"
+      },
+      "private": {
+        "title": "Mga Pribadong Party",
+        "desc": "Mula sa mga backyard na kaarawan hanggang sa mga mahahalagang selebrasyon, komportableng espasyo para sa pagtitipon at kainan.",
+        "rentals": "Mga maliit hanggang katamtamang tent, mesa, upuan, ilaw, sidewall.",
+        "cta": "Humiling ng Party Quote"
+      },
+      "corporate": {
+        "title": "Mga Corporate na Evento",
+        "desc": "Maayos na outdoor na venue para sa mga retreat, product launch, at branded na pagtitipon.",
+        "rentals": "Mga reception tent, presentation area, branded vendor tent.",
+        "cta": "Humiling ng Corporate Quote"
+      },
+      "markets": {
+        "title": "Mga Palengke at Vendor Event",
+        "desc": "Organisadong vendor row na kayang harapin ang hangin, araw, at ulan sa Pacific Northwest.",
+        "rentals": "10x10 / 10x20 na vendor tent, check-in tent, sidewall.",
+        "cta": "Humiling ng Vendor Quote"
+      },
+      "fundraisers": {
+        "title": "Mga Fundraiser at Pagtitipon ng Komunidad",
+        "desc": "Mapagkumustang espasyo para sa mga fundraiser, school event, at selebrasyon ng komunidad.",
+        "rentals": "Mga katamtaman hanggang malaking tent, mesa, upuan, ilaw.",
+        "cta": "Humiling ng Community Quote"
+      }
     }
   },
   "gallery": {
@@ -216,10 +328,22 @@
     },
     "values": {
       "title": "Ang Aming Pinapahalagahan",
-      "reliable": { "title": "Mapagkakatiwalaang Setup", "text": "Mapagkakatiwalaang suporta sa paghahatid, setup, at breakdown upang magsimula ang iyong evento nang may kumpiyansa." },
-      "weather": { "title": "Pagpaplano na Handa sa Panahon", "text": "Ang mga outdoor na evento ay nangangailangan ng matalinong tirahan. Tinutulungan namin ang mga customer na magplano para sa kaginhawaan sa nagbabagong kondisyon ng baybayin." },
-      "flexible": { "title": "Nababaluktot na Suporta sa Evento", "text": "Mula sa maliliit na pagtitipon hanggang sa malalaking selebrasyon, tinutulungan namin na itugma ang setup sa evento." },
-      "local": { "title": "Lokal at Magiliw na Serbisyo", "text": "Nagmamalasakit kami sa pagtulong sa mga customer na lumikha ng mga di-malilimutang karanasan nang walang hindi kinakailangang stress." }
+      "reliable": {
+        "title": "Mapagkakatiwalaang Setup",
+        "text": "Mapagkakatiwalaang suporta sa paghahatid, setup, at breakdown upang magsimula ang iyong evento nang may kumpiyansa."
+      },
+      "weather": {
+        "title": "Pagpaplano na Handa sa Panahon",
+        "text": "Ang mga outdoor na evento ay nangangailangan ng matalinong tirahan. Tinutulungan namin ang mga customer na magplano para sa kaginhawaan sa nagbabagong kondisyon ng baybayin."
+      },
+      "flexible": {
+        "title": "Nababaluktot na Suporta sa Evento",
+        "text": "Mula sa maliliit na pagtitipon hanggang sa malalaking selebrasyon, tinutulungan namin na itugma ang setup sa evento."
+      },
+      "local": {
+        "title": "Lokal at Magiliw na Serbisyo",
+        "text": "Nagmamalasakit kami sa pagtulong sa mga customer na lumikha ng mga di-malilimutang karanasan nang walang hindi kinakailangang stress."
+      }
     }
   },
   "contact": {

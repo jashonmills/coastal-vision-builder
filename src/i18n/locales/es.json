@@ -26,7 +26,8 @@
     "more": "Más",
     "inventory": "Inventario",
     "closeMenu": "Cerrar menú",
-    "navigationMenu": "Menú de navegación"
+    "navigationMenu": "Menú de navegación",
+    "plannerShort": "Planner"
   },
   "navDesc": {
     "tentRentals": "Carpas de estructura, poste y hexagonales",
@@ -94,10 +95,22 @@
     "services": {
       "title": "Qué Tipo de Eventos Apoyamos",
       "exploreLink": "Explorar Servicios →",
-      "weddings": { "title": "Bodas", "text": "Espacios elegantes con carpa para ceremonias, recepciones, cenas de ensayo y fines de semana de boda costera." },
-      "festivals": { "title": "Festivales y Comunidad", "text": "Soluciones de carpas a gran escala para mercados, eventos musicales, recaudaciones de fondos, ferias y celebraciones comunitarias." },
-      "privateParties": { "title": "Fiestas Privadas", "text": "Montajes cómodos y hermosos para cumpleaños, reuniones, graduaciones, fiestas en el jardín y reuniones familiares." },
-      "corporate": { "title": "Eventos Corporativos", "text": "Soluciones profesionales de carpas y alquileres para eventos empresariales, retiros, activaciones de marca y reuniones corporativas." }
+      "weddings": {
+        "title": "Bodas",
+        "text": "Espacios elegantes con carpa para ceremonias, recepciones, cenas de ensayo y fines de semana de boda costera."
+      },
+      "festivals": {
+        "title": "Festivales y Comunidad",
+        "text": "Soluciones de carpas a gran escala para mercados, eventos musicales, recaudaciones de fondos, ferias y celebraciones comunitarias."
+      },
+      "privateParties": {
+        "title": "Fiestas Privadas",
+        "text": "Montajes cómodos y hermosos para cumpleaños, reuniones, graduaciones, fiestas en el jardín y reuniones familiares."
+      },
+      "corporate": {
+        "title": "Eventos Corporativos",
+        "text": "Soluciones profesionales de carpas y alquileres para eventos empresariales, retiros, activaciones de marca y reuniones corporativas."
+      }
     },
     "weather": {
       "eyebrow": "Preparado para la Costa",
@@ -108,12 +121,30 @@
     "tentCats": {
       "eyebrow": "Alquiler de Carpas",
       "title": "Carpas para Celebraciones de Todo Tamaño",
-      "small": { "title": "Reuniones Pequeñas", "desc": "Fiestas en el jardín, cenas íntimas y celebraciones pequeñas de menos de 50 invitados." },
-      "medium": { "title": "Eventos Medianos", "desc": "Recepciones y celebraciones familiares para 50–100 invitados con asientos y servicio de comida." },
-      "large": { "title": "Celebraciones Grandes", "desc": "Bodas y eventos corporativos para 100–200 invitados con comedor y pista de baile." },
-      "festival": { "title": "Carpas para Festivales y Vendedores", "desc": "Mercados, ferias y montajes de múltiples puestos con protección contra el clima." },
-      "wedding": { "title": "Carpas para Recepciones de Boda", "desc": "Comedor, pista de baile, áreas de descanso y elegantes diseños para bodas al aire libre." },
-      "custom": { "title": "Diseños Personalizados para Eventos", "desc": "Montajes de múltiples carpas, filas de vendedores, planes climáticos y diseño completo del flujo del evento." }
+      "small": {
+        "title": "Reuniones Pequeñas",
+        "desc": "Fiestas en el jardín, cenas íntimas y celebraciones pequeñas de menos de 50 invitados."
+      },
+      "medium": {
+        "title": "Eventos Medianos",
+        "desc": "Recepciones y celebraciones familiares para 50–100 invitados con asientos y servicio de comida."
+      },
+      "large": {
+        "title": "Celebraciones Grandes",
+        "desc": "Bodas y eventos corporativos para 100–200 invitados con comedor y pista de baile."
+      },
+      "festival": {
+        "title": "Carpas para Festivales y Vendedores",
+        "desc": "Mercados, ferias y montajes de múltiples puestos con protección contra el clima."
+      },
+      "wedding": {
+        "title": "Carpas para Recepciones de Boda",
+        "desc": "Comedor, pista de baile, áreas de descanso y elegantes diseños para bodas al aire libre."
+      },
+      "custom": {
+        "title": "Diseños Personalizados para Eventos",
+        "desc": "Montajes de múltiples carpas, filas de vendedores, planes climáticos y diseño completo del flujo del evento."
+      }
     },
     "plannerPromo": {
       "badge": "Nueva Herramienta Gratuita",
@@ -121,10 +152,22 @@
       "title": "Prueba Nuestro Planificador IA Gratuito de Carpas",
       "body": "¿No sabes qué tamaño de carpa, distribución de asientos o equipo necesita tu evento? Nuestro Planificador IA de Carpas te ayuda a crear un plan de inicio personalizado basado en el número de invitados, tipo de evento, superficie, exposición al clima y necesidades de montaje.",
       "cards": {
-        "tentSize": { "title": "Recomendación de Tamaño de Carpa", "text": "Obtén un tamaño de carpa sugerido según tu número de invitados y distribución." },
-        "equipment": { "title": "Lista de Equipamiento", "text": "Consulta las mesas, sillas, paredes laterales, iluminación, escenario y extras recomendados." },
-        "blueprint": { "title": "Diseño Estilo Plano", "text": "Genera un diseño visual inicial para el montaje de tu evento." },
-        "quote": { "title": "Plan Listo para Cotización", "text": "Envía tu plan a nuestro equipo para una cotización personalizada y revisión final." }
+        "tentSize": {
+          "title": "Recomendación de Tamaño de Carpa",
+          "text": "Obtén un tamaño de carpa sugerido según tu número de invitados y distribución."
+        },
+        "equipment": {
+          "title": "Lista de Equipamiento",
+          "text": "Consulta las mesas, sillas, paredes laterales, iluminación, escenario y extras recomendados."
+        },
+        "blueprint": {
+          "title": "Diseño Estilo Plano",
+          "text": "Genera un diseño visual inicial para el montaje de tu evento."
+        },
+        "quote": {
+          "title": "Plan Listo para Cotización",
+          "text": "Envía tu plan a nuestro equipo para una cotización personalizada y revisión final."
+        }
       }
     },
     "gallery": {
@@ -140,11 +183,26 @@
       "subtitle": "Ya sea que organices una reunión íntima o una gran celebración costera, te ayudamos a crear el refugio, la estructura y el ambiente que tu evento necesita."
     },
     "items": {
-      "weddings": { "title": "Alquiler de Carpas para Bodas", "copy": "Crea un hermoso espacio cubierto para tu ceremonia, recepción, hora del cóctel o fin de semana de boda completo. Nuestras carpas de alquiler ayudan a convertir ubicaciones al aire libre en venues cómodos y memorables." },
-      "festivals": { "title": "Alquiler para Festivales y Eventos Comunitarios", "copy": "Desde puestos de vendedores hasta grandes espacios de reunión, apoyamos festivales, mercados, recaudaciones de fondos, ferias y eventos públicos con soluciones de carpas prácticas y resistentes al clima." },
-      "private": { "title": "Alquiler para Fiestas Privadas", "copy": "Organiza cumpleaños, reuniones, graduaciones, aniversarios y celebraciones en el jardín con confianza. Te ayudamos a crear un espacio de evento cómodo que se sienta cuidado y fácil de disfrutar." },
-      "corporate": { "title": "Alquiler para Eventos Corporativos", "copy": "Apoya retiros empresariales, reuniones de negocios, lanzamientos de productos y eventos de marca con montajes de carpas elegantes que mantienen a los invitados cómodos y el evento con aspecto profesional." },
-      "setup": { "title": "Entrega, Montaje y Desmontaje", "copy": "Facilita la planificación del evento con soporte confiable de montaje y desmontaje. Nuestro equipo se encarga de la estructura para que puedas concentrarte en la experiencia." }
+      "weddings": {
+        "title": "Alquiler de Carpas para Bodas",
+        "copy": "Crea un hermoso espacio cubierto para tu ceremonia, recepción, hora del cóctel o fin de semana de boda completo. Nuestras carpas de alquiler ayudan a convertir ubicaciones al aire libre en venues cómodos y memorables."
+      },
+      "festivals": {
+        "title": "Alquiler para Festivales y Eventos Comunitarios",
+        "copy": "Desde puestos de vendedores hasta grandes espacios de reunión, apoyamos festivales, mercados, recaudaciones de fondos, ferias y eventos públicos con soluciones de carpas prácticas y resistentes al clima."
+      },
+      "private": {
+        "title": "Alquiler para Fiestas Privadas",
+        "copy": "Organiza cumpleaños, reuniones, graduaciones, aniversarios y celebraciones en el jardín con confianza. Te ayudamos a crear un espacio de evento cómodo que se sienta cuidado y fácil de disfrutar."
+      },
+      "corporate": {
+        "title": "Alquiler para Eventos Corporativos",
+        "copy": "Apoya retiros empresariales, reuniones de negocios, lanzamientos de productos y eventos de marca con montajes de carpas elegantes que mantienen a los invitados cómodos y el evento con aspecto profesional."
+      },
+      "setup": {
+        "title": "Entrega, Montaje y Desmontaje",
+        "copy": "Facilita la planificación del evento con soporte confiable de montaje y desmontaje. Nuestro equipo se encarga de la estructura para que puedas concentrarte en la experiencia."
+      }
     },
     "tailoredBanner": "¿Necesitas algo adaptado a tu evento?"
   },
@@ -156,12 +214,36 @@
     },
     "bestFor": "Ideal para:",
     "items": {
-      "popup": { "title": "Carpas Pop-Up / para Vendedores", "best": "Mercados, puestos, registros y pequeñas estaciones cubiertas.", "cta": "Consultar Disponibilidad" },
-      "small": { "title": "Carpas para Eventos Pequeños", "best": "Fiestas en el jardín, reuniones pequeñas, servicio de comida y asientos para invitados.", "cta": "Solicitar Cotización" },
-      "medium": { "title": "Carpas para Eventos Medianos", "best": "Recepciones, celebraciones familiares, fiestas privadas y eventos comunitarios.", "cta": "Solicitar Cotización" },
-      "large": { "title": "Carpas para Eventos Grandes", "best": "Bodas, festivales, eventos corporativos y grandes grupos de invitados.", "cta": "Planificar Mi Evento" },
-      "wedding": { "title": "Carpas para Recepciones de Boda", "best": "Comedor, pista de baile, áreas de descanso y elegantes diseños para bodas al aire libre.", "cta": "Iniciar Cotización de Boda" },
-      "custom": { "title": "Diseños Personalizados para Eventos", "best": "Venues complejos, montajes de múltiples carpas, filas de vendedores, planes climáticos y flujo del evento.", "cta": "Diseñar Mi Montaje" }
+      "popup": {
+        "title": "Carpas Pop-Up / para Vendedores",
+        "best": "Mercados, puestos, registros y pequeñas estaciones cubiertas.",
+        "cta": "Consultar Disponibilidad"
+      },
+      "small": {
+        "title": "Carpas para Eventos Pequeños",
+        "best": "Fiestas en el jardín, reuniones pequeñas, servicio de comida y asientos para invitados.",
+        "cta": "Solicitar Cotización"
+      },
+      "medium": {
+        "title": "Carpas para Eventos Medianos",
+        "best": "Recepciones, celebraciones familiares, fiestas privadas y eventos comunitarios.",
+        "cta": "Solicitar Cotización"
+      },
+      "large": {
+        "title": "Carpas para Eventos Grandes",
+        "best": "Bodas, festivales, eventos corporativos y grandes grupos de invitados.",
+        "cta": "Planificar Mi Evento"
+      },
+      "wedding": {
+        "title": "Carpas para Recepciones de Boda",
+        "best": "Comedor, pista de baile, áreas de descanso y elegantes diseños para bodas al aire libre.",
+        "cta": "Iniciar Cotización de Boda"
+      },
+      "custom": {
+        "title": "Diseños Personalizados para Eventos",
+        "best": "Venues complejos, montajes de múltiples carpas, filas de vendedores, planes climáticos y flujo del evento.",
+        "cta": "Diseñar Mi Montaje"
+      }
     },
     "help": {
       "title": "¿No Sabes Qué Tamaño de Carpa Necesitas?",
@@ -182,12 +264,42 @@
     },
     "suggestedRentals": "Alquileres sugeridos:",
     "items": {
-      "weddings": { "title": "Bodas", "desc": "Crea un hermoso venue cubierto para comedor, pista de baile, asientos para la ceremonia y comodidad de los invitados.", "rentals": "Carpas para recepción, carpas para ceremonia, carpas para vendedores, cobertura para área de descanso, diseños con iluminación.", "cta": "Solicitar Cotización de Boda" },
-      "festivals": { "title": "Festivales", "desc": "Grandes diseños de múltiples carpas para festivales de música, gastronomía y comunidad a lo largo de la costa.", "rentals": "Carpas para escenario principal, filas de vendedores, carpas para servicio de comida, coberturas de registro.", "cta": "Planificar Mi Festival" },
-      "private": { "title": "Fiestas Privadas", "desc": "Desde cumpleaños en el jardín hasta celebraciones de hitos, espacio cómodo para reunirse y cenar.", "rentals": "Carpas pequeñas a medianas, mesas, sillas, iluminación, paredes laterales.", "cta": "Solicitar Cotización para Fiesta" },
-      "corporate": { "title": "Eventos Corporativos", "desc": "Venues al aire libre elegantes para retiros, lanzamientos de productos y reuniones de marca.", "rentals": "Carpas para recepción, áreas de presentación, carpas de marca para vendedores.", "cta": "Solicitar Cotización Corporativa" },
-      "markets": { "title": "Mercados y Eventos para Vendedores", "desc": "Filas organizadas de vendedores que soportan el viento, el sol y la lluvia del Noroeste del Pacífico.", "rentals": "Carpas para vendedores 10x10 / 10x20, carpas de registro, paredes laterales.", "cta": "Solicitar Cotización para Vendedor" },
-      "fundraisers": { "title": "Recaudaciones de Fondos y Reuniones Comunitarias", "desc": "Espacios acogedores para recaudaciones de fondos, eventos escolares y celebraciones comunitarias.", "rentals": "Carpas medianas a grandes, mesas, sillas, iluminación.", "cta": "Solicitar Cotización Comunitaria" }
+      "weddings": {
+        "title": "Bodas",
+        "desc": "Crea un hermoso venue cubierto para comedor, pista de baile, asientos para la ceremonia y comodidad de los invitados.",
+        "rentals": "Carpas para recepción, carpas para ceremonia, carpas para vendedores, cobertura para área de descanso, diseños con iluminación.",
+        "cta": "Solicitar Cotización de Boda"
+      },
+      "festivals": {
+        "title": "Festivales",
+        "desc": "Grandes diseños de múltiples carpas para festivales de música, gastronomía y comunidad a lo largo de la costa.",
+        "rentals": "Carpas para escenario principal, filas de vendedores, carpas para servicio de comida, coberturas de registro.",
+        "cta": "Planificar Mi Festival"
+      },
+      "private": {
+        "title": "Fiestas Privadas",
+        "desc": "Desde cumpleaños en el jardín hasta celebraciones de hitos, espacio cómodo para reunirse y cenar.",
+        "rentals": "Carpas pequeñas a medianas, mesas, sillas, iluminación, paredes laterales.",
+        "cta": "Solicitar Cotización para Fiesta"
+      },
+      "corporate": {
+        "title": "Eventos Corporativos",
+        "desc": "Venues al aire libre elegantes para retiros, lanzamientos de productos y reuniones de marca.",
+        "rentals": "Carpas para recepción, áreas de presentación, carpas de marca para vendedores.",
+        "cta": "Solicitar Cotización Corporativa"
+      },
+      "markets": {
+        "title": "Mercados y Eventos para Vendedores",
+        "desc": "Filas organizadas de vendedores que soportan el viento, el sol y la lluvia del Noroeste del Pacífico.",
+        "rentals": "Carpas para vendedores 10x10 / 10x20, carpas de registro, paredes laterales.",
+        "cta": "Solicitar Cotización para Vendedor"
+      },
+      "fundraisers": {
+        "title": "Recaudaciones de Fondos y Reuniones Comunitarias",
+        "desc": "Espacios acogedores para recaudaciones de fondos, eventos escolares y celebraciones comunitarias.",
+        "rentals": "Carpas medianas a grandes, mesas, sillas, iluminación.",
+        "cta": "Solicitar Cotización Comunitaria"
+      }
     }
   },
   "gallery": {
@@ -216,10 +328,22 @@
     },
     "values": {
       "title": "Lo que Defendemos",
-      "reliable": { "title": "Montaje Confiable", "text": "Soporte confiable de entrega, montaje y desmontaje para que tu evento comience con confianza." },
-      "weather": { "title": "Planificación para el Clima", "text": "Los eventos al aire libre necesitan refugio inteligente. Ayudamos a los clientes a planificar para la comodidad en condiciones costeras cambiantes." },
-      "flexible": { "title": "Apoyo Flexible para Eventos", "text": "Desde reuniones íntimas hasta celebraciones más grandes, ayudamos a adaptar el montaje al evento." },
-      "local": { "title": "Servicio Local y Amigable", "text": "Nos importa ayudar a los clientes a crear experiencias memorables sin estrés innecesario." }
+      "reliable": {
+        "title": "Montaje Confiable",
+        "text": "Soporte confiable de entrega, montaje y desmontaje para que tu evento comience con confianza."
+      },
+      "weather": {
+        "title": "Planificación para el Clima",
+        "text": "Los eventos al aire libre necesitan refugio inteligente. Ayudamos a los clientes a planificar para la comodidad en condiciones costeras cambiantes."
+      },
+      "flexible": {
+        "title": "Apoyo Flexible para Eventos",
+        "text": "Desde reuniones íntimas hasta celebraciones más grandes, ayudamos a adaptar el montaje al evento."
+      },
+      "local": {
+        "title": "Servicio Local y Amigable",
+        "text": "Nos importa ayudar a los clientes a crear experiencias memorables sin estrés innecesario."
+      }
     }
   },
   "contact": {

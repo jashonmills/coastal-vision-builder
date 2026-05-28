@@ -26,7 +26,8 @@
     "more": "Plus",
     "inventory": "Inventaire",
     "closeMenu": "Fermer le menu",
-    "navigationMenu": "Menu de navigation"
+    "navigationMenu": "Menu de navigation",
+    "plannerShort": "Planner"
   },
   "navDesc": {
     "tentRentals": "Tentes à cadre, à mât et hexagonales",
@@ -94,10 +95,22 @@
     "services": {
       "title": "Ce Que Nous Vous Aidons à Organiser",
       "exploreLink": "Explorer les Services →",
-      "weddings": { "title": "Mariages", "text": "Des espaces sous tente élégants pour cérémonies, réceptions, dîners de répétition et week-ends de mariage côtiers." },
-      "festivals": { "title": "Festivals & Communauté", "text": "Des solutions de tentes à grande échelle pour marchés, événements musicaux, collectes de fonds, foires et célébrations communautaires." },
-      "privateParties": { "title": "Fêtes Privées", "text": "Des configurations confortables et belles pour anniversaires, réunions de famille, remises de diplômes, fêtes dans le jardin et rassemblements familiaux." },
-      "corporate": { "title": "Événements d'Entreprise", "text": "Des solutions professionnelles de tentes et de location pour événements d'affaires, retraites, activations de marque et rassemblements d'entreprise." }
+      "weddings": {
+        "title": "Mariages",
+        "text": "Des espaces sous tente élégants pour cérémonies, réceptions, dîners de répétition et week-ends de mariage côtiers."
+      },
+      "festivals": {
+        "title": "Festivals & Communauté",
+        "text": "Des solutions de tentes à grande échelle pour marchés, événements musicaux, collectes de fonds, foires et célébrations communautaires."
+      },
+      "privateParties": {
+        "title": "Fêtes Privées",
+        "text": "Des configurations confortables et belles pour anniversaires, réunions de famille, remises de diplômes, fêtes dans le jardin et rassemblements familiaux."
+      },
+      "corporate": {
+        "title": "Événements d'Entreprise",
+        "text": "Des solutions professionnelles de tentes et de location pour événements d'affaires, retraites, activations de marque et rassemblements d'entreprise."
+      }
     },
     "weather": {
       "eyebrow": "Prêt pour la Côte",
@@ -108,12 +121,30 @@
     "tentCats": {
       "eyebrow": "Location de Tentes",
       "title": "Des Tentes pour Chaque Taille de Célébration",
-      "small": { "title": "Petits Rassemblements", "desc": "Fêtes de jardin, dîners intimes et petites célébrations de moins de 50 invités." },
-      "medium": { "title": "Événements Moyens", "desc": "Réceptions et célébrations familiales pour 50 à 100 invités avec places assises et service de restauration." },
-      "large": { "title": "Grandes Célébrations", "desc": "Mariages et événements d'entreprise pour 100 à 200 invités avec dîner et piste de danse." },
-      "festival": { "title": "Tentes de Festival & Vendeurs", "desc": "Marchés, foires et configurations multi-stands avec protection contre les intempéries." },
-      "wedding": { "title": "Tentes de Réception de Mariage", "desc": "Dîner, danse, espaces lounge et configurations élégantes pour mariage en plein air." },
-      "custom": { "title": "Configurations Événementielles Sur Mesure", "desc": "Configurations multi-tentes, rangées de vendeurs, plans météo et conception complète du déroulement de l'événement." }
+      "small": {
+        "title": "Petits Rassemblements",
+        "desc": "Fêtes de jardin, dîners intimes et petites célébrations de moins de 50 invités."
+      },
+      "medium": {
+        "title": "Événements Moyens",
+        "desc": "Réceptions et célébrations familiales pour 50 à 100 invités avec places assises et service de restauration."
+      },
+      "large": {
+        "title": "Grandes Célébrations",
+        "desc": "Mariages et événements d'entreprise pour 100 à 200 invités avec dîner et piste de danse."
+      },
+      "festival": {
+        "title": "Tentes de Festival & Vendeurs",
+        "desc": "Marchés, foires et configurations multi-stands avec protection contre les intempéries."
+      },
+      "wedding": {
+        "title": "Tentes de Réception de Mariage",
+        "desc": "Dîner, danse, espaces lounge et configurations élégantes pour mariage en plein air."
+      },
+      "custom": {
+        "title": "Configurations Événementielles Sur Mesure",
+        "desc": "Configurations multi-tentes, rangées de vendeurs, plans météo et conception complète du déroulement de l'événement."
+      }
     },
     "plannerPromo": {
       "badge": "Nouvel Outil Gratuit",
@@ -121,10 +152,22 @@
       "title": "Essayez Notre Planificateur IA Gratuit",
       "body": "Vous ne savez pas quelle taille de tente, quelle disposition des places ou quel équipement votre événement nécessite ? Notre Planificateur IA vous aide à créer un plan de départ personnalisé en fonction du nombre d'invités, du type d'événement, de la surface, de l'exposition météo et de vos besoins de configuration.",
       "cards": {
-        "tentSize": { "title": "Recommandation de Taille de Tente", "text": "Obtenez une suggestion de taille de tente en fonction de votre nombre d'invités et de votre configuration." },
-        "equipment": { "title": "Liste d'Équipements", "text": "Consultez les tables, chaises, parois latérales, éclairages, estrades et accessoires recommandés." },
-        "blueprint": { "title": "Plan Architectural", "text": "Générez un plan visuel de départ pour la configuration de votre événement." },
-        "quote": { "title": "Plan Prêt pour Devis", "text": "Envoyez votre plan à notre équipe pour un devis personnalisé et une révision finale." }
+        "tentSize": {
+          "title": "Recommandation de Taille de Tente",
+          "text": "Obtenez une suggestion de taille de tente en fonction de votre nombre d'invités et de votre configuration."
+        },
+        "equipment": {
+          "title": "Liste d'Équipements",
+          "text": "Consultez les tables, chaises, parois latérales, éclairages, estrades et accessoires recommandés."
+        },
+        "blueprint": {
+          "title": "Plan Architectural",
+          "text": "Générez un plan visuel de départ pour la configuration de votre événement."
+        },
+        "quote": {
+          "title": "Plan Prêt pour Devis",
+          "text": "Envoyez votre plan à notre équipe pour un devis personnalisé et une révision finale."
+        }
       }
     },
     "gallery": {
@@ -140,11 +183,26 @@
       "subtitle": "Que vous organisiez un rassemblement intime ou une grande célébration côtière, nous vous aidons à créer l'abri, la structure et le cadre dont votre événement a besoin."
     },
     "items": {
-      "weddings": { "title": "Location de Tentes de Mariage", "copy": "Créez un bel espace couvert pour votre cérémonie, réception, cocktail ou week-end de mariage complet. Nos tentes transforment les lieux extérieurs en espaces confortables et mémorables." },
-      "festivals": { "title": "Location pour Festivals & Événements Communautaires", "copy": "Des stands vendeurs aux grands espaces de rassemblement, nous accompagnons les festivals, marchés, collectes de fonds, foires et événements publics avec des solutions de tentes pratiques et résistantes aux intempéries." },
-      "private": { "title": "Location pour Fêtes Privées", "copy": "Organisez anniversaires, réunions, remises de diplômes, anniversaires de mariage et fêtes de jardin en toute confiance. Nous créons un espace événementiel agréable qui paraît réfléchi et facile à apprécier." },
-      "corporate": { "title": "Location pour Événements d'Entreprise", "copy": "Accompagnez retraites d'entreprise, rassemblements professionnels, lancements de produits et événements de marque avec des configurations de tentes soignées qui maintiennent le confort des invités et l'aspect professionnel de l'événement." },
-      "setup": { "title": "Livraison, Installation & Démontage", "copy": "Simplifiez la planification de votre événement grâce à un accompagnement fiable à l'installation et au démontage. Notre équipe prend en charge la structure pour que vous puissiez vous concentrer sur l'expérience." }
+      "weddings": {
+        "title": "Location de Tentes de Mariage",
+        "copy": "Créez un bel espace couvert pour votre cérémonie, réception, cocktail ou week-end de mariage complet. Nos tentes transforment les lieux extérieurs en espaces confortables et mémorables."
+      },
+      "festivals": {
+        "title": "Location pour Festivals & Événements Communautaires",
+        "copy": "Des stands vendeurs aux grands espaces de rassemblement, nous accompagnons les festivals, marchés, collectes de fonds, foires et événements publics avec des solutions de tentes pratiques et résistantes aux intempéries."
+      },
+      "private": {
+        "title": "Location pour Fêtes Privées",
+        "copy": "Organisez anniversaires, réunions, remises de diplômes, anniversaires de mariage et fêtes de jardin en toute confiance. Nous créons un espace événementiel agréable qui paraît réfléchi et facile à apprécier."
+      },
+      "corporate": {
+        "title": "Location pour Événements d'Entreprise",
+        "copy": "Accompagnez retraites d'entreprise, rassemblements professionnels, lancements de produits et événements de marque avec des configurations de tentes soignées qui maintiennent le confort des invités et l'aspect professionnel de l'événement."
+      },
+      "setup": {
+        "title": "Livraison, Installation & Démontage",
+        "copy": "Simplifiez la planification de votre événement grâce à un accompagnement fiable à l'installation et au démontage. Notre équipe prend en charge la structure pour que vous puissiez vous concentrer sur l'expérience."
+      }
     },
     "tailoredBanner": "Besoin d'une solution adaptée à votre événement ?"
   },
@@ -156,12 +214,36 @@
     },
     "bestFor": "Idéal pour :",
     "items": {
-      "popup": { "title": "Tentes Pop-Up / Vendeurs", "best": "Marchés, stands, accueils et petites stations couvertes.", "cta": "Renseignez-vous sur la Disponibilité" },
-      "small": { "title": "Tentes pour Petits Événements", "best": "Fêtes de jardin, petits rassemblements, service de restauration et places assises.", "cta": "Demander un Devis" },
-      "medium": { "title": "Tentes pour Événements Moyens", "best": "Réceptions, célébrations familiales, fêtes privées et événements communautaires.", "cta": "Demander un Devis" },
-      "large": { "title": "Tentes pour Grands Événements", "best": "Mariages, festivals, événements d'entreprise et grand nombre d'invités.", "cta": "Planifier Mon Événement" },
-      "wedding": { "title": "Tentes de Réception de Mariage", "best": "Dîner, danse, espaces lounge et configurations élégantes pour mariage en plein air.", "cta": "Démarrer un Devis Mariage" },
-      "custom": { "title": "Configurations Événementielles Sur Mesure", "best": "Lieux complexes, configurations multi-tentes, rangées de vendeurs, plans météo et déroulement de l'événement.", "cta": "Concevoir Ma Configuration" }
+      "popup": {
+        "title": "Tentes Pop-Up / Vendeurs",
+        "best": "Marchés, stands, accueils et petites stations couvertes.",
+        "cta": "Renseignez-vous sur la Disponibilité"
+      },
+      "small": {
+        "title": "Tentes pour Petits Événements",
+        "best": "Fêtes de jardin, petits rassemblements, service de restauration et places assises.",
+        "cta": "Demander un Devis"
+      },
+      "medium": {
+        "title": "Tentes pour Événements Moyens",
+        "best": "Réceptions, célébrations familiales, fêtes privées et événements communautaires.",
+        "cta": "Demander un Devis"
+      },
+      "large": {
+        "title": "Tentes pour Grands Événements",
+        "best": "Mariages, festivals, événements d'entreprise et grand nombre d'invités.",
+        "cta": "Planifier Mon Événement"
+      },
+      "wedding": {
+        "title": "Tentes de Réception de Mariage",
+        "best": "Dîner, danse, espaces lounge et configurations élégantes pour mariage en plein air.",
+        "cta": "Démarrer un Devis Mariage"
+      },
+      "custom": {
+        "title": "Configurations Événementielles Sur Mesure",
+        "best": "Lieux complexes, configurations multi-tentes, rangées de vendeurs, plans météo et déroulement de l'événement.",
+        "cta": "Concevoir Ma Configuration"
+      }
     },
     "help": {
       "title": "Vous Ne Savez Pas Quelle Taille de Tente Vous Faut-Il ?",
@@ -182,12 +264,42 @@
     },
     "suggestedRentals": "Locations suggérées :",
     "items": {
-      "weddings": { "title": "Mariages", "desc": "Créez un bel espace couvert pour le dîner, la danse, les places de cérémonie et le confort des invités.", "rentals": "Tentes de réception, tentes de cérémonie, tentes vendeurs, couvertures lounge, configurations prêtes pour l'éclairage.", "cta": "Demander un Devis Mariage" },
-      "festivals": { "title": "Festivals", "desc": "Grandes configurations multi-tentes pour festivals de musique, gastronomiques et communautaires le long de la côte.", "rentals": "Tentes de scène principale, rangées de vendeurs, tentes de restauration, abris d'accueil.", "cta": "Planifier Mon Festival" },
-      "private": { "title": "Fêtes Privées", "desc": "Des anniversaires dans le jardin aux célébrations importantes, un espace confortable pour se rassembler et dîner.", "rentals": "Tentes petites à moyennes, tables, chaises, éclairage, parois latérales.", "cta": "Demander un Devis Fête" },
-      "corporate": { "title": "Événements d'Entreprise", "desc": "Des espaces extérieurs soignés pour retraites, lancements de produits et rassemblements de marque.", "rentals": "Tentes de réception, espaces de présentation, tentes vendeurs de marque.", "cta": "Demander un Devis Entreprise" },
-      "markets": { "title": "Marchés & Événements Vendeurs", "desc": "Des rangées de vendeurs organisées qui résistent au vent, au soleil et à la pluie du Pacifique Nord-Ouest.", "rentals": "Tentes vendeurs 10x10 / 10x20, tentes d'accueil, parois latérales.", "cta": "Demander un Devis Vendeur" },
-      "fundraisers": { "title": "Collectes de Fonds & Rassemblements Communautaires", "desc": "Des espaces accueillants pour collectes de fonds, événements scolaires et célébrations communautaires.", "rentals": "Tentes moyennes à grandes, tables, chaises, éclairage.", "cta": "Demander un Devis Communautaire" }
+      "weddings": {
+        "title": "Mariages",
+        "desc": "Créez un bel espace couvert pour le dîner, la danse, les places de cérémonie et le confort des invités.",
+        "rentals": "Tentes de réception, tentes de cérémonie, tentes vendeurs, couvertures lounge, configurations prêtes pour l'éclairage.",
+        "cta": "Demander un Devis Mariage"
+      },
+      "festivals": {
+        "title": "Festivals",
+        "desc": "Grandes configurations multi-tentes pour festivals de musique, gastronomiques et communautaires le long de la côte.",
+        "rentals": "Tentes de scène principale, rangées de vendeurs, tentes de restauration, abris d'accueil.",
+        "cta": "Planifier Mon Festival"
+      },
+      "private": {
+        "title": "Fêtes Privées",
+        "desc": "Des anniversaires dans le jardin aux célébrations importantes, un espace confortable pour se rassembler et dîner.",
+        "rentals": "Tentes petites à moyennes, tables, chaises, éclairage, parois latérales.",
+        "cta": "Demander un Devis Fête"
+      },
+      "corporate": {
+        "title": "Événements d'Entreprise",
+        "desc": "Des espaces extérieurs soignés pour retraites, lancements de produits et rassemblements de marque.",
+        "rentals": "Tentes de réception, espaces de présentation, tentes vendeurs de marque.",
+        "cta": "Demander un Devis Entreprise"
+      },
+      "markets": {
+        "title": "Marchés & Événements Vendeurs",
+        "desc": "Des rangées de vendeurs organisées qui résistent au vent, au soleil et à la pluie du Pacifique Nord-Ouest.",
+        "rentals": "Tentes vendeurs 10x10 / 10x20, tentes d'accueil, parois latérales.",
+        "cta": "Demander un Devis Vendeur"
+      },
+      "fundraisers": {
+        "title": "Collectes de Fonds & Rassemblements Communautaires",
+        "desc": "Des espaces accueillants pour collectes de fonds, événements scolaires et célébrations communautaires.",
+        "rentals": "Tentes moyennes à grandes, tables, chaises, éclairage.",
+        "cta": "Demander un Devis Communautaire"
+      }
     }
   },
   "gallery": {
@@ -216,10 +328,22 @@
     },
     "values": {
       "title": "Nos Valeurs",
-      "reliable": { "title": "Installation Fiable", "text": "Livraison, installation et démontage fiables pour que votre événement commence en toute sérénité." },
-      "weather": { "title": "Planification Résistante aux Intempéries", "text": "Les événements en plein air nécessitent un abri intelligent. Nous aidons nos clients à planifier le confort dans des conditions côtières changeantes." },
-      "flexible": { "title": "Accompagnement Événementiel Flexible", "text": "Des rassemblements intimes aux grandes célébrations, nous aidons à adapter la configuration à l'événement." },
-      "local": { "title": "Service Local & Convivial", "text": "Nous tenons à aider nos clients à créer des expériences mémorables sans stress inutile." }
+      "reliable": {
+        "title": "Installation Fiable",
+        "text": "Livraison, installation et démontage fiables pour que votre événement commence en toute sérénité."
+      },
+      "weather": {
+        "title": "Planification Résistante aux Intempéries",
+        "text": "Les événements en plein air nécessitent un abri intelligent. Nous aidons nos clients à planifier le confort dans des conditions côtières changeantes."
+      },
+      "flexible": {
+        "title": "Accompagnement Événementiel Flexible",
+        "text": "Des rassemblements intimes aux grandes célébrations, nous aidons à adapter la configuration à l'événement."
+      },
+      "local": {
+        "title": "Service Local & Convivial",
+        "text": "Nous tenons à aider nos clients à créer des expériences mémorables sans stress inutile."
+      }
     }
   },
   "contact": {
