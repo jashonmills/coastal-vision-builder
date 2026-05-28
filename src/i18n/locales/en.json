@@ -674,8 +674,9 @@
     "close": "Close chat",
     "send": "Send",
     "inputPlaceholder": "Type your question…",
-    "opening": "Hi! I can help with tent sizes, event rentals, beach setups, saved plans, and quote requests. What are you planning?",
-    "welcomeBack": "Welcome back. If you already have a saved plan, you can request a quote directly from it in your account.",
+    "opening": "Hi there! I'm here to help plan your event — tent sizes, beach setups, rentals, or a quote. What are you thinking about?",
+    "welcomeBack": "Good to see you back. Any of your saved plans ready for a quote? You can send one in a couple of clicks from your account.",
+
     "quick": {
       "tentSize": "Find my tent size",
       "planEvent": "Help me plan my event",
