@@ -99,8 +99,11 @@ function AccountPage() {
         ) : !data || data.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center">
             <FileText className="mx-auto h-10 w-10 text-muted-foreground" />
-            <p className="mt-4 font-serif text-xl text-primary">No saved plans yet</p>
-            <p className="mt-2 text-sm text-muted-foreground">Run the Event Recommender and save your first plan.</p>
+            <p className="mt-4 font-serif text-xl text-primary">You don't have any saved event plans yet</p>
+            <p className="mt-2 text-sm text-muted-foreground">Start the AI Tent Planner to create your first setup, then request a quote when you're ready.</p>
+            <Link to="/ai-tent-planner" className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
+              Start AI Tent Planner
+            </Link>
           </div>
         ) : (
           <ul className="space-y-3">
