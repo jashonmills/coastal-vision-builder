@@ -29,6 +29,8 @@ function QuoteRequestsPage() {
   const qc = useQueryClient();
   const updateStatusFn = useServerFn(updateQuoteRequestStatus);
   const createFn = useServerFn(createQuoteFromRequest);
+  const [showArchived, setShowArchived] = useState(false);
+
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-quote-requests"],
