@@ -189,7 +189,9 @@ function QuoteRequestsPage() {
                             </div>
                           </td>
                         </tr>
+                      ))}
                     </tbody>
+
                   </table>
                 </div>
               )}
