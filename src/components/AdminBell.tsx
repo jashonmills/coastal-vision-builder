@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "@tanstack/react-router";
+
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Bell, Check, AlertCircle, Inbox, CalendarDays, Boxes, FileSpreadsheet } from "lucide-react";
@@ -137,9 +137,9 @@ export function AdminBell() {
                   </div>
                 );
                 return n.link ? (
-                  <Link
+                  <a
                     key={n.id}
-                    to={n.link}
+                    href={n.link}
                     onClick={() => {
                       if (isUnread) markOne.mutate(n.id);
                       setOpen(false);
@@ -147,7 +147,7 @@ export function AdminBell() {
                     className="block hover:bg-secondary/40"
                   >
                     {body}
-                  </Link>
+                  </a>
                 ) : (
                   <div key={n.id}>{body}</div>
                 );
