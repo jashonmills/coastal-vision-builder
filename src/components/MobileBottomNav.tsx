@@ -21,7 +21,7 @@ export function MobileBottomNav({ onMenu }: Props) {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur-md lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-40 border-t border-border/60 bg-[color:var(--sand)] shadow-[0_-8px_24px_-12px_rgba(15,23,42,0.18)] rounded-t-2xl lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto grid max-w-2xl grid-cols-5 items-end px-2 py-2">
