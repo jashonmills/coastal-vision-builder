@@ -185,10 +185,9 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       </header>
 
       <main
-        className="flex-1 lg:pb-0"
-        style={{ paddingBottom: "calc(110px + env(safe-area-inset-bottom))" }}
+        className="flex-1 pb-[calc(110px+env(safe-area-inset-bottom))] lg:pb-0"
       >
-        <div className="lg:[padding-bottom:0]">{children}</div>
+        {children}
       </main>
 
       <SiteFooter />
