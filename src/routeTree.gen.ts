@@ -29,6 +29,7 @@ import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-req
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
@@ -135,6 +136,11 @@ const AdminDataImportRoute = AdminDataImportRouteImport.update({
   path: '/data-import',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AccountIdRoute = AccountIdRouteImport.update({
   id: '/account/$id',
   path: '/account/$id',
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
   '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
   '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
@@ -231,6 +239,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
   '/account/$id': typeof AccountIdRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
   '/admin/inventory': typeof AdminInventoryRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
@@ -260,6 +269,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tent-rentals'
     | '/account/$id'
+    | '/admin/dashboard'
     | '/admin/data-import'
     | '/admin/inventory'
     | '/admin/pricing'
@@ -287,6 +297,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tent-rentals'
     | '/account/$id'
+    | '/admin/dashboard'
     | '/admin/data-import'
     | '/admin/inventory'
     | '/admin/pricing'
@@ -314,6 +325,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tent-rentals'
     | '/account/$id'
+    | '/admin/dashboard'
     | '/admin/data-import'
     | '/admin/inventory'
     | '/admin/pricing'
@@ -487,6 +499,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDataImportRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/account/$id': {
       id: '/account/$id'
       path: '/account/$id'
@@ -563,6 +582,7 @@ const AdminQuotesRouteWithChildren = AdminQuotesRoute._addFileChildren(
 )
 
 interface AdminRouteChildren {
+  AdminDashboardRoute: typeof AdminDashboardRoute
   AdminDataImportRoute: typeof AdminDataImportRoute
   AdminInventoryRoute: typeof AdminInventoryRouteWithChildren
   AdminPricingRoute: typeof AdminPricingRoute
@@ -572,6 +592,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardRoute: AdminDashboardRoute,
   AdminDataImportRoute: AdminDataImportRoute,
   AdminInventoryRoute: AdminInventoryRouteWithChildren,
   AdminPricingRoute: AdminPricingRoute,

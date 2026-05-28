@@ -104,6 +104,16 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     }
     await supabaseAdmin.from("rental_calendar_events").insert(events);
 
+    // In-app admin notification
+    await supabaseAdmin.from("admin_notifications").insert({
+      kind: "quote_request",
+      severity: "info",
+      title: `New quote request: ${data.customer_name}`,
+      body: `${evtType}${guests ? " · " + guests : ""}${data.event_date ? " · " + data.event_date : ""}${data.event_location ? " · " + data.event_location : ""}`,
+      link: `/admin/quote-requests/${row.id}`,
+      related_id: row.id,
+    });
+
     return { id: row.id };
   });
 

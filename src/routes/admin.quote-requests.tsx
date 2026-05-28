@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
+import { AdminBell } from "@/components/AdminBell";
 import {
   listQuoteRequests,
   updateQuoteRequestStatus,
@@ -187,7 +188,7 @@ export function StatusPill({ status }: { status: string }) {
   );
 }
 
-export function AdminTabs({ active }: { active: "admin" | "quote-requests" | "quotes" | "inventory" }) {
+export function AdminTabs({ active }: { active: "dashboard" | "admin" | "quote-requests" | "quotes" | "inventory" }) {
   const { isAdmin } = useIsAdmin();
   const countFn = useServerFn(countNewQuoteRequests);
   const { data: countData } = useQuery({
@@ -198,33 +199,37 @@ export function AdminTabs({ active }: { active: "admin" | "quote-requests" | "qu
   });
   const newCount = countData?.count ?? 0;
   const tabs = [
-    { key: "admin", label: "Pricing & Content", to: "/admin" as const },
+    { key: "dashboard", label: "Dashboard", to: "/admin/dashboard" as const },
     { key: "quote-requests", label: "Quote Requests", to: "/admin/quote-requests" as const, badge: newCount },
     { key: "quotes", label: "Quotes", to: "/admin/quotes" as const },
     { key: "inventory", label: "Inventory", to: "/admin/inventory" as const },
+    { key: "admin", label: "Pricing & Content", to: "/admin" as const },
   ];
   return (
-    <div className="mb-8 flex flex-wrap gap-2">
-      {tabs.map((t) => (
-        <Link
-          key={t.key}
-          to={t.to}
-          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${
-            active === t.key
-              ? "border-primary bg-primary text-primary-foreground"
-              : "border-border bg-card text-foreground hover:bg-secondary"
-          }`}
-        >
-          {t.label}
-          {"badge" in t && t.badge ? (
-            <span className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-              active === t.key ? "bg-primary-foreground text-primary" : "bg-[color:var(--gold)] text-primary"
-            }`}>
-              {t.badge}
-            </span>
-          ) : null}
-        </Link>
-      ))}
+    <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap gap-2">
+        {tabs.map((t) => (
+          <Link
+            key={t.key}
+            to={t.to}
+            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${
+              active === t.key
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-foreground hover:bg-secondary"
+            }`}
+          >
+            {t.label}
+            {"badge" in t && t.badge ? (
+              <span className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                active === t.key ? "bg-primary-foreground text-primary" : "bg-[color:var(--gold)] text-primary"
+              }`}>
+                {t.badge}
+              </span>
+            ) : null}
+          </Link>
+        ))}
+      </div>
+      <AdminBell />
     </div>
   );
 }

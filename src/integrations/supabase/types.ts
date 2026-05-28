@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          link: string | null
+          read_at: string | null
+          related_id: string | null
+          severity: string
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          link?: string | null
+          read_at?: string | null
+          related_id?: string | null
+          severity?: string
+          title: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          read_at?: string | null
+          related_id?: string | null
+          severity?: string
+          title?: string
+        }
+        Relationships: []
+      }
       gallery_images: {
         Row: {
           caption: string | null
