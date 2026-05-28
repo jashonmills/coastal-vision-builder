@@ -184,12 +184,18 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1 pb-24 lg:pb-0">{children}</main>
+      <main
+        className="flex-1 lg:pb-0"
+        style={{ paddingBottom: "calc(110px + env(safe-area-inset-bottom))" }}
+      >
+        <div className="lg:[padding-bottom:0]">{children}</div>
+      </main>
 
       <SiteFooter />
 
       <MobileBottomNav onMenu={() => setOpen(true)} />
       <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
+      <MobileHelpButton />
       <AccessibilityFontButton />
       <ChatWidget />
     </div>
