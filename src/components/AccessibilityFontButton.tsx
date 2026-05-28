@@ -103,7 +103,7 @@ export function AccessibilityFontButton() {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-24 left-6 z-[90] inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-[color:var(--sand)] shadow-lg ring-2 ring-transparent transition-all hover:-translate-y-0.5 hover:ring-[color:var(--gold)]/60 focus:outline-none focus-visible:ring-[color:var(--gold)] lg:bottom-6"
+        className="fixed bottom-24 left-6 z-[90] hidden lg:inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-[color:var(--sand)] shadow-lg ring-2 ring-transparent transition-all hover:-translate-y-0.5 hover:ring-[color:var(--gold)]/60 focus:outline-none focus-visible:ring-[color:var(--gold)] lg:bottom-6"
       >
         <Accessibility className="h-5 w-5" />
       </button>
