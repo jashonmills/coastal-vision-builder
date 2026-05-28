@@ -45,7 +45,8 @@ export function MobileBottomNav({ onMenu }: Props) {
         {/* Center prominent CTA */}
         <Link
           to="/contact"
-          className="-mt-6 mx-auto flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-background"
+          className="-mt-6 mx-auto flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-[color:var(--sand)] shadow-lg ring-2 ring-[color:var(--gold)]/70 ring-offset-2 ring-offset-[color:var(--sand)]"
+          aria-label="Request a quote"
         >
           <Send className="h-5 w-5" />
           <span className="text-[9px] font-semibold uppercase tracking-wide">{t("nav.quote")}</span>
