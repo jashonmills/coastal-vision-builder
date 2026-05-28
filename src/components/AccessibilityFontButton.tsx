@@ -48,6 +48,13 @@ export function AccessibilityFontButton() {
     } catch {}
   }, []);
 
+  // Listen for external open requests (e.g. from MobileHelpButton)
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("open-accessibility-panel", onOpen);
+    return () => window.removeEventListener("open-accessibility-panel", onOpen);
+  }, []);
+
   // Focus panel on open, Escape to close
   useEffect(() => {
     if (!open) return;
