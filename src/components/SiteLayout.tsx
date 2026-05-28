@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { MobileBentoDrawer } from "./MobileBentoDrawer";
+import { MobileHelpButton } from "./MobileHelpButton";
 
 type NavChild = { to: string; labelKey: string; descKey?: string };
 type NavGroup = { labelKey: string; to?: string; children?: NavChild[] };
