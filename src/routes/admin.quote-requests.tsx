@@ -43,10 +43,16 @@ function QuoteRequestsPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-quote-requests"] }),
   });
 
+  const unarchive = useMutation({
+    mutationFn: (id: string) => updateStatusFn({ data: { id, status: "new" } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-quote-requests"] }),
+  });
+
   const review = useMutation({
     mutationFn: (id: string) => updateStatusFn({ data: { id, status: "in_review" } }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-quote-requests"] }),
   });
+
 
   const create = useMutation({
     mutationFn: (id: string) => createFn({ data: { quote_request_id: id } }),
