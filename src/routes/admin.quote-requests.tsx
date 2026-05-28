@@ -189,13 +189,15 @@ function QuoteRequestsPage() {
                             </div>
                           </td>
                         </tr>
-                      ))}
-
-              </tbody>
-            </table>
-          </div>
-        )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          );
+        })()}
       </section>
+
     </SiteLayout>
   );
 }
