@@ -9,7 +9,7 @@ interface Props {
 const items = [
   { to: "/", labelKey: "nav.home", icon: Home, exact: true },
   { to: "/tent-rentals", labelKey: "nav.rentals", icon: Tent, exact: false },
-  { to: "/ai-tent-planner", labelKey: "nav.recommender", icon: Sparkles, exact: false },
+  { to: "/ai-tent-planner", labelKey: "nav.plannerShort", icon: Sparkles, exact: false },
 ] as const;
 
 export function MobileBottomNav({ onMenu }: Props) {
