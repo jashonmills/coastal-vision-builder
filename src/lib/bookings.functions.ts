@@ -6,8 +6,8 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
    Bookings: wires quotes ↔ inventory ↔ scheduler ↔ returns.
    ============================================================ */
 
-type SBClient = Awaited<
-  ReturnType<typeof import("@/integrations/supabase/auth-middleware")["requireSupabaseAuth"]>
+type _unused = Awaited<
+  ReturnType<typeof Object.values>
 > extends never
   ? never
   : any;
