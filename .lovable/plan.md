@@ -1,79 +1,55 @@
+# Role-Aware Bottom Navigation
 
-# Full Rental Operating System — Closing the Loop
+Right now `MobileBottomNav` shows the same 5 items (Home, Rentals, Quote CTA, AI Planner, Menu) for every visitor regardless of who's logged in. We'll switch it to render one of three variants based on auth + role.
 
-Goal: turn the existing admin islands into one connected workflow:
-**Quote sent/booked → inventory reserved → calendar events auto-created → job sheet for warehouse → check-out → check-in → damage/return reconciled.** Staff management included. Payments deferred.
+## Variants
 
-## Phase 1 — Quote → Reservation + Scheduler (the core wire-up)
+**1. Public (signed out, or signed-in customer browsing public pages)**
+- Home → `/`
+- Rentals → `/tent-rentals`
+- Center CTA: Get Quote → `/contact`
+- AI Planner → `/ai-tent-planner`
+- Menu (opens existing drawer)
 
-**Database (migration):**
-- Add `staff` table: name, email, phone, role, active, color, notes.
-- Add `quote_returns` table: quote_id, item_id, returned_qty, damaged_qty, missing_qty, condition_notes, returned_by, returned_at — for post-event reconciliation.
-- Add helpful indexes on `inventory_transactions(related_quote_id)`, `rental_calendar_events(quote_id, start_time)`.
-- GRANTs + RLS for both tables (admin-only).
+**2. Admin (user has `admin` role)**
+- Dashboard → `/admin/dashboard`
+- Quotes → `/admin/quotes`
+- Center CTA: Quote Requests → `/admin/quote-requests`
+- Scheduler → `/admin/scheduler`
+- Menu (drawer) — drawer will include Inventory, Pricing, Staff, Data Import, plus a "Switch to public site" link
 
-**Server functions (`src/lib/quotes.functions.ts`, `scheduler.functions.ts`):**
-- New `reserveQuoteInventory(quoteId)`: for each `quote_items` row with an `inventory_item_id`, increment `inventory_items.reserved_quantity` and insert an `inventory_transactions` row (`transaction_type='reserve'`, `related_quote_id`). Idempotent — skips if already reserved for this quote.
-- New `releaseQuoteInventory(quoteId)`: reverse the above (used when a quote is cancelled or unbooked).
-- New `createQuoteCalendarEvents(quoteId)`: auto-create `delivery` + `pickup` calendar events linked to `quote_id`, defaulting to event_date − 1 / event_date + 1. Skip if events already exist for that quote_id+type.
-- Hook `sendQuote` (or new `bookQuote`) to call both. Add a "Book / Confirm" action button on the quote edit/preview screen.
+**3. Account holder (signed in, non-admin)**
+- Home → `/`
+- My Quotes → `/account`
+- Center CTA: New Quote → `/contact`
+- Rentals → `/tent-rentals`
+- Menu (drawer) with Sign out, AI Planner, etc.
 
-**UI:**
-- Quote edit/preview: add "Reserve inventory & schedule" button + status indicators ("Reserved ✓ • 2 events on calendar").
-- Show reservation conflicts inline (uses existing `getQuoteItemsAvailability`).
+## Selection logic
 
-## Phase 2 — Job Sheet + Check-out/Check-in
+Inside `MobileBottomNav`:
+- `const { user } = useAuth();`
+- `const { isAdmin } = useIsAdmin();`
+- If `isAdmin` AND pathname starts with `/admin` → admin variant
+- Else if `isAdmin` AND on a public route → public variant, but show a small "Admin" pill in the menu button area linking to `/admin/dashboard` (so admins on the marketing site can jump back)
+- Else if `user` (logged-in non-admin) → account variant
+- Else → public variant
 
-**New route `src/routes/admin.quotes.$id.job-sheet.tsx`:**
-- Header: customer, event date, location, contact, assigned staff.
-- Line items table: item, qty reserved, qty checked-out, qty returned, qty damaged.
-- Per-line and bulk actions:
-  - **Check out** → moves qty `reserved → checked_out`, writes `inventory_transactions`.
-  - **Check in** → moves qty `checked_out → cleaning` (or `available` if `requires_cleaning=false`), opens a damage/missing input.
-  - **Mark damaged/missing** → bumps `damaged_missing_quantity` and writes a `quote_returns` row tying damage to this quote.
-- Print-friendly view for warehouse pick lists.
+This way admins still see public nav while previewing marketing pages, but get the admin nav inside `/admin/*`. Account holders viewing their quote get account nav everywhere.
 
-**Server functions (`scheduler.functions.ts` or new `job-sheet.functions.ts`):**
-- `checkOutQuoteItem(quoteItemId, qty, staffId)`
-- `checkInQuoteItem(quoteItemId, qty, damagedQty, missingQty, notes, staffId)`
-- `completeQuote(quoteId)` → marks quote `completed`, ensures all checked-out qty is reconciled.
+## Implementation
 
-## Phase 3 — Staff Management
+Single file change: `src/components/MobileBottomNav.tsx`.
+- Extract three `items` arrays (`publicItems`, `adminItems`, `accountItems`) each with `{ to, labelKey, icon, exact }` plus a `centerCta` object (`{ to, labelKey, icon, ariaLabel }`).
+- Pick the active set from the rules above.
+- Render with the existing visual structure (2 items, center floating CTA, 2 items, menu button) — no style changes.
+- Add new i18n keys under `nav.*`: `dashboard`, `quotes`, `quoteRequests`, `scheduler`, `myQuotes`, `newQuote`. Fall back to English strings inline if the i18n files aren't wired up for new keys yet.
 
-**New route `src/routes/admin.staff.tsx`:**
-- CRUD list for staff (name, role, contact, color, active).
-- Pill added to `AdminTabs`.
+No changes to `SiteLayout`, routes, or the drawer in this pass. The drawer contents can be tightened in a follow-up if you want role-specific menu items there too — say the word and I'll include it.
 
-**Scheduler integration:**
-- Replace the free-form `assigned_to` uuid input with a staff picker on calendar events.
-- Job sheet: assign staff to a job (uses the linked calendar events' `assigned_to`).
-- Calendar view: color events by staff color; filter by staff.
+## Out of scope
 
-## Phase 4 — Availability Conflict Guard
-
-- In the quote editor, when an `inventory_item_id` line is added/edited, run a date-range availability check against:
-  - Current `reserved_quantity` + `checked_out_quantity` of that item, and
-  - Any other quote with overlapping `event_date` that already reserved this item.
-- Show inline warning ("3 reserved on 2026-06-12 — only 2 available"). Don't block; warn.
-
-## Out of scope (deferred)
-
-- Stripe / payments (per user request).
-- Public customer portal for quote view/accept/sign.
-- Multi-day rental pricing math beyond what already exists.
-
-## Technical notes
-
-- All quantity movements go through a single helper that writes both the `inventory_items` counter update AND an `inventory_transactions` audit row in one DB call (RPC or wrapped in a serverFn) — no direct counter edits scattered across the codebase.
-- Idempotency keys: `(related_quote_id, transaction_type)` uniqueness check before insert to prevent double-reservation on button mash.
-- Every new serverFn uses `requireSupabaseAuth` + admin role check.
-- Job sheet uses Suspense + `useSuspenseQuery` per the Query pattern.
-
-## Suggested build order
-
-1. Phase 1 migration + reserve/release/createEvents serverFns + Book button (unlocks everything).
-2. Phase 2 job sheet + check-out/in (the daily warehouse tool).
-3. Phase 3 staff (small, makes scheduling real).
-4. Phase 4 conflict warnings (polish; prevents the bad path that #1 enabled).
-
-Estimated to land the full loop: ~4 build iterations, each independently shippable.
+- Restyling the bar
+- Changing the drawer (`MobileBentoDrawer`) contents
+- Desktop navigation
+- Adding new routes
