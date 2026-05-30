@@ -196,7 +196,10 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
 
   if (typeof window === "undefined") return null;
 
-  const inAdmin = isAdmin && pathname.startsWith("/admin");
+  // The drawer must follow the admin route context immediately. Role lookup can
+  // briefly lag behind the page render, which was causing the public menu to
+  // appear inside admin screens.
+  const inAdmin = pathname.startsWith("/admin");
 
   const title = inAdmin ? "Admin Tools" : "Menu";
   const subtitle = inAdmin
