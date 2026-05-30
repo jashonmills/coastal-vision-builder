@@ -1,15 +1,14 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./use-auth";
 
 export function useIsAdmin() {
   const { user, loading } = useAuth();
-  const qc = useQueryClient();
 
   const q = useQuery({
     queryKey: ["is-admin", user?.id ?? "anon"],
     enabled: !!user,
+    staleTime: 5 * 60_000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("user_roles")
@@ -22,9 +21,5 @@ export function useIsAdmin() {
     },
   });
 
-  useEffect(() => {
-    if (!user) qc.removeQueries({ queryKey: ["is-admin"] });
-  }, [user, qc]);
-
-  return { isAdmin: !!q.data, loading: loading || q.isLoading };
+  return { isAdmin: !!q.data, loading: loading || (!!user && q.isLoading) };
 }
