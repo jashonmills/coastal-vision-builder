@@ -22,6 +22,7 @@ import { Route as AiTentPlannerRouteImport } from './routes/ai-tent-planner'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
@@ -100,6 +101,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/account/',
@@ -190,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/account/': typeof AccountIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
@@ -198,7 +205,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
@@ -218,6 +224,7 @@ export interface FileRoutesByTo {
   '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/account': typeof AccountIndexRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
@@ -247,6 +254,7 @@ export interface FileRoutesById {
   '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/account/': typeof AccountIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
@@ -277,6 +285,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/scheduler'
     | '/account/'
+    | '/admin/'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/admin/quotes/$id/edit'
@@ -285,7 +294,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/admin'
     | '/ai-tent-planner'
     | '/contact'
     | '/events'
@@ -305,6 +313,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/scheduler'
     | '/account'
+    | '/admin'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/admin/quotes/$id/edit'
@@ -333,6 +342,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/scheduler'
     | '/account/'
+    | '/admin/'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/admin/quotes/$id/edit'
@@ -449,6 +459,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/account/': {
       id: '/account/'
@@ -589,6 +606,7 @@ interface AdminRouteChildren {
   AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRouteWithChildren
   AdminQuotesRoute: typeof AdminQuotesRouteWithChildren
   AdminSchedulerRoute: typeof AdminSchedulerRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -599,6 +617,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminQuoteRequestsRoute: AdminQuoteRequestsRouteWithChildren,
   AdminQuotesRoute: AdminQuotesRouteWithChildren,
   AdminSchedulerRoute: AdminSchedulerRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
