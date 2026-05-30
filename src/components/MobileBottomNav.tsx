@@ -104,7 +104,9 @@ export function MobileBottomNav({ onMenu }: Props) {
 
   let set: NavSet;
   let rightItems: NavItem[];
-  if (isAdmin && pathname.startsWith("/admin")) {
+  const inAdmin = pathname.startsWith("/admin");
+
+  if (inAdmin) {
     set = adminSet;
     rightItems = adminRight;
   } else if (user && !isAdmin) {
@@ -115,7 +117,7 @@ export function MobileBottomNav({ onMenu }: Props) {
     rightItems = publicRight;
   }
 
-  const showAdminJump = isAdmin && !pathname.startsWith("/admin");
+  const showAdminJump = isAdmin && !inAdmin;
 
   const renderItem = (item: NavItem) => {
     const Icon = item.icon;
