@@ -38,6 +38,9 @@ function EditQuotePage() {
   const delFn = useServerFn(deleteQuoteItem);
   const sendFn = useServerFn(sendQuote);
   const pricingFn = useServerFn(listPricingItemsForBuilder);
+  const bookFn = useServerFn(bookQuote);
+  const unbookFn = useServerFn(unbookQuote);
+  const statusFn = useServerFn(getQuoteBookingStatus);
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
@@ -56,6 +59,11 @@ function EditQuotePage() {
     queryFn: () => availFn({ data: { quote_id: id } }),
     enabled: !!user && isAdmin && !!data,
   });
+  const { data: bookingStatus, refetch: refetchStatus } = useQuery({
+    queryKey: ["quote-booking-status", id],
+    queryFn: () => statusFn({ data: { quote_id: id } }),
+    enabled: !!user && isAdmin && !!data,
+  });
 
   const send = useMutation({
     mutationFn: () => sendFn({ data: { id } }),
@@ -63,6 +71,35 @@ function EditQuotePage() {
       toast.success("Quote marked as sent.");
       qc.invalidateQueries({ queryKey: ["admin-quote", id] });
     },
+  });
+
+  const book = useMutation({
+    mutationFn: () => bookFn({ data: { quote_id: id } }),
+    onSuccess: (res) => {
+      const eventMsg = res.has_event_date
+        ? `${res.events_created} calendar events created.`
+        : "No event date set — calendar events skipped.";
+      toast.success(
+        res.already_reserved
+          ? `Already reserved. ${eventMsg}`
+          : `Reserved ${res.lines_reserved} item(s). ${eventMsg}`,
+      );
+      refetch();
+      refetchStatus();
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const unbook = useMutation({
+    mutationFn: () => unbookFn({ data: { quote_id: id } }),
+    onSuccess: () => {
+      toast.success("Reservation released.");
+      refetch();
+      refetchStatus();
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   if (loading || rl || isLoading) {
