@@ -47,7 +47,12 @@ export function MobileBottomNav({ onMenu }: Props) {
   const publicSet: NavSet = {
     left: [
       { to: "/", label: t("nav.home", { defaultValue: "Home" }), icon: Home, exact: true },
-      { to: "/tent-rentals", label: t("nav.rentals", { defaultValue: "Rentals" }), icon: Tent, exact: false },
+      {
+        to: "/tent-rentals",
+        label: t("nav.rentals", { defaultValue: "Rentals" }),
+        icon: Tent,
+        exact: false,
+      },
     ],
     center: {
       to: "/contact",
@@ -97,7 +102,12 @@ export function MobileBottomNav({ onMenu }: Props) {
       ariaLabel: "Start a new quote",
     },
     right: [
-      { to: "/tent-rentals", label: t("nav.rentals", { defaultValue: "Rentals" }), icon: Tent, exact: false },
+      {
+        to: "/tent-rentals",
+        label: t("nav.rentals", { defaultValue: "Rentals" }),
+        icon: Tent,
+        exact: false,
+      },
     ] as unknown as [NavItem, NavItem],
   };
   const accountRight: NavItem[] = [accountSet.right[0]];
@@ -132,7 +142,9 @@ export function MobileBottomNav({ onMenu }: Props) {
       >
         <span
           className={item.highlight ? "text-[color:var(--gold)]" : ""}
-          style={item.highlight ? { animation: "ai-sparkle-pulse 2s ease-in-out infinite" } : undefined}
+          style={
+            item.highlight ? { animation: "ai-sparkle-pulse 2s ease-in-out infinite" } : undefined
+          }
         >
           <Icon className="h-5 w-5" />
         </span>
@@ -157,7 +169,9 @@ export function MobileBottomNav({ onMenu }: Props) {
           aria-label={set.center.ariaLabel}
         >
           <CenterIcon className="h-5 w-5" />
-          <span className="text-[9px] font-semibold uppercase tracking-wide">{set.center.label}</span>
+          <span className="text-[9px] font-semibold uppercase tracking-wide">
+            {set.center.label}
+          </span>
         </Link>
 
         {rightItems.map(renderItem)}
