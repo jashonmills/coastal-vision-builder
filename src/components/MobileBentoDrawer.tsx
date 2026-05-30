@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   X,
   Home,
@@ -14,8 +14,18 @@ import {
   Phone,
   HardHat,
   Send,
+  LayoutDashboard,
+  Inbox,
+  FileText,
+  Boxes,
+  Users,
+  Tag,
+  Upload,
+  ExternalLink,
   type LucideIcon,
 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-admin";
 
 interface Props {
   open: boolean;
@@ -37,6 +47,7 @@ interface Center {
   bgClass: string;
 }
 
+// ----- Public tiles -----
 const exploreTiles: Tile[] = [
   { to: "/", label: "Home", icon: Home,
     tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]", iconColor: "text-primary" },
@@ -73,6 +84,43 @@ const moreCenter: Center = {
   bgClass: "bg-[color:var(--gold)] text-primary",
 };
 
+// ----- Admin tiles -----
+const adminOpsTiles: Tile[] = [
+  { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]", iconColor: "text-primary" },
+  { to: "/admin/quote-requests", label: "Requests", icon: Inbox,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]", iconColor: "text-[color:var(--gold)]" },
+  { to: "/admin/quotes", label: "Quotes", icon: FileText,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_200)] to-[oklch(0.91_0.04_200)] border border-[oklch(0.84_0.05_200)]", iconColor: "text-primary" },
+  { to: "/admin/scheduler", label: "Scheduler", icon: Calendar,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]", iconColor: "text-[color:var(--sand-deep)]" },
+];
+
+const adminOpsCenter: Center = {
+  to: "/admin/quote-requests",
+  label: "Inbox",
+  icon: Inbox,
+  bgClass: "bg-primary",
+};
+
+const adminManageTiles: Tile[] = [
+  { to: "/admin/inventory", label: "Inventory", icon: Boxes,
+    tileBg: "bg-gradient-to-br from-[oklch(0.97_0.02_85)] to-[oklch(0.93_0.04_80)] border border-[oklch(0.86_0.05_80)]", iconColor: "text-[color:var(--sand-deep)]" },
+  { to: "/admin/staff", label: "Staff", icon: Users,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]", iconColor: "text-[color:var(--forest)]" },
+  { to: "/admin", label: "Pricing & Content", icon: Tag,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_300)] to-[oklch(0.91_0.04_300)] border border-[oklch(0.84_0.05_300)]", iconColor: "text-[color:var(--navy-soft)]" },
+  { to: "/admin/data-import", label: "Data Import", icon: Upload,
+    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]", iconColor: "text-[color:var(--gold)]" },
+];
+
+const adminManageCenter: Center = {
+  to: "/",
+  label: "View Site",
+  icon: ExternalLink,
+  bgClass: "bg-[color:var(--gold)] text-primary",
+};
+
 function BentoTile({ tile, onClose }: { tile: Tile; onClose: () => void }) {
   const Icon = tile.icon;
   return (
@@ -85,7 +133,7 @@ function BentoTile({ tile, onClose }: { tile: Tile; onClose: () => void }) {
       <span className="w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center">
         <Icon className={`w-5 h-5 ${tile.iconColor}`} />
       </span>
-      <span className="text-sm font-bold text-foreground">{tile.label}</span>
+      <span className="text-sm font-bold text-foreground text-center leading-tight">{tile.label}</span>
     </Link>
   );
 }
@@ -130,6 +178,10 @@ function BentoBlock({
 }
 
 export function MobileBentoDrawer({ open, onClose }: Props) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -144,11 +196,17 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
 
   if (typeof window === "undefined") return null;
 
+  const inAdmin = isAdmin && pathname.startsWith("/admin");
+
+  const title = inAdmin ? "Admin Tools" : "Menu";
+  const subtitle = inAdmin
+    ? "Operations & management"
+    : "Pacific North Event & Tent Rentals";
+
   return createPortal(
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop — sits below bottom nav (z-30), bottom nav is z-40 */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -158,7 +216,6 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
             className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden"
             aria-hidden="true"
           />
-          {/* Drawer — slides up from below; bottom-nav (~76px) stays on top */}
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -173,7 +230,6 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
               maxHeight: "calc(100vh - 76px - env(safe-area-inset-bottom) - 16px)",
             }}
           >
-            {/* Grab handle + header */}
             <div className="flex items-center justify-between px-5 pt-3 pb-2">
               <div className="flex-1 flex justify-center">
                 <span className="block h-1.5 w-12 rounded-full bg-border" />
@@ -187,13 +243,39 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
               </button>
             </div>
             <div className="px-5 pt-1 pb-2">
-              <h2 className="font-serif text-xl text-primary">Menu</h2>
-              <p className="text-xs text-muted-foreground">Pacific North Event &amp; Tent Rentals</p>
+              <h2 className="font-serif text-xl text-primary">{title}</h2>
+              <p className="text-xs text-muted-foreground">{subtitle}</p>
             </div>
 
             <div className="flex-1 overflow-y-auto px-4 pb-6 pt-2">
-              <BentoBlock title="Explore" tiles={exploreTiles} center={exploreCenter} onClose={onClose} />
-              <BentoBlock title="More" tiles={moreTiles} center={moreCenter} onClose={onClose} />
+              {inAdmin ? (
+                <>
+                  <BentoBlock title="Operations" tiles={adminOpsTiles} center={adminOpsCenter} onClose={onClose} />
+                  <BentoBlock title="Manage" tiles={adminManageTiles} center={adminManageCenter} onClose={onClose} />
+                </>
+              ) : (
+                <>
+                  <BentoBlock title="Explore" tiles={exploreTiles} center={exploreCenter} onClose={onClose} />
+                  <BentoBlock title="More" tiles={moreTiles} center={moreCenter} onClose={onClose} />
+                  {isAdmin && (
+                    <div className="mt-3 px-2">
+                      <Link
+                        to="/admin/dashboard"
+                        onClick={onClose}
+                        className="flex items-center justify-center gap-2 rounded-full border border-amber-500/40 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-100"
+                      >
+                        <LayoutDashboard className="h-4 w-4" />
+                        Go to Admin
+                      </Link>
+                    </div>
+                  )}
+                </>
+              )}
+              {user && inAdmin && (
+                <p className="mt-3 px-2 text-center text-[11px] text-muted-foreground">
+                  Signed in as {user.email}
+                </p>
+              )}
             </div>
           </motion.div>
         </>

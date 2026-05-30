@@ -1,55 +1,46 @@
-# Role-Aware Bottom Navigation
+## Plan: Make the mobile drawer role-aware and stop admin users being bounced to public pages
 
-Right now `MobileBottomNav` shows the same 5 items (Home, Rentals, Quote CTA, AI Planner, Menu) for every visitor regardless of who's logged in. We'll switch it to render one of three variants based on auth + role.
+### What’s wrong right now
+- The bottom nav was made admin-aware, but the drawer it opens (`MobileBentoDrawer`) is still hardcoded to public links.
+- So inside admin, tapping the bottom-right menu opens tiles like Home, Tent Rentals, Services, public Inventory, Gallery, Events, About, Contact.
+- That’s why it feels like the routing is broken: the drawer is literally sending you back to public pages.
 
-## Variants
+### What I’ll change
+1. **Make `MobileBentoDrawer` aware of auth + admin role**
+   - Use the existing `useAuth()` and `useIsAdmin()` hooks.
+   - Read the current pathname.
+   - If the user is an admin and currently on `/admin/*`, render an admin drawer.
+   - Otherwise keep the public drawer behavior.
 
-**1. Public (signed out, or signed-in customer browsing public pages)**
-- Home → `/`
-- Rentals → `/tent-rentals`
-- Center CTA: Get Quote → `/contact`
-- AI Planner → `/ai-tent-planner`
-- Menu (opens existing drawer)
+2. **Replace public drawer tiles with admin tools while in admin**
+   Admin drawer will include direct links to:
+   - Dashboard → `/admin/dashboard`
+   - Quote Requests → `/admin/quote-requests`
+   - Quotes → `/admin/quotes`
+   - Inventory → `/admin/inventory`
+   - Scheduler → `/admin/scheduler`
+   - Staff → `/admin/staff`
+   - Pricing & Content → `/admin`
+   - Data Import → `/admin/data-import`
 
-**2. Admin (user has `admin` role)**
-- Dashboard → `/admin/dashboard`
-- Quotes → `/admin/quotes`
-- Center CTA: Quote Requests → `/admin/quote-requests`
-- Scheduler → `/admin/scheduler`
-- Menu (drawer) — drawer will include Inventory, Pricing, Staff, Data Import, plus a "Switch to public site" link
+3. **Keep a deliberate public escape hatch**
+   - Add one clear “Public Site” / “View Site” action, instead of mixing public pages into the admin tools.
+   - This prevents accidental bouncing while still letting an admin preview the customer-facing site.
 
-**3. Account holder (signed in, non-admin)**
-- Home → `/`
-- My Quotes → `/account`
-- Center CTA: New Quote → `/contact`
-- Rentals → `/tent-rentals`
-- Menu (drawer) with Sign out, AI Planner, etc.
+4. **Update drawer labels/header by context**
+   - Admin context: title like “Admin Tools” and subtitle focused on operations.
+   - Public context: keep the current public menu.
 
-## Selection logic
+5. **Clean up the current fragile drawer structure**
+   - Remove the current forced tuple casts in the nav/drawer pattern where possible.
+   - Keep styling consistent with the existing bento drawer, but make the routing correct first.
 
-Inside `MobileBottomNav`:
-- `const { user } = useAuth();`
-- `const { isAdmin } = useIsAdmin();`
-- If `isAdmin` AND pathname starts with `/admin` → admin variant
-- Else if `isAdmin` AND on a public route → public variant, but show a small "Admin" pill in the menu button area linking to `/admin/dashboard` (so admins on the marketing site can jump back)
-- Else if `user` (logged-in non-admin) → account variant
-- Else → public variant
+### Expected result
+- When you are in `/admin/*`, the bottom-right menu opens admin tools, including Staff.
+- Tapping drawer items from admin routes keeps you inside admin routes.
+- Public pages still show public navigation.
+- Admins browsing the public site still see the public menu, with an obvious way back to admin from the bottom nav.
 
-This way admins still see public nav while previewing marketing pages, but get the admin nav inside `/admin/*`. Account holders viewing their quote get account nav everywhere.
-
-## Implementation
-
-Single file change: `src/components/MobileBottomNav.tsx`.
-- Extract three `items` arrays (`publicItems`, `adminItems`, `accountItems`) each with `{ to, labelKey, icon, exact }` plus a `centerCta` object (`{ to, labelKey, icon, ariaLabel }`).
-- Pick the active set from the rules above.
-- Render with the existing visual structure (2 items, center floating CTA, 2 items, menu button) — no style changes.
-- Add new i18n keys under `nav.*`: `dashboard`, `quotes`, `quoteRequests`, `scheduler`, `myQuotes`, `newQuote`. Fall back to English strings inline if the i18n files aren't wired up for new keys yet.
-
-No changes to `SiteLayout`, routes, or the drawer in this pass. The drawer contents can be tightened in a follow-up if you want role-specific menu items there too — say the word and I'll include it.
-
-## Out of scope
-
-- Restyling the bar
-- Changing the drawer (`MobileBentoDrawer`) contents
-- Desktop navigation
-- Adding new routes
+### Files to update
+- `src/components/MobileBentoDrawer.tsx`
+- Possibly a small cleanup in `src/components/MobileBottomNav.tsx` only if needed to keep the admin/public behavior consistent.
