@@ -49,14 +49,38 @@ interface Center {
 
 // ----- Public tiles -----
 const exploreTiles: Tile[] = [
-  { to: "/", label: "Home", icon: Home,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]", iconColor: "text-primary" },
-  { to: "/tent-rentals", label: "Tent Rentals", icon: Tent,
-    tileBg: "bg-gradient-to-br from-[oklch(0.97_0.02_85)] to-[oklch(0.93_0.04_80)] border border-[oklch(0.86_0.05_80)]", iconColor: "text-[color:var(--sand-deep)]" },
-  { to: "/services", label: "Services", icon: HardHat,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]", iconColor: "text-[color:var(--forest)]" },
-  { to: "/inventory", label: "Inventory", icon: ListChecks,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]", iconColor: "text-[color:var(--gold)]" },
+  {
+    to: "/",
+    label: "Home",
+    icon: Home,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]",
+    iconColor: "text-primary",
+  },
+  {
+    to: "/tent-rentals",
+    label: "Tent Rentals",
+    icon: Tent,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.97_0.02_85)] to-[oklch(0.93_0.04_80)] border border-[oklch(0.86_0.05_80)]",
+    iconColor: "text-[color:var(--sand-deep)]",
+  },
+  {
+    to: "/services",
+    label: "Services",
+    icon: HardHat,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]",
+    iconColor: "text-[color:var(--forest)]",
+  },
+  {
+    to: "/inventory",
+    label: "Inventory",
+    icon: ListChecks,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]",
+    iconColor: "text-[color:var(--gold)]",
+  },
 ];
 
 const exploreCenter: Center = {
@@ -67,14 +91,38 @@ const exploreCenter: Center = {
 };
 
 const moreTiles: Tile[] = [
-  { to: "/gallery", label: "Gallery", icon: ImageIcon,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_300)] to-[oklch(0.91_0.04_300)] border border-[oklch(0.84_0.05_300)]", iconColor: "text-[color:var(--navy-soft)]" },
-  { to: "/events", label: "Events", icon: Calendar,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]", iconColor: "text-[color:var(--sand-deep)]" },
-  { to: "/about", label: "About", icon: Info,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_200)] to-[oklch(0.91_0.04_200)] border border-[oklch(0.84_0.05_200)]", iconColor: "text-primary" },
-  { to: "/contact", label: "Contact", icon: Phone,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]", iconColor: "text-[color:var(--forest)]" },
+  {
+    to: "/gallery",
+    label: "Gallery",
+    icon: ImageIcon,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_300)] to-[oklch(0.91_0.04_300)] border border-[oklch(0.84_0.05_300)]",
+    iconColor: "text-[color:var(--navy-soft)]",
+  },
+  {
+    to: "/events",
+    label: "Events",
+    icon: Calendar,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]",
+    iconColor: "text-[color:var(--sand-deep)]",
+  },
+  {
+    to: "/about",
+    label: "About",
+    icon: Info,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_200)] to-[oklch(0.91_0.04_200)] border border-[oklch(0.84_0.05_200)]",
+    iconColor: "text-primary",
+  },
+  {
+    to: "/contact",
+    label: "Contact",
+    icon: Phone,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]",
+    iconColor: "text-[color:var(--forest)]",
+  },
 ];
 
 const moreCenter: Center = {
@@ -86,14 +134,38 @@ const moreCenter: Center = {
 
 // ----- Admin tiles -----
 const adminOpsTiles: Tile[] = [
-  { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]", iconColor: "text-primary" },
-  { to: "/admin/quote-requests", label: "Requests", icon: Inbox,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]", iconColor: "text-[color:var(--gold)]" },
-  { to: "/admin/quotes", label: "Quotes", icon: FileText,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_200)] to-[oklch(0.91_0.04_200)] border border-[oklch(0.84_0.05_200)]", iconColor: "text-primary" },
-  { to: "/admin/scheduler", label: "Scheduler", icon: Calendar,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]", iconColor: "text-[color:var(--sand-deep)]" },
+  {
+    to: "/admin/dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]",
+    iconColor: "text-primary",
+  },
+  {
+    to: "/admin/quote-requests",
+    label: "Requests",
+    icon: Inbox,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]",
+    iconColor: "text-[color:var(--gold)]",
+  },
+  {
+    to: "/admin/quotes",
+    label: "Quotes",
+    icon: FileText,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_200)] to-[oklch(0.91_0.04_200)] border border-[oklch(0.84_0.05_200)]",
+    iconColor: "text-primary",
+  },
+  {
+    to: "/admin/scheduler",
+    label: "Scheduler",
+    icon: Calendar,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]",
+    iconColor: "text-[color:var(--sand-deep)]",
+  },
 ];
 
 const adminOpsCenter: Center = {
@@ -104,14 +176,38 @@ const adminOpsCenter: Center = {
 };
 
 const adminManageTiles: Tile[] = [
-  { to: "/admin/inventory", label: "Inventory", icon: Boxes,
-    tileBg: "bg-gradient-to-br from-[oklch(0.97_0.02_85)] to-[oklch(0.93_0.04_80)] border border-[oklch(0.86_0.05_80)]", iconColor: "text-[color:var(--sand-deep)]" },
-  { to: "/admin/staff", label: "Staff", icon: Users,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]", iconColor: "text-[color:var(--forest)]" },
-  { to: "/admin", label: "Pricing & Content", icon: Tag,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.02_300)] to-[oklch(0.91_0.04_300)] border border-[oklch(0.84_0.05_300)]", iconColor: "text-[color:var(--navy-soft)]" },
-  { to: "/admin/data-import", label: "Data Import", icon: Upload,
-    tileBg: "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]", iconColor: "text-[color:var(--gold)]" },
+  {
+    to: "/admin/inventory",
+    label: "Inventory",
+    icon: Boxes,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.97_0.02_85)] to-[oklch(0.93_0.04_80)] border border-[oklch(0.86_0.05_80)]",
+    iconColor: "text-[color:var(--sand-deep)]",
+  },
+  {
+    to: "/admin/staff",
+    label: "Staff",
+    icon: Users,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]",
+    iconColor: "text-[color:var(--forest)]",
+  },
+  {
+    to: "/admin",
+    label: "Pricing & Content",
+    icon: Tag,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_300)] to-[oklch(0.91_0.04_300)] border border-[oklch(0.84_0.05_300)]",
+    iconColor: "text-[color:var(--navy-soft)]",
+  },
+  {
+    to: "/admin/data-import",
+    label: "Data Import",
+    icon: Upload,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]",
+    iconColor: "text-[color:var(--gold)]",
+  },
 ];
 
 const adminManageCenter: Center = {
@@ -133,7 +229,9 @@ function BentoTile({ tile, onClose }: { tile: Tile; onClose: () => void }) {
       <span className="w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center">
         <Icon className={`w-5 h-5 ${tile.iconColor}`} />
       </span>
-      <span className="text-sm font-bold text-foreground text-center leading-tight">{tile.label}</span>
+      <span className="text-sm font-bold text-foreground text-center leading-tight">
+        {tile.label}
+      </span>
     </Link>
   );
 }
@@ -196,12 +294,13 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
 
   if (typeof window === "undefined") return null;
 
-  const inAdmin = isAdmin && pathname.startsWith("/admin");
+  // The drawer must follow the admin route context immediately. Role lookup can
+  // briefly lag behind the page render, which was causing the public menu to
+  // appear inside admin screens.
+  const inAdmin = pathname.startsWith("/admin");
 
   const title = inAdmin ? "Admin Tools" : "Menu";
-  const subtitle = inAdmin
-    ? "Operations & management"
-    : "Pacific North Event & Tent Rentals";
+  const subtitle = inAdmin ? "Operations & management" : "Pacific North Event & Tent Rentals";
 
   return createPortal(
     <AnimatePresence>
@@ -250,13 +349,33 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
             <div className="flex-1 overflow-y-auto px-4 pb-6 pt-2">
               {inAdmin ? (
                 <>
-                  <BentoBlock title="Operations" tiles={adminOpsTiles} center={adminOpsCenter} onClose={onClose} />
-                  <BentoBlock title="Manage" tiles={adminManageTiles} center={adminManageCenter} onClose={onClose} />
+                  <BentoBlock
+                    title="Operations"
+                    tiles={adminOpsTiles}
+                    center={adminOpsCenter}
+                    onClose={onClose}
+                  />
+                  <BentoBlock
+                    title="Manage"
+                    tiles={adminManageTiles}
+                    center={adminManageCenter}
+                    onClose={onClose}
+                  />
                 </>
               ) : (
                 <>
-                  <BentoBlock title="Explore" tiles={exploreTiles} center={exploreCenter} onClose={onClose} />
-                  <BentoBlock title="More" tiles={moreTiles} center={moreCenter} onClose={onClose} />
+                  <BentoBlock
+                    title="Explore"
+                    tiles={exploreTiles}
+                    center={exploreCenter}
+                    onClose={onClose}
+                  />
+                  <BentoBlock
+                    title="More"
+                    tiles={moreTiles}
+                    center={moreCenter}
+                    onClose={onClose}
+                  />
                   {isAdmin && (
                     <div className="mt-3 px-2">
                       <Link
