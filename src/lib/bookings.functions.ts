@@ -6,11 +6,6 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
    Bookings: wires quotes ↔ inventory ↔ scheduler ↔ returns.
    ============================================================ */
 
-type _unused = Awaited<
-  ReturnType<typeof Object.values>
-> extends never
-  ? never
-  : any;
 
 /** Resolve inventory_item_id for a quote_items row (direct or via pricing mapping). */
 async function resolveInventoryIdsForQuote(
