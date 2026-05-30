@@ -225,7 +225,7 @@ export function StatusPill({ status }: { status: string }) {
   );
 }
 
-export function AdminTabs({ active }: { active: "dashboard" | "admin" | "quote-requests" | "quotes" | "inventory" }) {
+export function AdminTabs({ active }: { active: "dashboard" | "admin" | "quote-requests" | "quotes" | "inventory" | "staff" | "scheduler" }) {
   const { isAdmin } = useIsAdmin();
   const countFn = useServerFn(countNewQuoteRequests);
   const { data: countData } = useQuery({
@@ -240,6 +240,8 @@ export function AdminTabs({ active }: { active: "dashboard" | "admin" | "quote-r
     { key: "quote-requests", label: "Quote Requests", to: "/admin/quote-requests" as const, badge: newCount },
     { key: "quotes", label: "Quotes", to: "/admin/quotes" as const },
     { key: "inventory", label: "Inventory", to: "/admin/inventory" as const },
+    { key: "scheduler", label: "Scheduler", to: "/admin/scheduler" as const },
+    { key: "staff", label: "Staff", to: "/admin/staff" as const },
     { key: "admin", label: "Pricing & Content", to: "/admin" as const },
   ];
   return (

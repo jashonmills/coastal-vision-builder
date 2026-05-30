@@ -24,6 +24,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
+import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
 import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-requests'
@@ -35,6 +36,7 @@ import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
 import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes.$id.preview'
+import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes.$id.job-sheet'
 import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes.$id.edit'
 
 const TentRentalsRoute = TentRentalsRouteImport.update({
@@ -112,6 +114,11 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/account/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSchedulerRoute = AdminSchedulerRouteImport.update({
   id: '/scheduler',
   path: '/scheduler',
@@ -167,6 +174,11 @@ const AdminQuotesIdPreviewRoute = AdminQuotesIdPreviewRouteImport.update({
   path: '/$id/preview',
   getParentRoute: () => AdminQuotesRoute,
 } as any)
+const AdminQuotesIdJobSheetRoute = AdminQuotesIdJobSheetRouteImport.update({
+  id: '/$id/job-sheet',
+  path: '/$id/job-sheet',
+  getParentRoute: () => AdminQuotesRoute,
+} as any)
 const AdminQuotesIdEditRoute = AdminQuotesIdEditRouteImport.update({
   id: '/$id/edit',
   path: '/$id/edit',
@@ -195,11 +207,13 @@ export interface FileRoutesByFullPath {
   '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
   '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/admin/scheduler': typeof AdminSchedulerRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -223,11 +237,13 @@ export interface FileRoutesByTo {
   '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
   '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/admin/scheduler': typeof AdminSchedulerRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
 }
 export interface FileRoutesById {
@@ -253,11 +269,13 @@ export interface FileRoutesById {
   '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
   '/admin/quotes': typeof AdminQuotesRouteWithChildren
   '/admin/scheduler': typeof AdminSchedulerRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
 }
 export interface FileRouteTypes {
@@ -284,11 +302,13 @@ export interface FileRouteTypes {
     | '/admin/quote-requests'
     | '/admin/quotes'
     | '/admin/scheduler'
+    | '/admin/staff'
     | '/account/'
     | '/admin/'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/admin/quotes/$id/edit'
+    | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -312,11 +332,13 @@ export interface FileRouteTypes {
     | '/admin/quote-requests'
     | '/admin/quotes'
     | '/admin/scheduler'
+    | '/admin/staff'
     | '/account'
     | '/admin'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/admin/quotes/$id/edit'
+    | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
   id:
     | '__root__'
@@ -341,11 +363,13 @@ export interface FileRouteTypes {
     | '/admin/quote-requests'
     | '/admin/quotes'
     | '/admin/scheduler'
+    | '/admin/staff'
     | '/account/'
     | '/admin/'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/admin/quotes/$id/edit'
+    | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
   fileRoutesById: FileRoutesById
 }
@@ -474,6 +498,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/staff': {
+      id: '/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/scheduler': {
       id: '/admin/scheduler'
       path: '/scheduler'
@@ -551,6 +582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminQuotesIdPreviewRouteImport
       parentRoute: typeof AdminQuotesRoute
     }
+    '/admin/quotes/$id/job-sheet': {
+      id: '/admin/quotes/$id/job-sheet'
+      path: '/$id/job-sheet'
+      fullPath: '/admin/quotes/$id/job-sheet'
+      preLoaderRoute: typeof AdminQuotesIdJobSheetRouteImport
+      parentRoute: typeof AdminQuotesRoute
+    }
     '/admin/quotes/$id/edit': {
       id: '/admin/quotes/$id/edit'
       path: '/$id/edit'
@@ -586,11 +624,13 @@ const AdminQuoteRequestsRouteWithChildren =
 
 interface AdminQuotesRouteChildren {
   AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
+  AdminQuotesIdJobSheetRoute: typeof AdminQuotesIdJobSheetRoute
   AdminQuotesIdPreviewRoute: typeof AdminQuotesIdPreviewRoute
 }
 
 const AdminQuotesRouteChildren: AdminQuotesRouteChildren = {
   AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
+  AdminQuotesIdJobSheetRoute: AdminQuotesIdJobSheetRoute,
   AdminQuotesIdPreviewRoute: AdminQuotesIdPreviewRoute,
 }
 
@@ -606,6 +646,7 @@ interface AdminRouteChildren {
   AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRouteWithChildren
   AdminQuotesRoute: typeof AdminQuotesRouteWithChildren
   AdminSchedulerRoute: typeof AdminSchedulerRoute
+  AdminStaffRoute: typeof AdminStaffRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -617,6 +658,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminQuoteRequestsRoute: AdminQuoteRequestsRouteWithChildren,
   AdminQuotesRoute: AdminQuotesRouteWithChildren,
   AdminSchedulerRoute: AdminSchedulerRoute,
+  AdminStaffRoute: AdminStaffRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 

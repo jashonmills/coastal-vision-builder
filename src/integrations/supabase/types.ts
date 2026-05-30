@@ -518,6 +518,48 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_returns: {
+        Row: {
+          condition_notes: string | null
+          created_at: string
+          damaged_quantity: number
+          id: string
+          inventory_item_id: string
+          missing_quantity: number
+          quote_id: string
+          quote_item_id: string | null
+          returned_at: string
+          returned_by: string | null
+          returned_quantity: number
+        }
+        Insert: {
+          condition_notes?: string | null
+          created_at?: string
+          damaged_quantity?: number
+          id?: string
+          inventory_item_id: string
+          missing_quantity?: number
+          quote_id: string
+          quote_item_id?: string | null
+          returned_at?: string
+          returned_by?: string | null
+          returned_quantity?: number
+        }
+        Update: {
+          condition_notes?: string | null
+          created_at?: string
+          damaged_quantity?: number
+          id?: string
+          inventory_item_id?: string
+          missing_quantity?: number
+          quote_id?: string
+          quote_item_id?: string | null
+          returned_at?: string
+          returned_by?: string | null
+          returned_quantity?: number
+        }
+        Relationships: []
+      }
       quotes: {
         Row: {
           amount_paid_cents: number | null
@@ -955,6 +997,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      staff: {
+        Row: {
+          active: boolean
+          color: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          role: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          color?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          role?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          color?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          role?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {

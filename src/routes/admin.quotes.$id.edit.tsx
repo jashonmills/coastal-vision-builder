@@ -16,8 +16,9 @@ import {
   listPricingItemsForBuilder,
   getQuoteItemsAvailability,
 } from "@/lib/quotes.functions";
+import { bookQuote, unbookQuote, getQuoteBookingStatus } from "@/lib/bookings.functions";
 import { StatusPill } from "./admin.quote-requests";
-import { Mail } from "lucide-react";
+import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
 
 export const Route = createFileRoute("/admin/quotes/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
@@ -37,6 +38,9 @@ function EditQuotePage() {
   const delFn = useServerFn(deleteQuoteItem);
   const sendFn = useServerFn(sendQuote);
   const pricingFn = useServerFn(listPricingItemsForBuilder);
+  const bookFn = useServerFn(bookQuote);
+  const unbookFn = useServerFn(unbookQuote);
+  const statusFn = useServerFn(getQuoteBookingStatus);
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
@@ -55,6 +59,11 @@ function EditQuotePage() {
     queryFn: () => availFn({ data: { quote_id: id } }),
     enabled: !!user && isAdmin && !!data,
   });
+  const { data: bookingStatus, refetch: refetchStatus } = useQuery({
+    queryKey: ["quote-booking-status", id],
+    queryFn: () => statusFn({ data: { quote_id: id } }),
+    enabled: !!user && isAdmin && !!data,
+  });
 
   const send = useMutation({
     mutationFn: () => sendFn({ data: { id } }),
@@ -62,6 +71,35 @@ function EditQuotePage() {
       toast.success("Quote marked as sent.");
       qc.invalidateQueries({ queryKey: ["admin-quote", id] });
     },
+  });
+
+  const book = useMutation({
+    mutationFn: () => bookFn({ data: { quote_id: id } }),
+    onSuccess: (res) => {
+      const eventMsg = res.has_event_date
+        ? `${res.events_created} calendar events created.`
+        : "No event date set — calendar events skipped.";
+      toast.success(
+        res.already_reserved
+          ? `Already reserved. ${eventMsg}`
+          : `Reserved ${res.lines_reserved} item(s). ${eventMsg}`,
+      );
+      refetch();
+      refetchStatus();
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const unbook = useMutation({
+    mutationFn: () => unbookFn({ data: { quote_id: id } }),
+    onSuccess: () => {
+      toast.success("Reservation released.");
+      refetch();
+      refetchStatus();
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   if (loading || rl || isLoading) {
@@ -107,14 +145,56 @@ function EditQuotePage() {
             </button>
             <button
               onClick={() => send.mutate()}
-              disabled={send.isPending || quote.status === "sent"}
+              disabled={send.isPending || quote.status === "sent" || quote.status === "booked"}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
             >
               {send.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               {quote.status === "sent" ? "Sent" : "Mark Sent"}
             </button>
+            {bookingStatus?.reserved ? (
+              <button
+                onClick={() => {
+                  if (confirm("Release the reservation and remove delivery/pickup events?")) unbook.mutate();
+                }}
+                disabled={unbook.isPending}
+                className="inline-flex items-center gap-2 rounded-full border border-amber-400 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 disabled:opacity-50"
+              >
+                {unbook.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarX className="h-4 w-4" />}
+                Unbook
+              </button>
+            ) : (
+              <button
+                onClick={() => book.mutate()}
+                disabled={book.isPending}
+                className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
+              >
+                {book.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
+                Book & Reserve
+              </button>
+            )}
+            <Link
+              to="/admin/quotes/$id/job-sheet"
+              params={{ id }}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm hover:bg-secondary"
+            >
+              <ClipboardList className="h-4 w-4" /> Job Sheet
+            </Link>
           </div>
         </div>
+
+        {bookingStatus && (
+          <div className="mt-4 rounded-lg border border-border bg-card/60 p-3 text-xs">
+            <span className="font-semibold">Status:</span>{" "}
+            {bookingStatus.reserved ? (
+              <span className="text-emerald-700">
+                Reserved ({bookingStatus.reserve_tx_count} item tx) ·{" "}
+                {bookingStatus.events.length} calendar event(s)
+              </span>
+            ) : (
+              <span className="text-muted-foreground">Not reserved yet. Click "Book & Reserve" to lock inventory and add delivery/pickup to the calendar.</span>
+            )}
+          </div>
+        )}
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="overflow-x-auto rounded-xl border border-border bg-card">
