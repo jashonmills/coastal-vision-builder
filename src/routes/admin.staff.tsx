@@ -53,7 +53,10 @@ function StaffPage() {
         <h1 className="font-serif text-3xl text-primary">Staff</h1>
         <p className="text-sm text-muted-foreground">Team members assignable to calendar events and job sheets.</p>
 
-        <NewStaffForm onCreate={(s) => save.mutate(s)} />
+        <NewStaffForm
+          saving={save.isPending}
+          onCreate={(s) => save.mutate(s)}
+        />
 
         <div className="mt-6 overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-sm">
@@ -70,7 +73,7 @@ function StaffPage() {
             </thead>
             <tbody>
               {data.length === 0 && (
-                <tr><td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">No staff yet.</td></tr>
+                <tr><td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">No staff yet. Add your first team member above.</td></tr>
               )}
               {data.map((s: any) => (
                 <StaffRow key={s.id} staff={s} onSave={(p) => save.mutate(p)} onDelete={() => { if (confirm("Delete staff?")) del.mutate(s.id); }} />
@@ -83,18 +86,39 @@ function StaffPage() {
   );
 }
 
-function NewStaffForm({ onCreate }: { onCreate: (s: any) => void }) {
+function NewStaffForm({ onCreate, saving }: { onCreate: (s: any) => void; saving: boolean }) {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
+  const submit = () => {
+    if (!name.trim() || saving) return;
+    onCreate({ name: name.trim(), role: role.trim() || null, active: true });
+    setName("");
+    setRole("");
+  };
   return (
-    <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card p-3">
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" className="rounded border border-border bg-background px-2 py-1 text-sm" />
-      <input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Role (e.g. Driver, Setup)" className="rounded border border-border bg-background px-2 py-1 text-sm" />
+    <div className="mt-4 grid gap-2 rounded-xl border border-border bg-card p-3 sm:grid-cols-[1fr_1fr_auto]">
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onKeyDown={(e) => { if (e.key === "Enter") submit(); }}
+        placeholder="Full name"
+        className="rounded border border-border bg-background px-3 py-2 text-sm"
+      />
+      <input
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        onKeyDown={(e) => { if (e.key === "Enter") submit(); }}
+        placeholder="Role (e.g. Driver, Setup)"
+        className="rounded border border-border bg-background px-3 py-2 text-sm"
+      />
       <button
-        onClick={() => { if (!name.trim()) return; onCreate({ name: name.trim(), role: role.trim() || null, active: true }); setName(""); setRole(""); }}
-        className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground"
+        type="button"
+        onClick={submit}
+        disabled={!name.trim() || saving}
+        className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
       >
-        <Plus className="h-3 w-3" /> Add staff
+        {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+        {saving ? "Adding…" : "Add staff"}
       </button>
     </div>
   );
