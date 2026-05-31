@@ -372,13 +372,18 @@ export const previewLiveSpreadsheet = createServerFn({ method: "POST" })
       data.sheet_name ?? null,
       data.range ?? null,
     );
+    const serializable = rows.slice(0, 20).map((r) => {
+      const o: Record<string, string> = {};
+      for (const k of Object.keys(r)) o[k] = r[k] == null ? "" : String(r[k]);
+      return o;
+    });
     return {
       provider: parsed.provider,
       external_id: parsed.id,
       available_sheets: sheets,
       sheet_name: data.sheet_name ?? sheets[0] ?? null,
       headers,
-      preview_rows: rows.slice(0, 20),
+      preview_rows: serializable,
       total_rows: rows.length,
     };
   });

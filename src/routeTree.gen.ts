@@ -35,6 +35,7 @@ import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
+import { Route as ApiPublicHooksSpreadsheetSyncRouteImport } from './routes/api/public/hooks/spreadsheet-sync'
 import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes.$id.preview'
 import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes.$id.job-sheet'
 import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes.$id.edit'
@@ -169,6 +170,12 @@ const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminInventoryRoute,
 } as any)
+const ApiPublicHooksSpreadsheetSyncRoute =
+  ApiPublicHooksSpreadsheetSyncRouteImport.update({
+    id: '/api/public/hooks/spreadsheet-sync',
+    path: '/api/public/hooks/spreadsheet-sync',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminQuotesIdPreviewRoute = AdminQuotesIdPreviewRouteImport.update({
   id: '/$id/preview',
   path: '/$id/preview',
@@ -215,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
+  '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -245,6 +253,7 @@ export interface FileRoutesByTo {
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
+  '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -277,6 +286,7 @@ export interface FileRoutesById {
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
+  '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -310,6 +320,7 @@ export interface FileRouteTypes {
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
+    | '/api/public/hooks/spreadsheet-sync'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -340,6 +351,7 @@ export interface FileRouteTypes {
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
+    | '/api/public/hooks/spreadsheet-sync'
   id:
     | '__root__'
     | '/'
@@ -371,6 +383,7 @@ export interface FileRouteTypes {
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
+    | '/api/public/hooks/spreadsheet-sync'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -389,6 +402,7 @@ export interface RootRouteChildren {
   TentRentalsRoute: typeof TentRentalsRoute
   AccountIdRoute: typeof AccountIdRoute
   AccountIndexRoute: typeof AccountIndexRoute
+  ApiPublicHooksSpreadsheetSyncRoute: typeof ApiPublicHooksSpreadsheetSyncRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -575,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminInventoryRoute
     }
+    '/api/public/hooks/spreadsheet-sync': {
+      id: '/api/public/hooks/spreadsheet-sync'
+      path: '/api/public/hooks/spreadsheet-sync'
+      fullPath: '/api/public/hooks/spreadsheet-sync'
+      preLoaderRoute: typeof ApiPublicHooksSpreadsheetSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/quotes/$id/preview': {
       id: '/admin/quotes/$id/preview'
       path: '/$id/preview'
@@ -680,6 +701,7 @@ const rootRouteChildren: RootRouteChildren = {
   TentRentalsRoute: TentRentalsRoute,
   AccountIdRoute: AccountIdRoute,
   AccountIndexRoute: AccountIndexRoute,
+  ApiPublicHooksSpreadsheetSyncRoute: ApiPublicHooksSpreadsheetSyncRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
