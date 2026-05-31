@@ -2,12 +2,21 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Upload, FileSpreadsheet, ArrowLeft } from "lucide-react";
+import { Loader2, Upload, FileSpreadsheet, ArrowLeft, RefreshCw, Trash2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
 import * as XLSX from "xlsx";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
-import { importSpreadsheet, listImports } from "@/lib/spreadsheet.functions";
+import {
+  importSpreadsheet,
+  listImports,
+  previewLiveSpreadsheet,
+  connectLiveSpreadsheet,
+  listConnectedSources,
+  syncConnectedSource,
+  updateConnectedSource,
+  deleteConnectedSource,
+} from "@/lib/spreadsheet.functions";
 import { FIELD_SCHEMAS, IMPORT_TYPE_LABELS } from "@/lib/spreadsheet-schema";
 
 export const Route = createFileRoute("/admin/data-import")({
@@ -205,23 +214,329 @@ function ImportWorkflow() {
 }
 
 function ConnectLiveSection() {
+  const qc = useQueryClient();
+  const listFn = useServerFn(listConnectedSources);
+  const previewFn = useServerFn(previewLiveSpreadsheet);
+  const connectFn = useServerFn(connectLiveSpreadsheet);
+  const syncFn = useServerFn(syncConnectedSource);
+  const updateFn = useServerFn(updateConnectedSource);
+  const deleteFn = useServerFn(deleteConnectedSource);
+
+  const { data: sources = [], isLoading } = useQuery({
+    queryKey: ["connected-sources"],
+    queryFn: () => listFn(),
+  });
+
+  // wizard state
+  const [url, setUrl] = useState("");
+  const [name, setName] = useState("");
+  const [importType, setImportType] = useState<keyof typeof FIELD_SCHEMAS>("pricing");
+  const [sheetName, setSheetName] = useState<string>("");
+  const [range, setRange] = useState<string>("");
+  const [preview, setPreview] = useState<Awaited<ReturnType<typeof previewFn>> | null>(null);
+  const [mapping, setMapping] = useState<Record<string, string>>({});
+  const [syncFrequency, setSyncFrequency] = useState<"manual" | "hourly" | "daily" | "weekly">("daily");
+
+  const previewMut = useMutation({
+    mutationFn: async () => previewFn({ data: { url, sheet_name: sheetName || null, range: range || null } }),
+    onSuccess: (r) => {
+      setPreview(r);
+      if (!sheetName && r.sheet_name) setSheetName(r.sheet_name);
+      // auto-map matching headers
+      const fields = FIELD_SCHEMAS[importType].fields.map((f) => f.key);
+      const m: Record<string, string> = {};
+      for (const h of r.headers) {
+        const lower = h.toLowerCase().replace(/\s+/g, "_");
+        const match = fields.find((f) => f === lower);
+        if (match) m[h] = match;
+      }
+      setMapping(m);
+    },
+  });
+
+  const connectMut = useMutation({
+    mutationFn: async () =>
+      connectFn({
+        data: {
+          url,
+          source_name: name || preview?.sheet_name || "Connected sheet",
+          import_type: importType,
+          sheet_name: sheetName || null,
+          range: range || null,
+          column_mapping: mapping,
+          sync_frequency: syncFrequency,
+          sync_enabled: true,
+        },
+      }),
+    onSuccess: () => {
+      setUrl("");
+      setName("");
+      setSheetName("");
+      setRange("");
+      setPreview(null);
+      setMapping({});
+      qc.invalidateQueries({ queryKey: ["connected-sources"] });
+    },
+  });
+
+  const syncMut = useMutation({
+    mutationFn: async (source_id: string) => syncFn({ data: { source_id } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["connected-sources"] });
+      qc.invalidateQueries({ queryKey: ["spreadsheet-imports"] });
+    },
+  });
+
+  const deleteMut = useMutation({
+    mutationFn: async (source_id: string) => deleteFn({ data: { source_id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["connected-sources"] }),
+  });
+
+  const updateMut = useMutation({
+    mutationFn: async (vars: { source_id: string; sync_frequency?: "manual" | "hourly" | "daily" | "weekly"; sync_enabled?: boolean }) =>
+      updateFn({ data: vars }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["connected-sources"] }),
+  });
+
+  const fields = FIELD_SCHEMAS[importType].fields;
+  const requiredMissing = preview
+    ? fields.filter((f) => f.required).filter((f) => !Object.values(mapping).includes(f.key)).map((f) => f.label)
+    : [];
+
   return (
-    <div className="mt-10 rounded-xl border border-border bg-card p-6">
-      <h2 className="mb-1 font-serif text-xl text-primary">Connect Live Spreadsheet</h2>
-      <p className="mb-4 text-sm text-muted-foreground">Pull updates automatically from a connected spreadsheet.</p>
-      <div className="grid gap-3 md:grid-cols-2">
-        {[
-          { name: "Google Sheets", desc: "Sync from a Google Sheets URL" },
-          { name: "Microsoft Excel / OneDrive", desc: "Sync from Excel on OneDrive" },
-        ].map((s) => (
-          <div key={s.name} className="flex items-center justify-between rounded-lg border border-dashed border-border p-4">
-            <div>
-              <p className="font-medium text-foreground">{s.name}</p>
-              <p className="text-xs text-muted-foreground">{s.desc}</p>
-            </div>
-            <button disabled className="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">Coming Soon</button>
+    <div className="mt-10 space-y-6">
+      <div className="rounded-xl border border-border bg-card p-6">
+        <h2 className="mb-1 font-serif text-xl text-primary">Connect Live Spreadsheet</h2>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Paste a Google Sheets or Microsoft Excel (OneDrive / SharePoint) link. The sheet must be accessible to the connected workspace
+          account. Saved connections sync automatically on the schedule you pick.
+        </p>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Spreadsheet URL</label>
+            <input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://docs.google.com/spreadsheets/d/... or https://...sharepoint.com/..."
+              className="w-full rounded border px-3 py-2 text-sm"
+            />
           </div>
-        ))}
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Connection name</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Master pricing sheet"
+              className="w-full rounded border px-3 py-2 text-sm"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Sheet / tab name (optional)</label>
+            <input
+              value={sheetName}
+              onChange={(e) => setSheetName(e.target.value)}
+              placeholder="defaults to first sheet"
+              className="w-full rounded border px-3 py-2 text-sm"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Range (optional, A1)</label>
+            <input
+              value={range}
+              onChange={(e) => setRange(e.target.value)}
+              placeholder="e.g. A1:F500"
+              className="w-full rounded border px-3 py-2 text-sm"
+            />
+          </div>
+        </div>
+
+        <div className="mt-3">
+          <label className="mb-1 block text-xs font-medium text-muted-foreground">Import as</label>
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(IMPORT_TYPE_LABELS) as (keyof typeof FIELD_SCHEMAS)[]).map((k) => (
+              <button
+                key={k}
+                onClick={() => { setImportType(k); setMapping({}); }}
+                className={`rounded-lg border px-3 py-1.5 text-xs ${importType === k ? "border-primary bg-primary/10 text-primary" : "border-border bg-card hover:bg-secondary"}`}
+              >
+                {IMPORT_TYPE_LABELS[k]}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <button
+            disabled={!url || previewMut.isPending}
+            onClick={() => previewMut.mutate()}
+            className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-medium disabled:opacity-50"
+          >
+            {previewMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
+            Fetch preview
+          </button>
+          {previewMut.error && (
+            <span className="inline-flex items-center gap-1 text-sm text-destructive">
+              <AlertCircle className="h-4 w-4" /> {(previewMut.error as Error).message}
+            </span>
+          )}
+        </div>
+
+        {preview && (
+          <div className="mt-5 space-y-4">
+            <div className="rounded-lg border border-border bg-secondary/30 p-3 text-sm">
+              <p className="text-foreground">
+                <CheckCircle2 className="mr-1 inline h-4 w-4 text-emerald-600" />
+                Found <strong>{preview.total_rows}</strong> rows · {preview.headers.length} columns
+                {preview.available_sheets.length > 1 && (
+                  <> · sheets: {preview.available_sheets.join(", ")}</>
+                )}
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm font-medium">Column mapping</p>
+              <div className="grid gap-2 md:grid-cols-2">
+                {preview.headers.map((h) => (
+                  <div key={h} className="flex items-center gap-2">
+                    <span className="w-1/2 truncate font-mono text-xs">{h}</span>
+                    <span className="text-muted-foreground">→</span>
+                    <select
+                      value={mapping[h] ?? ""}
+                      onChange={(e) => setMapping({ ...mapping, [h]: e.target.value })}
+                      className="flex-1 rounded border px-2 py-1 text-sm"
+                    >
+                      <option value="">— Skip —</option>
+                      {fields.map((f) => (
+                        <option key={f.key} value={f.key}>{f.label}{f.required ? " *" : ""}</option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+              </div>
+              {requiredMissing.length > 0 && (
+                <p className="mt-3 rounded border border-amber-400/40 bg-amber-50 p-3 text-sm text-amber-900">
+                  Required fields not mapped: {requiredMissing.join(", ")}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-end gap-3">
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">Sync schedule</label>
+                <select
+                  value={syncFrequency}
+                  onChange={(e) => setSyncFrequency(e.target.value as typeof syncFrequency)}
+                  className="rounded border px-3 py-2 text-sm"
+                >
+                  <option value="manual">Manual only</option>
+                  <option value="hourly">Every hour</option>
+                  <option value="daily">Every day</option>
+                  <option value="weekly">Every week</option>
+                </select>
+              </div>
+              <button
+                disabled={requiredMissing.length > 0 || connectMut.isPending}
+                onClick={() => connectMut.mutate()}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+              >
+                {connectMut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                Save connection &amp; sync now
+              </button>
+              {connectMut.error && (
+                <span className="text-sm text-destructive">{(connectMut.error as Error).message}</span>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <h2 className="mb-3 font-serif text-xl text-primary">Connected Spreadsheets</h2>
+        {isLoading ? (
+          <p className="text-sm text-muted-foreground">Loading…</p>
+        ) : sources.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No live connections yet.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-3 py-2">Name</th>
+                  <th className="px-3 py-2">Provider</th>
+                  <th className="px-3 py-2">Sheet</th>
+                  <th className="px-3 py-2">Type</th>
+                  <th className="px-3 py-2">Schedule</th>
+                  <th className="px-3 py-2">Enabled</th>
+                  <th className="px-3 py-2">Last sync</th>
+                  <th className="px-3 py-2"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {sources.map((s) => (
+                  <tr key={s.id} className="border-t border-border">
+                    <td className="px-3 py-2 font-medium">{s.source_name}</td>
+                    <td className="px-3 py-2 capitalize">{s.provider.replace("_", " ")}</td>
+                    <td className="px-3 py-2 text-muted-foreground">{s.external_sheet_name ?? "—"}{s.sheet_range ? `!${s.sheet_range}` : ""}</td>
+                    <td className="px-3 py-2">{IMPORT_TYPE_LABELS[s.import_type as keyof typeof IMPORT_TYPE_LABELS] ?? s.import_type ?? "—"}</td>
+                    <td className="px-3 py-2">
+                      <select
+                        value={s.sync_frequency ?? "manual"}
+                        onChange={(e) => updateMut.mutate({ source_id: s.id, sync_frequency: e.target.value as "manual" | "hourly" | "daily" | "weekly" })}
+                        className="rounded border px-2 py-1 text-xs"
+                      >
+                        <option value="manual">Manual</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                      </select>
+                    </td>
+                    <td className="px-3 py-2">
+                      <input
+                        type="checkbox"
+                        checked={s.sync_enabled ?? false}
+                        onChange={(e) => updateMut.mutate({ source_id: s.id, sync_enabled: e.target.checked })}
+                      />
+                    </td>
+                    <td className="px-3 py-2 text-xs text-muted-foreground">
+                      {s.last_synced_at ? (
+                        <>
+                          {new Date(s.last_synced_at).toLocaleString()}
+                          <br />
+                          <span className={s.last_sync_status === "failed" ? "text-destructive" : s.last_sync_status === "partial" ? "text-amber-600" : "text-emerald-600"}>
+                            {s.last_sync_status ?? ""}
+                          </span>
+                        </>
+                      ) : (
+                        "Never"
+                      )}
+                    </td>
+                    <td className="px-3 py-2">
+                      <div className="flex gap-1">
+                        <button
+                          title="Sync now"
+                          disabled={syncMut.isPending}
+                          onClick={() => syncMut.mutate(s.id)}
+                          className="rounded p-1.5 hover:bg-secondary disabled:opacity-50"
+                        >
+                          {syncMut.isPending && syncMut.variables === s.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+                        </button>
+                        <button
+                          title="Delete connection"
+                          onClick={() => { if (confirm(`Delete connection "${s.source_name}"?`)) deleteMut.mutate(s.id); }}
+                          className="rounded p-1.5 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {syncMut.error && <p className="mt-3 text-sm text-destructive">{(syncMut.error as Error).message}</p>}
       </div>
     </div>
   );

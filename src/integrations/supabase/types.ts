@@ -902,15 +902,18 @@ export type Database = {
       }
       spreadsheet_sources: {
         Row: {
+          column_mapping: Json
           created_at: string
           created_by: string | null
           external_sheet_name: string | null
           external_spreadsheet_id: string | null
           file_url: string | null
           id: string
+          import_type: string | null
           last_sync_status: string | null
           last_synced_at: string | null
           provider: string
+          sheet_range: string | null
           source_name: string
           source_type: string
           sync_enabled: boolean
@@ -918,15 +921,18 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          column_mapping?: Json
           created_at?: string
           created_by?: string | null
           external_sheet_name?: string | null
           external_spreadsheet_id?: string | null
           file_url?: string | null
           id?: string
+          import_type?: string | null
           last_sync_status?: string | null
           last_synced_at?: string | null
           provider?: string
+          sheet_range?: string | null
           source_name: string
           source_type: string
           sync_enabled?: boolean
@@ -934,15 +940,18 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          column_mapping?: Json
           created_at?: string
           created_by?: string | null
           external_sheet_name?: string | null
           external_spreadsheet_id?: string | null
           file_url?: string | null
           id?: string
+          import_type?: string | null
           last_sync_status?: string | null
           last_synced_at?: string | null
           provider?: string
+          sheet_range?: string | null
           source_name?: string
           source_type?: string
           sync_enabled?: boolean
