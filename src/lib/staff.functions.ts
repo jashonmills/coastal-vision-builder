@@ -2,14 +2,21 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+// Coerce empty strings to null so optional fields don't trip Zod validators.
+const emptyToNull = (max: number) =>
+  z.preprocess((v) => (v === "" || v == null ? null : v), z.string().max(max).nullable().optional());
+
 const StaffSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().min(1).max(200),
-  email: z.string().email().max(255).nullable().optional(),
-  phone: z.string().max(50).nullable().optional(),
-  role: z.string().max(100).nullable().optional(),
-  color: z.string().max(20).nullable().optional(),
-  notes: z.string().max(2000).nullable().optional(),
+  email: z.preprocess(
+    (v) => (v === "" || v == null ? null : v),
+    z.string().email().max(255).nullable().optional(),
+  ),
+  phone: emptyToNull(50),
+  role: emptyToNull(100),
+  color: emptyToNull(20),
+  notes: emptyToNull(2000),
   active: z.boolean().optional(),
 });
 
