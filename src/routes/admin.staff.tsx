@@ -156,3 +156,39 @@ function StaffRow({ staff, onSave, onDelete }: { staff: any; onSave: (p: any) =>
     </tr>
   );
 }
+
+function StaffCard({ staff, onSave, onDelete }: { staff: any; onSave: (p: any) => void; onDelete: () => void }) {
+  const [d, setD] = useState(staff);
+  const dirty = JSON.stringify(d) !== JSON.stringify(staff);
+  const save = () => onSave({ id: d.id, name: d.name, role: d.role, email: d.email, phone: d.phone, color: d.color, active: d.active });
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+      <div className="flex items-center gap-3">
+        <input type="color" value={d.color ?? "#888888"} onChange={(e) => setD({ ...d, color: e.target.value })} className="h-10 w-10 shrink-0 rounded-full border border-border bg-background" aria-label="Color" />
+        <input value={d.name} onChange={(e) => setD({ ...d, name: e.target.value })} placeholder="Full name" className="min-w-0 flex-1 rounded border border-border bg-background px-3 py-2 text-sm font-medium" />
+      </div>
+      <div className="mt-3 grid gap-2">
+        <label className="text-xs uppercase tracking-wider text-muted-foreground">Role</label>
+        <input value={d.role ?? ""} onChange={(e) => setD({ ...d, role: e.target.value })} placeholder="Driver, Setup, etc." className="rounded border border-border bg-background px-3 py-2 text-sm" />
+        <label className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">Email</label>
+        <input type="email" inputMode="email" value={d.email ?? ""} onChange={(e) => setD({ ...d, email: e.target.value })} placeholder="name@example.com" className="rounded border border-border bg-background px-3 py-2 text-sm" />
+        <label className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">Phone</label>
+        <input type="tel" inputMode="tel" value={d.phone ?? ""} onChange={(e) => setD({ ...d, phone: e.target.value })} placeholder="(555) 123-4567" className="rounded border border-border bg-background px-3 py-2 text-sm" />
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={!!d.active} onChange={(e) => setD({ ...d, active: e.target.checked })} className="h-4 w-4" />
+          Active
+        </label>
+        <div className="flex gap-2">
+          <button onClick={onDelete} className="inline-flex items-center gap-1 rounded-full border border-red-600/30 px-3 py-2 text-xs font-semibold text-red-600">
+            <Trash2 className="h-3.5 w-3.5" /> Delete
+          </button>
+          <button disabled={!dirty} onClick={save} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground disabled:opacity-40">
+            <Save className="h-3.5 w-3.5" /> Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
