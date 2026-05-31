@@ -542,7 +542,7 @@ export const updateConnectedSource = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
+    const patch: { sync_frequency?: "manual" | "hourly" | "daily" | "weekly"; sync_enabled?: boolean } = {};
     if (data.sync_frequency !== undefined) patch.sync_frequency = data.sync_frequency;
     if (data.sync_enabled !== undefined) patch.sync_enabled = data.sync_enabled;
     const { error } = await context.supabase.from("spreadsheet_sources").update(patch).eq("id", data.source_id);
