@@ -2,12 +2,21 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Upload, FileSpreadsheet, ArrowLeft } from "lucide-react";
+import { Loader2, Upload, FileSpreadsheet, ArrowLeft, RefreshCw, Trash2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
 import * as XLSX from "xlsx";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
-import { importSpreadsheet, listImports } from "@/lib/spreadsheet.functions";
+import {
+  importSpreadsheet,
+  listImports,
+  previewLiveSpreadsheet,
+  connectLiveSpreadsheet,
+  listConnectedSources,
+  syncConnectedSource,
+  updateConnectedSource,
+  deleteConnectedSource,
+} from "@/lib/spreadsheet.functions";
 import { FIELD_SCHEMAS, IMPORT_TYPE_LABELS } from "@/lib/spreadsheet-schema";
 
 export const Route = createFileRoute("/admin/data-import")({
