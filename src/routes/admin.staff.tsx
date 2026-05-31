@@ -58,29 +58,41 @@ function StaffPage() {
           onCreate={(s) => save.mutate(s)}
         />
 
-        <div className="mt-6 overflow-x-auto rounded-xl border border-border bg-card">
-          <table className="w-full text-sm">
-            <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
-              <tr>
-                <th className="px-3 py-2">Name</th>
-                <th className="px-3 py-2">Role</th>
-                <th className="px-3 py-2">Email</th>
-                <th className="px-3 py-2">Phone</th>
-                <th className="px-3 py-2 w-20">Color</th>
-                <th className="px-3 py-2 w-20">Active</th>
-                <th className="px-3 py-2 w-20"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.length === 0 && (
-                <tr><td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">No staff yet. Add your first team member above.</td></tr>
-              )}
+        {data.length === 0 ? (
+          <div className="mt-6 rounded-xl border border-border bg-card px-3 py-6 text-center text-sm text-muted-foreground">
+            No staff yet. Add your first team member above.
+          </div>
+        ) : (
+          <>
+            {/* Mobile cards */}
+            <div className="mt-6 grid gap-3 md:hidden">
               {data.map((s: any) => (
-                <StaffRow key={s.id} staff={s} onSave={(p) => save.mutate(p)} onDelete={() => { if (confirm("Delete staff?")) del.mutate(s.id); }} />
+                <StaffCard key={s.id} staff={s} onSave={(p) => save.mutate(p)} onDelete={() => { if (confirm("Delete staff?")) del.mutate(s.id); }} />
               ))}
-            </tbody>
-          </table>
-        </div>
+            </div>
+            {/* Desktop table */}
+            <div className="mt-6 hidden overflow-x-auto rounded-xl border border-border bg-card md:block">
+              <table className="w-full text-sm">
+                <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2">Name</th>
+                    <th className="px-3 py-2">Role</th>
+                    <th className="px-3 py-2">Email</th>
+                    <th className="px-3 py-2">Phone</th>
+                    <th className="px-3 py-2 w-20">Color</th>
+                    <th className="px-3 py-2 w-20">Active</th>
+                    <th className="px-3 py-2 w-20"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((s: any) => (
+                    <StaffRow key={s.id} staff={s} onSave={(p) => save.mutate(p)} onDelete={() => { if (confirm("Delete staff?")) del.mutate(s.id); }} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </section>
     </SiteLayout>
   );
