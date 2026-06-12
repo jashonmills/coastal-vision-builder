@@ -211,6 +211,14 @@ const adminManageTiles: Tile[] = [
       "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]",
     iconColor: "text-[color:var(--gold)]",
   },
+  {
+    to: "/admin/admins",
+    label: "Admins",
+    icon: ShieldCheck,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_30)] to-[oklch(0.91_0.05_30)] border border-[oklch(0.84_0.06_30)]",
+    iconColor: "text-amber-700",
+  },
 ];
 
 const adminManageCenter: Center = {
