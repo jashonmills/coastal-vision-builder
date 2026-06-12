@@ -7,6 +7,7 @@ const CATEGORY_ORDER = ["Canopy", "Canopy Options", "Canopy Cleaning Fee", "Tabl
 type BuildArgs = {
   recommendation: AIRecommendation;
   blueprintImage: string | null;
+  perspectiveImage?: string | null;
   input: RecommenderInput;
   contactName?: string;
 };
@@ -33,7 +34,7 @@ async function loadImageDataUrl(src: string): Promise<{ data: string; w: number;
   }
 }
 
-export async function buildRecommendationPdf({ recommendation, blueprintImage, input, contactName }: BuildArgs) {
+export async function buildRecommendationPdf({ recommendation, blueprintImage, perspectiveImage, input, contactName }: BuildArgs) {
   const { jsPDF } = await import("jspdf");
   const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "letter" });
   const pageW = pdf.internal.pageSize.getWidth();
