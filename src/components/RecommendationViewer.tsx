@@ -208,7 +208,7 @@ export function RecommendationViewer({
     if (busy) return;
     setBusy("download");
     try {
-      await downloadRecommendationPdf({ recommendation, blueprintImage, input, contactName }, fileName);
+      await downloadRecommendationPdf({ recommendation, blueprintImage, perspectiveImage, input, contactName }, fileName);
     } finally {
       setBusy(null);
     }
@@ -218,7 +218,7 @@ export function RecommendationViewer({
     if (busy) return;
     setBusy("print");
     try {
-      await printRecommendationPdf({ recommendation, blueprintImage, input, contactName });
+      await printRecommendationPdf({ recommendation, blueprintImage, perspectiveImage, input, contactName });
     } finally {
       setBusy(null);
     }
@@ -263,6 +263,7 @@ export function RecommendationViewer({
             <RecommendationReport
               recommendation={recommendation}
               blueprintImage={blueprintImage}
+              perspectiveImage={perspectiveImage}
               input={input}
               contactName={contactName}
             />
