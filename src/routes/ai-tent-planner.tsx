@@ -558,6 +558,14 @@ function AIResult({
             <p className="mt-1 font-serif text-xl text-primary">{t("recommender.results.blueprintSketch")}</p>
           </div>
           <img src={blueprintImage} alt="Top-down blueprint sketch of recommended event layout" className="mx-auto block w-full max-w-2xl" />
+          {perspectiveImage && (
+            <>
+              <div className="border-t border-border bg-secondary/30 px-6 py-3 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">3D view</p>
+              </div>
+              <img src={perspectiveImage} alt="3D perspective sketch of the recommended tent and layout" className="mx-auto block w-full max-w-2xl" />
+            </>
+          )}
           <div className="border-t border-border px-6 py-4 text-center">
             <p className="text-sm font-medium text-foreground">{recommendation.layout_caption}</p>
             <p className="mt-1 text-xs text-muted-foreground">{t("recommender.results.blueprintNote")}</p>
