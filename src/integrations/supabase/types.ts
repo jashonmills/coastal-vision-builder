@@ -446,26 +446,38 @@ export type Database = {
       }
       profiles: {
         Row: {
+          admin_notes: string | null
           avatar_url: string | null
+          company: string | null
           created_at: string
           display_name: string | null
           id: string
+          internal_title: string | null
+          phone: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
           avatar_url?: string | null
+          company?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
+          internal_title?: string | null
+          phone?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
           avatar_url?: string | null
+          company?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
+          internal_title?: string | null
+          phone?: string | null
           updated_at?: string
           user_id?: string
         }

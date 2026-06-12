@@ -90,9 +90,14 @@ function AccountPage() {
               </p>
             )}
           </div>
-          <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm text-muted-foreground hover:text-primary">
-            <LogOut className="h-4 w-4" /> Sign out
-          </button>
+          <div className="flex items-center gap-2">
+            <Link to="/profile" className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm text-muted-foreground hover:text-primary">
+              Edit profile
+            </Link>
+            <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm text-muted-foreground hover:text-primary">
+              <LogOut className="h-4 w-4" /> Sign out
+            </button>
+          </div>
         </div>
         {isLoading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
