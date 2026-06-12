@@ -765,6 +765,7 @@ export type Database = {
           input: Json
           location: string | null
           pdf_url: string | null
+          perspective_image: string | null
           quote_request_email_sent_at: string | null
           quote_request_note: string | null
           quote_requested_at: string | null
@@ -788,6 +789,7 @@ export type Database = {
           input: Json
           location?: string | null
           pdf_url?: string | null
+          perspective_image?: string | null
           quote_request_email_sent_at?: string | null
           quote_request_note?: string | null
           quote_requested_at?: string | null
@@ -811,6 +813,7 @@ export type Database = {
           input?: Json
           location?: string | null
           pdf_url?: string | null
+          perspective_image?: string | null
           quote_request_email_sent_at?: string | null
           quote_request_note?: string | null
           quote_requested_at?: string | null

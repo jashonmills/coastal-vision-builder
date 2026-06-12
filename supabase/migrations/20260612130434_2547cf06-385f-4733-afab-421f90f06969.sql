@@ -1,0 +1,1 @@
+ALTER TABLE public.saved_recommendations ADD COLUMN IF NOT EXISTS perspective_image text;
