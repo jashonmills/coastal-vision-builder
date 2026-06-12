@@ -1,52 +1,41 @@
-## Problem
+## Goals
+1. Give every signed-in user (including admins) a dedicated Profile page where they can edit their info.
+2. Make sign-in / account obvious on mobile — both a top-right header icon and a bottom-nav tab.
 
-The Event Blueprint always renders a rectangle, even when the recommendation is a 40' Hexagon Tent. The image prompt in `src/lib/recommender.functions.ts` literally says *"Draw the tent as a single rectangle outline"*, so shape and recommendation drift apart. The user also wants a second image showing a 3D perspective view of the same setup (similar in style to the reference renderings they uploaded — line-art 3D, not photographic).
+## 1. Profile schema additions
+Migration on `public.profiles`:
+- add `phone text`
+- add `company text`
+- add admin-only columns: `internal_title text`, `admin_notes text`
 
-## Changes
+RLS updates:
+- Users can `SELECT`/`UPDATE` their own row (already exists) for `display_name`, `phone`, `company`.
+- `internal_title` and `admin_notes` writable/readable only when caller `has_role(auth.uid(),'admin')`. Enforced via a security-definer server function (not column-level RLS) — the page hides the fields for non-admins and the save server fn rejects admin-only fields unless the caller is admin.
 
-### 1. `src/lib/recommender.functions.ts` — shape-aware prompt + second 3D image
+## 2. Profile page
+New route `src/routes/_authenticated/profile.tsx` (moves under the managed auth gate) plus a redirect from existing `/account` Profile link.
+- Form fields: Display name, Phone, Company.
+- Admin-only section (visible only when `has_role = admin`): Internal title, Admin notes, plus an "Admin" badge and quick link to `/admin`.
+- Saves via two `createServerFn`s:
+  - `updateMyProfile` — user-editable fields.
+  - `updateMyAdminProfile` — admin-only fields, guarded by `has_role` check.
+- Zod validation on both client and server (lengths, trimming).
 
-- Derive a `tentShape` from `recommendation.tent_size` (case-insensitive):
-  - contains "hexagon" → `hexagon` (single hex, or 3-petal cluster if size mentions multiple 20x20s)
-  - contains "marquee" / "pole" → `pole tent` (rectangular with two center peaks)
-  - contains "high peak" / "frame" / "x" + digits → `frame tent` (rectangular outline)
-  - festival/multi-tent strings → `multi-tent cluster`
-  - fallback → `frame tent`
-- Rewrite the blueprint prompt so the outer outline matches `tentShape` (e.g. *"Draw the tent footprint as a regular hexagon outline"* / *"…as two adjoining rectangles forming a pole tent"*), and include the shape name in the dimension label. Keep the strict black-line, top-down, schematic style.
-- Add a **second** generation call (same model + endpoint) for `perspectiveImage`: hand-drafted black-line **3D isometric/axonometric** sketch of the same tent shape with tables/chairs/dance floor visible inside, plain white background, no color, in the style of the uploaded rental reference sketches (10x20 frame tent, 20x40 marquee, hexagon cluster). Run both image calls in parallel with `Promise.all` so total latency doesn't double.
-- Return `{ recommendation, blueprintImage, perspectiveImage }`. Both nullable; failure of one must not block the other.
+Link to `/profile` from:
+- Account page header.
+- Desktop header user dropdown (new small menu when signed in: Profile / My Quotes / Sign out).
+- Mobile bento drawer signed-in block.
 
-### 2. `src/routes/ai-tent-planner.tsx`
+## 3. Mobile sign-in visibility
+- **Top-right header icon** (`MobileTopBar` area in `SiteLayout`): person icon → `/login` when signed-out, `/profile` when signed-in. Admins get a small shield dot overlay.
+- **Bottom nav tab** (`MobileBottomNav`): replace the least-used current tab with an "Account" tab that routes to `/login` or `/account` based on auth state. Active state highlights when on `/account*` or `/profile`.
 
-- Thread `perspectiveImage` through `result` state, into `RecommendationReport` props, the on-screen viewer block (render under the blueprint with caption "3D view"), and into the `saved_recommendations` insert payload (`perspective_image`).
-
-### 3. `src/components/RecommendationViewer.tsx`
-
-- Accept new optional `perspectiveImage` prop and render it directly under the existing blueprint image with a small "3D view" caption. Hide gracefully when null.
-
-### 4. `src/lib/recommendation-pdf.ts`
-
-- Accept `perspectiveImage` in `BuildArgs`. After the blueprint image block, if present, add the 3D render as a second image (same width treatment, caption "3D view"). Reuse existing `loadImageDataUrl` / pagination helpers so it flows onto a new page if it doesn't fit.
-
-### 5. `src/routes/account.$id.tsx`
-
-- Pass `data.perspective_image` into both `RecommendationViewer` instances alongside `blueprintImage`.
-
-### 6. `src/lib/saved-recommendations.functions.ts`
-
-- Add `perspective_image: z.string().nullable().optional()` to the schema and persist it in the insert payload.
-
-### 7. Database migration
-
-- `ALTER TABLE public.saved_recommendations ADD COLUMN perspective_image text;` (nullable, no GRANT changes needed — existing grants cover it).
+## 4. Out of scope
+- No changes to auth providers, email templates, or the 3-plan cap.
+- No avatar upload (user didn't select it).
+- No changes to admin tools beyond the profile fields.
 
 ## Technical notes
-
-- Both AI image calls use the existing `google/gemini-3.1-flash-image-preview` model via `ai.gateway.lovable.dev` with the same auth + modalities shape already in use.
-- No changes to recommender business logic (`recommend()` in `src/lib/recommender.ts`) — only to the rendered visuals.
-- No UI/layout changes outside surfacing the second image.
-
-## Out of scope
-
-- Changing the AI recommendation model or the tent-sizing rules.
-- Re-styling the existing blueprint viewer card beyond adding the second image slot.
+- Profile route lives under `_authenticated/` so the managed gate handles redirects — no custom `beforeLoad`.
+- Server fns use `requireSupabaseAuth`; admin fn additionally calls `context.supabase.rpc('has_role', { _user_id: context.userId, _role: 'admin' })`.
+- Mobile bottom-nav refactor keeps existing icon set; only swaps one slot and adds auth-aware label.
