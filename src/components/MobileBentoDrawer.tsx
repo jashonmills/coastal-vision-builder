@@ -24,6 +24,7 @@ import {
   ExternalLink,
   ShieldCheck,
   LogOut,
+  LogIn,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
@@ -401,7 +402,7 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                   )}
                 </>
               )}
-              {user && (
+              {user ? (
                 <div className="mt-3 px-2">
                   {inAdmin && (
                     <p className="mb-2 text-center text-[11px] text-muted-foreground">
@@ -419,6 +420,17 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                     <LogOut className="h-4 w-4" />
                     Sign out
                   </button>
+                </div>
+              ) : (
+                <div className="mt-3 px-2">
+                  <Link
+                    to="/login"
+                    onClick={onClose}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border border-primary bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    Sign in / Sign up
+                  </Link>
                 </div>
               )}
             </div>
