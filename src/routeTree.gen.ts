@@ -36,6 +36,7 @@ import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicHooksSpreadsheetSyncRouteImport } from './routes/api/public/hooks/spreadsheet-sync'
 import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes.$id.preview'
 import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes.$id.job-sheet'
@@ -176,6 +177,12 @@ const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminInventoryRoute,
 } as any)
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksSpreadsheetSyncRoute =
   ApiPublicHooksSpreadsheetSyncRouteImport.update({
     id: '/api/public/hooks/spreadsheet-sync',
@@ -230,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -262,6 +270,7 @@ export interface FileRoutesByTo {
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -296,6 +305,7 @@ export interface FileRoutesById {
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
+    | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -363,6 +374,7 @@ export interface FileRouteTypes {
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
+    | '/lovable/email/queue/process'
   id:
     | '__root__'
     | '/'
@@ -396,6 +408,7 @@ export interface FileRouteTypes {
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
+    | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -415,6 +428,7 @@ export interface RootRouteChildren {
   AccountIdRoute: typeof AccountIdRoute
   AccountIndexRoute: typeof AccountIndexRoute
   ApiPublicHooksSpreadsheetSyncRoute: typeof ApiPublicHooksSpreadsheetSyncRoute
+  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -608,6 +622,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminInventoryRoute
     }
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/spreadsheet-sync': {
       id: '/api/public/hooks/spreadsheet-sync'
       path: '/api/public/hooks/spreadsheet-sync'
@@ -723,6 +744,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountIdRoute: AccountIdRoute,
   AccountIndexRoute: AccountIndexRoute,
   ApiPublicHooksSpreadsheetSyncRoute: ApiPublicHooksSpreadsheetSyncRoute,
+  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
