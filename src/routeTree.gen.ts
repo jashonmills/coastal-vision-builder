@@ -13,6 +13,7 @@ import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RecommenderRouteImport } from './routes/recommender'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -60,6 +61,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const RecommenderRoute = RecommenderRouteImport.update({
   id: '/recommender',
   path: '/recommender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -248,6 +255,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -283,6 +291,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -319,6 +328,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/inventory'
     | '/login'
+    | '/profile'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/inventory'
     | '/login'
+    | '/profile'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -386,6 +397,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/inventory'
     | '/login'
+    | '/profile'
     | '/recommender'
     | '/services'
     | '/sitemap.xml'
@@ -421,6 +433,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   InventoryRoute: typeof InventoryRoute
   LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
   RecommenderRoute: typeof RecommenderRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -459,6 +472,13 @@ declare module '@tanstack/react-router' {
       path: '/recommender'
       fullPath: '/recommender'
       preLoaderRoute: typeof RecommenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -737,6 +757,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   InventoryRoute: InventoryRoute,
   LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
   RecommenderRoute: RecommenderRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -749,13 +770,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

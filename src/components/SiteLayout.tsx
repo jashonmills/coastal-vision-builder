@@ -81,7 +81,19 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             />
           </Link>
 
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 lg:hidden">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 lg:hidden">
+            <Link
+              to={user ? "/profile" : "/login"}
+              aria-label={user ? "My profile" : "Sign in"}
+              className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-primary/25 bg-background text-primary hover:bg-primary/5"
+            >
+              <User className="h-4 w-4" />
+              {isAdmin && (
+                <span className="absolute -bottom-0.5 -right-0.5 inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-amber-500 text-[10px] text-white ring-1 ring-background">
+                  <ShieldCheck className="h-2.5 w-2.5" />
+                </span>
+              )}
+            </Link>
             <LanguageSelector variant="header" />
           </div>
 
