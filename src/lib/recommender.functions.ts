@@ -147,12 +147,60 @@ ${JSON.stringify(inventoryByCategory, null, 2)}`;
     }
     const recommendation = JSON.parse(toolCall.function.arguments) as AIRecommendation;
 
-    // 2. Generate blueprint sketch (black line art on white, like reference rental layouts)
-    let blueprintImage: string | null = null;
-    try {
-      const sketchPrompt = `A clean, hand-drafted top-down floor plan sketch in the style of an event rental layout diagram. STRICT STYLE: pure black line art on a plain white background, no color, no shading, no perspective, no people, no photographic detail — strictly schematic 2D blueprint.
+    // 2. Derive tent shape from the recommended tent_size string so the
+    // rendered blueprint matches what we actually recommend (a hexagon
+    // recommendation should not render as a plain rectangle).
+    const sizeStr = (recommendation.tent_size || "").toLowerCase();
+    let shapeOutlineInstruction: string;
+    let shape3dInstruction: string;
+    if (sizeStr.includes("hexagon") || sizeStr.includes("hex ")) {
+      const cluster = /20\s*x\s*20|cluster|petal|multi/.test(sizeStr);
+      shapeOutlineInstruction = cluster
+        ? `Draw the tent footprint as a central regular HEXAGON outline with 2-3 smaller hexagonal "petal" tents attached to its sides (a hexagon-cluster tent system). Label the overall footprint with its dimensions (${recommendation.tent_size}). The outer outline MUST be hexagonal, NOT rectangular.`
+        : `Draw the tent footprint as a single regular HEXAGON outline (6 equal sides) labeled with its dimensions (${recommendation.tent_size}). The outer outline MUST be hexagonal, NOT rectangular.`;
+      shape3dInstruction = cluster
+        ? `A hexagon-cluster tent (one central hex peak with 2-3 smaller hex peaks attached), seen from a slight 3D axonometric angle.`
+        : `A single 6-sided hexagon tent with a tall center peak, seen from a slight 3D axonometric angle.`;
+    } else if (sizeStr.includes("marquee") || sizeStr.includes("pole") || sizeStr.includes("high peak")) {
+      shapeOutlineInstruction = `Draw the tent footprint as a single rectangle outline (pole/marquee tent) labeled with its dimensions (${recommendation.tent_size}). Show two small peak markers along the rectangle's center line indicating the pole peaks.`;
+      shape3dInstruction = `A rectangular pole/marquee tent with two tall center peaks and gently swooping roofline, seen from a slight 3D axonometric angle.`;
+    } else if (sizeStr.includes("multiple") || sizeStr.includes("festival") || sizeStr.includes("custom large")) {
+      shapeOutlineInstruction = `Draw the tent footprint as a cluster of multiple rectangular tent outlines arranged for a festival/vendor layout, labeled with the overall footprint (${recommendation.tent_size}). Include a central gathering tent and smaller vendor tents.`;
+      shape3dInstruction = `A festival layout with one large central rectangular frame tent and several smaller vendor tents around it, seen from a slight 3D axonometric angle.`;
+    } else {
+      shapeOutlineInstruction = `Draw the tent footprint as a single rectangle outline (frame tent) labeled with its dimensions (${recommendation.tent_size}).`;
+      shape3dInstruction = `A rectangular frame tent with a flat-pitched roof and visible frame poles at the corners, seen from a slight 3D axonometric angle.`;
+    }
 
-Draw the tent as a single rectangle outline labeled with its dimensions (${recommendation.tent_size}). Inside the rectangle, render the arrangement from above: ${recommendation.blueprint_prompt}
+    async function generateImage(prompt: string): Promise<string | null> {
+      try {
+        const imgRes = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "google/gemini-3.1-flash-image-preview",
+            messages: [{ role: "user", content: prompt }],
+            modalities: ["image", "text"],
+          }),
+        });
+        if (imgRes.ok) {
+          const imgJson = await imgRes.json();
+          const d = imgJson.data?.[0];
+          if (d?.b64_json) return `data:image/png;base64,${d.b64_json}`;
+          if (d?.url) return d.url;
+          return null;
+        }
+        console.error("Image generation failed:", imgRes.status, await imgRes.text());
+        return null;
+      } catch (e) {
+        console.error("Image generation error:", e);
+        return null;
+      }
+    }
+
+    const blueprintPrompt = `A clean, hand-drafted top-down floor plan sketch in the style of an event rental layout diagram. STRICT STYLE: pure black line art on a plain white background, no color, no shading, no perspective, no people, no photographic detail — strictly schematic 2D blueprint.
+
+${shapeOutlineInstruction} Inside the footprint outline, render the arrangement from above: ${recommendation.blueprint_prompt}
 
 Tables shown as simple top-down icons (circles for rounds, rectangles for banquet), each surrounded by small chair rectangles. Dance floor as a cross-hatched square grid. Label the bar, DJ, and stage zones with plain text if present.
 
@@ -161,26 +209,21 @@ Below the tent, center a short caption in a plain sans-serif font:
 
 The result must look like an architect's blueprint sketch — minimal, precise, fully contained on the white canvas with generous margins. Do not add any extra decoration, color, or background.`;
 
-      const imgRes = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "google/gemini-3.1-flash-image-preview",
-          messages: [{ role: "user", content: sketchPrompt }],
-          modalities: ["image", "text"],
-        }),
-      });
-      if (imgRes.ok) {
-        const imgJson = await imgRes.json();
-        const d = imgJson.data?.[0];
-        if (d?.b64_json) blueprintImage = `data:image/png;base64,${d.b64_json}`;
-        else if (d?.url) blueprintImage = d.url;
-      } else {
-        console.error("Image generation failed:", imgRes.status, await imgRes.text());
-      }
-    } catch (e) {
-      console.error("Image generation error:", e);
-    }
+    const perspectivePrompt = `A clean, hand-drafted 3D axonometric / isometric line sketch of an event tent setup, in the style of a tent rental company reference rendering. STRICT STYLE: pure black line art on a plain white background, no color, no fill, no shading, no photographic detail, no people — schematic 3D line drawing only.
 
-    return { recommendation, blueprintImage };
+${shape3dInstruction} The tent fabric is shown as thin black outlines so the interior is visible. Inside the tent, show the same arrangement as the floor plan: ${recommendation.blueprint_prompt}
+
+Render round tables as small circles with simple chair shapes around them, banquet tables as rectangles, a dance floor as a square grid, and clearly indicate any bar, DJ, or stage zones. Keep the perspective gentle (about 30° axonometric) so both the roof shape and the interior layout are readable.
+
+Below the tent, center a short caption in a plain sans-serif font:
+"3D view — ${recommendation.tent_size}"
+
+The result should look like a professional rental-company line illustration: minimal, precise, fully contained on the white canvas with generous margins. No color, no background fill, no decoration.`;
+
+    const [blueprintImage, perspectiveImage] = await Promise.all([
+      generateImage(blueprintPrompt),
+      generateImage(perspectivePrompt),
+    ]);
+
+    return { recommendation, blueprintImage, perspectiveImage };
   });
