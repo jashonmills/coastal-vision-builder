@@ -48,9 +48,9 @@ export function MobileBottomNav({ onMenu }: Props) {
     left: [
       { to: "/", label: t("nav.home", { defaultValue: "Home" }), icon: Home, exact: true },
       {
-        to: "/tent-rentals",
-        label: t("nav.rentals", { defaultValue: "Rentals" }),
-        icon: Tent,
+        to: user ? "/account" : "/login",
+        label: user ? "Account" : "Sign In",
+        icon: UserIcon,
         exact: false,
       },
     ],
