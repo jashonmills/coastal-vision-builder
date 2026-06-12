@@ -406,6 +406,26 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                   Signed in as {user.email}
                 </p>
               )}
+              {user && (
+                <div className="mt-3 px-2">
+                  {inAdmin && (
+                    <p className="mb-2 text-center text-[11px] text-muted-foreground">
+                      Signed in as {user.email}
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      onClose();
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         </>
