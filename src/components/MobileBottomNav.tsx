@@ -127,7 +127,7 @@ export function MobileBottomNav({ onMenu }: Props) {
     rightItems = publicRight;
   }
 
-  const showAdminJump = isAdmin && !inAdmin;
+  const showAdminJump = isAdmin && !inAdmin && !user;
 
   const renderItem = (item: NavItem) => {
     const Icon = item.icon;
