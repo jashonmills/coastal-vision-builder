@@ -22,10 +22,13 @@ import {
   Tag,
   Upload,
   ExternalLink,
+  ShieldCheck,
+  LogOut,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   open: boolean;
