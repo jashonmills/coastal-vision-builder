@@ -22,10 +22,13 @@ import {
   Tag,
   Upload,
   ExternalLink,
+  ShieldCheck,
+  LogOut,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   open: boolean;
@@ -207,6 +210,14 @@ const adminManageTiles: Tile[] = [
     tileBg:
       "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]",
     iconColor: "text-[color:var(--gold)]",
+  },
+  {
+    to: "/admin/admins",
+    label: "Admins",
+    icon: ShieldCheck,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_30)] to-[oklch(0.91_0.05_30)] border border-[oklch(0.84_0.06_30)]",
+    iconColor: "text-amber-700",
   },
 ];
 
@@ -390,10 +401,25 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                   )}
                 </>
               )}
-              {user && inAdmin && (
-                <p className="mt-3 px-2 text-center text-[11px] text-muted-foreground">
-                  Signed in as {user.email}
-                </p>
+              {user && (
+                <div className="mt-3 px-2">
+                  {inAdmin && (
+                    <p className="mb-2 text-center text-[11px] text-muted-foreground">
+                      Signed in as {user.email}
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      onClose();
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </button>
+                </div>
               )}
             </div>
           </motion.div>
