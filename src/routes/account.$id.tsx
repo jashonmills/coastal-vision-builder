@@ -99,6 +99,7 @@ function SavedPlanPage() {
             <RecommendationReport
               recommendation={recommendation}
               blueprintImage={data.blueprint_image}
+              perspectiveImage={data.perspective_image}
               input={input}
               contactName={contactName}
             />
@@ -131,6 +132,7 @@ function SavedPlanPage() {
         onClose={() => setOpen(false)}
         recommendation={recommendation}
         blueprintImage={data.blueprint_image}
+        perspectiveImage={data.perspective_image}
         input={input}
         contactName={contactName}
         fileName={`event-recommendation-${data.event_date || "plan"}`}

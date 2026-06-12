@@ -7,6 +7,7 @@ const CATEGORY_ORDER = ["Canopy", "Canopy Options", "Canopy Cleaning Fee", "Tabl
 type BuildArgs = {
   recommendation: AIRecommendation;
   blueprintImage: string | null;
+  perspectiveImage?: string | null;
   input: RecommenderInput;
   contactName?: string;
 };
@@ -33,7 +34,7 @@ async function loadImageDataUrl(src: string): Promise<{ data: string; w: number;
   }
 }
 
-export async function buildRecommendationPdf({ recommendation, blueprintImage, input, contactName }: BuildArgs) {
+export async function buildRecommendationPdf({ recommendation, blueprintImage, perspectiveImage, input, contactName }: BuildArgs) {
   const { jsPDF } = await import("jspdf");
   const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "letter" });
   const pageW = pdf.internal.pageSize.getWidth();
@@ -149,6 +150,26 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, i
       } else {
         y += 6;
       }
+    }
+  }
+
+  // ---------- 3D PERSPECTIVE VIEW ----------
+  if (perspectiveImage) {
+    const img = await loadImageDataUrl(perspectiveImage);
+    if (img) {
+      const maxW = contentW;
+      let iw = maxW;
+      let ih = (img.h / img.w) * iw;
+      const maxH = Math.min(300, pageH - margin - footerReserve - margin);
+      if (ih > maxH) { ih = maxH; iw = (img.w / img.h) * ih; }
+      ensureSpace(ih + 28);
+      pdf.addImage(img.data, "PNG", margin + (contentW - iw) / 2, y, iw, ih);
+      y += ih + 8;
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(9);
+      pdf.setTextColor(...gold);
+      pdf.text("3D VIEW", pageW / 2, y, { align: "center", charSpace: 1.2 });
+      y += 16;
     }
   }
 

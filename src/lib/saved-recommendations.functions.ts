@@ -11,6 +11,7 @@ const SaveSchema = z.object({
   input: z.unknown(),
   recommendation: z.unknown(),
   blueprint_image: z.string().nullable().optional(),
+  perspective_image: z.string().nullable().optional(),
   contact: z.unknown().optional(),
 });
 
@@ -42,6 +43,7 @@ export const saveRecommendation = createServerFn({ method: "POST" })
         input: data.input as never,
         recommendation: data.recommendation as never,
         blueprint_image: data.blueprint_image ?? null,
+        perspective_image: data.perspective_image ?? null,
         contact: (data.contact ?? null) as never,
       })
       .select("id")

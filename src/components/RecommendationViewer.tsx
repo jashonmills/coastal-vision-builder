@@ -11,11 +11,13 @@ const CATEGORY_ORDER = ["Canopy", "Canopy Options", "Canopy Cleaning Fee", "Tabl
 export function RecommendationReport({
   recommendation,
   blueprintImage,
+  perspectiveImage,
   input,
   contactName,
 }: {
   recommendation: AIRecommendation;
   blueprintImage: string | null;
+  perspectiveImage?: string | null;
   input: RecommenderInput;
   contactName?: string;
 }) {
@@ -85,6 +87,14 @@ export function RecommendationReport({
           <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-5 text-sm text-muted-foreground">
             Blueprint image unavailable — layout note: {recommendation.layout_caption}
           </div>
+        )}
+        {perspectiveImage && (
+          <figure className="mt-5 overflow-hidden rounded-xl border border-border bg-background">
+            <img src={perspectiveImage} alt="3D perspective sketch of the recommended tent and layout" className="mx-auto block w-full max-w-2xl" />
+            <figcaption className="border-t border-border px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              3D view
+            </figcaption>
+          </figure>
         )}
         {equipmentSummary && (
           <p className="mt-3 text-center text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -158,6 +168,7 @@ export function RecommendationViewer({
   onClose,
   recommendation,
   blueprintImage,
+  perspectiveImage,
   input,
   contactName,
   fileName,
@@ -171,6 +182,7 @@ export function RecommendationViewer({
   onClose: () => void;
   recommendation: AIRecommendation;
   blueprintImage: string | null;
+  perspectiveImage?: string | null;
   input: RecommenderInput;
   contactName?: string;
   fileName: string;
@@ -196,7 +208,7 @@ export function RecommendationViewer({
     if (busy) return;
     setBusy("download");
     try {
-      await downloadRecommendationPdf({ recommendation, blueprintImage, input, contactName }, fileName);
+      await downloadRecommendationPdf({ recommendation, blueprintImage, perspectiveImage, input, contactName }, fileName);
     } finally {
       setBusy(null);
     }
@@ -206,7 +218,7 @@ export function RecommendationViewer({
     if (busy) return;
     setBusy("print");
     try {
-      await printRecommendationPdf({ recommendation, blueprintImage, input, contactName });
+      await printRecommendationPdf({ recommendation, blueprintImage, perspectiveImage, input, contactName });
     } finally {
       setBusy(null);
     }
@@ -251,6 +263,7 @@ export function RecommendationViewer({
             <RecommendationReport
               recommendation={recommendation}
               blueprintImage={blueprintImage}
+              perspectiveImage={perspectiveImage}
               input={input}
               contactName={contactName}
             />
