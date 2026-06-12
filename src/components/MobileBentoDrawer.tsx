@@ -401,11 +401,6 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                   )}
                 </>
               )}
-              {user && inAdmin && (
-                <p className="mt-3 px-2 text-center text-[11px] text-muted-foreground">
-                  Signed in as {user.email}
-                </p>
-              )}
               {user && (
                 <div className="mt-3 px-2">
                   {inAdmin && (
