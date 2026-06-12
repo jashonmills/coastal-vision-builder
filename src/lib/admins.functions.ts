@@ -74,7 +74,15 @@ export const inviteAdmin = createServerFn({ method: "POST" })
 
     let invited = false;
     if (!existingUserId) {
-      const { data: inv, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(data.email);
+      const siteUrl =
+        process.env.SITE_URL ||
+        process.env.PUBLIC_SITE_URL ||
+        "https://www.pacificnorthrentals.com";
+      const redirectTo = `${siteUrl.replace(/\/$/, "")}/accept-invite`;
+      const { data: inv, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(
+        data.email,
+        { redirectTo },
+      );
       if (error) throw new Error(error.message);
       existingUserId = inv.user?.id ?? null;
       invited = true;
