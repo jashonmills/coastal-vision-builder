@@ -300,6 +300,7 @@ function RecommenderPage() {
           <AIResult
             recommendation={result.recommendation}
             blueprintImage={result.blueprintImage}
+            perspectiveImage={result.perspectiveImage ?? null}
             input={data}
             contact={contact}
             viewerOpen={viewerOpen}
@@ -328,6 +329,7 @@ function RecommenderPage() {
 function AIResult({
   recommendation,
   blueprintImage,
+  perspectiveImage,
   input,
   contact,
   viewerOpen,
@@ -337,6 +339,7 @@ function AIResult({
 }: {
   recommendation: AIRecommendation;
   blueprintImage: string | null;
+  perspectiveImage: string | null;
   input: RecommenderInput;
   contact: { name: string; email: string; phone: string; method: string; notes: string };
   viewerOpen: boolean;
@@ -357,6 +360,7 @@ function AIResult({
       input,
       recommendation,
       blueprint_image: blueprintImage,
+      perspective_image: perspectiveImage,
       contact,
     } }),
     onSuccess: (res) => setSavedId(res.id),
@@ -415,7 +419,7 @@ function AIResult({
     };
   }, [setViewerOpen, viewerOpen]);
 
-  const pdfArgs = { recommendation, blueprintImage, input, contactName: contact.name };
+  const pdfArgs = { recommendation, blueprintImage, perspectiveImage, input, contactName: contact.name };
   const fileName = `event-recommendation-${input.eventDate || "setup"}`;
 
   async function handleDownload() {
@@ -453,7 +457,7 @@ function AIResult({
             </div>
             <div className="flex-1 overflow-auto bg-secondary/60 p-3 sm:p-6">
               <div className="mx-auto max-w-[816px] overflow-hidden rounded-xl border border-border bg-card shadow-xl">
-                <RecommendationReport recommendation={recommendation} blueprintImage={blueprintImage} input={input} contactName={contact.name} />
+                <RecommendationReport recommendation={recommendation} blueprintImage={blueprintImage} perspectiveImage={perspectiveImage} input={input} contactName={contact.name} />
               </div>
             </div>
           </div>
