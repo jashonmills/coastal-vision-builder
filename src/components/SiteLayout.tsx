@@ -170,11 +170,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               {t("nav.eventRecommender")}
             </Link>
             <Link
-              to={user ? "/account" : "/login"}
+              to={user ? "/profile" : "/login"}
               className="inline-flex items-center gap-1 rounded-full border border-primary/25 px-4 py-2 text-sm font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/5"
             >
               <User className="h-4 w-4" />
-              {user ? t("nav.myAccount") : t("nav.signIn")}
+              {user ? t("nav.myAccount", { defaultValue: "Profile" }) : t("nav.signIn")}
             </Link>
             {isAdmin && (
               <Link
