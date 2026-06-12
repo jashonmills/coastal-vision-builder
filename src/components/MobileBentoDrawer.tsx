@@ -403,9 +403,16 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                 </>
               )}
               {user ? (
-                <div className="mt-3 px-2">
+                <div className="mt-3 space-y-2 px-2">
+                  <Link
+                    to="/profile"
+                    onClick={onClose}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border border-primary/30 bg-background px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5"
+                  >
+                    Edit profile
+                  </Link>
                   {inAdmin && (
-                    <p className="mb-2 text-center text-[11px] text-muted-foreground">
+                    <p className="text-center text-[11px] text-muted-foreground">
                       Signed in as {user.email}
                     </p>
                   )}
