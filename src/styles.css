@@ -1,14 +1,16 @@
 @import "tailwindcss" source(none);
-@source "../src";
 @import "tw-animate-css";
-
-/* Fraunces + Inter are loaded via <link> tags in src/routes/__root.tsx */
 @import "@fontsource/atkinson-hyperlegible/400.css";
 @import "@fontsource/atkinson-hyperlegible/700.css";
 @import "@fontsource/lexend/400.css";
 @import "@fontsource/lexend/700.css";
 @import "@fontsource/opendyslexic/400.css";
 @import "@fontsource/opendyslexic/700.css";
+
+@source "../src";
+/* Fraunces + Inter are loaded via <link> tags in src/routes/__root.tsx */
+
+
 
 
 @custom-variant dark (&:is(.dark *));
