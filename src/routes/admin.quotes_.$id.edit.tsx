@@ -20,7 +20,7 @@ import { bookQuote, unbookQuote, getQuoteBookingStatus } from "@/lib/bookings.fu
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
 
-export const Route = createFileRoute("/admin/quotes/$id/edit")({
+export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
   component: EditQuotePage,
 });

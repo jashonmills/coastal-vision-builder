@@ -16,7 +16,7 @@ import { AdminTabs } from "./admin.quote-requests";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
 
-export const Route = createFileRoute("/admin/inventory/$id")({
+export const Route = createFileRoute("/admin/inventory_/$id")({
   head: () => ({ meta: [{ title: "Inventory Item | Admin" }] }),
   component: ItemDetailPage,
 });

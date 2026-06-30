@@ -40,13 +40,13 @@ import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
-import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests.$id'
-import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory.$id'
+import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
+import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicHooksSpreadsheetSyncRouteImport } from './routes/api/public/hooks/spreadsheet-sync'
-import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes.$id.preview'
-import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes.$id.job-sheet'
-import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes.$id.edit'
+import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes_.$id.preview'
+import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes_.$id.job-sheet'
+import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes_.$id.edit'
 
 const TentRentalsRoute = TentRentalsRouteImport.update({
   id: '/tent-rentals',
@@ -204,14 +204,14 @@ const AccountIdRoute = AccountIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminQuoteRequestsRoute,
+  id: '/quote-requests_/$id',
+  path: '/quote-requests/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminInventoryRoute,
+  id: '/inventory_/$id',
+  path: '/inventory/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
@@ -226,19 +226,19 @@ const ApiPublicHooksSpreadsheetSyncRoute =
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminQuotesIdPreviewRoute = AdminQuotesIdPreviewRouteImport.update({
-  id: '/$id/preview',
-  path: '/$id/preview',
-  getParentRoute: () => AdminQuotesRoute,
+  id: '/quotes_/$id/preview',
+  path: '/quotes/$id/preview',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminQuotesIdJobSheetRoute = AdminQuotesIdJobSheetRouteImport.update({
-  id: '/$id/job-sheet',
-  path: '/$id/job-sheet',
-  getParentRoute: () => AdminQuotesRoute,
+  id: '/quotes_/$id/job-sheet',
+  path: '/quotes/$id/job-sheet',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminQuotesIdEditRoute = AdminQuotesIdEditRouteImport.update({
-  id: '/$id/edit',
-  path: '/$id/edit',
-  getParentRoute: () => AdminQuotesRoute,
+  id: '/quotes_/$id/edit',
+  path: '/quotes/$id/edit',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -265,10 +265,10 @@ export interface FileRoutesByFullPath {
   '/admin/admins': typeof AdminAdminsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
-  '/admin/inventory': typeof AdminInventoryRouteWithChildren
+  '/admin/inventory': typeof AdminInventoryRoute
   '/admin/pricing': typeof AdminPricingRoute
-  '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
-  '/admin/quotes': typeof AdminQuotesRouteWithChildren
+  '/admin/quote-requests': typeof AdminQuoteRequestsRoute
+  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/staff': typeof AdminStaffRoute
   '/account/': typeof AccountIndexRoute
@@ -304,10 +304,10 @@ export interface FileRoutesByTo {
   '/admin/admins': typeof AdminAdminsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
-  '/admin/inventory': typeof AdminInventoryRouteWithChildren
+  '/admin/inventory': typeof AdminInventoryRoute
   '/admin/pricing': typeof AdminPricingRoute
-  '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
-  '/admin/quotes': typeof AdminQuotesRouteWithChildren
+  '/admin/quote-requests': typeof AdminQuoteRequestsRoute
+  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/staff': typeof AdminStaffRoute
   '/account': typeof AccountIndexRoute
@@ -345,19 +345,19 @@ export interface FileRoutesById {
   '/admin/admins': typeof AdminAdminsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
-  '/admin/inventory': typeof AdminInventoryRouteWithChildren
+  '/admin/inventory': typeof AdminInventoryRoute
   '/admin/pricing': typeof AdminPricingRoute
-  '/admin/quote-requests': typeof AdminQuoteRequestsRouteWithChildren
-  '/admin/quotes': typeof AdminQuotesRouteWithChildren
+  '/admin/quote-requests': typeof AdminQuoteRequestsRoute
+  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/staff': typeof AdminStaffRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
-  '/admin/inventory/$id': typeof AdminInventoryIdRoute
-  '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
-  '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
-  '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
-  '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
+  '/admin/inventory_/$id': typeof AdminInventoryIdRoute
+  '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/quotes_/$id/edit': typeof AdminQuotesIdEditRoute
+  '/admin/quotes_/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
+  '/admin/quotes_/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -474,11 +474,11 @@ export interface FileRouteTypes {
     | '/admin/staff'
     | '/account/'
     | '/admin/'
-    | '/admin/inventory/$id'
-    | '/admin/quote-requests/$id'
-    | '/admin/quotes/$id/edit'
-    | '/admin/quotes/$id/job-sheet'
-    | '/admin/quotes/$id/preview'
+    | '/admin/inventory_/$id'
+    | '/admin/quote-requests_/$id'
+    | '/admin/quotes_/$id/edit'
+    | '/admin/quotes_/$id/job-sheet'
+    | '/admin/quotes_/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -728,19 +728,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/quote-requests/$id': {
-      id: '/admin/quote-requests/$id'
-      path: '/$id'
+    '/admin/quote-requests_/$id': {
+      id: '/admin/quote-requests_/$id'
+      path: '/quote-requests/$id'
       fullPath: '/admin/quote-requests/$id'
       preLoaderRoute: typeof AdminQuoteRequestsIdRouteImport
-      parentRoute: typeof AdminQuoteRequestsRoute
+      parentRoute: typeof AdminRoute
     }
-    '/admin/inventory/$id': {
-      id: '/admin/inventory/$id'
-      path: '/$id'
+    '/admin/inventory_/$id': {
+      id: '/admin/inventory_/$id'
+      path: '/inventory/$id'
       fullPath: '/admin/inventory/$id'
       preLoaderRoute: typeof AdminInventoryIdRouteImport
-      parentRoute: typeof AdminInventoryRoute
+      parentRoute: typeof AdminRoute
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -756,93 +756,64 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksSpreadsheetSyncRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/quotes/$id/preview': {
-      id: '/admin/quotes/$id/preview'
-      path: '/$id/preview'
+    '/admin/quotes_/$id/preview': {
+      id: '/admin/quotes_/$id/preview'
+      path: '/quotes/$id/preview'
       fullPath: '/admin/quotes/$id/preview'
       preLoaderRoute: typeof AdminQuotesIdPreviewRouteImport
-      parentRoute: typeof AdminQuotesRoute
+      parentRoute: typeof AdminRoute
     }
-    '/admin/quotes/$id/job-sheet': {
-      id: '/admin/quotes/$id/job-sheet'
-      path: '/$id/job-sheet'
+    '/admin/quotes_/$id/job-sheet': {
+      id: '/admin/quotes_/$id/job-sheet'
+      path: '/quotes/$id/job-sheet'
       fullPath: '/admin/quotes/$id/job-sheet'
       preLoaderRoute: typeof AdminQuotesIdJobSheetRouteImport
-      parentRoute: typeof AdminQuotesRoute
+      parentRoute: typeof AdminRoute
     }
-    '/admin/quotes/$id/edit': {
-      id: '/admin/quotes/$id/edit'
-      path: '/$id/edit'
+    '/admin/quotes_/$id/edit': {
+      id: '/admin/quotes_/$id/edit'
+      path: '/quotes/$id/edit'
       fullPath: '/admin/quotes/$id/edit'
       preLoaderRoute: typeof AdminQuotesIdEditRouteImport
-      parentRoute: typeof AdminQuotesRoute
+      parentRoute: typeof AdminRoute
     }
   }
 }
-
-interface AdminInventoryRouteChildren {
-  AdminInventoryIdRoute: typeof AdminInventoryIdRoute
-}
-
-const AdminInventoryRouteChildren: AdminInventoryRouteChildren = {
-  AdminInventoryIdRoute: AdminInventoryIdRoute,
-}
-
-const AdminInventoryRouteWithChildren = AdminInventoryRoute._addFileChildren(
-  AdminInventoryRouteChildren,
-)
-
-interface AdminQuoteRequestsRouteChildren {
-  AdminQuoteRequestsIdRoute: typeof AdminQuoteRequestsIdRoute
-}
-
-const AdminQuoteRequestsRouteChildren: AdminQuoteRequestsRouteChildren = {
-  AdminQuoteRequestsIdRoute: AdminQuoteRequestsIdRoute,
-}
-
-const AdminQuoteRequestsRouteWithChildren =
-  AdminQuoteRequestsRoute._addFileChildren(AdminQuoteRequestsRouteChildren)
-
-interface AdminQuotesRouteChildren {
-  AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
-  AdminQuotesIdJobSheetRoute: typeof AdminQuotesIdJobSheetRoute
-  AdminQuotesIdPreviewRoute: typeof AdminQuotesIdPreviewRoute
-}
-
-const AdminQuotesRouteChildren: AdminQuotesRouteChildren = {
-  AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
-  AdminQuotesIdJobSheetRoute: AdminQuotesIdJobSheetRoute,
-  AdminQuotesIdPreviewRoute: AdminQuotesIdPreviewRoute,
-}
-
-const AdminQuotesRouteWithChildren = AdminQuotesRoute._addFileChildren(
-  AdminQuotesRouteChildren,
-)
 
 interface AdminRouteChildren {
   AdminAdminsRoute: typeof AdminAdminsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminDataImportRoute: typeof AdminDataImportRoute
-  AdminInventoryRoute: typeof AdminInventoryRouteWithChildren
+  AdminInventoryRoute: typeof AdminInventoryRoute
   AdminPricingRoute: typeof AdminPricingRoute
-  AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRouteWithChildren
-  AdminQuotesRoute: typeof AdminQuotesRouteWithChildren
+  AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRoute
+  AdminQuotesRoute: typeof AdminQuotesRoute
   AdminSchedulerRoute: typeof AdminSchedulerRoute
   AdminStaffRoute: typeof AdminStaffRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminInventoryIdRoute: typeof AdminInventoryIdRoute
+  AdminQuoteRequestsIdRoute: typeof AdminQuoteRequestsIdRoute
+  AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
+  AdminQuotesIdJobSheetRoute: typeof AdminQuotesIdJobSheetRoute
+  AdminQuotesIdPreviewRoute: typeof AdminQuotesIdPreviewRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminsRoute: AdminAdminsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminDataImportRoute: AdminDataImportRoute,
-  AdminInventoryRoute: AdminInventoryRouteWithChildren,
+  AdminInventoryRoute: AdminInventoryRoute,
   AdminPricingRoute: AdminPricingRoute,
-  AdminQuoteRequestsRoute: AdminQuoteRequestsRouteWithChildren,
-  AdminQuotesRoute: AdminQuotesRouteWithChildren,
+  AdminQuoteRequestsRoute: AdminQuoteRequestsRoute,
+  AdminQuotesRoute: AdminQuotesRoute,
   AdminSchedulerRoute: AdminSchedulerRoute,
   AdminStaffRoute: AdminStaffRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminInventoryIdRoute: AdminInventoryIdRoute,
+  AdminQuoteRequestsIdRoute: AdminQuoteRequestsIdRoute,
+  AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
+  AdminQuotesIdJobSheetRoute: AdminQuotesIdJobSheetRoute,
+  AdminQuotesIdPreviewRoute: AdminQuotesIdPreviewRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
