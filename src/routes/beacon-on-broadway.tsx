@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
@@ -44,25 +45,15 @@ export const Route = createFileRoute("/beacon-on-broadway")({
   component: BeaconPage,
 });
 
-const facts: { icon: typeof Users; label: string; value: string }[] = [
-  { icon: Users, label: "Capacity", value: "Up to 150 guests" },
-  { icon: Ruler, label: "Space", value: "2,800 sq ft" },
-  { icon: Accessibility, label: "Access", value: "Elevator & ADA" },
-  { icon: Thermometer, label: "Climate", value: "Heat & A/C" },
-];
-
-const included: string[] = [
-  "150 black padded chairs",
-  "(10) 6 ft round tables",
-  "(10) 5 ft round tables",
-  "(2) 8 ft banquet tables",
-  "Built-in bar & prep area",
-  "Sound system ready",
-  "On-site setup support",
-  "Flexible floor plan",
-];
+const factIcons = [
+  { key: "capacity", icon: Users },
+  { key: "space", icon: Ruler },
+  { key: "access", icon: Accessibility },
+  { key: "climate", icon: Thermometer },
+] as const;
 
 function BeaconPage() {
+  const { t } = useTranslation();
   const [lbIndex, setLbIndex] = useState<number | null>(null);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const lbImages: LightboxImage[] = galleryPhotos.map((url, i) => ({
@@ -70,6 +61,7 @@ function BeaconPage() {
     alt: `Beacon on Broadway — photo ${i + 1}`,
   }));
 
+  const included = t("beacon.included.items", { returnObjects: true }) as string[];
 
   return (
     <SiteLayout>
@@ -83,16 +75,13 @@ function BeaconPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/55 to-primary/85" />
         <div className="relative mx-auto max-w-6xl px-4 py-24 sm:py-32 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">
-            Our Venue · Seaside, Oregon
+            {t("beacon.hero.eyebrow")}
           </p>
           <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-[1.05] sm:text-6xl">
-            Beacon on Broadway
+            {t("beacon.hero.title")}
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-primary-foreground/85">
-            A beautifully restored 2,800 sq ft event hall in the heart of
-            downtown Seaside — owned and operated by Pacific North Events &
-            Tents. Weddings, receptions, corporate gatherings, and celebrations
-            of every kind find a home here.
+            {t("beacon.hero.subtitle")}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <button
@@ -100,7 +89,7 @@ function BeaconPage() {
               onClick={() => setQuoteOpen(true)}
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
             >
-              Request a Quote <ArrowRight className="h-4 w-4" />
+              {t("beacon.hero.requestQuote")} <ArrowRight className="h-4 w-4" />
             </button>
 
             <a
@@ -112,7 +101,7 @@ function BeaconPage() {
           </div>
           <div className="mt-6 inline-flex items-center gap-2 text-sm text-primary-foreground/80">
             <MapPin className="h-4 w-4 text-[color:var(--gold)]" />
-            735 Broadway, Seaside, OR 97138
+            {t("beacon.hero.address")}
           </div>
         </div>
       </section>
@@ -120,9 +109,9 @@ function BeaconPage() {
       {/* Fact strip */}
       <section className="border-b border-border/60 bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px overflow-hidden rounded-none bg-border/60 px-0 sm:grid-cols-4 lg:px-0">
-          {facts.map((f) => (
+          {factIcons.map((f) => (
             <div
-              key={f.label}
+              key={f.key}
               className="flex items-center gap-3 bg-background px-5 py-6 sm:px-6"
             >
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--sand-soft)] text-[color:var(--forest)]">
@@ -130,9 +119,9 @@ function BeaconPage() {
               </span>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {f.label}
+                  {t(`beacon.facts.${f.key}.label`)}
                 </p>
-                <p className="text-sm font-medium text-primary">{f.value}</p>
+                <p className="text-sm font-medium text-primary">{t(`beacon.facts.${f.key}.value`)}</p>
               </div>
             </div>
           ))}
@@ -142,28 +131,14 @@ function BeaconPage() {
       {/* Story */}
       <section className="mx-auto max-w-4xl px-4 py-20 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
-          The Story
+          {t("beacon.story.eyebrow")}
         </p>
         <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">
-          A landmark space, lovingly restored
+          {t("beacon.story.title")}
         </h2>
         <div className="mt-6 space-y-5 text-lg leading-relaxed text-muted-foreground">
-          <p>
-            Beacon on Broadway sits in one of Seaside's most recognizable
-            buildings — a historic downtown structure that has anchored
-            Broadway for generations. We restored the upstairs hall into a warm
-            and flexible event space that feels both classic and current:
-            original architectural lines, soft modern lighting, and an open
-            floor that can shift from intimate dinner to dance-floor in an
-            evening.
-          </p>
-          <p>
-            Because the venue is owned and run by Pacific North Events &
-            Tents, every booking comes with the same team that handles our
-            tents, tables, linens, and coordination across the Oregon Coast.
-            Add what you need, leave what you don't, and we'll make it work in
-            the room.
-          </p>
+          <p>{t("beacon.story.body1")}</p>
+          <p>{t("beacon.story.body2")}</p>
         </div>
       </section>
 
@@ -172,17 +147,12 @@ function BeaconPage() {
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
-              Included with every booking
+              {t("beacon.included.eyebrow")}
             </p>
             <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">
-              Furnished, climate-controlled, ready to host
+              {t("beacon.included.title")}
             </h2>
-            <p className="mt-5 text-muted-foreground">
-              The hall comes set with chairs, tables, climate control, and
-              elevator access — so most events arrive, decorate, and celebrate
-              without renting a single extra piece. Need linens, lighting, or
-              a bar package? We'll add it from our in-house inventory.
-            </p>
+            <p className="mt-5 text-muted-foreground">{t("beacon.included.body")}</p>
           </div>
           <ul className="grid gap-3 sm:grid-cols-2">
             {included.map((item) => (
@@ -203,39 +173,36 @@ function BeaconPage() {
       {/* Pricing */}
       <section className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
-          Pricing
+          {t("beacon.pricing.eyebrow")}
         </p>
         <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">
-          Simple, seasonal rates
+          {t("beacon.pricing.title")}
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           <PriceCard
-            badge="Off-Season"
-            window="October – February"
+            badge={t("beacon.pricing.offSeason.badge")}
+            window={t("beacon.pricing.offSeason.window")}
             price="$500"
-            unit="/ day"
-            note="Any day of the week"
+            unit={t("beacon.pricing.perDay")}
+            note={t("beacon.pricing.offSeason.note")}
           />
           <PriceCard
-            badge="Peak Weekday"
-            window="March – September"
+            badge={t("beacon.pricing.peakWeekday.badge")}
+            window={t("beacon.pricing.peakWeekday.window")}
             price="$500"
-            unit="/ day"
-            note="Monday – Thursday"
+            unit={t("beacon.pricing.perDay")}
+            note={t("beacon.pricing.peakWeekday.note")}
           />
           <PriceCard
-            badge="Peak Weekend"
-            window="March – September"
+            badge={t("beacon.pricing.peakWeekend.badge")}
+            window={t("beacon.pricing.peakWeekend.window")}
             price="$1,500"
-            unit="/ weekend"
-            note="Fri–Sat or Sat–Sun"
+            unit={t("beacon.pricing.perWeekend")}
+            note={t("beacon.pricing.peakWeekend.note")}
             highlight
           />
         </div>
-        <p className="mt-6 text-xs text-muted-foreground">
-          Rates are starting points for the venue only. Add-on rentals,
-          staffing, and custom packages quoted on request.
-        </p>
+        <p className="mt-6 text-xs text-muted-foreground">{t("beacon.pricing.note")}</p>
       </section>
 
       {/* Gallery */}
@@ -244,10 +211,10 @@ function BeaconPage() {
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
-                Gallery
+                {t("beacon.gallery.eyebrow")}
               </p>
               <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">
-                Inside the hall
+                {t("beacon.gallery.title")}
               </h2>
             </div>
             <Sparkles className="hidden h-6 w-6 text-[color:var(--gold)] sm:block" />
@@ -277,21 +244,16 @@ function BeaconPage() {
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">
-              Visit
+              {t("beacon.visit.eyebrow")}
             </p>
             <h2 className="mt-3 font-serif text-3xl sm:text-4xl">
-              Downtown Seaside, steps from the Prom
+              {t("beacon.visit.title")}
             </h2>
-            <p className="mt-5 text-primary-foreground/85">
-              Beacon on Broadway is right on Broadway, the main artery
-              connecting downtown Seaside to the beach. Walkable hotels,
-              restaurants, and parking surround the venue — perfect for guests
-              traveling in for the weekend.
-            </p>
+            <p className="mt-5 text-primary-foreground/85">{t("beacon.visit.body")}</p>
             <div className="mt-6 space-y-3 text-sm">
               <p className="inline-flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-[color:var(--gold)]" />
-                735 Broadway, Seaside, OR 97138
+                {t("beacon.hero.address")}
               </p>
               <p className="inline-flex items-center gap-2">
                 <Phone className="h-4 w-4 text-[color:var(--gold)]" />
@@ -301,30 +263,26 @@ function BeaconPage() {
               </p>
               <p className="inline-flex items-center gap-2">
                 <CalendarDays className="h-4 w-4 text-[color:var(--gold)]" />
-                Tours by appointment
+                {t("beacon.visit.tours")}
               </p>
             </div>
           </div>
           <div className="rounded-3xl bg-primary-foreground/5 p-8 ring-1 ring-primary-foreground/15">
-            <h3 className="font-serif text-2xl">Plan your event at Beacon</h3>
-            <p className="mt-3 text-sm text-primary-foreground/80">
-              Tell us your date, headcount, and vibe. We'll come back with
-              availability, a venue hold, and a full quote including any
-              rentals you need.
-            </p>
+            <h3 className="font-serif text-2xl">{t("beacon.cta.title")}</h3>
+            <p className="mt-3 text-sm text-primary-foreground/80">{t("beacon.cta.body")}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={() => setQuoteOpen(true)}
                 className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
               >
-                Request a Quote <ArrowRight className="h-4 w-4" />
+                {t("beacon.hero.requestQuote")} <ArrowRight className="h-4 w-4" />
               </button>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground/10"
               >
-                Contact Us
+                {t("beacon.cta.contact")}
               </Link>
             </div>
           </div>
