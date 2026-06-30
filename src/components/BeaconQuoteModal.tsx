@@ -73,9 +73,10 @@ export function BeaconQuoteModal({
     "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-primary/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
-      <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+    <div className="fixed inset-0 z-[100] overflow-y-auto overscroll-contain flex items-start justify-center bg-primary/80 p-0 backdrop-blur-sm sm:items-center sm:p-4" role="dialog" aria-modal="true">
+      <div className="flex w-full max-w-lg flex-col border-0 border-border bg-card shadow-2xl my-0 max-h-[100dvh] rounded-none sm:my-8 sm:max-h-[calc(100dvh-4rem)] sm:rounded-2xl sm:border">
         {success ? (
+
           <>
             <div className="flex items-start justify-between border-b border-border bg-emerald-50 px-6 py-4">
               <div className="flex items-start gap-3">
