@@ -61,7 +61,7 @@ function QuoteRequestDetailPage() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
-  const confirm = useMutation({
+  const confirmBooking = useMutation({
     mutationFn: () => confirmFn({ data: { quote_request_id: id } }),
     onSuccess: () => {
       toast.success(`${BEACON_VENUE.name} booking confirmed.`);
@@ -145,17 +145,17 @@ function QuoteRequestDetailPage() {
                 )}
                 {!hasBooked && (
                   <button
-                    onClick={() => confirm.mutate()}
-                    disabled={confirm.isPending || !req.event_date}
+                    onClick={() => confirmBooking.mutate()}
+                    disabled={confirmBooking.isPending || !req.event_date}
                     className="inline-flex items-center gap-2 rounded-full bg-[#5b3fdc] px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
                   >
-                    {confirm.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
+                    {confirmBooking.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
                     Confirm Beacon Booking
                   </button>
                 )}
                 {(hasHold || hasBooked) && (
                   <button
-                    onClick={() => { if (confirm("Release this Beacon hold/booking and remove scheduler events?")) release.mutate(); }}
+                    onClick={() => { if (window.confirm("Release this Beacon hold/booking and remove scheduler events?")) release.mutate(); }}
                     disabled={release.isPending}
                     className="inline-flex items-center gap-2 rounded-full border border-amber-400 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 disabled:opacity-50"
                   >
