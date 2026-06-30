@@ -89,7 +89,7 @@ const exploreTiles: Tile[] = [
 
 const exploreCenter: Center = {
   to: "/ai-tent-planner",
-  label: "Recommender",
+  label: "Planner",
   icon: Sparkles,
   bgClass: "bg-primary",
 };
