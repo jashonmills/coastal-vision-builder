@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { Lightbox, useLightbox } from "@/components/Lightbox";
 import { LazyImage } from "@/components/LazyImage";
-import { photoImages, pickPhoto } from "@/lib/site-images";
+import { galleryImages, pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -35,8 +35,8 @@ function GalleryPage() {
   const lb = useLightbox();
 
   const shown = filter === "all"
-    ? photoImages
-    : photoImages.filter((img) => tagsFor(img.alt).includes(filter));
+    ? galleryImages
+    : galleryImages.filter((img) => tagsFor(img.alt).includes(filter));
 
   return (
     <SiteLayout>
