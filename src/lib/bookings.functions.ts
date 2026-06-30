@@ -322,7 +322,7 @@ export const unbookQuote = createServerFn({ method: "POST" })
       .from("rental_calendar_events")
       .update({ deleted_at: new Date().toISOString() })
       .eq("quote_id", data.quote_id)
-      .in("event_type", ["delivery", "pickup", "check_out", "check_in"]);
+      .in("event_type", ["delivery", "pickup", "check_out", "check_in", "venue_hold", "venue_booked", "venue_setup", "venue_teardown"]);
 
     await supabase
       .from("quotes")
