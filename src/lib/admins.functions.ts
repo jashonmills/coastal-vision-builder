@@ -32,24 +32,30 @@ export const listAdmins = createServerFn({ method: "GET" })
       display_name: string | null;
       created_at: string;
       is_self: boolean;
+      active: boolean;
+      last_sign_in_at: string | null;
     }> = [];
     for (const r of roles ?? []) {
       const { data: u } = await supabaseAdmin.auth.admin.getUserById(r.user_id);
+      const meta = u?.user?.user_metadata as
+        | { display_name?: string; full_name?: string }
+        | undefined;
+      const confirmedAt = u?.user?.email_confirmed_at ?? null;
+      const lastSignIn = u?.user?.last_sign_in_at ?? null;
       results.push({
         id: r.id,
         user_id: r.user_id,
         email: u?.user?.email ?? null,
-        display_name:
-          (u?.user?.user_metadata as { display_name?: string; full_name?: string } | undefined)
-            ?.display_name ??
-          (u?.user?.user_metadata as { full_name?: string } | undefined)?.full_name ??
-          null,
+        display_name: meta?.display_name ?? meta?.full_name ?? null,
         created_at: r.created_at,
         is_self: r.user_id === context.userId,
+        active: Boolean(confirmedAt || lastSignIn),
+        last_sign_in_at: lastSignIn,
       });
     }
     return results;
   });
+
 
 export const inviteAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
