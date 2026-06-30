@@ -216,7 +216,17 @@ export const photoImages: SiteImage[] = [
   img("flyer.jpg", "Pacific North Events & Tents promotional flyer"),
 ];
 
+export const galleryBlueprints: SiteImage[] = sketchImages;
+
+export const galleryImages: SiteImage[] = [
+  ...gallerySetups,
+  ...galleryEquipment,
+  ...galleryFurniture,
+  ...galleryBlueprints,
+];
+
 export const allImages: SiteImage[] = [...sketchImages, ...productImages, ...photoImages];
+
 
 // ----- Helpers ----------------------------------------------------------
 
