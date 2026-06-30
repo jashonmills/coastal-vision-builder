@@ -441,8 +441,8 @@ function RentalContractPage() {
               </section>
             ))}
 
-            <hr className="my-12 border-[color:var(--line)]" />
-            <p className="text-sm text-[color:var(--muted)]">
+            <hr className="my-12 border-border" />
+            <p className="text-sm text-muted-foreground">
               Last updated for the 2026 season. {BRAND} reserves the right to update these terms; the version attached to
               your signed rental agreement governs your reservation.
             </p>
