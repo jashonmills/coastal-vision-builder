@@ -154,9 +154,11 @@ function ContactPage() {
                 <textarea name="message" rows={5} maxLength={2000} className={input} placeholder={t("contact.fields.messagePlaceholder")} defaultValue={prefill ?? ""} />
               </Field>
 
-              <button type="submit" className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)]">
+              <button type="submit" disabled={m.isPending} className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[color:var(--navy-soft)] disabled:opacity-60">
+                {m.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
                 {t("contact.submit")}
               </button>
+
             </form>
           )}
         </div>
