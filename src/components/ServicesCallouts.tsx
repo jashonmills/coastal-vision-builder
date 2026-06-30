@@ -14,7 +14,7 @@ const beaconThumbUrl = Object.entries(photoModules)
 
 export function ServicesCallouts() {
   const { t } = useTranslation();
-  const cateringPhoto = pickPhoto("catering-callout");
+  const cateringPhoto = cateringCalloutImage;
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
