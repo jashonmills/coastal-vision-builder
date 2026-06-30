@@ -200,19 +200,17 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main
-        className="flex-1 pb-[calc(110px+env(safe-area-inset-bottom))] lg:pb-0"
-      >
+      <main className="flex-1 pb-[calc(110px+env(safe-area-inset-bottom))] print:pb-0 lg:pb-0">
         {children}
       </main>
 
-      <SiteFooter />
+      <SiteFooter className="print:hidden" />
 
-      <MobileBottomNav onMenu={() => setOpen(true)} />
-      <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
-      <MobileHelpButton />
-      <AccessibilityFontButton />
-      <ChatWidget />
+      <MobileBottomNav onMenu={() => setOpen(true)} className="print:hidden" />
+      <MobileBentoDrawer open={open} onClose={() => setOpen(false)} className="print:hidden" />
+      <MobileHelpButton className="print:hidden" />
+      <AccessibilityFontButton className="print:hidden" />
+      <ChatWidget className="print:hidden" />
     </div>
   );
 }
