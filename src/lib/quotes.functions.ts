@@ -454,30 +454,137 @@ export const sendQuote = createServerFn({ method: "POST" })
 /* -------------------------------- helpers --------------------------------- */
 
 async function recomputeQuoteTotals(supabase: any, quoteId: string) {
-  const { data: items } = await supabase
-    .from("quote_items")
-    .select("line_total_cents")
-    .eq("quote_id", quoteId);
-  const subtotal = (items ?? []).reduce(
-    (s: number, r: { line_total_cents: number }) => s + (r.line_total_cents ?? 0),
-    0,
-  );
+  // 1. Load quote config
   const { data: q } = await supabase
     .from("quotes")
-    .select("delivery_fee_cents, cleaning_fee_cents, discount_cents, tax_cents")
+    .select("id, cleaning_auto, discount_cents")
     .eq("id", quoteId)
     .single();
-  const total =
-    subtotal +
-    (q?.delivery_fee_cents ?? 0) +
-    (q?.cleaning_fee_cents ?? 0) +
-    (q?.tax_cents ?? 0) -
-    (q?.discount_cents ?? 0);
+  if (!q) return;
+
+  // 2. Sync auto cleaning lines: wipe and rebuild from non-auto lines
+  await supabase.from("quote_items").delete().eq("quote_id", quoteId).eq("is_auto", true);
+
+  if (q.cleaning_auto) {
+    const { data: lines } = await supabase
+      .from("quote_items")
+      .select("category, name, quantity")
+      .eq("quote_id", quoteId)
+      .eq("is_auto", false);
+    const { data: cleaningPricing } = await supabase
+      .from("pricing_items")
+      .select("id, category, name, price_cents, unit")
+      .or("category.ilike.%Cleaning Fee%,name.ilike.%Cleaning Fee%");
+
+    type T = { pricing: any; qty: number };
+    const need = new Map<string, T>();
+    const bump = (target: any, qty: number) => {
+      if (!target || qty <= 0) return;
+      const prev = need.get(target.id);
+      need.set(target.id, { pricing: target, qty: (prev?.qty ?? 0) + qty });
+    };
+    for (const line of (lines ?? []) as { category: string | null; name: string | null; quantity: number }[]) {
+      const cat = (line.category ?? "").toLowerCase();
+      const name = line.name ?? "";
+      const qty = line.quantity ?? 0;
+      if (cat.startsWith("canopy") || cat === "tent" || cat === "tents") {
+        const m = name.match(/(\d+\s*[x×]\s*\d+)|hexagon/i);
+        if (m) {
+          const size = m[0].toLowerCase().replace(/\s|×/g, "x").replace("hexagon", "Hexagon");
+          const sizeNorm = size === "Hexagon" ? "hexagon" : size;
+          const target = (cleaningPricing ?? []).find(
+            (p: any) =>
+              p.category.toLowerCase().includes("canopy cleaning") &&
+              p.name.toLowerCase() === sizeNorm,
+          );
+          bump(target, qty);
+        }
+      } else if (cat === "chairs") {
+        const target = (cleaningPricing ?? []).find(
+          (p: any) => p.category === "Chairs" && /cleaning/i.test(p.name),
+        );
+        bump(target, qty);
+      } else if (cat === "tables") {
+        const target = (cleaningPricing ?? []).find(
+          (p: any) => p.category === "Tables" && /cleaning/i.test(p.name),
+        );
+        bump(target, qty);
+      }
+    }
+
+    if (need.size) {
+      const toInsert = [...need.values()].map(({ pricing, qty }) => ({
+        quote_id: quoteId,
+        pricing_item_id: pricing.id,
+        category: pricing.category,
+        name: pricing.name,
+        quantity: qty,
+        unit: pricing.unit,
+        unit_price_cents: pricing.price_cents,
+        line_total_cents: qty * pricing.price_cents,
+        is_auto: true,
+        reason: "Auto: coastal cleaning fee",
+        sort_order: 9000,
+      }));
+      await supabase.from("quote_items").insert(toInsert);
+    }
+  }
+
+  // 3. Re-read all items and bucket them
+  const { data: items } = await supabase
+    .from("quote_items")
+    .select("category, name, line_total_cents")
+    .eq("quote_id", quoteId);
+
+  let subtotal = 0,
+    delivery = 0,
+    cleaning = 0,
+    beaconVenue = 0;
+  for (const it of (items ?? []) as {
+    category: string | null;
+    name: string | null;
+    line_total_cents: number | null;
+  }[]) {
+    const cat = (it.category ?? "").toLowerCase();
+    const name = it.name ?? "";
+    const total = it.line_total_cents ?? 0;
+    if (cat === "delivery") {
+      delivery += total;
+    } else if (cat.includes("cleaning fee") || /cleaning fee/i.test(name)) {
+      cleaning += total;
+    } else {
+      subtotal += total;
+      if (cat === "venue" && /beacon/i.test(name)) beaconVenue += total;
+    }
+  }
+
+  // 4. Seaside lodging tax — Beacon venue lines only
+  let tax = 0;
+  if (beaconVenue > 0) {
+    const { data: setting } = await supabase
+      .from("site_content")
+      .select("value")
+      .eq("key", "lodging_tax_rate_bps")
+      .maybeSingle();
+    const raw = setting?.value;
+    const bps = Number(typeof raw === "string" ? raw : raw ?? 1000) || 1000;
+    tax = Math.round(beaconVenue * (bps / 10000));
+  }
+
+  const total = subtotal + delivery + cleaning + tax - (q.discount_cents ?? 0);
+
   await supabase
     .from("quotes")
-    .update({ subtotal_cents: subtotal, total_cents: Math.max(0, total) })
+    .update({
+      subtotal_cents: subtotal,
+      delivery_fee_cents: delivery,
+      cleaning_fee_cents: cleaning,
+      tax_cents: tax,
+      total_cents: Math.max(0, total),
+    })
     .eq("id", quoteId);
 }
+
 
 /* ------------------------- pricing items (admin) -------------------------- */
 
