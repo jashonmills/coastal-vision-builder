@@ -12,6 +12,7 @@
     "events": "Events",
     "gallery": "Gallery",
     "about": "About",
+    "beacon": "Beacon on Broadway",
     "aboutUs": "About Us",
     "contact": "Contact",
     "requestQuote": "Request a Quote",
@@ -36,6 +37,7 @@
     "allServices": "Weddings, festivals, corporate",
     "events": "Past events and case studies",
     "aboutUs": "Coastal team, our story",
+    "beacon": "Our event venue in downtown Seaside",
     "contact": "Get in touch"
   },
   "footer": {
