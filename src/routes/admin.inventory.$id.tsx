@@ -11,6 +11,7 @@ import {
   type InventoryItem, type InventoryTransaction, type ItemType, STATUS_LABEL,
 } from "@/lib/inventory";
 import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
+import { AdminTabs } from "./admin.quote-requests";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
@@ -48,6 +49,7 @@ function ItemDetailPage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-5xl px-4 py-10 lg:px-8">
+        <AdminTabs active="inventory" />
         <Link to="/admin/inventory" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to inventory
         </Link>

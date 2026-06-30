@@ -6,6 +6,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { getQuote } from "@/lib/quotes.functions";
+import { AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/quotes/$id/preview")({
   head: () => ({ meta: [{ title: "Quote Preview | Admin" }] }),
@@ -28,6 +29,9 @@ function PreviewPage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-3xl px-4 py-10 print:py-0">
+        <div className="print:hidden">
+          <AdminTabs active="quotes" />
+        </div>
         <div className="mb-4 flex justify-between print:hidden">
           <Link to="/admin/quotes/$id/edit" params={{ id }} className="text-sm text-muted-foreground hover:text-primary">← Back to edit</Link>
           <button onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm text-primary-foreground"><Printer className="h-3.5 w-3.5" /> Print / Save PDF</button>

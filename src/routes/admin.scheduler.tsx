@@ -15,6 +15,7 @@ import {
   EVENT_STATUSES,
   EVENT_COLORS,
 } from "@/lib/scheduler.functions";
+import { AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/scheduler")({
   head: () => ({ meta: [{ title: "Scheduler | Admin" }] }),
@@ -120,6 +121,7 @@ function SchedulerPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Scheduler" subtitle="Quote requests, rentals, deliveries, pickups, and tasks." />
       <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+        <AdminTabs active="scheduler" />
         <div className="mb-4 flex items-center justify-between">
           <Link to="/admin" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Back to admin</Link>
           <button onClick={() => setEditing({ event_type: "internal_note", status: "scheduled", start_time: new Date().toISOString() })}

@@ -13,6 +13,7 @@ import {
   checkInQuoteItem,
   completeQuote,
 } from "@/lib/bookings.functions";
+import { AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/quotes/$id/job-sheet")({
   head: () => ({ meta: [{ title: "Job Sheet | Admin" }] }),
@@ -60,6 +61,9 @@ function JobSheetPage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8 print:py-4">
+        <div className="print:hidden">
+          <AdminTabs active="quotes" />
+        </div>
         <div className="flex flex-wrap items-start justify-between gap-3 print:hidden">
           <Link to="/admin/quotes/$id/edit" params={{ id }} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
             <ArrowLeft className="h-4 w-4" /> Back to quote
