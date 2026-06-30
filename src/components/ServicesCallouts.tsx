@@ -13,6 +13,7 @@ const beaconThumbUrl = Object.entries(photoModules)
   Object.values(photoModules)[0]?.url;
 
 export function ServicesCallouts() {
+  const { t } = useTranslation();
   const cateringPhoto = pickPhoto("catering-callout");
 
   return (
@@ -23,7 +24,7 @@ export function ServicesCallouts() {
           {beaconThumbUrl ? (
             <img
               src={beaconThumbUrl}
-              alt="Beacon on Broadway event hall"
+              alt={t("services.callouts.beacon.alt")}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
               loading="lazy"
             />
@@ -35,19 +36,19 @@ export function ServicesCallouts() {
         </div>
         <div className="p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--gold)]">
-            Event Venue
+            {t("services.callouts.beacon.eyebrow")}
           </p>
           <h3 className="mt-2 font-serif text-2xl text-primary">
-            Beacon on Broadway
+            {t("services.callouts.beacon.title")}
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            Hosting in Seaside? Our 2,800 sq ft climate-controlled hall holds up to 150 guests with chairs, tables, and a built-in bar included.
+            {t("services.callouts.beacon.copy")}
           </p>
           <Link
             to="/beacon-on-broadway"
             className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--forest)] transition hover:text-[color:var(--gold)]"
           >
-            Explore the venue <ArrowRight className="h-4 w-4" />
+            {t("services.callouts.beacon.cta")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
@@ -57,26 +58,26 @@ export function ServicesCallouts() {
         <div className="aspect-[16/10] overflow-hidden">
           <img
             src={cateringPhoto.url}
-            alt="Catering buffet spread"
+            alt={t("services.callouts.catering.alt")}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
             loading="lazy"
           />
         </div>
         <div className="p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--gold)]">
-            Full-Service Catering
+            {t("services.callouts.catering.eyebrow")}
           </p>
           <h3 className="mt-2 font-serif text-2xl text-primary">
-            Pacific North Catering
+            {t("services.callouts.catering.title")}
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            From buffet and pasta bars to chef-attended stations and bartending, we bring the food, drinks, and service to your tent or venue.
+            {t("services.callouts.catering.copy")}
           </p>
           <Link
             to="/catering"
             className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--forest)] transition hover:text-[color:var(--gold)]"
           >
-            See catering menus <ArrowRight className="h-4 w-4" />
+            {t("services.callouts.catering.cta")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
