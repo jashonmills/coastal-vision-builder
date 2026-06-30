@@ -104,13 +104,14 @@ const moreTiles: Tile[] = [
     iconColor: "text-[color:var(--navy-soft)]",
   },
   {
-    to: "/events",
-    label: "Events",
+    to: "/beacon-on-broadway",
+    label: "Beacon",
     icon: Calendar,
     tileBg:
       "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]",
     iconColor: "text-[color:var(--sand-deep)]",
   },
+
   {
     to: "/about",
     label: "About",
