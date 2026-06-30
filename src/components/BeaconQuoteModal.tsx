@@ -73,11 +73,12 @@ export function BeaconQuoteModal({
     "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-primary/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
-      <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+    <div className="fixed inset-0 z-[100] overflow-y-auto overscroll-contain flex items-start justify-center bg-primary/80 p-0 backdrop-blur-sm sm:items-center sm:p-4" role="dialog" aria-modal="true">
+      <div className="flex w-full max-w-lg flex-col border-0 border-border bg-card shadow-2xl my-0 max-h-[100dvh] rounded-none sm:my-8 sm:max-h-[calc(100dvh-4rem)] sm:rounded-2xl sm:border">
         {success ? (
+
           <>
-            <div className="flex items-start justify-between border-b border-border bg-emerald-50 px-6 py-4">
+            <div className="flex flex-none items-start justify-between border-b border-border bg-emerald-50 px-6 py-4">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 h-6 w-6 flex-none text-emerald-600" />
                 <div>
@@ -91,7 +92,7 @@ export function BeaconQuoteModal({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="px-6 py-6 text-sm text-muted-foreground">
+            <div className="flex-1 overflow-y-auto px-6 py-6 text-sm text-muted-foreground">
               <p>Typical response time: <strong className="text-foreground">within one business day</strong>.</p>
               <button onClick={onClose} className="mt-5 inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground">
                 Done
@@ -100,7 +101,7 @@ export function BeaconQuoteModal({
           </>
         ) : (
           <>
-            <div className="flex items-start justify-between border-b border-border bg-secondary/40 px-6 py-4">
+            <div className="flex flex-none items-start justify-between border-b border-border bg-secondary/40 px-6 py-4">
               <div>
                 <h2 className="font-serif text-xl text-primary">Request the Beacon</h2>
                 <p className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -112,7 +113,7 @@ export function BeaconQuoteModal({
               </button>
             </div>
             <form
-              className="space-y-3 px-6 py-5"
+              className="flex-1 space-y-3 overflow-y-auto px-6 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!form.name.trim() || !form.email.trim()) {
