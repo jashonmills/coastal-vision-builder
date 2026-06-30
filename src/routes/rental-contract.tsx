@@ -389,7 +389,7 @@ export const Route = createFileRoute("/rental-contract")({
 function RentalContractPage() {
   return (
     <SiteLayout>
-      <div className="bg-[color:var(--bg)] text-[color:var(--ink)]">
+      <div className="bg-background text-foreground">
         <header className="border-b border-[color:var(--line)] bg-[color:var(--bg-elev)]">
           <div className="mx-auto max-w-5xl px-6 py-12">
             <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Sample document</p>
