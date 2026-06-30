@@ -95,12 +95,14 @@ function BeaconPage() {
             of every kind find a home here.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              to="/contact"
+            <button
+              type="button"
+              onClick={() => setQuoteOpen(true)}
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
             >
               Request a Quote <ArrowRight className="h-4 w-4" />
-            </Link>
+            </button>
+
             <a
               href="tel:5037175088"
               className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 px-6 py-3 text-sm font-medium text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/10"
