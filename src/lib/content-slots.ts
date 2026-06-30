@@ -15,7 +15,7 @@ export type ImageSlot = {
 };
 
 export const TEXT_SLOTS: TextSlot[] = [
-  { key: "home.hero.eyebrow", label: "Home — Hero eyebrow", default: "Oregon Coast Event Rentals" },
+  { key: "home.hero.eyebrow", label: "Home — Hero eyebrow", default: "Pacific North Events & Tents" },
   { key: "home.hero.title", label: "Home — Hero title", default: "Event Tents & Rentals for Oregon Coast Celebrations" },
   { key: "home.hero.subtitle", label: "Home — Hero subtitle", multiline: true, default: "From weddings and festivals to private parties and corporate events, Pacific North Events & Tents helps bring your vision to life with stylish, reliable, weather-ready event rentals." },
   { key: "home.intro.title", label: "Home — Intro title", default: "Your Event. Your Vision. We Make It Happen." },

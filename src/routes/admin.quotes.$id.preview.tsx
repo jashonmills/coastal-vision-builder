@@ -36,7 +36,7 @@ function PreviewPage() {
           <div className="flex justify-between border-b border-border pb-4">
             <div>
               <h1 className="font-serif text-2xl text-primary">Pacific North Events &amp; Tents</h1>
-              <p className="text-xs text-muted-foreground">Oregon Coast event rentals</p>
+              <p className="text-xs text-muted-foreground">Pacific North Events &amp; Tents</p>
             </div>
             <div className="text-right text-sm">
               <div className="font-mono">{quote.quote_number}</div>
