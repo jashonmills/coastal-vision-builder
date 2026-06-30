@@ -304,19 +304,21 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
 
     // For venue requests, prepend a Beacon line so the venue shows in the quote.
     if (req.request_type === "venue") {
+      const { priceBeaconVenue } = await import("./venue-bookings.functions");
       const venueLabel = req.venue === "beacon-on-broadway" ? "Beacon on Broadway" : (req.venue ?? "Venue");
+      const priced = priceBeaconVenue(req.event_date);
       rows.unshift({
         quote_id: q.id,
         pricing_item_id: null,
         category: "Venue",
-        name: `${venueLabel} — Venue Rental`,
+        name: `${venueLabel} — ${priced.label}`,
         description: null,
-        quantity: 1,
-        unit: "event",
-        unit_price_cents: 0,
-        line_total_cents: 0,
-        needs_pricing_review: true,
-        reason: "Set venue pricing",
+        quantity: priced.qty,
+        unit: priced.unit,
+        unit_price_cents: priced.unit_price_cents,
+        line_total_cents: priced.unit_price_cents * priced.qty,
+        needs_pricing_review: priced.needs_review,
+        reason: priced.reason,
         sort_order: -1,
       });
       // Re-number sort_order so it starts at 0
