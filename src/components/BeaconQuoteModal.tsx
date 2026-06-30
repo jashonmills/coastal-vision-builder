@@ -78,7 +78,7 @@ export function BeaconQuoteModal({
         {success ? (
 
           <>
-            <div className="flex items-start justify-between border-b border-border bg-emerald-50 px-6 py-4">
+            <div className="flex flex-none items-start justify-between border-b border-border bg-emerald-50 px-6 py-4">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 h-6 w-6 flex-none text-emerald-600" />
                 <div>
