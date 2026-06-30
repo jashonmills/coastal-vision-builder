@@ -420,11 +420,11 @@ function RentalContractPage() {
         <div className="mx-auto grid max-w-5xl gap-10 px-6 py-12 lg:grid-cols-[220px_1fr]">
           <aside className="hidden lg:block print:hidden">
             <nav className="sticky top-24 text-sm">
-              <p className="mb-3 text-xs uppercase tracking-wider text-[color:var(--muted)]">Contents</p>
+              <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">Contents</p>
               <ul className="space-y-2">
                 {sections.map((s) => (
                   <li key={s.id}>
-                    <a href={`#${s.id}`} className="text-[color:var(--muted)] hover:text-[color:var(--ink)]">
+                    <a href={`#${s.id}`} className="text-muted-foreground hover:text-foreground">
                       {s.title}
                     </a>
                   </li>
