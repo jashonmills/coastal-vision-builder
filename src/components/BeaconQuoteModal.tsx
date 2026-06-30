@@ -113,7 +113,7 @@ export function BeaconQuoteModal({
               </button>
             </div>
             <form
-              className="space-y-3 px-6 py-5"
+              className="flex-1 space-y-3 overflow-y-auto px-6 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!form.name.trim() || !form.email.trim()) {
