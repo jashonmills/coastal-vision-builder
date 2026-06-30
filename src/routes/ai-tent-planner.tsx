@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { RecommendationReport } from "@/components/RecommendationViewer";
+import { BeaconCallout } from "@/components/BeaconCallout";
 import { useAuth } from "@/hooks/use-auth";
 import { saveRecommendation } from "@/lib/saved-recommendations.functions";
 import type { RecommenderInput } from "@/lib/recommender";
@@ -76,6 +77,7 @@ function RecommenderPage() {
   const [data, setData] = useState<RecommenderInput>(empty);
   const [contact, setContact] = useState({ name: "", email: "", phone: "", method: "Email", notes: "" });
   const [viewerOpen, setViewerOpen] = useState(false);
+  const [beaconDismissed, setBeaconDismissed] = useState(false);
 
   const generateFn = useServerFn(generateRecommendation);
   const mutation = useMutation({
@@ -179,6 +181,7 @@ function RecommenderPage() {
                   <Q label={t("recommender.fields.outdoorIndoor")}>
                     <Cards value={data.outdoor} onChange={(v) => set("outdoor", v as RecommenderInput["outdoor"])} options={OPT_OUTDOOR} tOpt={(v) => tOpt("outdoor", v)} />
                   </Q>
+                  {!beaconDismissed && <BeaconCallout input={data} onDismiss={() => setBeaconDismissed(true)} />}
                 </Step>
               )}
 
