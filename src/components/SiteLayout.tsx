@@ -75,7 +75,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       {pathname === "/" && <OpeningVideoSplash />}
       {pathname === "/" && <AITentPlannerPopup />}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md print:hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:gap-6 lg:px-8 lg:py-4">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
@@ -200,19 +200,21 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main
-        className="flex-1 pb-[calc(110px+env(safe-area-inset-bottom))] lg:pb-0"
-      >
+      <main className="flex-1 pb-[calc(110px+env(safe-area-inset-bottom))] print:pb-0 lg:pb-0">
         {children}
       </main>
 
-      <SiteFooter />
+      <div className="print:hidden">
+        <SiteFooter />
+      </div>
 
-      <MobileBottomNav onMenu={() => setOpen(true)} />
-      <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
-      <MobileHelpButton />
-      <AccessibilityFontButton />
-      <ChatWidget />
+      <div className="print:hidden">
+        <MobileBottomNav onMenu={() => setOpen(true)} />
+        <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
+        <MobileHelpButton />
+        <AccessibilityFontButton />
+        <ChatWidget />
+      </div>
     </div>
   );
 }
