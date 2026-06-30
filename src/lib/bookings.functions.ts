@@ -175,14 +175,17 @@ export const bookQuote = createServerFn({ method: "POST" })
     }
 
     if (isVenueOnly) {
-      // Run venue confirmation path instead of inventory reservation.
-      const { confirmVenueBooking } = await import("./venue-bookings.functions");
-      const res = await confirmVenueBooking({ data: { quote_id: data.quote_id } } as never);
+      // Use the venue helper directly (don't invoke another server-fn stub).
+      const { confirmVenueBookingHelper } = await import("./venue-bookings.functions");
+      const res = await confirmVenueBookingHelper(supabase, {
+        quote_id: data.quote_id,
+        userId: userId,
+      });
       return {
         ok: true,
         already_reserved: alreadyReserved,
         lines_reserved: 0,
-        events_created: (res as any)?.events_created ?? 0,
+        events_created: res.events_created,
         has_event_date: true,
         venue_only: true,
       };
