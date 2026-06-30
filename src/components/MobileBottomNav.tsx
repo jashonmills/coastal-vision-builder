@@ -127,7 +127,10 @@ export function MobileBottomNav({ onMenu }: Props) {
     rightItems = publicRight;
   }
 
-  const showAdminJump = isAdmin && !inAdmin;
+  // Always expose the Menu button so the bento drawer (with full public + admin
+  // navigation) is reachable from every screen. Admins can still jump to the
+  // admin area via the drawer or the header shield.
+  void isAdmin;
 
   const renderItem = (item: NavItem) => {
     const Icon = item.icon;
