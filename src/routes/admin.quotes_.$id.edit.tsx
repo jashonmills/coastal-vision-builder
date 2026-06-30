@@ -367,36 +367,66 @@ function AddLine({ quoteId, pricing, onAdded, upsertFn, nextSort }: { quoteId: s
 }
 
 function Totals({ quote, updFn, onSaved }: { quote: any; updFn: any; onSaved: () => void }) {
-  const [draft, setDraft] = useState({
-    delivery_fee_cents: quote.delivery_fee_cents,
-    cleaning_fee_cents: quote.cleaning_fee_cents,
-    discount_cents: quote.discount_cents,
-    tax_cents: quote.tax_cents,
+  const [discount, setDiscount] = useState<number>(quote.discount_cents ?? 0);
+  const [cleaningAuto, setCleaningAuto] = useState<boolean>(quote.cleaning_auto ?? true);
+  useEffect(() => {
+    setDiscount(quote.discount_cents ?? 0);
+    setCleaningAuto(quote.cleaning_auto ?? true);
+  }, [quote.discount_cents, quote.cleaning_auto]);
+
+  const saveDiscount = useMutation({
+    mutationFn: () => updFn({ data: { id: quote.id, patch: { discount_cents: discount } } }),
+    onSuccess: () => { toast.success("Discount saved."); onSaved(); },
+    onError: (e: Error) => toast.error(e.message ?? "Failed to save discount."),
   });
-  useEffect(() => setDraft({ delivery_fee_cents: quote.delivery_fee_cents, cleaning_fee_cents: quote.cleaning_fee_cents, discount_cents: quote.discount_cents, tax_cents: quote.tax_cents }), [quote.delivery_fee_cents, quote.cleaning_fee_cents, quote.discount_cents, quote.tax_cents]);
-  const save = useMutation({
-    mutationFn: () => updFn({ data: { id: quote.id, patch: draft } }),
-    onSuccess: () => { toast.success("Fees saved."); onSaved(); },
-    onError: (e: Error) => toast.error(e.message ?? "Failed to save fees."),
+  const toggleAuto = useMutation({
+    mutationFn: (next: boolean) => updFn({ data: { id: quote.id, patch: { cleaning_auto: next } } }),
+    onSuccess: () => { toast.success("Cleaning rule updated."); onSaved(); },
+    onError: (e: Error) => toast.error(e.message ?? "Failed to update."),
   });
+
+  const fmt = (c: number) => `$${(c / 100).toFixed(2)}`;
+  const hasBeaconTax = (quote.tax_cents ?? 0) > 0;
+
   return (
     <div className="mt-3 space-y-2 text-sm">
-      <Row label="Subtotal" value={`$${(quote.subtotal_cents / 100).toFixed(2)}`} />
-      <FeeRow label="Delivery" cents={draft.delivery_fee_cents} onChange={(v) => setDraft({ ...draft, delivery_fee_cents: v })} />
-      <FeeRow label="Cleaning" cents={draft.cleaning_fee_cents} onChange={(v) => setDraft({ ...draft, cleaning_fee_cents: v })} />
-      <FeeRow label="Discount" cents={draft.discount_cents} onChange={(v) => setDraft({ ...draft, discount_cents: v })} />
-      <FeeRow label="Tax" cents={draft.tax_cents} onChange={(v) => setDraft({ ...draft, tax_cents: v })} />
-      <div className="flex items-center justify-between border-t border-border pt-2 text-base font-semibold">
-        <span>Total</span><span>${(quote.total_cents / 100).toFixed(2)}</span>
+      <Row label="Subtotal" value={fmt(quote.subtotal_cents ?? 0)} />
+      <Row label="Delivery" value={fmt(quote.delivery_fee_cents ?? 0)} hint="Auto from Delivery line items" />
+      <Row label="Cleaning" value={fmt(quote.cleaning_fee_cents ?? 0)} hint={cleaningAuto ? "Auto from coastal items" : "Off — add cleaning lines manually"} />
+      <label className="flex items-center justify-between gap-2 pl-2 text-[11px] text-muted-foreground">
+        <span>Coastal cleaning fee (auto)</span>
+        <input
+          type="checkbox"
+          checked={cleaningAuto}
+          disabled={toggleAuto.isPending}
+          onChange={(e) => { setCleaningAuto(e.target.checked); toggleAuto.mutate(e.target.checked); }}
+        />
+      </label>
+      <div className="flex items-center justify-between">
+        <span className="text-muted-foreground">Discount</span>
+        <input type="number" step="0.01" value={(discount / 100).toString()} onChange={(e) => setDiscount(Math.round(parseFloat(e.target.value || "0") * 100))} className="w-24 rounded border border-border bg-background px-2 py-1 text-right text-sm" />
       </div>
-      <button onClick={() => save.mutate()} disabled={save.isPending} className="mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
-        {save.isPending && <Loader2 className="h-3 w-3 animate-spin" />} Save fees
+      <Row
+        label={hasBeaconTax ? "Tax (Seaside lodging 10%)" : "Tax"}
+        value={fmt(quote.tax_cents ?? 0)}
+        hint={hasBeaconTax ? "Applied to Beacon venue rental" : "Oregon — no sales tax on rentals"}
+      />
+      <div className="flex items-center justify-between border-t border-border pt-2 text-base font-semibold">
+        <span>Total</span><span>{fmt(quote.total_cents ?? 0)}</span>
+      </div>
+      <button onClick={() => saveDiscount.mutate()} disabled={saveDiscount.isPending || discount === (quote.discount_cents ?? 0)} className="mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50">
+        {saveDiscount.isPending && <Loader2 className="h-3 w-3 animate-spin" />} Save discount
       </button>
     </div>
   );
 }
-function Row({ label, value }: { label: string; value: string }) {
-  return <div className="flex items-center justify-between"><span className="text-muted-foreground">{label}</span><span>{value}</span></div>;
+function Row({ label, value, hint }: { label: string; value: string; hint?: string }) {
+  return (
+    <div className="flex items-center justify-between" title={hint}>
+      <span className="text-muted-foreground">{label}{hint ? <span className="ml-1 text-[10px] opacity-60">ⓘ</span> : null}</span>
+      <span>{value}</span>
+    </div>
+  );
 }
 function FeeRow({ label, cents, onChange }: { label: string; cents: number; onChange: (v: number) => void }) {
   return (
@@ -406,6 +436,7 @@ function FeeRow({ label, cents, onChange }: { label: string; cents: number; onCh
     </div>
   );
 }
+
 function NotesEditor({ quote, updFn, onSaved }: { quote: any; updFn: any; onSaved: () => void }) {
   const [internal, setInternal] = useState(quote.internal_notes ?? "");
   const [customer, setCustomer] = useState(quote.customer_notes ?? "");
