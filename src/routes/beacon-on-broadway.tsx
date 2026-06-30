@@ -64,10 +64,12 @@ const included: string[] = [
 
 function BeaconPage() {
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const [quoteOpen, setQuoteOpen] = useState(false);
   const lbImages: LightboxImage[] = galleryPhotos.map((url, i) => ({
     url,
     alt: `Beacon on Broadway — photo ${i + 1}`,
   }));
+
 
   return (
     <SiteLayout>
