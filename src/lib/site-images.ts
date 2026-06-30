@@ -32,11 +32,10 @@ function galleryImg(file: string, alt: string, caption?: string): SiteImage {
 }
 
 /**
- * Gallery photos — sourced from the `new-images` storage bucket. Rendered
- * on /gallery. To update, upload/remove files in that bucket and edit this
- * list to match.
+ * Gallery photos — sourced from the `new-images` storage bucket. Grouped
+ * into categories that drive the /gallery page sections.
  */
-export const galleryImages: SiteImage[] = [
+export const gallerySetups: SiteImage[] = [
   galleryImg("View 1.jpg", "Event tent setup — view 1"),
   galleryImg("View 2.jpg", "Event tent setup — view 2"),
   galleryImg("View 3.jpg", "Event tent setup — view 3"),
@@ -49,31 +48,41 @@ export const galleryImages: SiteImage[] = [
   galleryImg("Tent in backyard.jpg", "Tent set up in a backyard"),
   galleryImg("Tent in backyard 2.jpg", "Backyard tent — alternate angle"),
   galleryImg("Tent near lake.jpg", "Tent set up near a lake"),
-  galleryImg("fill and chill.jpg", "Fill and chill beverage station"),
   galleryImg("Small Ceremony set upIMG_3281(2).heic", "Small ceremony setup"),
   galleryImg("2 20' Tent with windows.jpg", "20' tent with windows"),
   galleryImg("20x60 Tent(1).jpg", "20x60 frame tent"),
   galleryImg("20z40-Round-with-dance-floor.jpg", "20x40 tent with round tables and dance floor"),
   galleryImg("10x20-frame-tent-seating-for-16.webp", "10x20 frame tent seating for 16"),
   galleryImg("marq. underside.png", "Marquee tent underside"),
+  galleryImg("1051-1.jpg", "Past event setup"),
+  galleryImg("331.jpg", "Past event setup"),
+  galleryImg("2e19a1a821c8b6ec8943c7abfa09ceb0.jpg", "Past event setup"),
+  galleryImg("67dac2ff3cf5f7bd8e60be5b1af34380.jpg", "Past event setup"),
+  galleryImg("c0e876c73fbd4fb1bc5cf20e716754e7.jpg", "Past event setup"),
+];
+
+export const galleryEquipment: SiteImage[] = [
   galleryImg("6Professionalbarjpg.jpg", "Professional portable bar"),
   galleryImg("Portable Bar 1.jpg", "Portable bar — option 1"),
   galleryImg("Portable Bar 2.jpg", "Portable bar — option 2"),
   galleryImg("Portable Bar 3.jpg", "Portable bar — option 3"),
+  galleryImg("fill and chill.jpg", "Fill and chill beverage station"),
+  galleryImg("55 gallon water barrel.jpg", "55 gallon water barrel"),
   galleryImg("Patio heater.jpg", "Propane patio heater"),
   galleryImg("Ion BT Speaker.jpg", "Ion portable Bluetooth speaker"),
+];
+
+export const galleryFurniture: SiteImage[] = [
   galleryImg("Black Chair.jpg", "Black folding chair"),
   galleryImg("_White Chair.jpg", "White folding chair"),
   galleryImg("wood-folding-fruitwood.jpg", "Fruitwood folding chair"),
   galleryImg("60 round.jpg", "60-inch round folding table"),
   galleryImg("8' table.jpg", "8-foot rectangular folding table"),
-  galleryImg("55 gallon water barrel.jpg", "55 gallon water barrel"),
-  galleryImg("1051-1.jpg", "Event rental item"),
-  galleryImg("331.jpg", "Event rental setup"),
-  galleryImg("2e19a1a821c8b6ec8943c7abfa09ceb0.jpg", "Event rental setup"),
-  galleryImg("67dac2ff3cf5f7bd8e60be5b1af34380.jpg", "Event rental setup"),
-  galleryImg("c0e876c73fbd4fb1bc5cf20e716754e7.jpg", "Event rental setup"),
 ];
+
+// Blueprints are defined further down as `sketchImages` and re-exported
+// here for the gallery grouping.
+
 
 
 /**
@@ -207,7 +216,17 @@ export const photoImages: SiteImage[] = [
   img("flyer.jpg", "Pacific North Events & Tents promotional flyer"),
 ];
 
+export const galleryBlueprints: SiteImage[] = sketchImages;
+
+export const galleryImages: SiteImage[] = [
+  ...gallerySetups,
+  ...galleryEquipment,
+  ...galleryFurniture,
+  ...galleryBlueprints,
+];
+
 export const allImages: SiteImage[] = [...sketchImages, ...productImages, ...photoImages];
+
 
 // ----- Helpers ----------------------------------------------------------
 
