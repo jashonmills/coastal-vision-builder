@@ -101,7 +101,7 @@ export function BeaconQuoteModal({
           </>
         ) : (
           <>
-            <div className="flex items-start justify-between border-b border-border bg-secondary/40 px-6 py-4">
+            <div className="flex flex-none items-start justify-between border-b border-border bg-secondary/40 px-6 py-4">
               <div>
                 <h2 className="font-serif text-xl text-primary">Request the Beacon</h2>
                 <p className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
