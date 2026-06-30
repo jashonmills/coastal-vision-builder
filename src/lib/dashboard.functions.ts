@@ -19,6 +19,7 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
       upcomingEvents,
       inventoryAlerts,
       unreadNotifs,
+      newVenueReq,
     ] = await Promise.all([
       supabase.from("quote_requests").select("id", { count: "exact", head: true }).eq("status", "new"),
       supabase.from("quote_requests").select("id", { count: "exact", head: true }).eq("status", "in_review"),
@@ -27,7 +28,7 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
       supabase.from("rental_calendar_events").select("id", { count: "exact", head: true })
         .gte("start_time", nowIso).lte("start_time", in7).is("deleted_at", null),
       supabase.from("quote_requests")
-        .select("id, customer_name, event_type, event_date, guest_count, status, created_at")
+        .select("id, customer_name, event_type, event_date, guest_count, status, created_at, request_type, venue")
         .order("created_at", { ascending: false }).limit(5),
       supabase.from("rental_calendar_events")
         .select("id, title, start_time, location, event_type, status")
@@ -39,6 +40,8 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
         .or("total_owned_quantity.eq.0,damaged_missing_quantity.gt.0")
         .limit(10),
       supabase.from("admin_notifications").select("id", { count: "exact", head: true }).is("read_at", null),
+      supabase.from("quote_requests").select("id", { count: "exact", head: true })
+        .eq("status", "new").eq("request_type", "venue"),
     ]);
 
     return {
@@ -49,9 +52,11 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
         sentQuotes: sentQuotes.count ?? 0,
         upcomingEvents: upcoming.count ?? 0,
         unreadNotifications: unreadNotifs.count ?? 0,
+        newVenueRequests: newVenueReq.count ?? 0,
       },
       recentRequests: recentReq.data ?? [],
       upcomingEvents: upcomingEvents.data ?? [],
       inventoryAlerts: inventoryAlerts.data ?? [],
     };
   });
+
