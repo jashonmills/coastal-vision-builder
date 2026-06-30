@@ -89,7 +89,7 @@ const exploreTiles: Tile[] = [
 
 const exploreCenter: Center = {
   to: "/ai-tent-planner",
-  label: "Recommender",
+  label: "Planner",
   icon: Sparkles,
   bgClass: "bg-primary",
 };
@@ -275,10 +275,12 @@ function BentoBlock({
           to={center.to}
           onClick={onClose}
           aria-label={center.label}
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full flex flex-col items-center justify-center border-4 border-background shadow-lg active:scale-95 transition-all z-10 text-primary-foreground ${center.bgClass}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full flex flex-col items-center justify-center px-1.5 border-4 border-background shadow-lg active:scale-95 transition-all z-10 text-primary-foreground ${center.bgClass}`}
         >
           <CenterIcon className="w-5 h-5" />
-          <span className="text-[10px] font-semibold mt-0.5 uppercase tracking-wide">
+          <span
+            className={`${center.label.length > 7 ? "text-[9px]" : "text-[10px]"} font-semibold mt-0.5 uppercase tracking-wide leading-[1.05] text-center break-words max-w-[68px]`}
+          >
             {center.label}
           </span>
         </Link>
