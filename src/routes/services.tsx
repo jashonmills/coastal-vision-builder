@@ -52,6 +52,9 @@ function ServicesPage() {
           </div>
         ))}
       </div>
+      <section className="mx-auto max-w-6xl px-4 pb-20 lg:px-8">
+        <ServicesCallouts />
+      </section>
       <CTASection />
     </SiteLayout>
   );
