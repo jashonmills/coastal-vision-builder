@@ -433,7 +433,7 @@ function RentalContractPage() {
             </nav>
           </aside>
 
-          <article className="prose prose-neutral max-w-none prose-headings:font-serif prose-headings:text-[color:var(--ink)] prose-p:text-[color:var(--ink)] prose-li:text-[color:var(--ink)] prose-strong:text-[color:var(--ink)]">
+          <article className="prose prose-neutral max-w-none prose-headings:font-serif prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground">
             {sections.map((s) => (
               <section key={s.id} id={s.id} className="scroll-mt-24">
                 <h2 className="mt-10 text-2xl">{s.title}</h2>
