@@ -1,28 +1,37 @@
-## Reorganize the Gallery into clear categories
+## Add a Catering page and link it from the Services dropdown
 
-Right now the gallery is one long mixed grid (scenic shots → folding chairs → blueprints all jumbled). I'll group every image into a category and render the gallery as labeled sections, with category filter chips replacing the current `all / coastal / reception / lighting` chips.
+### New route: `/catering`
 
-### Categories
+Create `src/routes/catering.tsx` — a single full-length page that recreates the brochure. Uses `SiteLayout` + `PageHero` + `CTASection` like the Beacon page for consistency.
 
-1. **Event Setups** — past events, tents up, full scenes
-   - All "View 1–10", "Tent in backyard", "Tent near lake", "Small Ceremony setup", "20' Tent with windows", "20x60 Tent", "20x40 round with dance floor", "10x20 frame tent seating for 16", "marq. underside", and the 5 unlabeled photo files (`1051-1`, `331`, `2e19a1a8…`, `67dac2ff…`, `c0e876c7…`)
+Sections, top to bottom:
 
-2. **Bar & Equipment** — bar-related and standalone gear
-   - Professional bar, Portable Bar 1/2/3, Fill and Chill, 55 gallon water barrel, Patio heater, Ion BT Speaker
+1. **Hero** — "Pacific North Catering — Taking your catered event above expectations." Phone, address (1475 N. Roosevelt, Seaside, OR 97138), email.
+2. **Buffet Menu ($25/$30 pp)** — three menu cards side-by-side:
+   - Menu 1 Taco Bar (main / sides / fixings)
+   - Menu 2 Tailgater (main / sides / salad)
+   - Menu 3 Pasta Bar (choose two mains / sides / choose one salad)
+3. **Silver Buffet ($30/$35 pp)** — salad, entrée (7 options), starch + vegetable sides, hors d'oeuvres upgrade list (+$5 pp each).
+4. **Gold Buffet ($40/$45 pp)** — salad, entrée (9 options), starch + vegetable sides, chef-attended station (6 options), hors d'oeuvres upgrade list.
+5. **Bartending Services** — copy verbatim from brochure; note bundled with food catering only.
+6. **Pricing footnote** — 2-hour service, 100-person base, +$5 pp for 50–99, excludes staff/linens/delivery/service charge, prices subject to change.
+7. **Cross-promo cards** — Rentals (link to `/services`) and Beacon on Broadway (link to `/beacon-on-broadway`), mirroring the brochure's back-cover layout.
+8. **CTA** — phone + email button row pointing at `tel:5037175088` and `mailto:info@pacificnorthcatering.com`.
 
-3. **Tables & Chairs** — furniture
-   - Black Chair, White Chair, Fruitwood folding chair, 60 round table, 8' table
+`head()` sets a Catering-specific title, description, og:title, og:description.
 
-4. **Blueprints & Floor Plans** — all hand-drawn layouts
-   - Pulled from the existing `sketchImages` list (the 14 floor-plan sketches already in `src/lib/site-images.ts`)
+### Header dropdown
 
-### Changes
+In `src/components/SiteLayout.tsx` (line 40–47), add a fourth child to the Services dropdown:
 
-- **`src/lib/site-images.ts`** — split `galleryImages` into four exported arrays (`gallerySetups`, `galleryEquipment`, `galleryFurniture`, `galleryBlueprints`). Blueprints reuse the existing `sketchImages` entries so we don't duplicate URLs. Keep `galleryImages` as the concatenation for backward compatibility / lightbox.
-- **`src/routes/gallery.tsx`** — replace the current filter chips with category chips: `All / Event Setups / Bar & Equipment / Tables & Chairs / Blueprints`. When `All` is selected, render each category as its own labeled section (h2 + masonry grid) so the page reads as grouped sections instead of one mixed wall. When a specific category is selected, show just that group. Lightbox indices stay correct against the currently shown list.
-- Drop the old keyword-based `tagsFor` helper — it's replaced by explicit categorization.
+```ts
+{ to: "/catering", labelKey: "nav.catering", descKey: "navDesc.catering" },
+```
+
+Add the two new i18n keys (`nav.catering`, `navDesc.catering`) to `src/i18n/locales/en.json` so the dropdown label/description render.
 
 ### Out of scope
 
-- No new uploads, no renames in the storage bucket, no changes to other pages using `photoImages` / `sketchImages` / `productImages`.
-- The `.heic` file stays where it is (Event Setups); we already flagged it may not render in some browsers.
+- No changes to mobile bento drawer, footer, or other pages.
+- No new images uploaded — the page uses typography + existing gallery photos (`pickPhotos`) for atmosphere; the brochure's embedded food shots aren't imported as project assets.
+- No booking/quote flow wiring for catering — CTAs are tel/mailto only. Can add a CateringQuoteModal later if you want lead capture.
