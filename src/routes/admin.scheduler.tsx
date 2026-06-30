@@ -67,6 +67,7 @@ function SchedulerPage() {
   const [view, setView] = useState<ViewMode>("month");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [venueFilter, setVenueFilter] = useState<"all" | "rentals" | "beacon">("all");
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<CalEvent | null>(null);
   const [editing, setEditing] = useState<Partial<CalEvent> | null>(null);
@@ -91,6 +92,8 @@ function SchedulerPage() {
   const filtered = events.filter((e) => {
     if (filterType !== "all" && e.event_type !== filterType) return false;
     if (filterStatus !== "all" && e.status !== filterStatus) return false;
+    if (venueFilter === "beacon" && !VENUE_TYPES.has(e.event_type)) return false;
+    if (venueFilter === "rentals" && VENUE_TYPES.has(e.event_type)) return false;
     if (search && !e.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
