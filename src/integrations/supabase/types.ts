@@ -490,6 +490,7 @@ export type Database = {
           description: string | null
           id: string
           inventory_item_id: string | null
+          is_auto: boolean
           line_total_cents: number
           name: string
           needs_pricing_review: boolean
@@ -508,6 +509,7 @@ export type Database = {
           description?: string | null
           id?: string
           inventory_item_id?: string | null
+          is_auto?: boolean
           line_total_cents?: number
           name: string
           needs_pricing_review?: boolean
@@ -526,6 +528,7 @@ export type Database = {
           description?: string | null
           id?: string
           inventory_item_id?: string | null
+          is_auto?: boolean
           line_total_cents?: number
           name?: string
           needs_pricing_review?: boolean
@@ -670,6 +673,7 @@ export type Database = {
           amount_paid_cents: number | null
           approved_at: string | null
           booked_at: string | null
+          cleaning_auto: boolean
           cleaning_fee_cents: number
           created_at: string
           customer_email: string
@@ -704,6 +708,7 @@ export type Database = {
           amount_paid_cents?: number | null
           approved_at?: string | null
           booked_at?: string | null
+          cleaning_auto?: boolean
           cleaning_fee_cents?: number
           created_at?: string
           customer_email: string
@@ -738,6 +743,7 @@ export type Database = {
           amount_paid_cents?: number | null
           approved_at?: string | null
           booked_at?: string | null
+          cleaning_auto?: boolean
           cleaning_fee_cents?: number
           created_at?: string
           customer_email?: string
