@@ -44,8 +44,11 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         recommendation: (data.recommendation ?? null) as never,
         pdf_url: data.pdf_url ?? null,
         customer_note: data.customer_note ?? null,
+        request_type: data.request_type ?? "rental",
+        venue: data.venue ?? null,
         status: "new",
       })
+
       .select("id")
       .single();
     if (error) throw new Error(error.message);
