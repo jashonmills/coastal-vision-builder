@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
+import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
+
 import {
   MapPin,
   Users,
