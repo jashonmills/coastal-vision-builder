@@ -389,7 +389,17 @@ export const Route = createFileRoute("/rental-contract")({
 function RentalContractPage() {
   return (
     <SiteLayout>
-      <div className="bg-background text-foreground">
+      <style>{`
+        @page { margin: 0; }
+        @media print {
+          .contract-print-shell { padding: 1.25cm 1.5cm; }
+          .contract-print-footer { display: block; }
+        }
+        @media screen {
+          .contract-print-footer { display: none; }
+        }
+      `}</style>
+      <div className="contract-print-shell bg-background text-foreground">
         <header className="border-b border-border bg-card">
           <div className="mx-auto max-w-5xl px-6 py-12">
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Sample document</p>
@@ -446,6 +456,9 @@ function RentalContractPage() {
               Last updated for the 2026 season. {BRAND} reserves the right to update these terms; the version attached to
               your signed rental agreement governs your reservation.
             </p>
+            <div className="contract-print-footer mt-8 border-t border-border pt-4 text-center text-xs text-muted-foreground">
+              https://pacificnorthrentals.com/rental-contract
+            </div>
           </article>
         </div>
       </div>
