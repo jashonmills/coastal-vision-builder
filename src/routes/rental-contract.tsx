@@ -392,9 +392,9 @@ function RentalContractPage() {
       <div className="bg-background text-foreground">
         <header className="border-b border-border bg-card">
           <div className="mx-auto max-w-5xl px-6 py-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Sample document</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Sample document</p>
             <h1 className="mt-2 font-serif text-4xl md:text-5xl">Rental Contract</h1>
-            <p className="mt-4 max-w-2xl text-[color:var(--muted)]">
+            <p className="mt-4 max-w-2xl text-muted-foreground">
               This is a preview of the standard terms used by {BRAND}. Your final, signable contract is generated with
               each reservation and may include event-specific addenda. Please review carefully — by signing your rental
               agreement you accept these terms.
