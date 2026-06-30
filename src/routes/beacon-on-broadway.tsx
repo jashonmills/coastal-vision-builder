@@ -338,9 +338,11 @@ function BeaconPage() {
         onClose={() => setLbIndex(null)}
         onIndexChange={setLbIndex}
       />
+      <BeaconQuoteModal open={quoteOpen} onClose={() => setQuoteOpen(false)} />
     </SiteLayout>
   );
 }
+
 
 function PriceCard({
   badge,
