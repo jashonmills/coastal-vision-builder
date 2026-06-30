@@ -1,4 +1,4 @@
-import { useState, type ImgHTMLAttributes } from "react";
+import { useCallback, useState, type ImgHTMLAttributes } from "react";
 
 type Props = ImgHTMLAttributes<HTMLImageElement> & {
   /** Initial aspect ratio (width / height) used to reserve space before load. */
@@ -23,6 +23,21 @@ export function LazyImage({
   const [ratio, setRatio] = useState(defaultRatio);
   const [loaded, setLoaded] = useState(false);
 
+  const markLoaded = (img: HTMLImageElement) => {
+    if (img.naturalWidth && img.naturalHeight) {
+      setRatio(img.naturalWidth / img.naturalHeight);
+    }
+    setLoaded(true);
+  };
+
+  // Handle cached images: onLoad doesn't fire if the image is already complete
+  // by the time React attaches the handler.
+  const refCallback = useCallback((node: HTMLImageElement | null) => {
+    if (node && node.complete && node.naturalWidth > 0) {
+      markLoaded(node);
+    }
+  }, []);
+
   return (
     <div
       className={wrapperClassName}
@@ -30,14 +45,11 @@ export function LazyImage({
     >
       <img
         {...rest}
+        ref={refCallback}
         loading={loading}
         decoding={decoding}
         onLoad={(e) => {
-          const img = e.currentTarget;
-          if (img.naturalWidth && img.naturalHeight) {
-            setRatio(img.naturalWidth / img.naturalHeight);
-          }
-          setLoaded(true);
+          markLoaded(e.currentTarget);
           onLoad?.(e);
         }}
         className={`${className ?? ""} transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
@@ -46,3 +58,4 @@ export function LazyImage({
     </div>
   );
 }
+
