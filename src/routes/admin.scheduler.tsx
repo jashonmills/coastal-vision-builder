@@ -50,7 +50,14 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
   maintenance: "Maintenance",
   blocked_date: "Blocked",
   internal_note: "Note",
+  venue_inquiry: "Beacon Inquiry",
+  venue_hold: "Beacon Hold",
+  venue_booked: "Beacon Booked",
+  venue_setup: "Beacon Setup",
+  venue_teardown: "Beacon Teardown",
 };
+
+const VENUE_TYPES = new Set(["venue_inquiry", "venue_hold", "venue_booked", "venue_setup", "venue_teardown"]);
 
 function SchedulerPage() {
   const { user, loading: authLoading } = useAuth();
