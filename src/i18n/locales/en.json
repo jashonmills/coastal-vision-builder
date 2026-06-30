@@ -210,6 +210,22 @@
         "copy": "Make event planning easier with reliable setup and breakdown support. Our team helps handle the structure so you can focus on the experience."
       }
     },
+    "callouts": {
+      "beacon": {
+        "eyebrow": "Event Venue",
+        "title": "Beacon on Broadway",
+        "copy": "Hosting in Seaside? Our 2,800 sq ft climate-controlled hall holds up to 150 guests with chairs, tables, and a built-in bar included.",
+        "cta": "Explore the venue",
+        "alt": "Beacon on Broadway event hall"
+      },
+      "catering": {
+        "eyebrow": "Full-Service Catering",
+        "title": "Pacific North Catering",
+        "copy": "From buffet and pasta bars to chef-attended stations and bartending, we bring the food, drinks, and service to your tent or venue.",
+        "cta": "See catering menus",
+        "alt": "Catering buffet spread"
+      }
+    },
     "tailoredBanner": "Need something tailored to your event?"
   },
   "tentRentals": {
