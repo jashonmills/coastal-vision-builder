@@ -30,6 +30,7 @@ function QuoteRequestsPage() {
   const updateStatusFn = useServerFn(updateQuoteRequestStatus);
   const createFn = useServerFn(createQuoteFromRequest);
   const [showArchived, setShowArchived] = useState(false);
+  const [typeFilter, setTypeFilter] = useState<"all" | "rental" | "venue">("all");
 
 
   const { data, isLoading } = useQuery({
