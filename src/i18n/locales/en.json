@@ -13,6 +13,7 @@
     "gallery": "Gallery",
     "about": "About",
     "beacon": "Beacon on Broadway",
+    "catering": "Catering",
     "aboutUs": "About Us",
     "contact": "Contact",
     "requestQuote": "Request a Quote",
@@ -38,6 +39,7 @@
     "events": "Past events and case studies",
     "aboutUs": "Coastal team, our story",
     "beacon": "Our event venue in downtown Seaside",
+    "catering": "Buffet menus, bartending, and chef stations",
     "contact": "Get in touch"
   },
   "footer": {
