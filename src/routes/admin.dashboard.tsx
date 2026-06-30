@@ -88,12 +88,20 @@ function DashboardPage() {
                 tone={c!.newRequests > 0 ? "gold" : "muted"}
                 to="/admin/quote-requests"
               />
+              <StatCard
+                label="Beacon Inquiries"
+                value={c!.newVenueRequests ?? 0}
+                icon={Inbox}
+                tone={(c!.newVenueRequests ?? 0) > 0 ? "gold" : "muted"}
+                to="/admin/quote-requests"
+              />
               <StatCard label="In Review" value={c!.inReview} icon={FileText} tone="blue" to="/admin/quote-requests" />
               <StatCard label="Draft Quotes" value={c!.draftQuotes} icon={FileText} tone="muted" to="/admin/quotes" />
               <StatCard label="Sent Quotes" value={c!.sentQuotes} icon={Send} tone="green" to="/admin/quotes" />
               <StatCard label="Events (7 days)" value={c!.upcomingEvents} icon={CalendarDays} tone="navy" to="/admin/scheduler" />
               <StatCard label="Unread Alerts" value={c!.unreadNotifications} icon={Bell} tone={c!.unreadNotifications > 0 ? "gold" : "muted"} />
             </div>
+
 
             {/* Recent + Upcoming */}
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
