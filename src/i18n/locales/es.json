@@ -344,6 +344,13 @@
         "title": "Servicio Local y Amigable",
         "text": "Nos importa ayudar a los clientes a crear experiencias memorables sin estrés innecesario."
       }
+    },
+    "venues": {
+      "eyebrow": "Venues y Catering",
+      "title": "Más que carpas",
+      "body": "Junto con nuestras carpas y alquileres, ofrecemos dos experiencias complementarias para simplificar la planificación. Beacon on Broadway es nuestro salón de 2.800 sq ft bellamente restaurado en el centro de Seaside — perfecto para bodas, recepciones y celebraciones corporativas con encanto histórico. Para eventos que necesitan hospitalidad completa, nuestro equipo de catering ofrece menús buffet, estaciones de chef, bartenders y servicio de bebidas en el lugar que elijas.",
+      "beaconCta": "Explorar Beacon on Broadway",
+      "cateringCta": "Ver Catering"
     }
   },
   "contact": {
@@ -665,6 +672,154 @@
       "invalidEmail": "Por favor ingresa una dirección de correo electrónico válida.",
       "eventDateRequired": "Por favor ingresa la fecha de tu evento.",
       "eventLocationRequired": "Por favor ingresa la ubicación de tu evento."
+    }
+  },
+  "beacon": {
+    "hero": {
+      "eyebrow": "Nuestro Venue · Seaside, Oregon",
+      "title": "Beacon on Broadway",
+      "subtitle": "Un salón de eventos de 2.800 sq ft bellamente restaurado en el corazón del centro de Seaside — propiedad y operado por Pacific North Events & Tents.",
+      "requestQuote": "Solicitar Cotización",
+      "address": "735 Broadway, Seaside, OR 97138"
+    },
+    "facts": {
+      "capacity": {
+        "label": "Capacidad",
+        "value": "Hasta 150 invitados"
+      },
+      "space": {
+        "label": "Espacio",
+        "value": "2.800 sq ft"
+      },
+      "access": {
+        "label": "Acceso",
+        "value": "Ascensor & ADA"
+      },
+      "climate": {
+        "label": "Clima",
+        "value": "Calefacción & A/C"
+      }
+    },
+    "story": {
+      "eyebrow": "La Historia",
+      "title": "Un espacio emblemático, restaurado con cariño",
+      "body1": "Beacon on Broadway está en uno de los edificios más reconocibles de Seaside. Restauramos el salón superior en un espacio cálido y flexible.",
+      "body2": "Como el venue es operado por Pacific North Events & Tents, cada reserva viene con el mismo equipo que maneja carpas, mesas, linos y coordinación."
+    },
+    "included": {
+      "eyebrow": "Incluido en cada reserva",
+      "title": "Amueblado y listo para recibir",
+      "body": "El salón viene con sillas, mesas, climatización y acceso por ascensor. ¿Necesitas linos, iluminación o un paquete de bar? Lo agregamos de nuestro inventario.",
+      "items": [
+        "150 sillas acolchadas negras",
+        "(10) mesas redondas de 6 ft",
+        "(10) mesas redondas de 5 ft",
+        "(2) mesas de banquete de 8 ft",
+        "Bar y área de preparación",
+        "Sistema de sonido listo",
+        "Soporte de montaje en sitio",
+        "Plano flexible"
+      ]
+    },
+    "pricing": {
+      "eyebrow": "Precios",
+      "title": "Tarifas simples por temporada",
+      "note": "Las tarifas son solo punto de partida del venue. Alquileres, personal y paquetes a medida se cotizan aparte.",
+      "perDay": "/ día",
+      "perWeekend": "/ fin de semana",
+      "offSeason": {
+        "badge": "Temporada Baja",
+        "window": "Octubre – Febrero",
+        "note": "Cualquier día"
+      },
+      "peakWeekday": {
+        "badge": "Día de Semana Alta",
+        "window": "Marzo – Septiembre",
+        "note": "Lunes – Jueves"
+      },
+      "peakWeekend": {
+        "badge": "Fin de Semana Alta",
+        "window": "Marzo – Septiembre",
+        "note": "Vie–Sáb o Sáb–Dom"
+      }
+    },
+    "gallery": {
+      "eyebrow": "Galería",
+      "title": "Dentro del salón"
+    },
+    "visit": {
+      "eyebrow": "Visita",
+      "title": "Centro de Seaside, a pasos del Prom",
+      "body": "Beacon on Broadway está justo en Broadway, conectando el centro de Seaside con la playa. Hoteles, restaurantes y estacionamiento a pie.",
+      "tours": "Tours con cita"
+    },
+    "cta": {
+      "title": "Planifica tu evento en Beacon",
+      "body": "Cuéntanos tu fecha, número de invitados y estilo. Te responderemos con disponibilidad y cotización completa.",
+      "contact": "Contáctanos"
+    }
+  },
+  "catering": {
+    "hero": {
+      "eyebrow": "Pacific North Catering",
+      "title": "Llevando tu evento más allá de las expectativas",
+      "subtitle": "Menús buffet, estaciones de chef y servicio de bartender en la costa de Oregon."
+    },
+    "contact": {
+      "requestQuote": "Solicitar Cotización de Catering",
+      "address": "1475 N. Roosevelt, Seaside, OR 97138"
+    },
+    "buffet": {
+      "eyebrow": "Menú Buffet",
+      "title": "Buffets favoritos",
+      "pricing": "$25 / persona (100+) · $30 / persona (50–99)",
+      "allIncluded": "Todo incluido",
+      "main": "Principal",
+      "sides": "Acompañamientos",
+      "fixings": "Aderezos",
+      "salad": "Ensalada",
+      "mainChooseTwo": "Principal (elige dos)",
+      "saladChooseOne": "Ensalada (elige una)"
+    },
+    "silver": {
+      "eyebrow": "Buffet Plata",
+      "title": "Menú Buffet Plata",
+      "pricing": "$30 / persona (100+) · $35 / persona (50–99)"
+    },
+    "gold": {
+      "eyebrow": "Buffet Oro",
+      "title": "Menú Buffet Oro",
+      "pricing": "$40 / persona (100+) · $45 / persona (50–99)"
+    },
+    "common": {
+      "chooseOne": "(elige 1)",
+      "chooseOneEach": "(elige 1 de cada)",
+      "entree": "Plato Principal",
+      "sidesLabel": "Acompañamientos",
+      "starch": "Almidón",
+      "vegetable": "Vegetal",
+      "silverSaladOptions": "Garden o caesar",
+      "goldSaladOptions": "Garden, caesar, o spinach con fresa",
+      "horsdoeuvres": "Mejora · Aperitivos",
+      "horsdoeuvresNote": "+$5 por persona por cada ítem",
+      "chefStation": "Estación con Chef"
+    },
+    "bartending": {
+      "eyebrow": "Bartending",
+      "title": "Servicios de Bartender",
+      "body": "¿Buscas servicios de bartender tradicional? Desde cocteles afrutados hasta licores fuertes, nuestros mixólogos elevan tu ocasión.",
+      "note": "El bartending solo se ofrece junto con paquetes de catering. Pregunta por precios."
+    },
+    "finePrint": "Todos los precios se basan en 2 horas de servicio y 100 invitados. +$5/persona para 50–99 invitados. No incluye personal, linos, entrega ni cargo de servicio.",
+    "cross": {
+      "rentalsEyebrow": "Alquileres",
+      "rentalsTitle": "Carpas, mesas, sillas y linos",
+      "rentalsBody": "¿Necesitas alquileres para tu boda con catering? Pacific North Event & Tent Rentals puede ayudar.",
+      "rentalsCta": "Ver alquileres",
+      "venueEyebrow": "Venue",
+      "venueTitle": "The Beacon on Broadway",
+      "venueBody": "¿Quieres un venue interior elegante? Un espacio histórico de más de 100 años en Broadway — hasta 150 invitados.",
+      "venueCta": "Ver el Beacon"
     }
   }
 }

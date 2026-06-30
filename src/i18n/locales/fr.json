@@ -344,6 +344,13 @@
         "title": "Service Local & Convivial",
         "text": "Nous tenons à aider nos clients à créer des expériences mémorables sans stress inutile."
       }
+    },
+    "venues": {
+      "eyebrow": "Lieux & Traiteur",
+      "title": "Plus que des tentes",
+      "body": "En plus de nos services de tentes et de location, nous proposons deux expériences complémentaires pour faciliter l'organisation de vos événements. Beacon on Broadway est notre salle de 2 800 sq ft magnifiquement restaurée au centre-ville de Seaside — parfaite pour mariages, réceptions et célébrations d'entreprise. Pour les événements nécessitant un service complet, notre équipe de traiteur propose menus buffet, stations de chef, bar et service de boissons sur le lieu de votre choix.",
+      "beaconCta": "Découvrir Beacon on Broadway",
+      "cateringCta": "Voir le traiteur"
     }
   },
   "contact": {
@@ -665,6 +672,155 @@
       "invalidEmail": "Veuillez entrer une adresse e-mail valide.",
       "eventDateRequired": "Veuillez indiquer la date de votre événement.",
       "eventLocationRequired": "Veuillez indiquer le lieu de votre événement."
+    }
+  },
+  "beacon": {
+    "hero": {
+      "eyebrow": "Our Venue · Seaside, Oregon",
+      "title": "Beacon on Broadway",
+      "subtitle": "A beautifully restored 2,800 sq ft event hall in the heart of downtown Seaside — owned and operated by Pacific North Events & Tents. Weddings, receptions, corporate gatherings, and celebrations of every kind find a home here.",
+      "requestQuote": "Request a Quote",
+      "address": "735 Broadway, Seaside, OR 97138"
+    },
+    "facts": {
+      "capacity": {
+        "label": "Capacity",
+        "value": "Up to 150 guests"
+      },
+      "space": {
+        "label": "Space",
+        "value": "2,800 sq ft"
+      },
+      "access": {
+        "label": "Access",
+        "value": "Elevator & ADA"
+      },
+      "climate": {
+        "label": "Climate",
+        "value": "Heat & A/C"
+      }
+    },
+    "story": {
+      "eyebrow": "The Story",
+      "title": "A landmark space, lovingly restored",
+      "body1": "Beacon on Broadway sits in one of Seaside's most recognizable buildings — a historic downtown structure that has anchored Broadway for generations. We restored the upstairs hall into a warm and flexible event space that feels both classic and current: original architectural lines, soft modern lighting, and an open floor that can shift from intimate dinner to dance-floor in an evening.",
+      "body2": "Because the venue is owned and run by Pacific North Events & Tents, every booking comes with the same team that handles our tents, tables, linens, and coordination across the Oregon Coast. Add what you need, leave what you don't, and we'll make it work in the room."
+    },
+    "included": {
+      "eyebrow": "Included with every booking",
+      "title": "Furnished, climate-controlled, ready to host",
+      "body": "The hall comes set with chairs, tables, climate control, and elevator access — so most events arrive, decorate, and celebrate without renting a single extra piece. Need linens, lighting, or a bar package? We'll add it from our in-house inventory.",
+      "items": [
+        "150 black padded chairs",
+        "(10) 6 ft round tables",
+        "(10) 5 ft round tables",
+        "(2) 8 ft banquet tables",
+        "Built-in bar & prep area",
+        "Sound system ready",
+        "On-site setup support",
+        "Flexible floor plan"
+      ]
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "Simple, seasonal rates",
+      "note": "Rates are starting points for the venue only. Add-on rentals, staffing, and custom packages quoted on request.",
+      "perDay": "/ day",
+      "perWeekend": "/ weekend",
+      "offSeason": {
+        "badge": "Off-Season",
+        "window": "October – February",
+        "note": "Any day of the week"
+      },
+      "peakWeekday": {
+        "badge": "Peak Weekday",
+        "window": "March – September",
+        "note": "Monday – Thursday"
+      },
+      "peakWeekend": {
+        "badge": "Peak Weekend",
+        "window": "March – September",
+        "note": "Fri–Sat or Sat–Sun"
+      }
+    },
+    "gallery": {
+      "eyebrow": "Gallery",
+      "title": "Inside the hall"
+    },
+    "visit": {
+      "eyebrow": "Visit",
+      "title": "Downtown Seaside, steps from the Prom",
+      "body": "Beacon on Broadway is right on Broadway, the main artery connecting downtown Seaside to the beach. Walkable hotels, restaurants, and parking surround the venue — perfect for guests traveling in for the weekend.",
+      "tours": "Tours by appointment"
+    },
+    "cta": {
+      "title": "Plan your event at Beacon",
+      "body": "Tell us your date, headcount, and vibe. We'll come back with availability, a venue hold, and a full quote including any rentals you need.",
+      "contact": "Contact Us"
+    }
+  },
+  "catering": {
+    "hero": {
+      "eyebrow": "Pacific North Catering",
+      "title": "Taking your catered event above expectations",
+      "subtitle": "Buffet menus, chef-attended stations, and bartending services on the Oregon Coast."
+    },
+    "contact": {
+      "requestQuote": "Request a Catering Quote",
+      "address": "1475 N. Roosevelt, Seaside, OR 97138"
+    },
+    "buffet": {
+      "eyebrow": "Buffet Menu",
+      "title": "Crowd-favorite buffets",
+      "pricing": "$25 / person (100+) · $30 / person (50–99)",
+      "allIncluded": "All included",
+      "main": "Main",
+      "sides": "Sides",
+      "fixings": "Fixings",
+      "salad": "Salad",
+      "mainChooseTwo": "Main (choose two)",
+      "saladChooseOne": "Salad (choose one)"
+    },
+    "silver": {
+      "eyebrow": "Silver Buffet",
+      "title": "Silver Buffet Menu",
+      "pricing": "$30 / person (100+) · $35 / person (50–99)"
+    },
+    "gold": {
+      "eyebrow": "Gold Buffet",
+      "title": "Gold Buffet Menu",
+      "pricing": "$40 / person (100+) · $45 / person (50–99)"
+    },
+    "common": {
+      "saladChoose1": "Salad",
+      "chooseOne": "(choose 1)",
+      "chooseOneEach": "(choose 1 of each)",
+      "entree": "Entrée",
+      "sidesLabel": "Sides",
+      "starch": "Starch",
+      "vegetable": "Vegetable",
+      "silverSaladOptions": "Garden or caesar",
+      "goldSaladOptions": "Garden, caesar, or strawberry spinach",
+      "horsdoeuvres": "Upgrade · Hors d'Oeuvres",
+      "horsdoeuvresNote": "+$5 per person for each item ordered",
+      "chefStation": "Chef-Attended Station"
+    },
+    "bartending": {
+      "eyebrow": "Bartending",
+      "title": "Bartending Services",
+      "body": "Looking for traditional bartending services for your event? From fruity cocktails to hard liquors, from champagne to non-alcoholic beverages, our experienced mixologists are on hand to elevate your occasion into an affair to remember.",
+      "note": "Bartending is currently only offered in combination with our food catering packages. Ask for pricing."
+    },
+    "finePrint": "All prices are based on a 2-hour service and 100 guests. Add $5 per person for counts between 50–99. Price does not include service personnel, table linens, delivery, or service charge. Prices subject to change without notice.",
+    "cross": {
+      "rentalsEyebrow": "Rentals",
+      "rentalsTitle": "Tents, tables, chairs & linens",
+      "rentalsBody": "Need rentals for your catered wedding or event? Pacific North Event & Tent Rentals can help plan the details — with over 5 years of Pacific North experience. Delivery and take-down available.",
+      "rentalsCta": "Explore rentals",
+      "venueEyebrow": "Venue",
+      "venueTitle": "The Beacon on Broadway",
+      "venueBody": "Hoping for an elegant indoor venue? A historic event space over 100 years old, right on Broadway in downtown Seaside — seats up to 150 guests.",
+      "venueCta": "See the Beacon"
     }
   }
 }
