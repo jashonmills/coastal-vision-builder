@@ -95,6 +95,13 @@ function DashboardPage() {
                 tone={(c!.newVenueRequests ?? 0) > 0 ? "gold" : "muted"}
                 to="/admin/quote-requests"
               />
+              <StatCard
+                label="Beacon Holds / Booked (30d)"
+                value={(c as any).venueBookings30 ?? 0}
+                icon={CalendarDays}
+                tone={((c as any).venueBookings30 ?? 0) > 0 ? "navy" : "muted"}
+                to="/admin/scheduler"
+              />
               <StatCard label="In Review" value={c!.inReview} icon={FileText} tone="blue" to="/admin/quote-requests" />
               <StatCard label="Draft Quotes" value={c!.draftQuotes} icon={FileText} tone="muted" to="/admin/quotes" />
               <StatCard label="Sent Quotes" value={c!.sentQuotes} icon={Send} tone="green" to="/admin/quotes" />
