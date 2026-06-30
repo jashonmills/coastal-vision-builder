@@ -456,6 +456,9 @@ function RentalContractPage() {
               Last updated for the 2026 season. {BRAND} reserves the right to update these terms; the version attached to
               your signed rental agreement governs your reservation.
             </p>
+            <div className="contract-print-footer mt-8 border-t border-border pt-4 text-center text-xs text-muted-foreground">
+              https://pacificnorthrentals.com/rental-contract
+            </div>
           </article>
         </div>
       </div>
