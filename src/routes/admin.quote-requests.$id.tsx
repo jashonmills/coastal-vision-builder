@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { getQuoteRequest, createQuoteFromRequest, updateQuoteRequestStatus } from "@/lib/quotes.functions";
 import { placeVenueHold, confirmVenueBooking, releaseVenueBooking, listVenueEventsOnDate, BEACON_VENUE } from "@/lib/venue-bookings.functions";
-import { StatusPill } from "./admin.quote-requests";
+import { StatusPill, AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/quote-requests/$id")({
   head: () => ({ meta: [{ title: "Quote Request | Admin" }] }),
@@ -104,6 +104,7 @@ function QuoteRequestDetailPage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-5xl px-4 py-10 lg:px-8">
+        <AdminTabs active="quote-requests" />
         <Link to="/admin/quote-requests" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
           <ArrowLeft className="h-4 w-4" /> Back to requests
         </Link>

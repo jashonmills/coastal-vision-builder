@@ -13,6 +13,7 @@ import {
   computeAvailable, ITEM_TYPE_LABEL, ITEM_TYPES, type InventoryCategory, type InventoryItem, type ItemType,
 } from "@/lib/inventory";
 import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
+import { AdminTabs } from "./admin.quote-requests";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
@@ -64,6 +65,7 @@ function InventoryAdminPage() {
         subtitle="Rental operating system: stock, status, reservations, and lifecycle."
       />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+        <AdminTabs active="inventory" />
         <Dashboard />
       </section>
     </SiteLayout>
