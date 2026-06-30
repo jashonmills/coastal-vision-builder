@@ -15,16 +15,15 @@ import {
   Check,
 } from "lucide-react";
 
-// Eagerly import all Beacon photos via Vite glob
-const photoModules = import.meta.glob("@/assets/beacon/*.jpg", {
+// Eagerly import all Beacon photo CDN pointers
+const photoModules = import.meta.glob("@/assets/beacon/*.jpg.asset.json", {
   eager: true,
-  query: "?url",
   import: "default",
-}) as Record<string, string>;
+}) as Record<string, { url: string }>;
 
 const photoUrls: string[] = Object.entries(photoModules)
   .sort(([a], [b]) => a.localeCompare(b))
-  .map(([, url]) => url);
+  .map(([, mod]) => mod.url);
 
 const heroPhoto = photoUrls[11] ?? photoUrls[0];
 const galleryPhotos = photoUrls;
