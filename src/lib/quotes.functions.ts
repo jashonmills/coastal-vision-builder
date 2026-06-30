@@ -18,7 +18,10 @@ const CreateQuoteRequestSchema = z.object({
   recommendation: z.unknown().optional().nullable(),
   pdf_url: z.string().url().optional().nullable(),
   customer_note: z.string().max(4000).optional().nullable(),
+  request_type: z.enum(["rental", "venue"]).optional().default("rental"),
+  venue: z.string().max(100).optional().nullable(),
 });
+
 
 // Public — anyone can submit a quote request. Uses the user-scoped client (anon or authed).
 export const createQuoteRequest = createServerFn({ method: "POST" })
