@@ -35,8 +35,8 @@ function GalleryPage() {
   const lb = useLightbox();
 
   const shown = filter === "all"
-    ? photoImages
-    : photoImages.filter((img) => tagsFor(img.alt).includes(filter));
+    ? galleryImages
+    : galleryImages.filter((img) => tagsFor(img.alt).includes(filter));
 
   return (
     <SiteLayout>
