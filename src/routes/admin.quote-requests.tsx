@@ -154,10 +154,18 @@ function QuoteRequestsPage() {
                       {rows.map((r) => (
                         <tr key={r.id} className={`border-t border-border align-top ${r.status === "archived" ? "opacity-60" : ""}`}>
                           <td className="px-3 py-2">
-                            <div className="font-medium text-foreground">{r.customer_name}</div>
+                            <div className="flex items-center gap-2">
+                              <div className="font-medium text-foreground">{r.customer_name}</div>
+                              {r.request_type === "venue" && (
+                                <span className="inline-flex items-center rounded-full border border-[color:var(--gold)]/40 bg-[color:var(--gold)]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[color:var(--gold)]">
+                                  {r.venue === "beacon-on-broadway" ? "Beacon" : "Venue"}
+                                </span>
+                              )}
+                            </div>
                             <div className="text-xs text-muted-foreground">{r.customer_email}</div>
                             {r.customer_phone && <div className="text-xs text-muted-foreground">{r.customer_phone}</div>}
                           </td>
+
                           <td className="px-3 py-2">{r.event_type || "—"}</td>
                           <td className="px-3 py-2">{r.event_date || "—"}</td>
                           <td className="px-3 py-2">{r.guest_count ?? "—"}</td>
