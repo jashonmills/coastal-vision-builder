@@ -403,7 +403,7 @@ function RentalContractPage() {
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="rounded-full border border-[color:var(--line)] px-5 py-2 text-sm hover:bg-[color:var(--bg-elev-2)]"
+                className="rounded-full border border-border px-5 py-2 text-sm hover:bg-secondary"
               >
                 Print / Save as PDF
               </button>
