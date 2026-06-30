@@ -204,13 +204,17 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <SiteFooter className="print:hidden" />
+      <div className="print:hidden">
+        <SiteFooter />
+      </div>
 
-      <MobileBottomNav onMenu={() => setOpen(true)} className="print:hidden" />
-      <MobileBentoDrawer open={open} onClose={() => setOpen(false)} className="print:hidden" />
-      <MobileHelpButton className="print:hidden" />
-      <AccessibilityFontButton className="print:hidden" />
-      <ChatWidget className="print:hidden" />
+      <div className="print:hidden">
+        <MobileBottomNav onMenu={() => setOpen(true)} />
+        <MobileBentoDrawer open={open} onClose={() => setOpen(false)} />
+        <MobileHelpButton />
+        <AccessibilityFontButton />
+        <ChatWidget />
+      </div>
     </div>
   );
 }
