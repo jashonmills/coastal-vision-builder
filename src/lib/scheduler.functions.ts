@@ -15,6 +15,19 @@ export const EVENT_TYPES = [
   "maintenance",
   "blocked_date",
   "internal_note",
+  "venue_inquiry",
+  "venue_hold",
+  "venue_booked",
+  "venue_setup",
+  "venue_teardown",
+] as const;
+
+export const VENUE_EVENT_TYPES = [
+  "venue_inquiry",
+  "venue_hold",
+  "venue_booked",
+  "venue_setup",
+  "venue_teardown",
 ] as const;
 
 export const EVENT_STATUSES = [
@@ -39,6 +52,11 @@ export const EVENT_COLORS: Record<string, string> = {
   maintenance: "#ef4444",
   blocked_date: "#6b7280",
   internal_note: "#94a3b8",
+  venue_inquiry: "#7c5cff",
+  venue_hold: "#7c5cff",
+  venue_booked: "#5b3fdc",
+  venue_setup: "#a895ff",
+  venue_teardown: "#a895ff",
 };
 
 const RangeSchema = z.object({

@@ -75,15 +75,19 @@ function EditQuotePage() {
 
   const book = useMutation({
     mutationFn: () => bookFn({ data: { quote_id: id } }),
-    onSuccess: (res) => {
-      const eventMsg = res.has_event_date
-        ? `${res.events_created} calendar events created.`
-        : "No event date set — calendar events skipped.";
-      toast.success(
-        res.already_reserved
-          ? `Already reserved. ${eventMsg}`
-          : `Reserved ${res.lines_reserved} item(s). ${eventMsg}`,
-      );
+    onSuccess: (res: any) => {
+      if (res?.venue_only) {
+        toast.success(`Beacon booking confirmed. ${res.events_created} calendar event(s) created.`);
+      } else {
+        const eventMsg = res.has_event_date
+          ? `${res.events_created} calendar events created.`
+          : "No event date set — calendar events skipped.";
+        toast.success(
+          res.already_reserved
+            ? `Already reserved. ${eventMsg}`
+            : `Reserved ${res.lines_reserved} item(s). ${eventMsg}`,
+        );
+      }
       refetch();
       refetchStatus();
       qc.invalidateQueries({ queryKey: ["quote-availability", id] });
