@@ -75,7 +75,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       {pathname === "/" && <OpeningVideoSplash />}
       {pathname === "/" && <AITentPlannerPopup />}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md print:hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:gap-6 lg:px-8 lg:py-4">
           <Link to="/" className="flex items-center" aria-label="Pacific North Event & Tent Rentals">
             <img
