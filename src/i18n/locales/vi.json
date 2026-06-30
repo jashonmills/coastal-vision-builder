@@ -344,6 +344,13 @@
         "title": "Dịch vụ địa phương thân thiện",
         "text": "Chúng tôi quan tâm đến việc giúp khách hàng tạo ra những trải nghiệm đáng nhớ mà không có căng thẳng không cần thiết."
       }
+    },
+    "venues": {
+      "eyebrow": "Địa điểm & Phục vụ ăn uống",
+      "title": "Hơn cả những chiếc lều",
+      "body": "Bên cạnh dịch vụ lều và cho thuê, chúng tôi tự hào mang đến hai trải nghiệm bổ sung giúp việc tổ chức sự kiện đơn giản hơn. Beacon on Broadway là không gian rộng 2.800 sq ft được phục dựng tuyệt đẹp ngay trung tâm Seaside — hoàn hảo cho đám cưới, tiệc chiêu đãi, hội họp doanh nghiệp và những buổi lễ mong muốn một không gian sẵn có đậm nét lịch sử. Với những sự kiện cần dịch vụ trọn gói, đội ngũ phục vụ ăn uống của chúng tôi mang đến thực đơn buffet, quầy đầu bếp, pha chế và phục vụ đồ uống tận nơi.",
+      "beaconCta": "Khám phá Beacon on Broadway",
+      "cateringCta": "Xem dịch vụ ăn uống"
     }
   },
   "contact": {
@@ -665,6 +672,154 @@
       "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ.",
       "eventDateRequired": "Vui lòng nhập ngày sự kiện của bạn.",
       "eventLocationRequired": "Vui lòng nhập địa điểm sự kiện của bạn."
+    }
+  },
+  "beacon": {
+    "hero": {
+      "eyebrow": "Địa điểm của chúng tôi · Seaside, Oregon",
+      "title": "Beacon on Broadway",
+      "subtitle": "Một hội trường sự kiện rộng 2.800 sq ft được phục dựng tuyệt đẹp ngay trung tâm Seaside — thuộc sở hữu và vận hành bởi Pacific North Events & Tents. Đám cưới, tiệc chiêu đãi, hội họp doanh nghiệp và mọi loại lễ kỷ niệm đều tìm thấy mái ấm tại đây.",
+      "requestQuote": "Yêu cầu báo giá",
+      "address": "735 Broadway, Seaside, OR 97138"
+    },
+    "facts": {
+      "capacity": {
+        "label": "Sức chứa",
+        "value": "Tối đa 150 khách"
+      },
+      "space": {
+        "label": "Diện tích",
+        "value": "2.800 sq ft"
+      },
+      "access": {
+        "label": "Tiếp cận",
+        "value": "Thang máy & ADA"
+      },
+      "climate": {
+        "label": "Khí hậu",
+        "value": "Sưởi & Điều hòa"
+      }
+    },
+    "story": {
+      "eyebrow": "Câu chuyện",
+      "title": "Một không gian biểu tượng, được phục dựng tận tâm",
+      "body1": "Beacon on Broadway nằm trong một trong những tòa nhà dễ nhận biết nhất của Seaside — công trình lịch sử đã gắn bó với Broadway qua nhiều thế hệ. Chúng tôi đã phục dựng tầng trên thành một không gian sự kiện ấm cúng và linh hoạt: đường nét kiến trúc nguyên bản, ánh sáng hiện đại nhẹ nhàng và sàn rộng có thể chuyển từ bữa tối ấm cúng sang sàn nhảy trong một buổi tối.",
+      "body2": "Vì địa điểm thuộc sở hữu và vận hành bởi Pacific North Events & Tents, mỗi đặt chỗ đều đi kèm với chính đội ngũ phụ trách lều, bàn ghế, khăn trải và điều phối khắp bờ biển Oregon."
+    },
+    "included": {
+      "eyebrow": "Bao gồm trong mỗi đặt chỗ",
+      "title": "Trang bị đầy đủ, điều hòa khí hậu, sẵn sàng phục vụ",
+      "body": "Hội trường được trang bị sẵn ghế, bàn, điều hòa và thang máy — vì vậy hầu hết sự kiện có thể đến, trang trí và tổ chức mà không cần thuê thêm bất cứ thứ gì. Cần khăn trải, ánh sáng hay gói quầy bar? Chúng tôi sẽ bổ sung từ kho riêng.",
+      "items": [
+        "150 ghế đệm đen",
+        "(10) bàn tròn 6 ft",
+        "(10) bàn tròn 5 ft",
+        "(2) bàn tiệc dài 8 ft",
+        "Quầy bar & khu chuẩn bị sẵn có",
+        "Hệ thống âm thanh sẵn sàng",
+        "Hỗ trợ lắp đặt tại chỗ",
+        "Bố trí linh hoạt"
+      ]
+    },
+    "pricing": {
+      "eyebrow": "Bảng giá",
+      "title": "Giá đơn giản theo mùa",
+      "note": "Giá chỉ là điểm khởi đầu cho địa điểm. Các dịch vụ bổ sung, nhân sự và gói tùy chỉnh sẽ được báo giá riêng.",
+      "perDay": "/ ngày",
+      "perWeekend": "/ cuối tuần",
+      "offSeason": {
+        "badge": "Ngoài mùa",
+        "window": "Tháng 10 – Tháng 2",
+        "note": "Bất kỳ ngày nào trong tuần"
+      },
+      "peakWeekday": {
+        "badge": "Cao điểm trong tuần",
+        "window": "Tháng 3 – Tháng 9",
+        "note": "Thứ Hai – Thứ Năm"
+      },
+      "peakWeekend": {
+        "badge": "Cao điểm cuối tuần",
+        "window": "Tháng 3 – Tháng 9",
+        "note": "T6–T7 hoặc T7–CN"
+      }
+    },
+    "gallery": {
+      "eyebrow": "Thư viện ảnh",
+      "title": "Bên trong hội trường"
+    },
+    "visit": {
+      "eyebrow": "Ghé thăm",
+      "title": "Trung tâm Seaside, vài bước đến bãi biển",
+      "body": "Beacon on Broadway nằm ngay trên Broadway, trục đường chính nối trung tâm Seaside với bãi biển. Khách sạn, nhà hàng và bãi đỗ xe đều trong tầm đi bộ — hoàn hảo cho khách đến nghỉ cuối tuần.",
+      "tours": "Tham quan theo hẹn"
+    },
+    "cta": {
+      "title": "Lên kế hoạch sự kiện tại Beacon",
+      "body": "Cho chúng tôi biết ngày, số khách và phong cách của bạn. Chúng tôi sẽ trả lời với lịch còn trống, giữ chỗ và báo giá đầy đủ bao gồm mọi thiết bị bạn cần.",
+      "contact": "Liên hệ"
+    }
+  },
+  "catering": {
+    "hero": {
+      "eyebrow": "Pacific North Catering",
+      "title": "Nâng tầm sự kiện của bạn",
+      "subtitle": "Thực đơn buffet, quầy đầu bếp phục vụ và dịch vụ pha chế trên bờ biển Oregon."
+    },
+    "contact": {
+      "requestQuote": "Yêu cầu báo giá ăn uống",
+      "address": "1475 N. Roosevelt, Seaside, OR 97138"
+    },
+    "buffet": {
+      "eyebrow": "Thực đơn buffet",
+      "title": "Buffet được yêu thích",
+      "pricing": "$25 / khách (100+) · $30 / khách (50–99)",
+      "allIncluded": "Tất cả bao gồm",
+      "main": "Món chính",
+      "sides": "Món phụ",
+      "fixings": "Topping",
+      "salad": "Salad",
+      "mainChooseTwo": "Món chính (chọn hai)",
+      "saladChooseOne": "Salad (chọn một)"
+    },
+    "silver": {
+      "eyebrow": "Buffet Bạc",
+      "title": "Thực đơn Buffet Bạc",
+      "pricing": "$30 / khách (100+) · $35 / khách (50–99)"
+    },
+    "gold": {
+      "eyebrow": "Buffet Vàng",
+      "title": "Thực đơn Buffet Vàng",
+      "pricing": "$40 / khách (100+) · $45 / khách (50–99)"
+    },
+    "common": {
+      "chooseOne": "(chọn 1)",
+      "chooseOneEach": "(chọn 1 mỗi loại)",
+      "entree": "Món chính",
+      "sidesLabel": "Món phụ",
+      "starch": "Tinh bột",
+      "vegetable": "Rau",
+      "silverSaladOptions": "Salad vườn hoặc Caesar",
+      "goldSaladOptions": "Salad vườn, Caesar, hoặc rau bina dâu tây",
+      "horsdoeuvres": "Nâng cấp · Khai vị",
+      "horsdoeuvresNote": "+$5/khách cho mỗi món được đặt",
+      "chefStation": "Quầy đầu bếp phục vụ"
+    },
+    "bartending": {
+      "eyebrow": "Pha chế",
+      "title": "Dịch vụ pha chế",
+      "body": "Đang tìm dịch vụ pha chế truyền thống cho sự kiện? Từ cocktail trái cây đến rượu mạnh, từ champagne đến đồ uống không cồn, các bartender giàu kinh nghiệm của chúng tôi sẽ nâng tầm sự kiện của bạn.",
+      "note": "Hiện chỉ phục vụ pha chế kèm với gói ăn uống. Vui lòng hỏi giá."
+    },
+    "finePrint": "Tất cả giá dựa trên 2 giờ phục vụ và 100 khách. Cộng thêm $5/khách với 50–99 khách. Giá không bao gồm nhân viên phục vụ, khăn trải bàn, giao nhận hay phí dịch vụ. Giá có thể thay đổi không báo trước.",
+    "cross": {
+      "rentalsEyebrow": "Cho thuê",
+      "rentalsTitle": "Lều, bàn, ghế & khăn trải",
+      "rentalsBody": "Cần thuê thiết bị cho đám cưới hay sự kiện có ăn uống? Pacific North Event & Tent Rentals có thể giúp lên kế hoạch chi tiết.",
+      "rentalsCta": "Khám phá dịch vụ thuê",
+      "venueEyebrow": "Địa điểm",
+      "venueTitle": "Beacon on Broadway",
+      "venueBody": "Mong muốn một không gian trong nhà thanh lịch? Không gian lịch sử hơn 100 năm tuổi, ngay trên Broadway — sức chứa 150 khách.",
+      "venueCta": "Xem Beacon"
     }
   }
 }
