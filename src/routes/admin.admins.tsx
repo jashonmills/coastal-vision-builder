@@ -112,10 +112,15 @@ function AdminsPage() {
             <p className="p-6 text-center text-sm text-muted-foreground">No admins yet.</p>
           ) : (
             <ul className="divide-y divide-border">
-              {data.map((a) => (
+              {data.map((a) => {
+                const active = a.is_self || a.active;
+                return (
                 <li key={a.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
-                    <ShieldCheck className="h-5 w-5 text-primary" />
+                    <ShieldCheck
+                      className={`h-5 w-5 ${active ? "text-green-600" : "text-amber-500"}`}
+                      aria-label={active ? "Invite accepted" : "Awaiting sign-in"}
+                    />
                     <div>
                       <p className="text-sm font-medium text-foreground">
                         {a.display_name || a.email || a.user_id}
@@ -124,15 +129,29 @@ function AdminsPage() {
                       {a.email && <p className="text-xs text-muted-foreground">{a.email}</p>}
                     </div>
                   </div>
-                  <button
-                    disabled={a.is_self || remove.isPending}
-                    onClick={() => { if (confirm(`Remove admin access for ${a.email || a.user_id}?`)) remove.mutate(a.user_id); }}
-                    className="inline-flex items-center gap-1.5 self-start rounded-full border border-destructive/40 px-3 py-1 text-xs font-medium text-destructive hover:bg-destructive/10 disabled:opacity-30"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" /> Remove
-                  </button>
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <span
+                      className={
+                        active
+                          ? "inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-[11px] font-semibold text-green-700 dark:bg-green-950 dark:text-green-300"
+                          : "inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300"
+                      }
+                      title={active ? "Invite accepted" : "Awaiting sign-in"}
+                    >
+                      {active ? "Active" : "Pending invite"}
+                    </span>
+                    <button
+                      disabled={a.is_self || remove.isPending}
+                      onClick={() => { if (confirm(`Remove admin access for ${a.email || a.user_id}?`)) remove.mutate(a.user_id); }}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-destructive/40 px-3 py-1 text-xs font-medium text-destructive hover:bg-destructive/10 disabled:opacity-30"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> Remove
+                    </button>
+                  </div>
                 </li>
-              ))}
+                );
+              })}
+
             </ul>
           )}
         </div>
