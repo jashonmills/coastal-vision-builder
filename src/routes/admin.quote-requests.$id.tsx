@@ -1,12 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { Loader2, ArrowLeft, FileText, ExternalLink } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2, ArrowLeft, FileText, ExternalLink, MapPin, CalendarCheck, CalendarPlus, CalendarX, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { getQuoteRequest, createQuoteFromRequest, updateQuoteRequestStatus } from "@/lib/quotes.functions";
+import { placeVenueHold, confirmVenueBooking, releaseVenueBooking, listVenueEventsOnDate, BEACON_VENUE } from "@/lib/venue-bookings.functions";
 import { StatusPill } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/quote-requests/$id")({
@@ -21,12 +22,25 @@ function QuoteRequestDetailPage() {
   const getFn = useServerFn(getQuoteRequest);
   const createFn = useServerFn(createQuoteFromRequest);
   const updFn = useServerFn(updateQuoteRequestStatus);
+  const holdFn = useServerFn(placeVenueHold);
+  const confirmFn = useServerFn(confirmVenueBooking);
+  const releaseFn = useServerFn(releaseVenueBooking);
+  const availFn = useServerFn(listVenueEventsOnDate);
   const navigate = useNavigate();
+  const qc = useQueryClient();
 
-  const { data: req, isLoading } = useQuery({
+  const { data: req, isLoading, refetch } = useQuery({
     queryKey: ["quote-request", id],
     queryFn: () => getFn({ data: { id } }),
     enabled: !!user && isAdmin,
+  });
+
+  const isVenue = req?.request_type === "venue";
+
+  const { data: dateEvents = [] } = useQuery({
+    queryKey: ["venue-events-on-date", req?.event_date],
+    queryFn: () => availFn({ data: { date: req!.event_date as string } }),
+    enabled: !!user && isAdmin && isVenue && !!req?.event_date,
   });
 
   const create = useMutation({
@@ -34,6 +48,34 @@ function QuoteRequestDetailPage() {
     onSuccess: ({ id: qid }) => {
       toast.success("Quote draft created");
       navigate({ to: "/admin/quotes/$id/edit", params: { id: qid } });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const hold = useMutation({
+    mutationFn: () => holdFn({ data: { quote_request_id: id } }),
+    onSuccess: () => {
+      toast.success(`${BEACON_VENUE.name} hold placed on ${req?.event_date}.`);
+      refetch();
+      qc.invalidateQueries({ queryKey: ["venue-events-on-date", req?.event_date] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const confirm = useMutation({
+    mutationFn: () => confirmFn({ data: { quote_request_id: id } }),
+    onSuccess: () => {
+      toast.success(`${BEACON_VENUE.name} booking confirmed.`);
+      refetch();
+      qc.invalidateQueries({ queryKey: ["venue-events-on-date", req?.event_date] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const release = useMutation({
+    mutationFn: () => releaseFn({ data: { quote_request_id: id } }),
+    onSuccess: () => {
+      toast.success("Beacon hold released.");
+      refetch();
+      qc.invalidateQueries({ queryKey: ["venue-events-on-date", req?.event_date] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -53,27 +95,93 @@ function QuoteRequestDetailPage() {
   const input = (req.planner_input as any) || {};
   const picks: Array<{ category?: string; item_name?: string; quantity?: number; reason?: string }> = rec.picks ?? [];
 
+  // Determine current Beacon state from related events on the requested date
+  const ownEvents = dateEvents.filter((e: any) => e.quote_request_id === id);
+  const hasBooked = ownEvents.some((e: any) => e.event_type === "venue_booked");
+  const hasHold = ownEvents.some((e: any) => e.event_type === "venue_hold");
+  const conflicts = dateEvents.filter((e: any) => e.quote_request_id !== id);
+
   return (
     <SiteLayout>
       <section className="mx-auto max-w-5xl px-4 py-10 lg:px-8">
         <Link to="/admin/quote-requests" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
           <ArrowLeft className="h-4 w-4" /> Back to requests
         </Link>
+
+        {isVenue && (
+          <div className="mt-4 flex items-start gap-3 rounded-xl border border-[#7c5cff]/40 bg-[#7c5cff]/10 px-4 py-3">
+            <MapPin className="mt-0.5 h-5 w-5 flex-none text-[#5b3fdc]" />
+            <div className="min-w-0 flex-1">
+              <p className="font-serif text-lg text-[#5b3fdc]">{BEACON_VENUE.name}</p>
+              <p className="text-xs text-muted-foreground">{BEACON_VENUE.address} · Venue inquiry</p>
+            </div>
+            {hasBooked ? (
+              <span className="inline-flex items-center rounded-full bg-emerald-600 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">Booked</span>
+            ) : hasHold ? (
+              <span className="inline-flex items-center rounded-full bg-amber-500 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">On hold</span>
+            ) : null}
+          </div>
+        )}
+
         <div className="mt-4 flex items-start justify-between gap-4">
           <div>
             <h1 className="font-serif text-3xl text-primary">{req.customer_name}</h1>
             <p className="text-sm text-muted-foreground">{req.customer_email}{req.customer_phone ? ` · ${req.customer_phone}` : ""}</p>
             <div className="mt-2"><StatusPill status={req.status} /></div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => create.mutate()}
-              disabled={create.isPending}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
-            >
-              {create.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-              Create Quote from This Plan
-            </button>
+          <div className="flex flex-wrap justify-end gap-2">
+            {isVenue ? (
+              <>
+                {!hasHold && !hasBooked && (
+                  <button
+                    onClick={() => hold.mutate()}
+                    disabled={hold.isPending || !req.event_date}
+                    className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                    title={!req.event_date ? "Set an event date first" : undefined}
+                  >
+                    {hold.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarPlus className="h-4 w-4" />}
+                    Place Hold on Date
+                  </button>
+                )}
+                {!hasBooked && (
+                  <button
+                    onClick={() => confirm.mutate()}
+                    disabled={confirm.isPending || !req.event_date}
+                    className="inline-flex items-center gap-2 rounded-full bg-[#5b3fdc] px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                  >
+                    {confirm.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
+                    Confirm Beacon Booking
+                  </button>
+                )}
+                {(hasHold || hasBooked) && (
+                  <button
+                    onClick={() => { if (confirm("Release this Beacon hold/booking and remove scheduler events?")) release.mutate(); }}
+                    disabled={release.isPending}
+                    className="inline-flex items-center gap-2 rounded-full border border-amber-400 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 disabled:opacity-50"
+                  >
+                    {release.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarX className="h-4 w-4" />}
+                    Release
+                  </button>
+                )}
+                <button
+                  onClick={() => create.mutate()}
+                  disabled={create.isPending}
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm hover:bg-secondary disabled:opacity-50"
+                >
+                  {create.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
+                  Create Add-on Rental Quote
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => create.mutate()}
+                disabled={create.isPending}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+              >
+                {create.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
+                Create Quote from This Plan
+              </button>
+            )}
             <a
               href={`mailto:${req.customer_email}?subject=Your Pacific North Events Quote Request`}
               className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-4 py-2 text-sm hover:bg-secondary"
@@ -115,6 +223,37 @@ function QuoteRequestDetailPage() {
             )}
           </Card>
         </div>
+
+        {isVenue && req.event_date && (
+          <Card title={`Beacon availability on ${req.event_date}`} className="mt-6">
+            {conflicts.length === 0 && ownEvents.length === 0 && (
+              <p className="text-sm text-muted-foreground">No other Beacon holds or bookings on this date.</p>
+            )}
+            {ownEvents.length > 0 && (
+              <ul className="space-y-1 text-sm">
+                {ownEvents.map((e: any) => (
+                  <li key={e.id} className="flex items-center gap-2">
+                    <span className="inline-block h-2 w-2 rounded-full bg-[#5b3fdc]" />
+                    <span className="font-medium">{e.event_type === "venue_booked" ? "Booked" : "Hold"}</span>
+                    <span className="text-muted-foreground">— {e.title}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {conflicts.length > 0 && (
+              <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3">
+                <div className="mb-1 flex items-center gap-1 text-xs font-semibold text-amber-800">
+                  <AlertTriangle className="h-3 w-3" /> Conflicts on this date
+                </div>
+                <ul className="space-y-1 text-sm">
+                  {conflicts.map((e: any) => (
+                    <li key={e.id} className="text-amber-900">{e.title} ({e.event_type})</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </Card>
+        )}
 
         <Card title="Planner Recommendation" className="mt-6">
           {rec.tent_size && <Field label="Recommended tent" value={rec.tent_size} />}
