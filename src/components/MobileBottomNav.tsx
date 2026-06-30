@@ -127,7 +127,10 @@ export function MobileBottomNav({ onMenu }: Props) {
     rightItems = publicRight;
   }
 
-  const showAdminJump = isAdmin && !inAdmin;
+  // Always expose the Menu button so the bento drawer (with full public + admin
+  // navigation) is reachable from every screen. Admins can still jump to the
+  // admin area via the drawer or the header shield.
+  void isAdmin;
 
   const renderItem = (item: NavItem) => {
     const Icon = item.icon;
@@ -176,25 +179,14 @@ export function MobileBottomNav({ onMenu }: Props) {
 
         {rightItems.map(renderItem)}
 
-        {showAdminJump ? (
-          <Link
-            to="/admin/dashboard"
-            className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
-            aria-label="Switch to admin"
-          >
-            <LayoutDashboard className="h-5 w-5" />
-            <span>Admin</span>
-          </Link>
-        ) : (
-          <button
-            type="button"
-            onClick={onMenu}
-            className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
-          >
-            <Menu className="h-5 w-5" />
-            <span>{t("nav.menu", { defaultValue: "Menu" })}</span>
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onMenu}
+          className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
+        >
+          <Menu className="h-5 w-5" />
+          <span>{t("nav.menu", { defaultValue: "Menu" })}</span>
+        </button>
       </div>
     </div>
   );
