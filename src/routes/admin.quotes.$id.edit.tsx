@@ -223,8 +223,14 @@ function EditQuotePage() {
                     onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); qc.invalidateQueries({ queryKey: ["quote-availability", id] }); }}
                     onDelete={async () => {
                       if (!confirm("Remove this line?")) return;
-                      await delFn({ data: { id: it.id, quote_id: quote.id } });
-                      refetch();
+                      try {
+                        await delFn({ data: { id: it.id, quote_id: quote.id } });
+                        toast.success("Line removed.");
+                        refetch();
+                        qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+                      } catch (e: any) {
+                        toast.error(e?.message ?? "Failed to remove line.");
+                      }
                     }}
                     upsertFn={upsertFn}
                   />
@@ -270,7 +276,8 @@ function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avai
       quantity: Number(draft.quantity), unit: draft.unit, unit_price_cents: Number(draft.unit_price_cents),
       needs_pricing_review: draft.needs_pricing_review, reason: draft.reason, sort_order: draft.sort_order,
     } }),
-    onSuccess: onSaved,
+    onSuccess: () => { toast.success("Line saved."); onSaved(); },
+    onError: (e: Error) => toast.error(e.message ?? "Failed to save line."),
   });
   const short = avail ? (draft.quantity > avail.available) : false;
   return (
@@ -303,8 +310,18 @@ function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avai
       <td className="px-2 py-2 text-right font-medium">${((draft.quantity * draft.unit_price_cents) / 100).toFixed(2)}</td>
       <td className="px-2 py-2">
         <div className="flex flex-col gap-1">
-          <button disabled={!dirty || save.isPending} onClick={() => save.mutate()} className="rounded bg-emerald-600 p-1 text-white disabled:opacity-30"><Save className="h-3 w-3" /></button>
-          <button onClick={onDelete} className="rounded bg-red-600 p-1 text-white"><Trash2 className="h-3 w-3" /></button>
+          <button
+            disabled={!dirty || save.isPending}
+            onClick={() => save.mutate()}
+            title={dirty ? "Save changes to this line" : "No changes to save"}
+            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-[10px] font-semibold text-white transition ${dirty ? "bg-emerald-600 hover:bg-emerald-700" : "bg-muted-foreground/40"} disabled:cursor-not-allowed`}
+          >
+            {save.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />}
+            {dirty ? "Save" : "Saved"}
+          </button>
+          <button onClick={onDelete} title="Remove line" className="inline-flex items-center justify-center gap-1 rounded bg-red-600 px-2 py-1 text-[10px] font-semibold text-white hover:bg-red-700">
+            <Trash2 className="h-3 w-3" /> Delete
+          </button>
         </div>
       </td>
     </tr>
@@ -327,7 +344,7 @@ function AddLine({ quoteId, pricing, onAdded, upsertFn, nextSort }: { quoteId: s
       }
       throw new Error("Pick an item or enter a custom name");
     },
-    onSuccess: () => { setPickId(""); setCustom(""); setQty(1); onAdded(); },
+    onSuccess: () => { toast.success("Line added."); setPickId(""); setCustom(""); setQty(1); onAdded(); },
     onError: (e: Error) => toast.error(e.message),
   });
   return (
@@ -358,7 +375,8 @@ function Totals({ quote, updFn, onSaved }: { quote: any; updFn: any; onSaved: ()
   useEffect(() => setDraft({ delivery_fee_cents: quote.delivery_fee_cents, cleaning_fee_cents: quote.cleaning_fee_cents, discount_cents: quote.discount_cents, tax_cents: quote.tax_cents }), [quote.delivery_fee_cents, quote.cleaning_fee_cents, quote.discount_cents, quote.tax_cents]);
   const save = useMutation({
     mutationFn: () => updFn({ data: { id: quote.id, patch: draft } }),
-    onSuccess: onSaved,
+    onSuccess: () => { toast.success("Fees saved."); onSaved(); },
+    onError: (e: Error) => toast.error(e.message ?? "Failed to save fees."),
   });
   return (
     <div className="mt-3 space-y-2 text-sm">
@@ -393,7 +411,8 @@ function NotesEditor({ quote, updFn, onSaved }: { quote: any; updFn: any; onSave
   const [terms, setTerms] = useState(quote.terms ?? "");
   const save = useMutation({
     mutationFn: () => updFn({ data: { id: quote.id, patch: { internal_notes: internal, customer_notes: customer, terms } } }),
-    onSuccess: onSaved,
+    onSuccess: () => { toast.success("Notes saved."); onSaved(); },
+    onError: (e: Error) => toast.error(e.message ?? "Failed to save notes."),
   });
   return (
     <div className="rounded-xl border border-border bg-card p-4 space-y-3">

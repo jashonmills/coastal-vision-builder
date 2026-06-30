@@ -1,23 +1,49 @@
-## Fix translations for About venues section, Beacon, and Catering pages
+## Admin section audit & fix
 
-### Problem
-- The "More Than Tents" (Venues & Catering) section on About was only added to `en.json` and `de.json`, so the other 8 locales fall back and display English.
-- `src/routes/beacon-on-broadway.tsx` and `src/routes/catering.tsx` use hardcoded English strings and never call `useTranslation` — they don't translate at all.
+### Phase 1 — Diagnose & fix Edit Quote saving
 
-### Plan
+The Edit Quote page already wires `updateQuote` / `upsertQuoteItem` / `deleteQuoteItem` to RLS-correct admin policies, so functions exist. Most likely user-visible "dead button" causes:
 
-**1. About page venues section**
-- Add the `about.venues.*` keys (eyebrow, title, body, ctaBeacon, ctaCatering) to the 8 missing locales: `vi, es, fr, hi, ko, ru, tl, zh`, with proper translations matching the existing tone.
+1. **Per-line green Save icon is `disabled={!dirty}`** — until a field changes, it's grayed at 30% opacity and looks broken/unclickable. No tooltip explains why.
+2. **No success toast** on line save, fees save, or notes save — so even when saves succeed, nothing acknowledges them.
+3. **No error surfacing** — mutations have no `onError`, so a server failure silently does nothing. This is the most likely "dead button" report.
+4. The "0 items" quote (`Q-2026-0001`, total $0) has no rows to render line saves on — adding via "Add" row is the only available edit, and `AddLine` does surface errors but the "Add" pill is small.
 
-**2. Beacon on Broadway page**
-- Add a `beacon.*` namespace to all 10 locale files covering: hero (eyebrow, title, subtitle, CTAs), about/story section, specs/features list, gallery heading, pricing/inquiry section, FAQ, and CTA footer.
-- Refactor `src/routes/beacon-on-broadway.tsx` to use `useTranslation()` and replace hardcoded strings with `t('beacon.*')` calls. Also localize the route `head()` title/description by adding static SEO-friendly fallbacks (head runs before i18n in some cases — keep English title for SEO but body content fully translated).
+Fixes:
+- Add `onError` + `onSuccess` toasts to `ItemRow.save`, `Totals.save`, `NotesEditor.save`, `deleteQuoteItem` call.
+- Replace the disabled-when-clean save icon with one that explicitly shows "Saved" vs "Save changes" state, and keep it clickable on hover with a tooltip.
+- Promote the green per-row save to a labeled button ("Save" with icon) so it doesn't read as decoration.
+- After every mutation, invalidate `["admin-quote", id]`, `["admin-quotes"]`, `["quote-availability", id]`, and refetch booking status.
+- Reproduce end-to-end via Playwright on `/admin/quotes/<id>/edit`: add a custom line, save it, change qty, save, edit fees, save notes — verify each persists.
 
-**3. Catering page**
-- Same treatment: add a `catering.*` namespace to all 10 locale files covering hero, menu categories, pricing tiers, service add-ons, FAQ, and CTAs.
-- Refactor `src/routes/catering.tsx` to use `useTranslation()` for all visible copy.
+### Phase 2 — Audit every admin page
 
-### Technical notes
-- Menu item names and prices stay as-is (proper nouns / numbers); only descriptive copy and labels get translated.
-- No changes to routing, data, or images — translation-only refactor.
-- Will verify by switching to Vietnamese in the live preview and screenshotting `/about`, `/beacon-on-broadway`, and `/catering`.
+For each page, click every action, watch the network, fix anything that errors, no-ops, or has missing wiring. Findings get fixed inline; I'll list them in the closing summary.
+
+| Page | What I'll verify |
+|---|---|
+| `/admin` (index) | First-admin claim button, site content slot saves, gallery image upload + caption save, opening video upload |
+| `/admin/dashboard` | KPI counts populate, links route correctly, notification bell items mark-read works |
+| `/admin/quote-requests` | List loads, status filters work, "Create Quote" inline button works, archive/restore toggle persists |
+| `/admin/quote-requests/$id` | Hold/Confirm/Release venue actions, Create-Quote flow, status transitions |
+| `/admin/quotes` | Edit link routes correctly (works), status pill renders |
+| `/admin/quotes/$id/edit` | All Phase 1 fixes verified |
+| `/admin/quotes/$id/preview` | Renders printable view, totals correct |
+| `/admin/quotes/$id/job-sheet` | Pull list renders, return marking saves |
+| `/admin/inventory` | List + filters, "Create item" form submits, links to detail |
+| `/admin/inventory/$id` | Field edits save, soft-delete works |
+| `/admin/scheduler` | Calendar fetches events, venue filter, day-detail panel |
+| `/admin/staff` | Add, edit, deactivate staff |
+| `/admin/admins` | Invite admin (email send), remove admin |
+| `/admin/data-import` | Spreadsheet preview, connect, sync trigger |
+
+### Phase 3 — Verification & report
+
+- Browser-drive (Playwright) the quote edit flow end-to-end and screenshot before/after.
+- Spot-check the other pages with smaller scripted clicks where they have network side-effects (admins invite, inventory create, staff add).
+- Report a final checklist: ✅ working / 🔧 fixed / ⚠️ needs follow-up (e.g. if email-send for admin invite depends on SMTP that isn't configured).
+
+### Out of scope
+
+- No schema changes unless an audit uncovers a missing column/policy.
+- No new admin features — only wiring existing ones.
