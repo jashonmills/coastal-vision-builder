@@ -179,25 +179,14 @@ export function MobileBottomNav({ onMenu }: Props) {
 
         {rightItems.map(renderItem)}
 
-        {showAdminJump ? (
-          <Link
-            to="/admin/dashboard"
-            className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
-            aria-label="Switch to admin"
-          >
-            <LayoutDashboard className="h-5 w-5" />
-            <span>Admin</span>
-          </Link>
-        ) : (
-          <button
-            type="button"
-            onClick={onMenu}
-            className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
-          >
-            <Menu className="h-5 w-5" />
-            <span>{t("nav.menu", { defaultValue: "Menu" })}</span>
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onMenu}
+          className="flex flex-col items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
+        >
+          <Menu className="h-5 w-5" />
+          <span>{t("nav.menu", { defaultValue: "Menu" })}</span>
+        </button>
       </div>
     </div>
   );
