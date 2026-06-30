@@ -63,6 +63,7 @@ function AboutPage() {
           </div>
         </div>
       </section>
+      <section className="bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
           <h2 className="font-serif text-3xl text-primary sm:text-4xl">{t("about.values.title")}</h2>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
