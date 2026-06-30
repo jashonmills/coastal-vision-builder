@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
+import { ServicesCallouts } from "@/components/ServicesCallouts";
 import { pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/services")({
