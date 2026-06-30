@@ -92,7 +92,7 @@ export function BeaconQuoteModal({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="px-6 py-6 text-sm text-muted-foreground">
+            <div className="flex-1 overflow-y-auto px-6 py-6 text-sm text-muted-foreground">
               <p>Typical response time: <strong className="text-foreground">within one business day</strong>.</p>
               <button onClick={onClose} className="mt-5 inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground">
                 Done
