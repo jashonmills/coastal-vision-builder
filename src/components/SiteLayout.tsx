@@ -53,6 +53,7 @@ const navGroups: NavGroup[] = [
     children: [
       { to: "/about", labelKey: "nav.aboutUs", descKey: "navDesc.aboutUs" },
       { to: "/contact", labelKey: "nav.contact", descKey: "navDesc.contact" },
+      { to: "/rental-contract", labelKey: "nav.rentalContract", descKey: "navDesc.rentalContract" },
     ],
   },
 ];
