@@ -390,7 +390,7 @@ function RentalContractPage() {
   return (
     <SiteLayout>
       <div className="bg-background text-foreground">
-        <header className="border-b border-[color:var(--line)] bg-[color:var(--bg-elev)]">
+        <header className="border-b border-border bg-card">
           <div className="mx-auto max-w-5xl px-6 py-12">
             <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Sample document</p>
             <h1 className="mt-2 font-serif text-4xl md:text-5xl">Rental Contract</h1>
