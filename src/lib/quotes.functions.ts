@@ -360,12 +360,14 @@ const QuotePatchSchema = z.object({
     cleaning_fee_cents: z.number().int().min(0).optional(),
     discount_cents: z.number().int().min(0).optional(),
     tax_cents: z.number().int().min(0).optional(),
+    cleaning_auto: z.boolean().optional(),
     internal_notes: z.string().max(4000).nullable().optional(),
     customer_notes: z.string().max(4000).nullable().optional(),
     terms: z.string().max(4000).nullable().optional(),
     status: z.enum(["draft", "sent", "approved", "booked", "cancelled"]).optional(),
   }),
 });
+
 
 export const updateQuote = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
