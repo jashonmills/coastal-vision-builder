@@ -390,10 +390,24 @@ function RentalContractPage() {
   return (
     <SiteLayout>
       <style>{`
-        @page { margin: 0; }
+        @page { margin: 0.6in; }
         @media print {
-          .contract-print-shell { padding: 1.25cm 1.5cm; }
+          .contract-print-shell { padding: 0 !important; }
           .contract-print-footer { display: block; }
+          article section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+          article h2 {
+            break-after: avoid;
+            page-break-after: avoid;
+            break-before: auto;
+          }
+          article p, article li {
+            orphans: 3;
+            widows: 3;
+          }
+          header.border-b { break-after: avoid; page-break-after: avoid; }
         }
         @media screen {
           .contract-print-footer { display: none; }
