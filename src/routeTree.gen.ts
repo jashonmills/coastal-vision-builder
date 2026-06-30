@@ -20,6 +20,7 @@ import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BeaconOnBroadwayRouteImport } from './routes/beacon-on-broadway'
 import { Route as AiTentPlannerRouteImport } from './routes/ai-tent-planner'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
@@ -98,6 +99,11 @@ const EventsRoute = EventsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeaconOnBroadwayRoute = BeaconOnBroadwayRouteImport.update({
+  id: '/beacon-on-broadway',
+  path: '/beacon-on-broadway',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiTentPlannerRoute = AiTentPlannerRouteImport.update({
@@ -229,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/accept-invite': typeof AcceptInviteRoute
   '/admin': typeof AdminRouteWithChildren
   '/ai-tent-planner': typeof AiTentPlannerRoute
+  '/beacon-on-broadway': typeof BeaconOnBroadwayRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/accept-invite': typeof AcceptInviteRoute
   '/ai-tent-planner': typeof AiTentPlannerRoute
+  '/beacon-on-broadway': typeof BeaconOnBroadwayRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/accept-invite': typeof AcceptInviteRoute
   '/admin': typeof AdminRouteWithChildren
   '/ai-tent-planner': typeof AiTentPlannerRoute
+  '/beacon-on-broadway': typeof BeaconOnBroadwayRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
@@ -342,6 +351,7 @@ export interface FileRouteTypes {
     | '/accept-invite'
     | '/admin'
     | '/ai-tent-planner'
+    | '/beacon-on-broadway'
     | '/contact'
     | '/events'
     | '/gallery'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/accept-invite'
     | '/ai-tent-planner'
+    | '/beacon-on-broadway'
     | '/contact'
     | '/events'
     | '/gallery'
@@ -415,6 +426,7 @@ export interface FileRouteTypes {
     | '/accept-invite'
     | '/admin'
     | '/ai-tent-planner'
+    | '/beacon-on-broadway'
     | '/contact'
     | '/events'
     | '/gallery'
@@ -453,6 +465,7 @@ export interface RootRouteChildren {
   AcceptInviteRoute: typeof AcceptInviteRoute
   AdminRoute: typeof AdminRouteWithChildren
   AiTentPlannerRoute: typeof AiTentPlannerRoute
+  BeaconOnBroadwayRoute: typeof BeaconOnBroadwayRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
@@ -547,6 +560,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beacon-on-broadway': {
+      id: '/beacon-on-broadway'
+      path: '/beacon-on-broadway'
+      fullPath: '/beacon-on-broadway'
+      preLoaderRoute: typeof BeaconOnBroadwayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai-tent-planner': {
@@ -793,6 +813,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcceptInviteRoute: AcceptInviteRoute,
   AdminRoute: AdminRouteWithChildren,
   AiTentPlannerRoute: AiTentPlannerRoute,
+  BeaconOnBroadwayRoute: BeaconOnBroadwayRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
@@ -812,13 +833,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

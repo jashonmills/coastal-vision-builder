@@ -42,8 +42,10 @@ const navGroups: NavGroup[] = [
     children: [
       { to: "/services", labelKey: "nav.allServices", descKey: "navDesc.allServices" },
       { to: "/events", labelKey: "nav.events", descKey: "navDesc.events" },
+      { to: "/beacon-on-broadway", labelKey: "nav.beacon", descKey: "navDesc.beacon" },
     ],
   },
+
   { labelKey: "nav.gallery", to: "/gallery" },
   {
     labelKey: "nav.about",
