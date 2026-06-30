@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
+import { ServicesCallouts } from "@/components/ServicesCallouts";
 import { pickPhoto } from "@/lib/site-images";
 
 export const Route = createFileRoute("/services")({
@@ -51,6 +52,9 @@ function ServicesPage() {
           </div>
         ))}
       </div>
+      <section className="mx-auto max-w-6xl px-4 pb-20 lg:px-8">
+        <ServicesCallouts />
+      </section>
       <CTASection />
     </SiteLayout>
   );

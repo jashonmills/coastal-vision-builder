@@ -226,6 +226,12 @@ export const galleryImages: SiteImage[] = [
 
 export const allImages: SiteImage[] = [...sketchImages, ...productImages, ...photoImages];
 
+/** Prominent catering photo for call-outs and promotional cards. */
+export const cateringCalloutImage: SiteImage = img(
+  "469312785_529823293388786_3537228070558775988_n.jpg",
+  "Catering buffet table with food spread",
+);
+
 
 // ----- Helpers ----------------------------------------------------------
 
