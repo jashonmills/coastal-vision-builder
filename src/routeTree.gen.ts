@@ -20,6 +20,7 @@ import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CateringRouteImport } from './routes/catering'
 import { Route as BeaconOnBroadwayRouteImport } from './routes/beacon-on-broadway'
 import { Route as AiTentPlannerRouteImport } from './routes/ai-tent-planner'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -99,6 +100,11 @@ const EventsRoute = EventsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CateringRoute = CateringRouteImport.update({
+  id: '/catering',
+  path: '/catering',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BeaconOnBroadwayRoute = BeaconOnBroadwayRouteImport.update({
@@ -236,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/beacon-on-broadway': typeof BeaconOnBroadwayRoute
+  '/catering': typeof CateringRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/accept-invite': typeof AcceptInviteRoute
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/beacon-on-broadway': typeof BeaconOnBroadwayRoute
+  '/catering': typeof CateringRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
@@ -312,6 +320,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/ai-tent-planner': typeof AiTentPlannerRoute
   '/beacon-on-broadway': typeof BeaconOnBroadwayRoute
+  '/catering': typeof CateringRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
@@ -352,6 +361,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/ai-tent-planner'
     | '/beacon-on-broadway'
+    | '/catering'
     | '/contact'
     | '/events'
     | '/gallery'
@@ -389,6 +399,7 @@ export interface FileRouteTypes {
     | '/accept-invite'
     | '/ai-tent-planner'
     | '/beacon-on-broadway'
+    | '/catering'
     | '/contact'
     | '/events'
     | '/gallery'
@@ -427,6 +438,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/ai-tent-planner'
     | '/beacon-on-broadway'
+    | '/catering'
     | '/contact'
     | '/events'
     | '/gallery'
@@ -466,6 +478,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AiTentPlannerRoute: typeof AiTentPlannerRoute
   BeaconOnBroadwayRoute: typeof BeaconOnBroadwayRoute
+  CateringRoute: typeof CateringRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
@@ -560,6 +573,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catering': {
+      id: '/catering'
+      path: '/catering'
+      fullPath: '/catering'
+      preLoaderRoute: typeof CateringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/beacon-on-broadway': {
@@ -814,6 +834,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AiTentPlannerRoute: AiTentPlannerRoute,
   BeaconOnBroadwayRoute: BeaconOnBroadwayRoute,
+  CateringRoute: CateringRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
