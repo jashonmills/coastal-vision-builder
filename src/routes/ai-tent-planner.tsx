@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { RecommendationReport } from "@/components/RecommendationViewer";
+import { BeaconCallout } from "@/components/BeaconCallout";
 import { useAuth } from "@/hooks/use-auth";
 import { saveRecommendation } from "@/lib/saved-recommendations.functions";
 import type { RecommenderInput } from "@/lib/recommender";
