@@ -389,12 +389,12 @@ export const Route = createFileRoute("/rental-contract")({
 function RentalContractPage() {
   return (
     <SiteLayout>
-      <div className="bg-[color:var(--bg)] text-[color:var(--ink)]">
-        <header className="border-b border-[color:var(--line)] bg-[color:var(--bg-elev)]">
+      <div className="bg-background text-foreground">
+        <header className="border-b border-border bg-card">
           <div className="mx-auto max-w-5xl px-6 py-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Sample document</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Sample document</p>
             <h1 className="mt-2 font-serif text-4xl md:text-5xl">Rental Contract</h1>
-            <p className="mt-4 max-w-2xl text-[color:var(--muted)]">
+            <p className="mt-4 max-w-2xl text-muted-foreground">
               This is a preview of the standard terms used by {BRAND}. Your final, signable contract is generated with
               each reservation and may include event-specific addenda. Please review carefully — by signing your rental
               agreement you accept these terms.
@@ -403,7 +403,7 @@ function RentalContractPage() {
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="rounded-full border border-[color:var(--line)] px-5 py-2 text-sm hover:bg-[color:var(--bg-elev-2)]"
+                className="rounded-full border border-border px-5 py-2 text-sm hover:bg-secondary"
               >
                 Print / Save as PDF
               </button>
@@ -420,11 +420,11 @@ function RentalContractPage() {
         <div className="mx-auto grid max-w-5xl gap-10 px-6 py-12 lg:grid-cols-[220px_1fr]">
           <aside className="hidden lg:block print:hidden">
             <nav className="sticky top-24 text-sm">
-              <p className="mb-3 text-xs uppercase tracking-wider text-[color:var(--muted)]">Contents</p>
+              <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">Contents</p>
               <ul className="space-y-2">
                 {sections.map((s) => (
                   <li key={s.id}>
-                    <a href={`#${s.id}`} className="text-[color:var(--muted)] hover:text-[color:var(--ink)]">
+                    <a href={`#${s.id}`} className="text-muted-foreground hover:text-foreground">
                       {s.title}
                     </a>
                   </li>
@@ -433,7 +433,7 @@ function RentalContractPage() {
             </nav>
           </aside>
 
-          <article className="prose prose-neutral max-w-none prose-headings:font-serif prose-headings:text-[color:var(--ink)] prose-p:text-[color:var(--ink)] prose-li:text-[color:var(--ink)] prose-strong:text-[color:var(--ink)]">
+          <article className="prose prose-neutral max-w-none prose-headings:font-serif prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground">
             {sections.map((s) => (
               <section key={s.id} id={s.id} className="scroll-mt-24">
                 <h2 className="mt-10 text-2xl">{s.title}</h2>
@@ -441,8 +441,8 @@ function RentalContractPage() {
               </section>
             ))}
 
-            <hr className="my-12 border-[color:var(--line)]" />
-            <p className="text-sm text-[color:var(--muted)]">
+            <hr className="my-12 border-border" />
+            <p className="text-sm text-muted-foreground">
               Last updated for the 2026 season. {BRAND} reserves the right to update these terms; the version attached to
               your signed rental agreement governs your reservation.
             </p>
