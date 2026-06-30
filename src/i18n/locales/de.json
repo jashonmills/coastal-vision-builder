@@ -326,6 +326,13 @@
       "title": "Lokale Veranstaltungen verdienen lokale Unterstützung",
       "body": "Pacific North Events & Tents wurde gegründet, um Menschen dabei zu helfen, bessere Outdoor-Veranstaltungen entlang der Oregon-Küste zu veranstalten. Wir verstehen, dass Küstenfeiern flexible Planung, zuverlässige Ausstattung und ein Team erfordern, das weiß, wie wichtig jedes Detail ist, wenn der große Tag kommt."
     },
+    "venues": {
+      "eyebrow": "Locations & Catering",
+      "title": "Mehr als Zelte",
+      "body": "Neben unseren Zelt- und Miet-Services bieten wir zwei komplementäre Erlebnisse an, die die Eventplanung vereinfachen sollen. Beacon on Broadway ist unser wunderschön restaurierter 2.800 sq ft Veranstaltungsort im Herzen von Seaside — perfekt für Hochzeiten, Empfänge, Firmenveranstaltungen und Feiern, die einen eigenschaften Ort mit historischem Charme suchen. Für Veranstaltungen, die einen Full-Service-Gastronomie benötigen, bringt unser Catering-Team Buffets, Chef-Stationen, Bar-Service und Getränke an Ihren Wunschort.",
+      "beaconCta": "Beacon on Broadway entdecken",
+      "cateringCta": "Catering ansehen"
+    },
     "values": {
       "title": "Wofür wir stehen",
       "reliable": {

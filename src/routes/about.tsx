@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteLayout, PageHero, CTASection } from "@/components/SiteLayout";
 import { Heart, Shield, Sparkles, Users } from "lucide-react";
@@ -40,6 +40,29 @@ function AboutPage() {
         </p>
       </section>
 
+      <section className="bg-secondary/40">
+        <div className="mx-auto max-w-4xl px-4 py-20 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">{t("about.venues.eyebrow")}</p>
+          <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">{t("about.venues.title")}</h2>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            {t("about.venues.body")}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              to="/beacon-on-broadway"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+            >
+              {t("about.venues.beaconCta")}
+            </Link>
+            <Link
+              to="/catering"
+              className="inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted"
+            >
+              {t("about.venues.cateringCta")}
+            </Link>
+          </div>
+        </div>
+      </section>
       <section className="bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
           <h2 className="font-serif text-3xl text-primary sm:text-4xl">{t("about.values.title")}</h2>
