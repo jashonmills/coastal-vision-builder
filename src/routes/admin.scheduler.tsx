@@ -142,6 +142,22 @@ function SchedulerPage() {
         </div>
 
         <div className="mb-4 flex flex-wrap items-center gap-2">
+          {(["all", "rentals", "beacon"] as const).map((v) => (
+            <button
+              key={v}
+              onClick={() => setVenueFilter(v)}
+              className={`rounded-full border px-3 py-1 text-xs font-medium capitalize ${
+                venueFilter === v
+                  ? v === "beacon"
+                    ? "border-transparent bg-[#7c5cff] text-white"
+                    : "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card"
+              }`}
+            >
+              {v === "beacon" ? "Beacon" : v}
+            </button>
+          ))}
+          <span className="mx-1 h-4 w-px bg-border" />
           <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="rounded border px-2 py-1 text-sm">
             <option value="all">All types</option>
             {EVENT_TYPES.map((t) => <option key={t} value={t}>{EVENT_TYPE_LABELS[t]}</option>)}
@@ -167,6 +183,11 @@ function SchedulerPage() {
             <span className="inline-block h-3 w-3 rounded-full" style={{ background: selected.color ?? EVENT_COLORS[selected.event_type] }} />
             {EVENT_TYPE_LABELS[selected.event_type]} · {selected.status}
           </div>
+          {VENUE_TYPES.has(selected.event_type) && (
+            <p className="mt-2 inline-flex items-center gap-1 rounded-md bg-[#7c5cff]/10 px-2 py-1 text-xs font-medium text-[#5b3fdc]">
+              Venue: Beacon on Broadway · 735 Broadway, Seaside, OR
+            </p>
+          )}
           <p className="mt-3 text-sm"><strong>When:</strong> {new Date(selected.start_time).toLocaleString()}</p>
           {selected.location && <p className="text-sm"><strong>Where:</strong> {selected.location}</p>}
           {selected.notes && <p className="mt-2 whitespace-pre-wrap text-sm">{selected.notes}</p>}
