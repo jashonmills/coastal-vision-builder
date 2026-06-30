@@ -566,10 +566,12 @@ export type Database = {
           planner_input: Json | null
           preferred_contact_method: string
           recommendation: Json | null
+          request_type: string
           saved_recommendation_id: string | null
           status: string
           updated_at: string
           user_id: string | null
+          venue: string | null
         }
         Insert: {
           admin_notes?: string | null
@@ -588,10 +590,12 @@ export type Database = {
           planner_input?: Json | null
           preferred_contact_method?: string
           recommendation?: Json | null
+          request_type?: string
           saved_recommendation_id?: string | null
           status?: string
           updated_at?: string
           user_id?: string | null
+          venue?: string | null
         }
         Update: {
           admin_notes?: string | null
@@ -610,10 +614,12 @@ export type Database = {
           planner_input?: Json | null
           preferred_contact_method?: string
           recommendation?: Json | null
+          request_type?: string
           saved_recommendation_id?: string | null
           status?: string
           updated_at?: string
           user_id?: string | null
+          venue?: string | null
         }
         Relationships: []
       }

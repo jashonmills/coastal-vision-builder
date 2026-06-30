@@ -18,7 +18,10 @@ const CreateQuoteRequestSchema = z.object({
   recommendation: z.unknown().optional().nullable(),
   pdf_url: z.string().url().optional().nullable(),
   customer_note: z.string().max(4000).optional().nullable(),
+  request_type: z.enum(["rental", "venue"]).optional().default("rental"),
+  venue: z.string().max(100).optional().nullable(),
 });
+
 
 // Public — anyone can submit a quote request. Uses the user-scoped client (anon or authed).
 export const createQuoteRequest = createServerFn({ method: "POST" })
@@ -41,8 +44,11 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         recommendation: (data.recommendation ?? null) as never,
         pdf_url: data.pdf_url ?? null,
         customer_note: data.customer_note ?? null,
+        request_type: data.request_type ?? "rental",
+        venue: data.venue ?? null,
         status: "new",
       })
+
       .select("id")
       .single();
     if (error) throw new Error(error.message);
@@ -62,7 +68,10 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     // Auto-create scheduler entries: one on the request date, one on event date
     const guests = data.guest_count ? `${data.guest_count} guests` : "";
     const evtType = data.event_type ?? "Event";
-    const baseTitle = `New Quote Request: ${evtType}${guests ? " · " + guests : ""}`;
+    const isVenue = (data.request_type ?? "rental") === "venue";
+    const venueLabel = data.venue === "beacon-on-broadway" ? "Beacon on Broadway" : (data.venue ?? "Venue");
+    const titlePrefix = isVenue ? `New ${venueLabel} Inquiry` : "New Quote Request";
+    const baseTitle = `${titlePrefix}: ${evtType}${guests ? " · " + guests : ""}`;
     type CalEvent = {
       title: string;
       event_type: string;
@@ -78,11 +87,11 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     const events: CalEvent[] = [
       {
         title: baseTitle,
-        event_type: "quote_request",
+        event_type: isVenue ? "venue_inquiry" : "quote_request",
         start_time: new Date().toISOString(),
         all_day: false,
         status: "pending",
-        color: "#d4a64a",
+        color: isVenue ? "#7c5cff" : "#d4a64a",
         quote_request_id: row.id,
         saved_recommendation_id: data.saved_recommendation_id ?? null,
         location: data.event_location ?? null,
@@ -91,12 +100,12 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     ];
     if (data.event_date) {
       events.push({
-        title: `Potential Event: ${evtType}${guests ? " · " + guests : ""}`,
-        event_type: "quote_request",
+        title: `${isVenue ? "Potential " + venueLabel + " Booking" : "Potential Event"}: ${evtType}${guests ? " · " + guests : ""}`,
+        event_type: isVenue ? "venue_inquiry" : "quote_request",
         start_time: new Date(data.event_date).toISOString(),
         all_day: true,
         status: "pending",
-        color: "#d4a64a",
+        color: isVenue ? "#7c5cff" : "#d4a64a",
         quote_request_id: row.id,
         saved_recommendation_id: data.saved_recommendation_id ?? null,
         location: data.event_location ?? null,
@@ -106,9 +115,9 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
 
     // In-app admin notification
     await supabaseAdmin.from("admin_notifications").insert({
-      kind: "quote_request",
+      kind: isVenue ? "venue_inquiry" : "quote_request",
       severity: "info",
-      title: `New quote request: ${data.customer_name}`,
+      title: `${isVenue ? venueLabel + " inquiry" : "New quote request"}: ${data.customer_name}`,
       body: `${evtType}${guests ? " · " + guests : ""}${data.event_date ? " · " + data.event_date : ""}${data.event_location ? " · " + data.event_location : ""}`,
       link: `/admin/quote-requests/${row.id}`,
       related_id: row.id,
@@ -123,12 +132,13 @@ export const listQuoteRequests = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("quote_requests")
       .select(
-        "id, customer_name, customer_email, customer_phone, event_type, event_date, event_location, guest_count, status, created_at, recommendation, pdf_url, saved_recommendation_id",
+        "id, customer_name, customer_email, customer_phone, event_type, event_date, event_location, guest_count, status, created_at, recommendation, pdf_url, saved_recommendation_id, request_type, venue, customer_note",
       )
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return data;
   });
+
 
 export const countNewQuoteRequests = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

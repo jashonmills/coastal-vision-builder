@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
+import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
+
 import {
   MapPin,
   Users,
@@ -62,10 +64,12 @@ const included: string[] = [
 
 function BeaconPage() {
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const [quoteOpen, setQuoteOpen] = useState(false);
   const lbImages: LightboxImage[] = galleryPhotos.map((url, i) => ({
     url,
     alt: `Beacon on Broadway — photo ${i + 1}`,
   }));
+
 
   return (
     <SiteLayout>
@@ -91,12 +95,14 @@ function BeaconPage() {
             of every kind find a home here.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              to="/contact"
+            <button
+              type="button"
+              onClick={() => setQuoteOpen(true)}
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
             >
               Request a Quote <ArrowRight className="h-4 w-4" />
-            </Link>
+            </button>
+
             <a
               href="tel:5037175088"
               className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 px-6 py-3 text-sm font-medium text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/10"
@@ -307,12 +313,13 @@ function BeaconPage() {
               rentals you need.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                to="/contact"
+              <button
+                type="button"
+                onClick={() => setQuoteOpen(true)}
                 className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
               >
                 Request a Quote <ArrowRight className="h-4 w-4" />
-              </Link>
+              </button>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground/10"
@@ -324,15 +331,18 @@ function BeaconPage() {
         </div>
       </section>
 
+
       <Lightbox
         images={lbImages}
         index={lbIndex}
         onClose={() => setLbIndex(null)}
         onIndexChange={setLbIndex}
       />
+      <BeaconQuoteModal open={quoteOpen} onClose={() => setQuoteOpen(false)} />
     </SiteLayout>
   );
 }
+
 
 function PriceCard({
   badge,
