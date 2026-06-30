@@ -1,9 +1,14 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useServerFn } from "@tanstack/react-start";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { Mail, MapPin, Phone, Facebook } from "lucide-react";
 import { z } from "zod";
+import { createQuoteRequest } from "@/lib/quotes.functions";
 
 const searchSchema = z.object({
   prefill: z.string().optional(),
@@ -25,15 +30,54 @@ const EVENT_TYPE_KEYS = ["wedding", "festival", "privateParty", "corporateEvent"
 const GUEST_RANGE_KEYS = ["under25", "25_50", "50_100", "100_200", "200_plus"];
 const CONTACT_METHODS = ["email", "phone", "text"] as const;
 
+const GUEST_RANGE_TO_INT: Record<string, number> = {
+  under25: 20,
+  "25_50": 40,
+  "50_100": 75,
+  "100_200": 150,
+  "200_plus": 250,
+};
+
 function ContactPage() {
   const { t } = useTranslation();
   const { prefill } = useSearch({ from: "/contact" });
   const [submitted, setSubmitted] = useState(false);
+  const createFn = useServerFn(createQuoteRequest);
+
+  const m = useMutation({
+    mutationFn: async (fd: FormData) => {
+      const rentals = fd.getAll("rentals").map(String);
+      const messageParts: string[] = [];
+      if (rentals.length) messageParts.push(`Interested in: ${rentals.map((k) => t(`contact.rentalOptions.${k}`)).join(", ")}`);
+      const msg = String(fd.get("message") ?? "").trim();
+      if (msg) messageParts.push(msg);
+      const guestKey = String(fd.get("guests") ?? "");
+      const guestCount = GUEST_RANGE_TO_INT[guestKey] ?? null;
+      const pcm = String(fd.get("contactMethod") ?? "email") as "email" | "phone" | "text";
+      return createFn({
+        data: {
+          customer_name: String(fd.get("name") ?? "").trim(),
+          customer_email: String(fd.get("email") ?? "").trim(),
+          customer_phone: String(fd.get("phone") ?? "").trim() || null,
+          preferred_contact_method: pcm,
+          event_type: t(`contact.eventTypes.${String(fd.get("type") ?? "")}`, String(fd.get("type") ?? "")) || null,
+          event_date: String(fd.get("date") ?? "") || null,
+          event_location: String(fd.get("location") ?? "").trim() || null,
+          guest_count: guestCount,
+          customer_note: messageParts.join("\n\n") || null,
+          request_type: "rental",
+        },
+      });
+    },
+    onSuccess: () => setSubmitted(true),
+    onError: (e: Error) => toast.error(e.message || "Could not send request"),
+  });
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
+    m.mutate(new FormData(e.currentTarget));
   }
+
 
   return (
     <SiteLayout>
