@@ -156,6 +156,38 @@ export const bookQuote = createServerFn({ method: "POST" })
 
     const lines = await resolveInventoryIdsForQuote(supabase, data.quote_id);
 
+    // Detect venue-only quotes (no resolvable inventory lines, tied to a venue request).
+    let isVenueOnly = false;
+    if (lines.length === 0) {
+      const { data: qrow } = await supabase
+        .from("quotes")
+        .select("quote_request_id")
+        .eq("id", data.quote_id)
+        .single();
+      if (qrow?.quote_request_id) {
+        const { data: req } = await supabase
+          .from("quote_requests")
+          .select("request_type")
+          .eq("id", qrow.quote_request_id)
+          .single();
+        isVenueOnly = req?.request_type === "venue";
+      }
+    }
+
+    if (isVenueOnly) {
+      // Run venue confirmation path instead of inventory reservation.
+      const { confirmVenueBooking } = await import("./venue-bookings.functions");
+      const res = await confirmVenueBooking({ data: { quote_id: data.quote_id } } as never);
+      return {
+        ok: true,
+        already_reserved: alreadyReserved,
+        lines_reserved: 0,
+        events_created: (res as any)?.events_created ?? 0,
+        has_event_date: true,
+        venue_only: true,
+      };
+    }
+
     if (!alreadyReserved) {
       for (const ln of lines) {
         await applyInventoryMove(supabase, {
