@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, MapPin, Utensils } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ArrowRight, MapPin } from "lucide-react";
 import { pickPhoto } from "@/lib/site-images";
 
 const photoModules = import.meta.glob("@/assets/beacon/*.jpg.asset.json", {
