@@ -15,7 +15,7 @@ import {
 } from "@/lib/bookings.functions";
 import { AdminTabs } from "./admin.quote-requests";
 
-export const Route = createFileRoute("/admin/quotes/$id/job-sheet")({
+export const Route = createFileRoute("/admin/quotes_/$id/job-sheet")({
   head: () => ({ meta: [{ title: "Job Sheet | Admin" }] }),
   component: JobSheetPage,
 });

@@ -8,7 +8,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
 import { getQuote } from "@/lib/quotes.functions";
 import { AdminTabs } from "./admin.quote-requests";
 
-export const Route = createFileRoute("/admin/quotes/$id/preview")({
+export const Route = createFileRoute("/admin/quotes_/$id/preview")({
   head: () => ({ meta: [{ title: "Quote Preview | Admin" }] }),
   component: PreviewPage,
 });
