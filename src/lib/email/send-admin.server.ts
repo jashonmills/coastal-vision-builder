@@ -150,3 +150,13 @@ export async function sendAdminEmail(args: SendAdminEmailArgs): Promise<void> {
     })
   }
 }
+
+/**
+ * Send a transactional email to any recipient using the same rendered-template
+ * + pgmq-enqueue pipeline as sendAdminEmail. Recipient is required.
+ */
+export async function sendTransactionalEmail(
+  args: SendAdminEmailArgs & { recipient: string },
+): Promise<void> {
+  return sendAdminEmail(args)
+}
