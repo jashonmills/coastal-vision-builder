@@ -172,7 +172,12 @@ export const sketchImages: SiteImage[] = [
  * event scene.
  */
 export const productImages: SiteImage[] = [
-  img("469177750_529823536722095_9181053484769189188_n.jpg".replace("469177750_529823536722095_9181053484769189188_n.jpg", "469177750_529823536722095_9181053484769189188_n.jpg"), "60-inch round folding table"),
+  img("469177750_529823493388766_6347225283875997257_n.jpg", "60-inch round folding table"),
+  img("469372788_529823503388765_4348043901117254958_n.jpg", "8-foot rectangular folding table"),
+  img("469150182_529823540055428_4671922222938595837_n.jpg", "Black folding chair"),
+  img("469165463_529823473388768_7013416796850691535_n.jpg", "Outdoor propane patio heater"),
+  { file: "sony-ult10-pa-system.jpg", url: sonyUlt10Asset.url, alt: "Sony ULT10 PA system" },
+  { file: "canopy-lights.jpg", url: canopyLightsAsset.url, alt: "Canopy string lights" },
 ];
 
 /**
