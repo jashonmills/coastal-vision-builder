@@ -7,17 +7,21 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
    ============================================================ */
 
 
-/** Resolve inventory_item_id for a quote_items row (direct or via pricing mapping). */
+/** Resolve inventory_item_id for a quote_items row (direct or via pricing mapping).
+ *  Also returns the list of quote lines that could NOT be resolved (silent-fail surface). */
 async function resolveInventoryIdsForQuote(
   supabase: any,
   quoteId: string,
-): Promise<Array<{ quote_item_id: string; inventory_item_id: string; quantity: number; name: string }>> {
+): Promise<{
+  resolved: Array<{ quote_item_id: string; inventory_item_id: string; quantity: number; name: string }>;
+  unmapped: Array<{ quote_item_id: string; name: string; quantity: number; pricing_item_id: string | null }>;
+}> {
   const { data: items, error } = await supabase
     .from("quote_items")
-    .select("id, name, quantity, inventory_item_id, pricing_item_id")
+    .select("id, name, quantity, inventory_item_id, pricing_item_id, category")
     .eq("quote_id", quoteId);
   if (error) throw new Error(error.message);
-  if (!items || items.length === 0) return [];
+  if (!items || items.length === 0) return { resolved: [], unmapped: [] };
 
   const needMapPricingIds = items
     .filter((i: any) => !i.inventory_item_id && i.pricing_item_id)
@@ -36,7 +40,11 @@ async function resolveInventoryIdsForQuote(
     }, {});
   }
 
+  // Categories that are non-inventory by nature (services / venues / fees)
+  const NON_INV_CATS = new Set(["delivery", "venue", "service", "fee", "labor", "cleaning fee"]);
+
   const resolved: Array<{ quote_item_id: string; inventory_item_id: string; quantity: number; name: string }> = [];
+  const unmapped: Array<{ quote_item_id: string; name: string; quantity: number; pricing_item_id: string | null }> = [];
   for (const it of items) {
     const invId = it.inventory_item_id ?? (it.pricing_item_id ? mapByPricing[it.pricing_item_id] : null);
     if (invId) {
@@ -46,9 +54,18 @@ async function resolveInventoryIdsForQuote(
         quantity: Number(it.quantity ?? 0),
         name: it.name,
       });
+    } else {
+      const cat = (it.category ?? "").toLowerCase();
+      if (NON_INV_CATS.has(cat)) continue; // Delivery / Venue lines don't need inventory
+      unmapped.push({
+        quote_item_id: it.id,
+        name: it.name,
+        quantity: Number(it.quantity ?? 0),
+        pricing_item_id: it.pricing_item_id ?? null,
+      });
     }
   }
-  return resolved;
+  return { resolved, unmapped };
 }
 
 /** Apply a status delta on an inventory_items row and write a transaction record. */
