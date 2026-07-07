@@ -112,8 +112,12 @@ function RecommenderPage() {
       return;
     }
     setStep((s) => Math.min(s + 1, STEP_KEYS.length - 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  function back() { setStep((s) => Math.max(0, s - 1)); }
+  function back() {
+    setStep((s) => Math.max(0, s - 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
   function reset() {
     setData(empty);
     setContact({ name: "", email: "", phone: "", method: "Email", notes: "" });
