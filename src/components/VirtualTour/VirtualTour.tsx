@@ -33,10 +33,10 @@ const mobilePanoramas = [
 
 export function VirtualTour() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
+  const isMobileOrTablet = useIsMobileOrTablet();
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobileOrTablet) return;
     function handleDeviceMotion(e: DeviceMotionEvent) {
       const iframe = document.getElementById("tour-embeded") as HTMLIFrameElement | null;
       if (!iframe || !iframe.contentWindow) return;
@@ -68,7 +68,7 @@ export function VirtualTour() {
     }
     window.addEventListener("devicemotion", handleDeviceMotion);
     return () => window.removeEventListener("devicemotion", handleDeviceMotion);
-  }, [isMobile]);
+  }, [isMobileOrTablet]);
 
   return (
     <div className="w-full" ref={containerRef}>
@@ -77,7 +77,7 @@ export function VirtualTour() {
         <span className="text-xs font-semibold uppercase tracking-[0.2em]">Virtual tour</span>
       </div>
 
-      {isMobile ? (
+      {isMobileOrTablet ? (
         <div className="flex flex-col gap-4">
           {mobilePanoramas.map((p) => (
             <figure key={p.url} className="flex flex-col gap-2">
@@ -124,3 +124,4 @@ export function VirtualTour() {
     </div>
   );
 }
+
