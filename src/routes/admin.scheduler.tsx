@@ -16,6 +16,7 @@ import {
   EVENT_COLORS,
 } from "@/lib/scheduler.functions";
 import { AdminTabs } from "./admin.quote-requests";
+import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/scheduler")({
   head: () => ({ meta: [{ title: "Scheduler | Admin" }] }),
