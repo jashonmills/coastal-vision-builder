@@ -48,6 +48,7 @@ function QuoteRequestDetailPage() {
     mutationFn: () => createFn({ data: { quote_request_id: id } }),
     onSuccess: ({ id: qid }) => {
       toast.success("Quote draft created");
+      invalidateOpsQueries(qc);
       navigate({ to: "/admin/quotes/$id/edit", params: { id: qid } });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -58,6 +59,7 @@ function QuoteRequestDetailPage() {
     onSuccess: () => {
       toast.success(`${BEACON_VENUE.name} hold placed on ${req?.event_date}.`);
       refetch();
+      invalidateOpsQueries(qc);
       qc.invalidateQueries({ queryKey: ["venue-events-on-date", req?.event_date] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -67,6 +69,7 @@ function QuoteRequestDetailPage() {
     onSuccess: () => {
       toast.success(`${BEACON_VENUE.name} booking confirmed.`);
       refetch();
+      invalidateOpsQueries(qc);
       qc.invalidateQueries({ queryKey: ["venue-events-on-date", req?.event_date] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -76,6 +79,7 @@ function QuoteRequestDetailPage() {
     onSuccess: () => {
       toast.success("Beacon hold released.");
       refetch();
+      invalidateOpsQueries(qc);
       qc.invalidateQueries({ queryKey: ["venue-events-on-date", req?.event_date] });
     },
     onError: (e: Error) => toast.error(e.message),
