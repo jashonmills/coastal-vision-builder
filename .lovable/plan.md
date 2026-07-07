@@ -1,86 +1,77 @@
 ## Goal
 
-When an admin clicks **Email** on a generated quote, open their default mail app (Outlook, etc.) with the To, Subject, **and body** all pre-filled — template greeting + quote line items + totals in plain text. Admin then just hits Send in Outlook.
+Auto-send the acknowledgement email ("Thanks for reaching out … we're preparing your quote now …") to the customer immediately after any quote/planner request is submitted — no human in the loop. The manual pricing email (from Quote edit → Email Customer) is unchanged.
 
-This replaces the current in-app "Email Customer" dialog on the quote edit page with a `mailto:` launcher. Same treatment for the "Email" button on the quote-request page.
+## Trigger points to wire
+
+All three server-side entry points that currently notify the admin with `sendAdminEmail`:
+
+1. `src/lib/quotes.functions.ts` — `createQuoteRequest` (rentals / catering / generic contact) around line 135.
+2. `src/lib/venue-bookings.functions.ts` — Beacon venue quote request around line 28.
+3. `src/lib/saved-recommendations.functions.ts` — AI Tent Planner submission (line 76) and "Request quote from saved plan" (line 201).
+
+Every site follows the same pattern: insert row → notify admin → **new**: notify customer.
 
 ## Approach
 
-`mailto:` bodies are plain text only and URL-encoded. Length is limited (~2000 chars is the safe ceiling across mail clients), so we generate a clean, compact plain-text version of the quote — not the HTML template.
+### 1. New customer email template
+Create `src/lib/email-templates/customer-request-acknowledgement.tsx` — a branded React Email template with:
+- Greeting: "Hi {customerName},"
+- Body:
+  > "Thanks for reaching out to Pacific North Events & Tents about your **{eventType}** on **{eventDate}**{eventLocation ? " in " + eventLocation : ""}. We're preparing your quote now and will follow up shortly. In the meantime, feel free to reply with any questions."
+- Sign-off: "— Pacific North Events & Tents · pacificnorthrentals.com"
+- Same visual style as the existing `customer-quote` template (white body, navy heading, plain container).
 
-### 1. New helper: `src/lib/quote-email-mailto.ts`
-Pure client helper (no server call) exporting:
-- `buildQuoteMailto({ quote, items, customer })` → returns `mailto:...?subject=...&body=...`
-- Body format (plain text):
+Register as `customer-request-acknowledgement` in `src/lib/email-templates/registry.ts`.
 
-```text
-Hi {customerName},
+Variants: the template accepts an optional `requestType` ("rental" | "beacon" | "catering" | "planner") that lightly adjusts the wording, e.g. Beacon becomes "your event at Beacon on Broadway". One template, small conditional copy — no separate templates per channel.
 
-Thank you for your quote request with Pacific North Events & Tents.
-Based on the details you provided, here is your estimated quote:
+### 2. New helper: `sendCustomerAcknowledgement(args)`
+Add to `src/lib/email/send-admin.server.ts` (colocated with `sendAdminEmail` / `sendTransactionalEmail`):
 
-Event:    {eventType}
-Date:     {eventDate}
-Location: {eventLocation}
-Guests:   {guestCount}
-
---- Line Items ---
-{qty} x {name} .......... ${lineTotal}
-{qty} x {name} .......... ${lineTotal}
-...
-
-Subtotal:  ${subtotal}
-Delivery:  ${delivery}    (omit if 0)
-Cleaning:  ${cleaning}    (omit if 0)
-Discount: -${discount}    (omit if 0)
-Tax:       ${tax}         (omit if 0)
-TOTAL:     ${total}
-
-This quote is valid for 30 days. Reply to this email with any
-questions or to confirm your booking.
-
-— Pacific North Events & Tents
-  pacificnorthrentals.com
+```ts
+export async function sendCustomerAcknowledgement(args: {
+  requestId: string;
+  recipient: string;           // customer_email
+  customerName: string;
+  eventType?: string | null;
+  eventDate?: string | null;
+  eventLocation?: string | null;
+  requestType: "rental" | "beacon" | "catering" | "planner";
+}): Promise<void>
 ```
 
-- All values are properly `encodeURIComponent`-ed. Line breaks use `\r\n` (Outlook-friendly).
-- If the encoded URL exceeds ~1800 chars, we truncate the line-items list and append `…and {n} more items (see attached quote).` so the mail app still opens.
+Internally calls `sendTransactionalEmail` with:
+- `templateName: "customer-request-acknowledgement"`
+- `recipient: args.recipient`
+- `idempotencyKey: "customer-ack-" + args.requestId`  → guarantees exactly-one send even on retries
+- `templateData: { ...args }`
 
-### 2. Quote edit page — `src/routes/admin.quotes_.$id.edit.tsx`
-- Remove the `EmailCustomerDialog` mount and the "Email Customer" dialog trigger.
-- Replace with a plain `<a href={mailtoHref}>Email Customer</a>` button (styled identically to today's button) that uses `buildQuoteMailto` with the already-loaded quote + items + customer data.
-- Keep the "mark as sent" behavior: attach an `onClick` that fires the existing `sendQuoteEmail` status-update mutation logic — but strip out the queued-send call and only update `quotes.status = 'sent'` and log an `admin_notifications` row. Extract that into a new server fn `markQuoteEmailed({ quote_id })` in `src/lib/quote-email.functions.ts` so we don't rely on the mail actually being sent (Outlook is out of our control).
-- Keep `invalidateOpsQueries(qc)` after the status update.
+Failures are logged and swallowed (same pattern as `sendAdminEmail`) so a bad customer email address never blocks the submission flow.
 
-### 3. Quote-request page — `src/routes/admin.quote-requests_.$id.tsx`
-Update the existing `mailto:` (line 192) to include a short body:
+### 3. Wire into the three call sites
+In each entry point, immediately after the existing `await sendAdminEmail(...)`, add a parallel `await sendCustomerAcknowledgement(...)`:
 
-```text
-Hi {customerName},
+- `quotes.functions.ts` `createQuoteRequest`: pull `requestType` from `data.request_type` (defaults to `"rental"`; `"venue"` → `"beacon"` per existing schema); recipient is `data.customer_email`.
+- `venue-bookings.functions.ts` beacon request creation (~line 28): `requestType: "beacon"`.
+- `saved-recommendations.functions.ts` planner submission (line 76): `requestType: "planner"`.
+- `saved-recommendations.functions.ts` plan → quote request (line 201): `requestType: "rental"` (or map from stored plan).
 
-Thanks for reaching out to Pacific North Events & Tents about your
-{eventType} on {eventDate} in {eventLocation}.
+For the catering channel, verify whether it goes through `createQuoteRequest` (expected — `contact.tsx` / `catering.tsx` post via the shared modal). If it uses a distinct path, add the call there too. This is a read-only check during implementation, not a new endpoint.
 
-We're preparing your quote now and will follow up shortly. In the
-meantime, feel free to reply with any questions.
-
-— Pacific North Events & Tents
-```
-
-Use the same `encodeURIComponent` helper.
-
-### 4. Cleanup
-- `EmailCustomerDialog.tsx`, `sendQuoteEmail` server fn, and `customer-quote` email template are no longer wired to a UI trigger. Leave them in place (unused) rather than delete — the user may still want the in-app path later. Add a one-line comment at the top of `EmailCustomerDialog.tsx` marking it unused.
-- `src/lib/quote-email.functions.ts`: keep `draftQuoteCoverLetter` and `sendQuoteEmail` exports untouched; add the new `markQuoteEmailed` server fn.
+### 4. Suppression + throttling
+`sendTransactionalEmail` already checks `suppressed_emails` and uses the pgmq queue with idempotency, so a spam-clicking customer only receives one acknowledgement per `request_id`. No new tables or migrations needed.
 
 ## Out of scope
-- No changes to the email template, queue, DNS, or infrastructure.
-- No attachment/PDF generation (mailto can't attach files).
-- No changes to the customer-facing quote page.
+- No changes to the admin notification email.
+- No changes to the manual quote email flow (mailto: Outlook launcher).
+- No new endpoints, cron, or DNS work.
+- No copy for a separate "denied/cancelled" auto-email.
 
 ## Files touched
-- Create: `src/lib/quote-email-mailto.ts`
-- Edit: `src/lib/quote-email.functions.ts` (add `markQuoteEmailed`)
-- Edit: `src/routes/admin.quotes_.$id.edit.tsx` (mailto button, drop dialog)
-- Edit: `src/routes/admin.quote-requests_.$id.tsx` (richer mailto body)
-- Edit: `src/components/admin/EmailCustomerDialog.tsx` (add unused-comment header only)
+- Create: `src/lib/email-templates/customer-request-acknowledgement.tsx`
+- Edit: `src/lib/email-templates/registry.ts`
+- Edit: `src/lib/email/send-admin.server.ts` (add `sendCustomerAcknowledgement`)
+- Edit: `src/lib/quotes.functions.ts` (createQuoteRequest)
+- Edit: `src/lib/venue-bookings.functions.ts` (beacon request creation)
+- Edit: `src/lib/saved-recommendations.functions.ts` (both planner + plan-quote sites)
