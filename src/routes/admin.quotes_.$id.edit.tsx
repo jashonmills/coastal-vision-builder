@@ -43,6 +43,7 @@ function EditQuotePage() {
   const bookFn = useServerFn(bookQuote);
   const unbookFn = useServerFn(unbookQuote);
   const statusFn = useServerFn(getQuoteBookingStatus);
+  const integrityFn = useServerFn(getQuoteBookingIntegrity);
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
