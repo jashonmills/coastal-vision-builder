@@ -8,6 +8,7 @@ import { RecommendationReport } from "@/components/RecommendationViewer";
 import { BeaconCallout } from "@/components/BeaconCallout";
 import { useAuth } from "@/hooks/use-auth";
 import { saveRecommendation } from "@/lib/saved-recommendations.functions";
+import { createQuoteRequest } from "@/lib/quotes.functions";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
 import { downloadRecommendationPdf, printRecommendationPdf } from "@/lib/recommendation-pdf";
