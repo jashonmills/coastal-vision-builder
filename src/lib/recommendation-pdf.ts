@@ -144,12 +144,14 @@ export async function buildRecommendationPdf({ recommendation, blueprintImage, p
         pdf.setFont("helvetica", "bold");
         pdf.setFontSize(9);
         pdf.setTextColor(...muted);
-        const sLines = pdf.splitTextToSize(equipmentSummary, contentW);
-        pdf.text(sLines, pageW / 2, y, { align: "center", charSpace: 0.8 });
+        // Narrower wrap width to account for centered layout + letter spacing
+        const sLines = pdf.splitTextToSize(equipmentSummary, contentW - 40);
+        pdf.text(sLines, pageW / 2, y, { align: "center" });
         y += sLines.length * 12 + 14;
       } else {
         y += 6;
       }
+
     }
   }
 
