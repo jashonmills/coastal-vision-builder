@@ -225,7 +225,7 @@ export const requestQuoteForRecommendation = createServerFn({ method: "POST" })
         | undefined;
       const recommendedTent =
         rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
-      await sendAdminEmail({
+      const adminPromise = sendAdminEmail({
         templateName: "admin-quote-request",
         idempotencyKey: `plan-quote-request-${existing.id}`,
         templateData: {
@@ -250,17 +250,31 @@ export const requestQuoteForRecommendation = createServerFn({ method: "POST" })
       });
 
       // Auto-acknowledgement to the customer
-      if (contact?.email) {
-        await sendCustomerAcknowledgement({
-          requestId: existing.id,
-          recipient: contact.email,
-          customerName: contact?.name ?? null,
-          eventType: input?.eventType ?? null,
-          eventDate: existing.event_date ?? null,
-          eventLocation: existing.location ?? null,
-          requestType: "rental",
-        });
-      }
+      const customerPromise = contact?.email
+        ? sendCustomerAcknowledgement({
+            requestId: existing.id,
+            recipient: contact.email,
+            customerName: contact?.name ?? null,
+            eventType: input?.eventType ?? null,
+            eventDate: existing.event_date ?? null,
+            eventLocation: existing.location ?? null,
+            requestType: "rental",
+          })
+        : Promise.resolve();
+
+      console.log("[requestQuoteForRecommendation] scheduling admin+customer emails", {
+        recommendationId: existing.id,
+        hasCustomerEmail: !!contact?.email,
+      });
+      const [adminResult, customerResult] = await Promise.allSettled([adminPromise, customerPromise]);
+      console.log("[requestQuoteForRecommendation] email results", {
+        recommendationId: existing.id,
+        admin: adminResult.status,
+        adminReason: adminResult.status === "rejected" ? String(adminResult.reason) : undefined,
+        customer: customerResult.status,
+        customerReason: customerResult.status === "rejected" ? String(customerResult.reason) : undefined,
+      });
+
     } catch (e) {
       console.error("[requestQuoteForRecommendation] admin email failed", e);
     }
