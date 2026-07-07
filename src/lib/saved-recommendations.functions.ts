@@ -52,7 +52,7 @@ export const saveRecommendation = createServerFn({ method: "POST" })
 
     // Admin email notification for a new saved AI plan (best-effort)
     try {
-      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const { sendAdminEmail, sendCustomerAcknowledgement } = await import("@/lib/email/send-admin.server");
       const rec = data.recommendation as
         | {
             headline?: string;
@@ -95,6 +95,19 @@ export const saveRecommendation = createServerFn({ method: "POST" })
           perspectiveImage: data.perspective_image ?? null,
         },
       });
+
+      // Auto-acknowledgement to the customer (if we have their email)
+      if (contact?.email) {
+        await sendCustomerAcknowledgement({
+          requestId: row.id,
+          recipient: contact.email,
+          customerName: contact?.name ?? null,
+          eventType: input?.eventType ?? null,
+          eventDate: data.event_date ?? null,
+          eventLocation: data.location ?? null,
+          requestType: "planner",
+        });
+      }
     } catch (e) {
       console.error("[saveRecommendation] admin email failed", e);
     }
@@ -178,7 +191,7 @@ export const requestQuoteForRecommendation = createServerFn({ method: "POST" })
 
     // Admin email notification (best-effort)
     try {
-      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const { sendAdminEmail, sendCustomerAcknowledgement } = await import("@/lib/email/send-admin.server");
       const rec = existing.recommendation as
         | {
             headline?: string;
@@ -221,6 +234,19 @@ export const requestQuoteForRecommendation = createServerFn({ method: "POST" })
           savedRecommendationId: existing.id,
         },
       });
+
+      // Auto-acknowledgement to the customer
+      if (contact?.email) {
+        await sendCustomerAcknowledgement({
+          requestId: existing.id,
+          recipient: contact.email,
+          customerName: contact?.name ?? null,
+          eventType: input?.eventType ?? null,
+          eventDate: existing.event_date ?? null,
+          eventLocation: existing.location ?? null,
+          requestType: "rental",
+        });
+      }
     } catch (e) {
       console.error("[requestQuoteForRecommendation] admin email failed", e);
     }

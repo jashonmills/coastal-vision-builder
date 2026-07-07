@@ -160,3 +160,32 @@ export async function sendTransactionalEmail(
 ): Promise<void> {
   return sendAdminEmail(args)
 }
+
+/**
+ * Auto-acknowledgement email to the customer when a quote/planner request is
+ * submitted. Best-effort — logs and swallows errors so a bad address never
+ * blocks the submission flow.
+ */
+export async function sendCustomerAcknowledgement(args: {
+  requestId: string
+  recipient: string
+  customerName?: string | null
+  eventType?: string | null
+  eventDate?: string | null
+  eventLocation?: string | null
+  requestType: 'rental' | 'beacon' | 'catering' | 'planner' | 'venue'
+}): Promise<void> {
+  if (!args.recipient) return
+  return sendAdminEmail({
+    templateName: 'customer-request-acknowledgement',
+    idempotencyKey: `customer-ack-${args.requestId}`,
+    recipient: args.recipient,
+    templateData: {
+      customerName: args.customerName ?? null,
+      eventType: args.eventType ?? null,
+      eventDate: args.eventDate ?? null,
+      eventLocation: args.eventLocation ?? null,
+      requestType: args.requestType,
+    },
+  })
+}

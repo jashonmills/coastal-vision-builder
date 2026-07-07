@@ -125,7 +125,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
 
     // Admin email notification (best-effort — never fails the request)
     try {
-      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const { sendAdminEmail, sendCustomerAcknowledgement } = await import("@/lib/email/send-admin.server");
       const rec = data.recommendation as
         | { headline?: string; layout_caption?: string; picks?: Array<{ category: string; item_name: string; quantity: number; reason?: string }>; weather_notes?: string[] }
         | null
@@ -155,6 +155,18 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
           weatherNotes: rec?.weather_notes ?? [],
           savedRecommendationId: data.saved_recommendation_id ?? null,
         },
+      });
+
+      // Auto-acknowledgement to the customer
+      const rt = (data.request_type ?? "rental") as "rental" | "venue";
+      await sendCustomerAcknowledgement({
+        requestId: row.id,
+        recipient: data.customer_email,
+        customerName: data.customer_name,
+        eventType: data.event_type ?? null,
+        eventDate: data.event_date ?? null,
+        eventLocation: data.event_location ?? null,
+        requestType: rt === "venue" ? "beacon" : "rental",
       });
     } catch (e) {
       console.error("[createQuoteRequest] admin email failed", e);
