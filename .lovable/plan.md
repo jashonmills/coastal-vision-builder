@@ -1,23 +1,31 @@
+## Problem
+
+The mobile bento drawer (`src/components/MobileBentoDrawer.tsx`) exposes only a subset of the site's public pages. Several routes reachable from the desktop header/footer are unreachable on mobile, notably:
+
+- `/catering`
+- `/rental-contract`
+- `/virtual-tour`
+- `/events`
+
 ## Plan
 
-1. **Add tap/click behavior to the mobile/tablet panorama images**
-   - Turn each panorama preview into a button while keeping the same stacked layout shown in your screenshot.
-   - Add clear accessibility labels so tapping a panorama opens that specific view.
+Extend the public sections of `MobileBentoDrawer.tsx` so every top-level public page is reachable.
 
-2. **Create a mobile-friendly interactive panorama viewer**
-   - When a panorama is tapped, open it in a full-screen overlay instead of leaving it as a static image.
-   - Use a scroll/pan interaction so the wide panorama can be explored naturally on a phone in portrait mode.
-   - Keep the image height sized for portrait screens, with horizontal drag/scroll available inside the viewer rather than widening the whole page.
-   - Include close, previous, and next controls so visitors can move through all four panoramas.
+1. Add a third bento block below "Explore" and "More" titled **"Services & Info"** containing:
+   - Catering (`/catering`)
+   - Virtual Tour (`/virtual-tour`)
+   - Events (`/events`)
+   - Rental Contract (`/rental-contract`)
 
-3. **Keep desktop unchanged**
-   - Desktop will continue using the existing embedded 360 tour.
-   - The new interactive raw panorama viewer will only apply below the desktop breakpoint, matching the current mobile/tablet panorama stack.
+   Center CTA in that block: "Contact" → `/contact` (Phone icon), consistent with the existing bento pattern (2×2 grid with a center circle).
 
-4. **Prevent horizontal page overflow**
-   - Ensure the overlay locks page scrolling while open.
-   - Constrain the panorama viewer to the viewport width and safe-area spacing so it works cleanly on mobile browsers.
+2. Pick icons from `lucide-react` already in use where possible (e.g., `UtensilsCrossed` for Catering, `Compass` or `View` for Virtual Tour, `CalendarDays` for Events, `FileSignature` or `FileText` for Rental Contract). Use the same `tileBg` gradient palette style as existing tiles for visual consistency.
 
-5. **Verify on a phone-sized viewport**
-   - Check that the page still shows the mobile panorama stack.
-   - Check that tapping a panorama opens the full-screen interactive viewer and does not create horizontal scrolling on the page.
+3. No changes to the bottom nav bar itself (`MobileBottomNav.tsx`) — the "Menu" button already opens the drawer, which is the intended pattern.
+
+4. No changes to admin drawer, desktop header, routes, or business logic.
+
+## Verification
+
+- Open mobile viewport, tap Menu, confirm all four new tiles render and each Link navigates to the correct route and closes the drawer.
+- Confirm the existing Explore/More blocks are untouched.

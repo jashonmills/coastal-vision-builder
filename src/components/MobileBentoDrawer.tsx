@@ -25,7 +25,12 @@ import {
   ShieldCheck,
   LogOut,
   LogIn,
+  UtensilsCrossed,
+  Compass,
+  CalendarDays,
+  FileSignature,
   type LucideIcon,
+
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
