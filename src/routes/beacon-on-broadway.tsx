@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
+import { VirtualTour } from "@/components/VirtualTour/VirtualTour";
 
 import {
   MapPin,
