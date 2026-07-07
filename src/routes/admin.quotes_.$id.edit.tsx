@@ -45,6 +45,8 @@ function EditQuotePage() {
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
+  const [emailOpen, setEmailOpen] = useState(false);
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
     queryFn: () => getFn({ data: { id } }),
@@ -255,6 +257,16 @@ function EditQuotePage() {
           </aside>
         </div>
       </section>
+      <EmailCustomerDialog
+        open={emailOpen}
+        onOpenChange={setEmailOpen}
+        quoteId={id}
+        quoteNumber={quote.quote_number}
+        customerName={quote.customer_name}
+        customerEmail={quote.customer_email}
+        totalCents={quote.total_cents}
+        onSent={() => qc.invalidateQueries({ queryKey: ["admin-quote", id] })}
+      />
     </SiteLayout>
   );
 }
