@@ -1,4 +1,4 @@
-import catering from "@/assets/contracts/catering-contract.docx.asset.json";
+import catering from "@/assets/contracts/catering-contract.pdf.asset.json";
 import creditCard from "@/assets/contracts/credit-card-authorization.pdf.asset.json";
 import rental from "@/assets/contracts/rental-contract.pdf.asset.json";
 import beacon from "@/assets/contracts/beacon-contract.pdf.asset.json";
