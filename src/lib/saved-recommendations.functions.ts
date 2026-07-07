@@ -49,8 +49,59 @@ export const saveRecommendation = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+
+    // Admin email notification for a new saved AI plan (best-effort)
+    try {
+      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const rec = data.recommendation as
+        | {
+            headline?: string;
+            tent_size?: string;
+            layout_caption?: string;
+            picks?: Array<{ category: string; item_name: string; quantity: number; reason?: string }>;
+            weather_notes?: string[];
+          }
+        | null
+        | undefined;
+      const input = data.input as
+        | { eventType?: string; guestCount?: number }
+        | null
+        | undefined;
+      const contact = data.contact as
+        | { name?: string; email?: string }
+        | null
+        | undefined;
+      const recommendedTent =
+        rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
+      await sendAdminEmail({
+        templateName: "admin-planner-submission",
+        idempotencyKey: `planner-submission-${row.id}`,
+        templateData: {
+          recommendationId: row.id,
+          title: data.title,
+          customerName: contact?.name ?? null,
+          customerEmail: contact?.email ?? null,
+          eventType: input?.eventType ?? null,
+          eventDate: data.event_date ?? null,
+          eventLocation: data.location ?? null,
+          guestCount: input?.guestCount ?? null,
+          headline: rec?.headline ?? null,
+          recommendedTent,
+          tentSize: rec?.tent_size ?? null,
+          layoutCaption: rec?.layout_caption ?? null,
+          picks: rec?.picks ?? [],
+          weatherNotes: rec?.weather_notes ?? [],
+          blueprintImage: data.blueprint_image ?? null,
+          perspectiveImage: data.perspective_image ?? null,
+        },
+      });
+    } catch (e) {
+      console.error("[saveRecommendation] admin email failed", e);
+    }
+
     return { id: row.id };
   });
+
 
 export const listMyRecommendations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
