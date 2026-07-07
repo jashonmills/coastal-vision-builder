@@ -123,8 +123,46 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
       related_id: row.id,
     });
 
+    // Admin email notification (best-effort — never fails the request)
+    try {
+      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const rec = data.recommendation as
+        | { headline?: string; layout_caption?: string; picks?: Array<{ category: string; item_name: string; quantity: number; reason?: string }>; weather_notes?: string[] }
+        | null
+        | undefined;
+      const recommendedTent =
+        rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
+      await sendAdminEmail({
+        templateName: "admin-quote-request",
+        idempotencyKey: `quote-request-${row.id}`,
+        templateData: {
+          requestId: row.id,
+          requestType: data.request_type ?? "rental",
+          customerName: data.customer_name,
+          customerEmail: data.customer_email,
+          customerPhone: data.customer_phone ?? null,
+          preferredContact: data.preferred_contact_method,
+          eventType: data.event_type ?? null,
+          eventDate: data.event_date ?? null,
+          eventLocation: data.event_location ?? null,
+          guestCount: data.guest_count ?? null,
+          customerNote: data.customer_note ?? null,
+          venue: data.venue ?? null,
+          headline: rec?.headline ?? null,
+          recommendedTent,
+          layoutCaption: rec?.layout_caption ?? null,
+          picks: rec?.picks ?? [],
+          weatherNotes: rec?.weather_notes ?? [],
+          savedRecommendationId: data.saved_recommendation_id ?? null,
+        },
+      });
+    } catch (e) {
+      console.error("[createQuoteRequest] admin email failed", e);
+    }
+
     return { id: row.id };
   });
+
 
 export const listQuoteRequests = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
