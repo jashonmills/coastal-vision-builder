@@ -545,6 +545,25 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
     }
 
     if (rows.length > 0) {
+      // Best-effort: pre-resolve inventory_item_id via pricing_inventory_mappings so
+      // downstream booking doesn't silently no-op on AI-drafted lines.
+      const pricingIds = Array.from(new Set(rows.map((r) => r.pricing_item_id).filter(Boolean))) as string[];
+      if (pricingIds.length > 0) {
+        const { data: maps } = await supabase
+          .from("pricing_inventory_mappings")
+          .select("pricing_item_id, inventory_item_id, active")
+          .in("pricing_item_id", pricingIds)
+          .eq("active", true);
+        const invByPricing: Record<string, string> = {};
+        for (const m of maps ?? []) {
+          if (m.pricing_item_id && m.inventory_item_id) invByPricing[m.pricing_item_id] = m.inventory_item_id;
+        }
+        for (const r of rows as any[]) {
+          if (!r.inventory_item_id && r.pricing_item_id && invByPricing[r.pricing_item_id]) {
+            r.inventory_item_id = invByPricing[r.pricing_item_id];
+          }
+        }
+      }
       const { error: insErr } = await supabase.from("quote_items").insert(rows);
       if (insErr) throw new Error(insErr.message);
     }
