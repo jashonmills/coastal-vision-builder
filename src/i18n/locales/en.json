@@ -797,23 +797,29 @@
     "pricing": {
       "eyebrow": "Pricing",
       "title": "Simple, seasonal rates",
-      "note": "Rates are starting points for the venue only. Add-on rentals, staffing, and custom packages quoted on request.",
-      "perDay": "/ day",
-      "perWeekend": "/ weekend",
+      "note": "Rates cover the venue only. Drapes, lighting, extra tables, catering, and bartending services are available for additional pricing. Ask about weekend deals starting Friday at 5 PM through Monday at noon.",
+      "perDay": "1-day rental",
+      "perTwoDay": "2-day rental",
       "offSeason": {
         "badge": "Off-Season",
         "window": "October – February",
+        "priceOneDay": "$500",
+        "priceTwoDay": "$750",
         "note": "Any day of the week"
       },
       "peakWeekday": {
         "badge": "Peak Weekday",
         "window": "March – September",
+        "priceOneDay": "$500",
+        "priceTwoDay": "$750",
         "note": "Monday – Thursday"
       },
       "peakWeekend": {
         "badge": "Peak Weekend",
         "window": "March – September",
-        "note": "Fri–Sat or Sat–Sun"
+        "priceOneDay": "$750",
+        "priceTwoDay": "$1,200",
+        "note": "Friday – Sunday · ask about the Fri 5 PM – Mon noon special"
       }
     },
     "gallery": {
@@ -845,7 +851,7 @@
     "buffet": {
       "eyebrow": "Buffet Menu",
       "title": "Crowd-favorite buffets",
-      "pricing": "$25 / person (100+) · $30 / person (50–99)",
+      "pricing": "Taco Bar & Tailgater $30 / person (100+) · $35 / person (50–99) · Pasta Bar $25 / person (100+) · $30 / person (50–99)",
       "allIncluded": "All included",
       "main": "Main",
       "sides": "Sides",
@@ -857,12 +863,12 @@
     "silver": {
       "eyebrow": "Silver Buffet",
       "title": "Silver Buffet Menu",
-      "pricing": "$30 / person (100+) · $35 / person (50–99)"
+      "pricing": "$35 / person (100+) · $40 / person (50–99)"
     },
     "gold": {
       "eyebrow": "Gold Buffet",
       "title": "Gold Buffet Menu",
-      "pricing": "$40 / person (100+) · $45 / person (50–99)"
+      "pricing": "$50 / person (100+) · $55 / person (50–99)"
     },
     "common": {
       "saladChoose1": "Salad",
@@ -884,7 +890,7 @@
       "body": "Looking for traditional bartending services for your event? From fruity cocktails to hard liquors, from champagne to non-alcoholic beverages, our experienced mixologists are on hand to elevate your occasion into an affair to remember.",
       "note": "Bartending is currently only offered in combination with our food catering packages. Ask for pricing."
     },
-    "finePrint": "All prices are based on a 2-hour service and 100 guests. Add $5 per person for counts between 50–99. Price does not include service personnel, table linens, delivery, or service charge. Prices subject to change without notice.",
+    "finePrint": "Platters (assorted cheese & cracker, seasonal veggie, seasonal fruit) are $175 each and feed approximately 50 guests. All prices are based on a 2-hour service and 100 guests. Add $5 per person for counts between 50–99. Price does not include service personnel, table linens, delivery, or service charge. A $3 per mile travel fee applies for events farther than 25 miles from Seaside. Prices subject to change without notice.",
     "cross": {
       "rentalsEyebrow": "Rentals",
       "rentalsTitle": "Tents, tables, chairs & linens",

@@ -183,22 +183,28 @@ function BeaconPage() {
           <PriceCard
             badge={t("beacon.pricing.offSeason.badge")}
             window={t("beacon.pricing.offSeason.window")}
-            price="$500"
-            unit={t("beacon.pricing.perDay")}
+            priceOneDay={t("beacon.pricing.offSeason.priceOneDay")}
+            priceTwoDay={t("beacon.pricing.offSeason.priceTwoDay")}
+            oneDayLabel={t("beacon.pricing.perDay")}
+            twoDayLabel={t("beacon.pricing.perTwoDay")}
             note={t("beacon.pricing.offSeason.note")}
           />
           <PriceCard
             badge={t("beacon.pricing.peakWeekday.badge")}
             window={t("beacon.pricing.peakWeekday.window")}
-            price="$500"
-            unit={t("beacon.pricing.perDay")}
+            priceOneDay={t("beacon.pricing.peakWeekday.priceOneDay")}
+            priceTwoDay={t("beacon.pricing.peakWeekday.priceTwoDay")}
+            oneDayLabel={t("beacon.pricing.perDay")}
+            twoDayLabel={t("beacon.pricing.perTwoDay")}
             note={t("beacon.pricing.peakWeekday.note")}
           />
           <PriceCard
             badge={t("beacon.pricing.peakWeekend.badge")}
             window={t("beacon.pricing.peakWeekend.window")}
-            price="$1,500"
-            unit={t("beacon.pricing.perWeekend")}
+            priceOneDay={t("beacon.pricing.peakWeekend.priceOneDay")}
+            priceTwoDay={t("beacon.pricing.peakWeekend.priceTwoDay")}
+            oneDayLabel={t("beacon.pricing.perDay")}
+            twoDayLabel={t("beacon.pricing.perTwoDay")}
             note={t("beacon.pricing.peakWeekend.note")}
             highlight
           />
@@ -324,15 +330,19 @@ function BeaconPage() {
 function PriceCard({
   badge,
   window,
-  price,
-  unit,
+  priceOneDay,
+  priceTwoDay,
+  oneDayLabel,
+  twoDayLabel,
   note,
   highlight,
 }: {
   badge: string;
   window: string;
-  price: string;
-  unit: string;
+  priceOneDay: string;
+  priceTwoDay: string;
+  oneDayLabel: string;
+  twoDayLabel: string;
   note: string;
   highlight?: boolean;
 }) {
@@ -349,11 +359,21 @@ function PriceCard({
         {badge}
       </p>
       <p className="mt-1 text-xs text-muted-foreground">{window}</p>
-      <div className="mt-6 flex items-baseline gap-2">
-        <span className="font-serif text-4xl text-primary">{price}</span>
-        <span className="text-sm text-muted-foreground">{unit}</span>
+      <div className="mt-6 space-y-3">
+        <div className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-3">
+          <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+            {oneDayLabel}
+          </span>
+          <span className="font-serif text-3xl text-primary">{priceOneDay}</span>
+        </div>
+        <div className="flex items-baseline justify-between gap-3">
+          <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+            {twoDayLabel}
+          </span>
+          <span className="font-serif text-3xl text-primary">{priceTwoDay}</span>
+        </div>
       </div>
-      <p className="mt-4 text-sm text-muted-foreground">{note}</p>
+      <p className="mt-5 text-sm text-muted-foreground">{note}</p>
     </div>
   );
 }
