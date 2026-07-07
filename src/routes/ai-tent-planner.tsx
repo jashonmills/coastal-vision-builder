@@ -111,7 +111,7 @@ function RecommenderPage() {
             event_location: input.location || null,
             guest_count: input.guestCount ?? null,
             planner_input: input,
-            recommendation: res,
+            recommendation: res.recommendation,
             customer_note: notes.join("\n\n"),
             request_type: "rental",
           },
