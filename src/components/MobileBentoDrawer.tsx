@@ -440,6 +440,13 @@ export function MobileBentoDrawer({ open, onClose }: Props) {
                     center={moreCenter}
                     onClose={onClose}
                   />
+                  <BentoBlock
+                    title="Services & Info"
+                    tiles={servicesTiles}
+                    center={servicesCenter}
+                    onClose={onClose}
+                  />
+
                   {isAdmin && (
                     <div className="mt-3 px-2">
                       <Link
