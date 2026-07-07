@@ -283,10 +283,35 @@ export const bookQuote = createServerFn({ method: "POST" })
       .update({ status: "booked", booked_at: new Date().toISOString() })
       .eq("id", data.quote_id);
 
+    // Emit notifications
+    try {
+      await supabase.from("admin_notifications").insert({
+        kind: "quote_booked",
+        title: `Quote ${quote?.quote_number ?? ""} booked`,
+        body: `${quote?.customer_name ?? "Customer"} · ${lines.length} reserved line(s)${unmapped.length ? ` · ${unmapped.length} unmapped` : ""}`,
+        severity: unmapped.length > 0 ? "warning" : "info",
+        related_id: data.quote_id,
+        link: `/admin/quotes/${data.quote_id}/edit`,
+      });
+      if (unmapped.length > 0) {
+        await supabase.from("admin_notifications").insert({
+          kind: "quote_unmapped_lines",
+          title: `Booking has ${unmapped.length} unmapped line(s)`,
+          body: `Pricing items missing inventory link on quote ${quote?.quote_number ?? ""}`,
+          severity: "warning",
+          related_id: data.quote_id,
+          link: `/admin/quotes/${data.quote_id}/edit`,
+        });
+      }
+    } catch (e) {
+      console.warn("[bookQuote] notification insert failed", e);
+    }
+
     return {
       ok: true,
       already_reserved: alreadyReserved,
       lines_reserved: alreadyReserved ? 0 : lines.length,
+      unmapped_lines: unmapped,
       events_created: eventsCreated,
       has_event_date: !!quote?.event_date,
     };
