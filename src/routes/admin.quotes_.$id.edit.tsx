@@ -310,16 +310,6 @@ function EditQuotePage() {
           </aside>
         </div>
       </section>
-      <EmailCustomerDialog
-        open={emailOpen}
-        onOpenChange={setEmailOpen}
-        quoteId={id}
-        quoteNumber={quote.quote_number}
-        customerName={quote.customer_name}
-        customerEmail={quote.customer_email}
-        totalCents={quote.total_cents}
-        onSent={() => invalidateOpsQueries(qc, { quoteId: id })}
-      />
     </SiteLayout>
   );
 }
