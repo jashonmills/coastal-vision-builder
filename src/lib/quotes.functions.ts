@@ -123,7 +123,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
       related_id: row.id,
     });
 
-    // Admin email notification (best-effort — never fails the request)
+    // Admin email + customer auto-reply (best-effort — never fails the request)
     try {
       const { sendAdminEmail, sendCustomerAcknowledgement } = await import("@/lib/email/send-admin.server");
       const rec = data.recommendation as
@@ -132,7 +132,13 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         | undefined;
       const recommendedTent =
         rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
-      await sendAdminEmail({
+
+      console.log("[createQuoteRequest] scheduling admin+customer emails", {
+        requestId: row.id,
+        hasCustomerEmail: !!data.customer_email,
+      });
+
+      const adminPromise = sendAdminEmail({
         templateName: "admin-quote-request",
         idempotencyKey: `quote-request-${row.id}`,
         templateData: {
@@ -159,7 +165,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
 
       // Auto-acknowledgement to the customer
       const rt = (data.request_type ?? "rental") as "rental" | "venue";
-      await sendCustomerAcknowledgement({
+      const customerPromise = sendCustomerAcknowledgement({
         requestId: row.id,
         recipient: data.customer_email,
         customerName: data.customer_name,
@@ -168,9 +174,19 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         eventLocation: data.event_location ?? null,
         requestType: rt === "venue" ? "beacon" : "rental",
       });
+
+      const [adminResult, customerResult] = await Promise.allSettled([adminPromise, customerPromise]);
+      console.log("[createQuoteRequest] email results", {
+        requestId: row.id,
+        admin: adminResult.status,
+        adminReason: adminResult.status === "rejected" ? String(adminResult.reason) : undefined,
+        customer: customerResult.status,
+        customerReason: customerResult.status === "rejected" ? String(customerResult.reason) : undefined,
+      });
     } catch (e) {
       console.error("[createQuoteRequest] admin email failed", e);
     }
+
 
     return { id: row.id };
   });
