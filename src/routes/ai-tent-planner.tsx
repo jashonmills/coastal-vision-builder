@@ -8,6 +8,7 @@ import { RecommendationReport } from "@/components/RecommendationViewer";
 import { BeaconCallout } from "@/components/BeaconCallout";
 import { useAuth } from "@/hooks/use-auth";
 import { saveRecommendation } from "@/lib/saved-recommendations.functions";
+import { createQuoteRequest } from "@/lib/quotes.functions";
 import type { RecommenderInput } from "@/lib/recommender";
 import { generateRecommendation, type AIRecommendation, type Pick } from "@/lib/recommender.functions";
 import { downloadRecommendationPdf, printRecommendationPdf } from "@/lib/recommendation-pdf";
@@ -80,16 +81,42 @@ function RecommenderPage() {
   const [beaconDismissed, setBeaconDismissed] = useState(false);
 
   const generateFn = useServerFn(generateRecommendation);
+  const leadFn = useServerFn(createQuoteRequest);
   const mutation = useMutation({
     mutationFn: (input: RecommenderInput) => generateFn({ data: input }),
     onError: (err) => {
       console.error("[recommender] generateRecommendation failed:", err);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    onSuccess: (res) => {
+    onSuccess: (res, input) => {
       console.log("[recommender] success", res);
       setViewerOpen(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
+      // Fire-and-forget: create an admin-visible lead so every planner submission
+      // shows up under Admin → Quote Requests, whether or not the user is signed in.
+      if (contact.name && contact.email) {
+        const pcm = (contact.method || "Email").toLowerCase() as "email" | "phone" | "text";
+        const notes: string[] = [];
+        notes.push("Submitted via AI Tent Planner");
+        if (res.recommendation?.headline) notes.push(`Recommendation: ${res.recommendation.headline}`);
+        if (contact.notes) notes.push(contact.notes);
+        leadFn({
+          data: {
+            customer_name: contact.name,
+            customer_email: contact.email,
+            customer_phone: contact.phone || null,
+            preferred_contact_method: pcm,
+            event_type: input.eventType || null,
+            event_date: input.eventDate || null,
+            event_location: input.location || null,
+            guest_count: input.guestCount ?? null,
+            planner_input: input,
+            recommendation: res.recommendation,
+            customer_note: notes.join("\n\n"),
+            request_type: "rental",
+          },
+        }).catch((err) => console.error("[recommender] lead create failed:", err));
+      }
     },
   });
 
