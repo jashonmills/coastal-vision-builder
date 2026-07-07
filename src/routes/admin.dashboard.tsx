@@ -34,11 +34,12 @@ function DashboardPage() {
     if (!authLoading && !user) navigate({ to: "/login", search: { next: "/admin/dashboard" } as never });
   }, [user, authLoading, navigate]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch, isFetching } = useQuery({
     queryKey: ["admin-dashboard"],
     queryFn: () => fn(),
     enabled: !!user && isAdmin,
-    refetchInterval: 60_000,
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: true,
   });
 
   if (authLoading || roleLoading) {
