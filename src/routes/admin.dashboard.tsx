@@ -80,34 +80,38 @@ function DashboardPage() {
           </div>
         ) : (
           <>
-            {/* Alert cards */}
+            <div className="mb-3 flex items-center justify-end">
+              <button
+                onClick={() => refetch()}
+                disabled={isFetching}
+                className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-50"
+              >
+                {isFetching ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowRight className="h-3 w-3" />}
+                Refresh
+              </button>
+            </div>
+            {/* KPI cards */}
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              <StatCard
-                label="New Requests"
-                value={c!.newRequests}
-                icon={Inbox}
-                tone={c!.newRequests > 0 ? "gold" : "muted"}
-                to="/admin/quote-requests"
-              />
-              <StatCard
-                label="Beacon Inquiries"
-                value={c!.newVenueRequests ?? 0}
-                icon={Inbox}
-                tone={(c!.newVenueRequests ?? 0) > 0 ? "gold" : "muted"}
-                to="/admin/quote-requests"
-              />
-              <StatCard
-                label="Beacon Holds / Booked (30d)"
-                value={(c as any).venueBookings30 ?? 0}
-                icon={CalendarDays}
-                tone={((c as any).venueBookings30 ?? 0) > 0 ? "navy" : "muted"}
-                to="/admin/scheduler"
-              />
+              <StatCard label="New Requests" value={c!.newRequests} icon={Inbox}
+                tone={c!.newRequests > 0 ? "gold" : "muted"} to="/admin/quote-requests" />
+              <StatCard label="Beacon Inquiries" value={c!.newVenueRequests ?? 0} icon={Inbox}
+                tone={(c!.newVenueRequests ?? 0) > 0 ? "gold" : "muted"} to="/admin/quote-requests" />
+              <StatCard label="Beacon Holds / Booked (30d)" value={(c as any).venueBookings30 ?? 0} icon={CalendarDays}
+                tone={((c as any).venueBookings30 ?? 0) > 0 ? "navy" : "muted"} to="/admin/scheduler" />
               <StatCard label="In Review" value={c!.inReview} icon={FileText} tone="blue" to="/admin/quote-requests" />
               <StatCard label="Draft Quotes" value={c!.draftQuotes} icon={FileText} tone="muted" to="/admin/quotes" />
-              <StatCard label="Sent Quotes" value={c!.sentQuotes} icon={Send} tone="green" to="/admin/quotes" />
+              <StatCard label="Sent Quotes" value={c!.sentQuotes} icon={Send} tone="blue" to="/admin/quotes" />
+              <StatCard label="Approved" value={(c as any).approvedQuotes ?? 0} icon={FileText}
+                tone={((c as any).approvedQuotes ?? 0) > 0 ? "green" : "muted"} to="/admin/quotes" />
+              <StatCard label="Booked" value={(c as any).bookedQuotes ?? 0} icon={PackageCheck}
+                tone={((c as any).bookedQuotes ?? 0) > 0 ? "green" : "muted"} to="/admin/quotes" />
               <StatCard label="Events (7 days)" value={c!.upcomingEvents} icon={CalendarDays} tone="navy" to="/admin/scheduler" />
-              <StatCard label="Unread Alerts" value={c!.unreadNotifications} icon={Bell} tone={c!.unreadNotifications > 0 ? "gold" : "muted"} />
+              <StatCard label="Over-committed" value={(c as any).overCommittedInventory ?? 0} icon={AlertTriangle}
+                tone={((c as any).overCommittedInventory ?? 0) > 0 ? "gold" : "muted"} to="/admin/inventory" />
+              <StatCard label="Pricing Unmapped" value={(c as any).unmappedPricing ?? 0} icon={Boxes}
+                tone={((c as any).unmappedPricing ?? 0) > 0 ? "gold" : "muted"} to="/admin/pricing" />
+              <StatCard label="Unread Alerts" value={c!.unreadNotifications} icon={Bell}
+                tone={c!.unreadNotifications > 0 ? "gold" : "muted"} />
             </div>
 
 
