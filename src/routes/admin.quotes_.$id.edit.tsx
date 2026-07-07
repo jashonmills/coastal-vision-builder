@@ -19,6 +19,7 @@ import {
 import { bookQuote, unbookQuote, getQuoteBookingStatus } from "@/lib/bookings.functions";
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
+import { EmailCustomerDialog } from "@/components/admin/EmailCustomerDialog";
 
 export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
@@ -136,14 +137,7 @@ function EditQuotePage() {
               Preview
             </Link>
             <button
-              onClick={() => {
-                const previewUrl = `${window.location.origin}/admin/quotes/${id}/preview`;
-                const subject = encodeURIComponent(`Your Pacific North Events Quote ${quote.quote_number}`);
-                const body = encodeURIComponent(
-                  `Hi ${quote.customer_name},\n\nThank you for considering Pacific North Events & Tents. Your quote ${quote.quote_number} is ready.\n\nView it here: ${previewUrl}\n\nTotal: $${(quote.total_cents / 100).toFixed(2)}\n\nLet us know if you have any questions.\n\n— Pacific North Events & Tents`,
-                );
-                window.location.href = `mailto:${quote.customer_email}?subject=${subject}&body=${body}`;
-              }}
+              onClick={() => setEmailOpen(true)}
               className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-secondary"
             >
               <Mail className="h-4 w-4" /> Email Customer
