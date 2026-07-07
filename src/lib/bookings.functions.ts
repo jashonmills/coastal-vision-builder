@@ -154,6 +154,19 @@ export const getQuoteBookingStatus = createServerFn({ method: "GET" })
     };
   });
 
+/* ---------------------- Booking integrity (unmapped lines) ---------------------- */
+
+export const getQuoteBookingIntegrity = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { resolved, unmapped } = await resolveInventoryIdsForQuote(context.supabase, data.quote_id);
+    return {
+      resolved_count: resolved.length,
+      unmapped_lines: unmapped,
+    };
+  });
+
 /* ---------------------- Book quote (reserve + schedule) ---------------------- */
 
 export const bookQuote = createServerFn({ method: "POST" })
