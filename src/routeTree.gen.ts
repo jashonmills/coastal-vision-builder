@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VirtualTourRouteImport } from './routes/virtual-tour'
 import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -48,6 +49,11 @@ import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes_
 import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes_.$id.job-sheet'
 import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes_.$id.edit'
 
+const VirtualTourRoute = VirtualTourRouteImport.update({
+  id: '/virtual-tour',
+  path: '/virtual-tour',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TentRentalsRoute = TentRentalsRouteImport.update({
   id: '/tent-rentals',
   path: '/tent-rentals',
@@ -261,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -300,6 +307,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -341,6 +349,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -383,6 +392,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
     | '/admin/dashboard'
@@ -422,6 +432,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
     | '/admin/dashboard'
@@ -462,6 +473,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
     | '/admin/dashboard'
@@ -503,6 +515,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentRentalsRoute: typeof TentRentalsRoute
+  VirtualTourRoute: typeof VirtualTourRoute
   AccountIdRoute: typeof AccountIdRoute
   AccountIndexRoute: typeof AccountIndexRoute
   ApiPublicHooksSpreadsheetSyncRoute: typeof ApiPublicHooksSpreadsheetSyncRoute
@@ -511,6 +524,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/virtual-tour': {
+      id: '/virtual-tour'
+      path: '/virtual-tour'
+      fullPath: '/virtual-tour'
+      preLoaderRoute: typeof VirtualTourRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tent-rentals': {
       id: '/tent-rentals'
       path: '/tent-rentals'
@@ -838,6 +858,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentRentalsRoute: TentRentalsRoute,
+  VirtualTourRoute: VirtualTourRoute,
   AccountIdRoute: AccountIdRoute,
   AccountIndexRoute: AccountIndexRoute,
   ApiPublicHooksSpreadsheetSyncRoute: ApiPublicHooksSpreadsheetSyncRoute,
