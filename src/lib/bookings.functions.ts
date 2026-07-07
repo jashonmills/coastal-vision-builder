@@ -171,11 +171,11 @@ export const bookQuote = createServerFn({ method: "POST" })
       .limit(1);
     const alreadyReserved = (existingTx ?? []).length > 0;
 
-    const lines = await resolveInventoryIdsForQuote(supabase, data.quote_id);
+    const { resolved: lines, unmapped } = await resolveInventoryIdsForQuote(supabase, data.quote_id);
 
     // Detect venue-only quotes (no resolvable inventory lines, tied to a venue request).
     let isVenueOnly = false;
-    if (lines.length === 0) {
+    if (lines.length === 0 && unmapped.length === 0) {
       const { data: qrow } = await supabase
         .from("quotes")
         .select("quote_request_id")
@@ -202,6 +202,7 @@ export const bookQuote = createServerFn({ method: "POST" })
         ok: true,
         already_reserved: alreadyReserved,
         lines_reserved: 0,
+        unmapped_lines: [] as Array<{ quote_item_id: string; name: string; quantity: number; pricing_item_id: string | null }>,
         events_created: res.events_created,
         has_event_date: true,
         venue_only: true,
