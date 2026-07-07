@@ -79,7 +79,7 @@ function EditQuotePage() {
     mutationFn: () => sendFn({ data: { id } }),
     onSuccess: () => {
       toast.success("Quote marked as sent.");
-      qc.invalidateQueries({ queryKey: ["admin-quote", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
     },
   });
 
@@ -92,15 +92,19 @@ function EditQuotePage() {
         const eventMsg = res.has_event_date
           ? `${res.events_created} calendar events created.`
           : "No event date set — calendar events skipped.";
+        const unmapped = (res.unmapped_lines ?? []).length;
+        const unmappedMsg = unmapped > 0 ? ` ${unmapped} line(s) had no inventory link and were NOT reserved.` : "";
         toast.success(
           res.already_reserved
-            ? `Already reserved. ${eventMsg}`
-            : `Reserved ${res.lines_reserved} item(s). ${eventMsg}`,
+            ? `Already reserved. ${eventMsg}${unmappedMsg}`
+            : `Reserved ${res.lines_reserved} item(s). ${eventMsg}${unmappedMsg}`,
         );
+        if (unmapped > 0) toast.warning("Fix inventory links on the Pricing page to reserve these items.");
       }
       refetch();
       refetchStatus();
-      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
+      qc.invalidateQueries({ queryKey: ["quote-booking-integrity", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -111,7 +115,7 @@ function EditQuotePage() {
       toast.success("Reservation released.");
       refetch();
       refetchStatus();
-      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
     },
     onError: (e: Error) => toast.error(e.message),
   });
