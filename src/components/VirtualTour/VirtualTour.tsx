@@ -68,7 +68,7 @@ export function VirtualTour() {
         style={{ aspectRatio: "16 / 9", minHeight: "min(70vh, 520px)" }}
       >
         {mounted ? (
-          <PannellumViewer scene={active} />
+          <CylindricalViewer scene={active} />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <noscript>
