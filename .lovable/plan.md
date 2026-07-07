@@ -1,40 +1,44 @@
-# Admin Email Notifications
+## Why the quote is blank today
 
-Send an email to **info@pacificnorthrentals.com** every time a customer submits a form on the site, in addition to the existing admin dashboard entry. The email domain `notify.pacificnorthrentals.com` is already verified — no DNS work needed.
+`createQuoteFromRequest` (in `src/lib/quotes.functions.ts`) only reads line items from `quote_requests.recommendation.picks`. Two failure modes hit this:
 
-## Triggers covered
+1. **Request came from the Contact / Request-a-Quote form** — that path never attaches a `recommendation`. `picks = []` → 0 line items → blank quote. (This is the request in your screenshot; `recommendation` is `null` in the DB.)
+2. **Request came from the AI Tent Planner but the recommendation lives on `saved_recommendations`** (linked via `saved_recommendation_id`) — the current code never falls back to that row.
 
-1. **Contact form / Request a Quote** (`/contact`) — via `createQuoteRequest`
-2. **AI Tent Planner "Request Quote"** on a saved plan — via `requestQuoteForRecommendation` (and the modal flow in `RequestQuoteModal`)
-3. **Beacon on Broadway venue inquiry** (also `createQuoteRequest`, `request_type: "venue"`)
-4. **AI Tent Planner save/submit** — when a customer saves a recommendation from `/ai-tent-planner`, send the full plan (headline, picks, weather notes, blueprint + perspective images) to admin
+Even when a recommendation exists, matching is fragile: `item_id` mismatch drops the price to `$0` and lines get flagged `needs_pricing_review` silently.
 
-## What each email contains
+## Fix
 
-- **Quote request email**: customer name/email/phone/preferred contact, event type/date/location/guest count, customer note, and — when the request originated from the AI planner — the full recommendation summary and a link to the admin quote-request page.
-- **AI planner submission email**: recommendation headline, recommended tent, complete equipment checklist grouped by category, weather notes, event details, and the blueprint + perspective images embedded inline (they're already generated and stored on `saved_recommendations`).
-- **Beacon venue inquiry email**: same shape as the quote request, flagged as a Beacon inquiry in the subject.
+Rewrite `createQuoteFromRequest` to always try to produce a populated draft in this order:
 
-All emails go to a single admin address (`info@pacificnorthrentals.com`), sent from `notify.pacificnorthrentals.com`.
+1. **Use the attached plan** — `req.recommendation.picks` if present.
+2. **Fall back to the linked saved plan** — if `req.saved_recommendation_id` is set, load `saved_recommendations.recommendation.picks`.
+3. **AI draft fallback** — if still no picks, call the Lovable AI Gateway (same model/config as `generateRecommendation`) with:
+   - the full `pricing_items` catalog (id, category, name, unit, notes, price),
+   - event details from the request (type, date, guests, location, customer_note including any "Interested in: …" rentals list from the contact form),
+   - a prompt that asks for a **draft quote**: pick items only from the catalog, one Canopy, appropriate Chairs/Tables, Options/Specialty as fit, and the right Delivery zone based on the location string.
+   
+   Response shape mirrors the planner's `picks[]` (`item_id`, `item_name`, `category`, `quantity`, `reason`) so downstream code is identical.
 
-## Implementation
+4. **Robust pricing match** for every pick:
+   - exact `item_id` → catalog row,
+   - else case-insensitive `name` match,
+   - else keep the pick with `unit_price_cents = 0`, `needs_pricing_review = true`, and `reason` prefixed with `[Needs pricing]` so admin sees it clearly in the draft.
 
-1. Run the email infrastructure setup (queues, cron, send log, suppression, unsubscribe) and scaffold the transactional email routes and starter templates.
-2. Add three React Email templates in `src/lib/email-templates/`:
-   - `admin-quote-request.tsx`
-   - `admin-venue-inquiry.tsx`
-   - `admin-planner-submission.tsx`
-   Register them in `src/lib/email-templates/registry.ts`.
-3. Add a small server helper `sendAdminEmail(templateName, data, idempotencyKey)` that posts to the internal `/lovable/email/transactional/send` route with service-role auth. Admin email is a server-side constant (`info@pacificnorthrentals.com`).
-4. Wire it into existing server functions **after** the DB insert succeeds, so email failure never blocks the submission:
-   - `createQuoteRequest` (rental → quote-request template, venue → venue-inquiry template)
-   - `requestQuoteForRecommendation` (quote-request template, includes plan details fetched from the saved row)
-   - `saveRecommendation` (planner-submission template, includes blueprint/perspective images)
-5. Idempotency keys derived from the row id + template name so retries don't duplicate.
-6. Every send is logged to `email_send_log` — visible for troubleshooting.
+5. **Auto-Delivery** — if the AI/plan didn't include a Delivery line, add one by matching the request's `event_location` text against `Delivery` category names (Seaside, Cannon Beach, Astoria, …). No match → insert "Beyond listed locations" with `needs_pricing_review: true`.
 
-## Notes
+6. Keep the existing venue-line prepend for `request_type === "venue"` and the totals / status update unchanged.
 
-- No changes to public form UX. Users still see the same success screen.
-- No customer-facing confirmation emails in this scope (only admin notifications). Say the word if you also want a "we got your request" reply back to the customer — that's a separate template.
-- Email domain is already verified, so sends start immediately after this ships.
+7. Log the source used (`plan | saved_plan | ai_draft`) to the server console for troubleshooting; nothing user-facing added on this pass.
+
+## Files touched
+
+- `src/lib/quotes.functions.ts` — rewrite the body of `createQuoteFromRequest`; add a small `draftPicksWithAI(req, pricing)` helper alongside it (server-only).
+
+No schema, UI, or contract changes — the button, redirect to `/admin/quotes/$id/edit`, and admin edit page all work as-is; the draft they open just won't be empty anymore.
+
+## Out of scope
+
+- No changes to the customer-facing planner or contact form.
+- No inventory-availability check on the draft (still just pricing catalog + quantities); real reservation happens on "Book & Reserve" in the quote editor as today.
+- No changes to how quote totals, tax, cleaning, or delivery fees are calculated after the draft is created.

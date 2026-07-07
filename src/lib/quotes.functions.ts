@@ -266,6 +266,126 @@ export const getQuote = createServerFn({ method: "GET" })
     return { quote: q, items: items ?? [] };
   });
 
+// ---- AI draft helper ----
+type DraftPick = {
+  category?: string | null;
+  item_id?: string | null;
+  item_name?: string | null;
+  quantity?: number;
+  reason?: string | null;
+};
+type PricingRow = { id: string; category: string | null; name: string | null; price_cents: number | null; unit: string | null };
+
+async function draftPicksWithAI(
+  req: {
+    event_type?: string | null;
+    event_date?: string | null;
+    event_location?: string | null;
+    guest_count?: number | null;
+    customer_note?: string | null;
+  },
+  pricing: PricingRow[],
+): Promise<DraftPick[]> {
+  const apiKey = process.env.LOVABLE_API_KEY;
+  if (!apiKey) {
+    console.warn("[createQuoteFromRequest] LOVABLE_API_KEY missing — skipping AI draft.");
+    return [];
+  }
+  const categories = Array.from(new Set(pricing.map((i) => i.category).filter(Boolean))) as string[];
+  const inventoryByCategory = categories.map((cat) => ({
+    category: cat,
+    items: pricing
+      .filter((i) => i.category === cat)
+      .map((i) => ({ id: i.id, name: i.name, unit: i.unit })),
+  }));
+
+  const systemPrompt = `You are drafting an internal event rental quote for Pacific North Events & Tents (Oregon Coast). Given a customer request and the full pricing catalog, choose sensible line items.
+
+RULES:
+- Only pick items that exist in the catalog. Use the exact item_id.
+- Pick ONE Canopy sized for guest count, layout, and coastal exposure. Round up when in doubt.
+- Chairs = guest count + ~10%. Tables sized ~8 per round/banquet.
+- Add Canopy Options (sidewalls, lighting) if event is exposed or after sunset.
+- Add Specialty Items that match the customer's "Interested in" note (bar, dance floor, PA, heaters, stage, grill).
+- Include ONE Delivery zone that best matches the event location text; if nothing matches, pick "Beyond listed locations".
+- Include the matching "Canopy Cleaning Fee - Beach" for the chosen tent when the location suggests a beach event.
+- Provide a 1-sentence "reason" per pick.`;
+
+  const userPrompt = `EVENT REQUEST:
+${JSON.stringify(
+  {
+    event_type: req.event_type,
+    event_date: req.event_date,
+    event_location: req.event_location,
+    guest_count: req.guest_count,
+    customer_note: req.customer_note,
+  },
+  null,
+  2,
+)}
+
+CATALOG (grouped by category):
+${JSON.stringify(inventoryByCategory, null, 2)}`;
+
+  try {
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "submit_draft_quote",
+              description: "Submit the draft quote line items.",
+              parameters: {
+                type: "object",
+                properties: {
+                  picks: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        category: { type: "string" },
+                        item_id: { type: "string" },
+                        item_name: { type: "string" },
+                        quantity: { type: "number" },
+                        reason: { type: "string" },
+                      },
+                      required: ["category", "item_id", "item_name", "quantity", "reason"],
+                      additionalProperties: false,
+                    },
+                  },
+                },
+                required: ["picks"],
+                additionalProperties: false,
+              },
+            },
+          },
+        ],
+        tool_choice: { type: "function", function: { name: "submit_draft_quote" } },
+      }),
+    });
+    if (!res.ok) {
+      console.error("[createQuoteFromRequest] AI gateway error", res.status, await res.text());
+      return [];
+    }
+    const json = await res.json();
+    const call = json?.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
+    if (!call) return [];
+    const parsed = JSON.parse(call) as { picks?: DraftPick[] };
+    return parsed.picks ?? [];
+  } catch (e) {
+    console.error("[createQuoteFromRequest] AI draft failed", e);
+    return [];
+  }
+}
+
 // Build a draft quote from a quote_request, pre-populating items from recommendation
 export const createQuoteFromRequest = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -286,6 +406,7 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
       .from("pricing_items")
       .select("id, category, name, price_cents, unit");
     if (pErr) throw new Error(pErr.message);
+    const catalog: PricingRow[] = pricing ?? [];
 
     // Create the quote (snapshot customer/event info)
     const { data: q, error: qErr } = await supabase
@@ -306,24 +427,55 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
       .single();
     if (qErr) throw new Error(qErr.message);
 
-    // Pre-populate items from recommendation picks
-    const rec = (req.recommendation ?? {}) as {
-      picks?: Array<{
-        category?: string;
-        item_id?: string;
-        item_name?: string;
-        quantity?: number;
-        reason?: string;
-      }>;
-    };
-    const picks = rec.picks ?? [];
+    // --- Resolve picks source ---
+    // 1) attached recommendation on the request
+    let picks: DraftPick[] = ((req.recommendation as { picks?: DraftPick[] } | null)?.picks) ?? [];
+    let source: "plan" | "saved_plan" | "ai_draft" | "empty" = picks.length ? "plan" : "empty";
 
+    // 2) saved_recommendations fallback
+    if (picks.length === 0 && req.saved_recommendation_id) {
+      const { data: saved } = await supabase
+        .from("saved_recommendations")
+        .select("recommendation")
+        .eq("id", req.saved_recommendation_id)
+        .maybeSingle();
+      const savedPicks = ((saved?.recommendation as { picks?: DraftPick[] } | null)?.picks) ?? [];
+      if (savedPicks.length > 0) {
+        picks = savedPicks;
+        source = "saved_plan";
+      }
+    }
+
+    // 3) AI draft fallback (skip for venue-only requests — the venue line is prepended below)
+    if (picks.length === 0 && req.request_type !== "venue") {
+      picks = await draftPicksWithAI(
+        {
+          event_type: req.event_type,
+          event_date: req.event_date,
+          event_location: req.event_location,
+          guest_count: req.guest_count,
+          customer_note: req.customer_note,
+        },
+        catalog,
+      );
+      if (picks.length > 0) source = "ai_draft";
+    }
+    console.log(`[createQuoteFromRequest] request ${req.id} source=${source} picks=${picks.length}`);
+
+    // --- Match picks against catalog ---
+    const byId = new Map(catalog.map((p) => [p.id, p]));
+    const byName = new Map(catalog.map((p) => [(p.name ?? "").toLowerCase(), p]));
     const rows = picks.map((pick, idx) => {
-      const match = pick.item_id
-        ? pricing?.find((p) => p.id === pick.item_id)
-        : pricing?.find((p) => p.name?.toLowerCase() === (pick.item_name ?? "").toLowerCase());
+      const match =
+        (pick.item_id && byId.get(pick.item_id)) ||
+        (pick.item_name && byName.get(pick.item_name.toLowerCase())) ||
+        null;
       const qty = Math.max(1, Math.floor(pick.quantity ?? 1));
       const unit_price_cents = match?.price_cents ?? 0;
+      const needsReview = !match;
+      const reason = needsReview
+        ? `[Needs pricing] ${pick.reason ?? ""}`.trim()
+        : pick.reason ?? null;
       return {
         quote_id: q.id,
         pricing_item_id: match?.id ?? null,
@@ -334,11 +486,40 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
         unit: match?.unit ?? "each",
         unit_price_cents,
         line_total_cents: unit_price_cents * qty,
-        needs_pricing_review: !match,
-        reason: pick.reason ?? null,
+        needs_pricing_review: needsReview,
+        reason,
         sort_order: idx,
       };
     });
+
+    // --- Auto-add Delivery if none was picked and this isn't a venue-only request ---
+    const hasDelivery = rows.some((r) => (r.category ?? "").toLowerCase() === "delivery");
+    if (!hasDelivery && req.request_type !== "venue") {
+      const loc = (req.event_location ?? "").toLowerCase();
+      const deliveryRows = catalog.filter((p) => (p.category ?? "").toLowerCase() === "delivery");
+      let delivery: PricingRow | null =
+        deliveryRows.find((d) => d.name && loc.includes(d.name.toLowerCase())) ?? null;
+      if (!delivery) {
+        delivery = deliveryRows.find((d) => (d.name ?? "").toLowerCase() === "beyond listed locations") ?? null;
+      }
+      if (delivery) {
+        const dp = delivery.price_cents ?? 0;
+        rows.push({
+          quote_id: q.id,
+          pricing_item_id: delivery.id,
+          category: delivery.category ?? "Delivery",
+          name: delivery.name ?? "Delivery",
+          description: null,
+          quantity: 1,
+          unit: delivery.unit ?? "roundtrip",
+          unit_price_cents: dp,
+          line_total_cents: dp,
+          needs_pricing_review: dp === 0,
+          reason: dp === 0 ? "[Needs pricing] Location not in standard delivery zones" : "Auto-added based on event location",
+          sort_order: rows.length,
+        });
+      }
+    }
 
     // For venue requests, prepend a Beacon line so the venue shows in the quote.
     if (req.request_type === "venue") {
@@ -383,6 +564,7 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
 
     return { id: q.id, quote_number: q.quote_number };
   });
+
 
 const QuotePatchSchema = z.object({
   id: z.string().uuid(),
