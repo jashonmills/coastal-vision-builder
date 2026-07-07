@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Compass } from "lucide-react";
 import pano1 from "@/assets/tour/mobile-pano-1.jpg.asset.json";
 import pano2 from "@/assets/tour/mobile-pano-2.jpg.asset.json";
