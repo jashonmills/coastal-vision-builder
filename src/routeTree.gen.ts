@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VirtualTourRouteImport } from './routes/virtual-tour'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -56,6 +57,11 @@ import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes_.$i
 const VirtualTourRoute = VirtualTourRouteImport.update({
   id: '/virtual-tour',
   path: '/virtual-tour',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TentRentalsRoute = TentRentalsRouteImport.update({
@@ -293,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
@@ -337,6 +344,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
@@ -383,6 +391,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
@@ -430,6 +439,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/unsubscribe'
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
@@ -474,6 +484,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/unsubscribe'
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/unsubscribe'
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
@@ -565,6 +577,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentRentalsRoute: typeof TentRentalsRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   VirtualTourRoute: typeof VirtualTourRoute
   AccountIdRoute: typeof AccountIdRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -583,6 +596,13 @@ declare module '@tanstack/react-router' {
       path: '/virtual-tour'
       fullPath: '/virtual-tour'
       preLoaderRoute: typeof VirtualTourRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tent-rentals': {
@@ -940,6 +960,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentRentalsRoute: TentRentalsRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   VirtualTourRoute: VirtualTourRoute,
   AccountIdRoute: AccountIdRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
