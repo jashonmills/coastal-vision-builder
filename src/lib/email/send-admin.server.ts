@@ -40,6 +40,14 @@ export async function sendAdminEmail(args: SendAdminEmailArgs): Promise<void> {
   const recipient = (args.recipient ?? ADMIN_EMAIL).toLowerCase()
   const messageId = crypto.randomUUID()
 
+  console.log('[sendAdminEmail] start', {
+    templateName,
+    recipient_redacted: redactEmail(recipient),
+    idempotencyKey,
+  })
+
+
+
   try {
     const template = TEMPLATES[templateName]
     if (!template) {
