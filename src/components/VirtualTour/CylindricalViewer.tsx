@@ -82,7 +82,7 @@ export function CylindricalViewer({ scene }: { scene: Scene }) {
           128, // radial segments
           1,
           true, // openEnded
-          -haovRad / 2, // thetaStart: center the arc in front of the camera (yaw=0)
+          Math.PI - haovRad / 2, // thetaStart: center the arc on -Z (camera forward at yaw=0)
           haovRad,
         );
 
