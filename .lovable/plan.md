@@ -1,44 +1,53 @@
-## Why the quote is blank today
+## Goal
+Replace the mailto: launcher on the "Email Customer" button with an in-app flow that composes a cover letter and emails the quote directly to the customer from the admin section — no external mail client involved.
 
-`createQuoteFromRequest` (in `src/lib/quotes.functions.ts`) only reads line items from `quote_requests.recommendation.picks`. Two failure modes hit this:
+## Flow (what admin sees)
 
-1. **Request came from the Contact / Request-a-Quote form** — that path never attaches a `recommendation`. `picks = []` → 0 line items → blank quote. (This is the request in your screenshot; `recommendation` is `null` in the DB.)
-2. **Request came from the AI Tent Planner but the recommendation lives on `saved_recommendations`** (linked via `saved_recommendation_id`) — the current code never falls back to that row.
+1. Click **Email Customer** on a quote (`/admin/quotes/:id/edit`).
+2. A dialog opens with:
+   - **To** (prefilled with `quote.customer_email`, editable)
+   - **Subject** (prefilled: `Your Pacific North Events Quote {quote_number}`)
+   - **Cover letter** — AI-drafted on open, editable rich text (plain textarea)
+   - **Quote summary preview** — read-only block showing line items, totals, event details, and a "View full quote" link to the public preview page
+   - Buttons: **Regenerate cover letter**, **Cancel**, **Send email**
+3. On Send: email is queued through the existing transactional pipeline and status toast confirms delivery. Quote status auto-advances to `sent` (same behavior as Mark Sent).
 
-Even when a recommendation exists, matching is fragile: `item_id` mismatch drops the price to `$0` and lines get flagged `needs_pricing_review` silently.
+## Technical
 
-## Fix
+### New customer-facing email template
+- `src/lib/email-templates/customer-quote.tsx` — React Email component rendering:
+  - Branded header (site name)
+  - Cover letter paragraph(s) (preserves line breaks)
+  - Event summary (type, date, location, guests)
+  - Line-item table (item, qty, unit $, line $) with subtotal / delivery / cleaning / discount / tax / total
+  - CTA button linking to `/admin/quotes/:id/preview` public URL (already used today)
+  - Standard footer w/ unsubscribe token (reuse existing helper)
+- Register in `src/lib/email-templates/registry.ts` as `customer-quote`.
 
-Rewrite `createQuoteFromRequest` to always try to produce a populated draft in this order:
+### New server functions (`src/lib/quote-email.functions.ts`)
+- `draftQuoteCoverLetter({ quoteId })` — `requireSupabaseAuth` + admin role check. Loads quote + line items, calls Lovable AI Gateway (`google/gemini-2.5-flash`) with quote context, returns `{ subject, coverLetter }` strings. No DB writes.
+- `sendQuoteEmail({ quoteId, toEmail, subject, coverLetter })` — `requireSupabaseAuth` + admin role check. Loads quote + line items server-side (never trusts client for pricing), renders the `customer-quote` template via `sendAdminEmail` helper pattern (extend or reuse — see below), passing `recipient = toEmail`. Sets quote `status = 'sent'` and `sent_at = now()` if not already sent. Idempotency key: `quote-email:{quoteId}:{crypto.randomUUID()}` so admins can resend.
 
-1. **Use the attached plan** — `req.recommendation.picks` if present.
-2. **Fall back to the linked saved plan** — if `req.saved_recommendation_id` is set, load `saved_recommendations.recommendation.picks`.
-3. **AI draft fallback** — if still no picks, call the Lovable AI Gateway (same model/config as `generateRecommendation`) with:
-   - the full `pricing_items` catalog (id, category, name, unit, notes, price),
-   - event details from the request (type, date, guests, location, customer_note including any "Interested in: …" rentals list from the contact form),
-   - a prompt that asks for a **draft quote**: pick items only from the catalog, one Canopy, appropriate Chairs/Tables, Options/Specialty as fit, and the right Delivery zone based on the location string.
-   
-   Response shape mirrors the planner's `picks[]` (`item_id`, `item_name`, `category`, `quantity`, `reason`) so downstream code is identical.
+### Reuse existing send infrastructure
+- `src/lib/email/send-admin.server.ts` already renders a registered template and enqueues to the `transactional_emails` pgmq queue with suppression, unsubscribe token, and logging. Generalize it slightly: rename intent from "admin" to "transactional" internally OR add a thin wrapper `sendTransactionalEmail()` that calls the same logic with an arbitrary recipient. No queue/worker changes needed — the existing dispatcher already handles the queue.
 
-4. **Robust pricing match** for every pick:
-   - exact `item_id` → catalog row,
-   - else case-insensitive `name` match,
-   - else keep the pick with `unit_price_cents = 0`, `needs_pricing_review = true`, and `reason` prefixed with `[Needs pricing]` so admin sees it clearly in the draft.
+### UI changes
+- `src/routes/admin.quotes_.$id.edit.tsx`:
+  - Remove the `mailto:` onClick.
+  - Add local state for dialog open + form fields + loading.
+  - On open: call `draftQuoteCoverLetter` (show skeleton while loading).
+  - On Send: call `sendQuoteEmail`, close dialog, toast success, invalidate quote query so status pill updates.
+- New component `src/components/admin/EmailCustomerDialog.tsx` using existing shadcn `Dialog`, `Textarea`, `Input`, `Button` primitives.
 
-5. **Auto-Delivery** — if the AI/plan didn't include a Delivery line, add one by matching the request's `event_location` text against `Delivery` category names (Seaside, Cannon Beach, Astoria, …). No match → insert "Beyond listed locations" with `needs_pricing_review: true`.
-
-6. Keep the existing venue-line prepend for `request_type === "venue"` and the totals / status update unchanged.
-
-7. Log the source used (`plan | saved_plan | ai_draft`) to the server console for troubleshooting; nothing user-facing added on this pass.
+### Out of scope
+- No changes to inventory, pricing math, or the quote schema.
+- No new DB tables (existing `email_send_log`, `email_unsubscribe_tokens`, `suppressed_emails`, `transactional_emails` queue cover this).
+- Attachments (PDF) — not included; the email links to the preview page instead. Can be added later if desired.
 
 ## Files touched
-
-- `src/lib/quotes.functions.ts` — rewrite the body of `createQuoteFromRequest`; add a small `draftPicksWithAI(req, pricing)` helper alongside it (server-only).
-
-No schema, UI, or contract changes — the button, redirect to `/admin/quotes/$id/edit`, and admin edit page all work as-is; the draft they open just won't be empty anymore.
-
-## Out of scope
-
-- No changes to the customer-facing planner or contact form.
-- No inventory-availability check on the draft (still just pricing catalog + quantities); real reservation happens on "Book & Reserve" in the quote editor as today.
-- No changes to how quote totals, tax, cleaning, or delivery fees are calculated after the draft is created.
+- new: `src/lib/email-templates/customer-quote.tsx`
+- new: `src/lib/quote-email.functions.ts`
+- new: `src/components/admin/EmailCustomerDialog.tsx`
+- edited: `src/lib/email-templates/registry.ts` (register template)
+- edited: `src/lib/email/send-admin.server.ts` (export a generalized `sendTransactionalEmail`)
+- edited: `src/routes/admin.quotes_.$id.edit.tsx` (wire dialog, remove mailto)
