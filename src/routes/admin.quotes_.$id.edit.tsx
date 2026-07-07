@@ -47,7 +47,7 @@ function EditQuotePage() {
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
-  const [emailOpen, setEmailOpen] = useState(false);
+  
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
