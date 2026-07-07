@@ -1,49 +1,54 @@
-# Fix panorama distortion — swap to a cylindrical Three.js viewer
+## Goal
 
-## Root cause
-Pannellum only supports `equirectangular`, `cubemap`, and `multires` — there is **no cylindrical projection type**. Feeding a phone panorama (uniform-height cylindrical strip) into an equirectangular sphere is what curves the floor and ceiling beams. `haov`/`vaov` shrink the sphere slice used, but the projection stays spherical, so straight lines still bow. We need a real cylindrical projection.
+Show each panorama exactly like it looks in the phone's gallery — no spherical warp, no cylindrical warp, no curved black bars. Just the raw image, cropped to a fixed frame, that the user drags left/right (and up/down when zoomed in) to explore.
 
-Photo Sphere Viewer also lacks a still-image cylindrical adapter. The cleanest fix is a small **custom Three.js cylindrical viewer** — mapping the panorama to the inside of an open cylinder gives uniform vertical scale (straight horizontals stay straight), matches how phone panoramas were captured, and stays ~100 lines.
+## Approach
 
-## Fix
+Delete the Three.js implementation entirely and replace it with a plain 2D image viewer. Because the image is rendered as pixels on a flat plane, straight lines stay straight by definition — nothing to distort.
 
-### 1. Replace `PannellumViewer.tsx` with `CylindricalViewer.tsx` (Three.js)
-- Add deps: `three`, `@types/three`.
-- Load the panorama texture (`THREE.TextureLoader`, `colorSpace = SRGBColorSpace`).
-- Build an **open-ended cylinder** (`CylinderGeometry(radius=5, radius=5, height, radialSegments=128, 1, openEnded=true)`), rotate normals inward (`scale.x = -1`), texture on `MeshBasicMaterial`.
-- Set cylinder height from the image aspect: `height = 2π·radius · (imgH/imgW) · (haov/360)` so the image maps 1:1 without vertical stretch. Horizontal wrap length matches `haov` (e.g. 220°) via `Math.PI * 2 * (haov/360)` — segment the cylinder to that arc, not full circle.
-- `PerspectiveCamera` at the cylinder center, `fov ≈ 75` initial.
-- Drag-to-look with pointer events → adjust camera yaw (rotation.y) and pitch (rotation.x), pitch clamped to ~±25° so the viewer can't tilt into blank cylinder caps.
-- Yaw clamped to the horizontal arc actually covered by the image (`± haov/2` around center) so the user can't spin past the edge into black.
-- Wheel + pinch zoom → adjust `camera.fov` between 40°–90° (`updateProjectionMatrix()`).
-- Fullscreen button overlay (top-right) using the Fullscreen API.
-- ResizeObserver to keep the renderer sized to the container.
-- Cleanup: dispose geometry, material, texture, renderer, remove listeners.
+### How the viewer works
 
-### 2. Update `scenes.ts`
-Drop `vaov`/`yaw`/`pitch`/`hfov` fields, replace with:
-- `haov` (kept, per-scene horizontal coverage — 220° for the wide panos, 200° for the side bar, 180° for the skylight looking up).
-- Optional `tilt` in degrees (default 0; skylight uses +40 to angle up naturally).
+- Fixed-aspect frame (16:9) with `overflow: hidden`.
+- The panorama is rendered as a single `<img>` (or a canvas draw) positioned absolutely inside the frame.
+- On load, the image is scaled so its **height fills the frame** and the natural width overflows horizontally — that gives a flat, floor-to-ceiling crop with the extra width available for horizontal panning. No black bars.
+- State: `scale` (1 = fit-height baseline, up to ~3) and `offsetX` / `offsetY` translation. On pointer drag we update offsets. On wheel / pinch we update scale around the pointer position.
+- Offsets are clamped to the image edges so the user can never drag past the panorama into empty space (no black gutters left/right, no black bars top/bottom).
+- Vertical drag is only active when the current scaled image is taller than the frame (i.e. zoomed in). At baseline zoom the image is exactly frame-height, so vertical dragging is a no-op — the panorama is effectively horizontal-only, matching the user's mental model.
 
-### 3. `VirtualTour.tsx` stays the same
-Only the viewer prop shape changes. Tabs, keyboard nav, description caption, aspect ratio card all keep working.
+### Controls
 
-### 4. Remove pannellum bits
-- Delete `pannellum.d.ts`.
-- No more CDN script/CSS injection.
+- Drag with mouse or finger to pan.
+- Mouse wheel or pinch to zoom (clamped, e.g. 1x – 3x).
+- Fullscreen button (kept from current viewer).
+- Small "Reset view" button that returns to fit-height, offset = 0.
+- Bottom badge updated to "Drag to pan • Scroll to zoom".
 
-## Files touched
-- `package.json` — add `three`, `@types/three`.
-- `src/components/VirtualTour/CylindricalViewer.tsx` — new.
-- `src/components/VirtualTour/PannellumViewer.tsx` — delete.
-- `src/components/VirtualTour/pannellum.d.ts` — delete.
-- `src/components/VirtualTour/scenes.ts` — trim fields.
-- `src/components/VirtualTour/VirtualTour.tsx` — swap import + prop shape.
+### Scene config
 
-## What the user will see
-Floor lines run straight left-to-right, wood beams stay level, the wide view still curves visually (that's the pano itself) but the viewer no longer adds fish-eye. Drag pans horizontally at natural speed; small vertical drag reveals a bit of ceiling/floor without dumping the user into empty space.
+Simplify `src/components/VirtualTour/scenes.ts` — no more `haov` or `tilt`; those were projection parameters. Each scene just needs `id`, `label`, `description`, `image`. Backward-compatible: leave the fields typed as optional so nothing else in the codebase breaks if it references them.
 
-## Out of scope (ask if wanted)
-- Auto-rotate on idle.
-- Nadir/zenith caps (a subtle floor logo texture) — cylinder is open-ended by design.
-- VR mode.
+### File changes
+
+- Delete `src/components/VirtualTour/CylindricalViewer.tsx`.
+- Add `src/components/VirtualTour/FlatPanoramaViewer.tsx` — the new viewer described above. Pure React + DOM, no Three.js.
+- Update `src/components/VirtualTour/VirtualTour.tsx` to import `FlatPanoramaViewer` and pass `scene.image` + `scene.label`.
+- Update `src/components/VirtualTour/scenes.ts` to drop `haov` / `tilt` from the type (keep the five scenes as-is).
+- Remove the `three` and `@types/three` dependencies from `package.json` since nothing else uses them (verify with a quick codebase search during implementation; if anything else imports `three`, leave the packages installed).
+
+### Technical details
+
+- Pointer handling uses `pointerdown` / `pointermove` / `pointerup` with `setPointerCapture` — one code path for mouse, touch, and pen; no separate touch handlers.
+- Zoom-around-cursor math: after changing scale, adjust `offsetX/Y` so the pixel under the cursor stays under the cursor. Standard formula: `offset = cursor - (cursor - offset) * (newScale / oldScale)`.
+- Clamping runs after every drag/zoom step. Given frame size `(W, H)`, scaled image size `(iW*s, iH*s)`, valid offset range is `[W - iW*s, 0]` × `[H - iH*s, 0]` (or centered when the scaled image is smaller than the frame in that axis, which only happens for the vertical axis at baseline zoom).
+- ResizeObserver on the frame recomputes the baseline scale when the container resizes (initial mount, window resize, fullscreen enter/exit).
+- Image loaded via a plain `<img loading="eager" decoding="async">`; while it loads we show the existing "Loading view" spinner. On error we show the existing error state.
+
+### Out of scope
+
+- Auto-rotate / auto-pan.
+- Sharing zoom/pan state via URL.
+- Hotspots (none of the current scenes use them).
+
+## Where it appears
+
+Same two spots as today: the `<VirtualTour />` section on `/beacon-on-broadway` and the standalone `/virtual-tour` route. No route or copy changes.
