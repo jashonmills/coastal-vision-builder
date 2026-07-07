@@ -1,40 +1,67 @@
-## Problem
-Totals on the quote editor are wrong:
-- Delivery items (e.g. "Cannon Beach $150") are bucketed into Subtotal instead of the **Delivery** row.
-- Cleaning fees aren't applied automatically — the admin has to remember to add them per item.
-- Tax stays $0 even when the Beacon venue is on the quote (Seaside charges lodging tax on venue rentals).
+# 360° Virtual Tour — Beacon on Broadway
 
-## Fix
+## Library choice
+Use **pannellum** loaded from its CDN (single JS + CSS file, ~50KB gz, no build config), wrapped in a small typed React component. Reasons:
+- `react-pannellum` on npm is thinly maintained and pulls the same underlying lib; the CDN + thin wrapper avoids version drift and lets us keep TypeScript strict.
+- Pannellum handles equirectangular panoramas, click-drag, pinch-zoom, fullscreen, and auto-load out of the box — exactly what's asked.
+- No Three.js scene to maintain; SSR-safe because we mount only on the client.
 
-### 1. Reclassify totals at compute time (no schema change to items)
-Update `recomputeQuoteTotals()` in `src/lib/quotes.functions.ts` to sort lines into buckets by category instead of dumping everything into `subtotal_cents`:
-- `Delivery` category → sum into `delivery_fee_cents`
-- Categories matching `*Cleaning Fee*` or item name containing "Cleaning Fee" → sum into `cleaning_fee_cents`
-- Everything else → `subtotal_cents`
+If any uploaded image turns out to be a "partial panorama" rather than a full 360° equirectangular, pannellum still renders it in `equirectangular` mode with horizontal field-of-view configured per scene — we set `haov`/`vaov` per image so it doesn't stretch.
 
-`total = subtotal + delivery + cleaning + tax − discount` stays the same, so the Total figure won't double-count.
+## Assets
+Register the five uploaded panoramas as Lovable Assets (JSON pointers under `src/assets/tour/`) so they get CDN-served, not bundled:
 
-The Totals sidebar Delivery / Cleaning inputs become **read-only displays** when auto-derived from line items, with a small "Auto from line items" hint. Discount and Tax remain editable. (Manual override stays available via the line item, which is the source of truth.)
+| Scene tab | Source upload | Notes |
+| --- | --- | --- |
+| Main Hall (Center) | `1000032366.jpg` | primary wide interior |
+| North End | `1000032368.jpg` | beamed ceiling, stair rail |
+| South End | `1000032370.jpg` | window wall + bar cabinet |
+| Side Bar | `1000032372.jpg` | white built-ins, bar counter |
+| Skylight (bonus) | `1000032378.jpg` | shown as a 5th tab, optional — say the word to drop it |
 
-### 2. Auto-cleaning by default (toggle per quote)
-- Migration: add `cleaning_auto boolean not null default true` to `quotes`.
-- In `recomputeQuoteTotals`, when `cleaning_auto=true` AND any canopy/chair/table line exists, ensure matching `Cleaning Fee - Beach` line items are present (insert/update; quantity mirrors the parent line's qty for chairs/tables; size-matched for canopies — 10x10 → "10x10" cleaning fee, etc.). Remove auto-cleaning lines when toggled off or when the parent is deleted; mark them with `reason = "Auto: coastal cleaning"` and a flag column `is_auto boolean default false` on `quote_items` so we know which rows to manage.
-- Add a "Coastal cleaning fee (auto)" checkbox in the Totals sidebar that flips `cleaning_auto`.
+Placeholder fallback paths (`/assets/hall-center.jpg` etc.) also honored — if a matching file exists in `public/assets/`, it overrides the uploaded asset, so you can drop in higher-res versions later without a code change.
 
-### 3. Oregon / Seaside lodging tax for Beacon
-- Migration: add `lodging_tax_rate_bps integer not null default 1000` (10.00%) on a new singleton `site_settings` row (or reuse `site_content` key `lodging_tax_rate_bps`). Configurable from Pricing & Content later.
-- In `recomputeQuoteTotals`, when any line has `category = 'Venue'` and the venue is Beacon (item name starts with "Beacon"), set `tax_cents = round(sum(beacon_venue_line_totals) * rate)`. Otherwise `tax_cents = 0` (Oregon has no general sales tax).
-- Tax row in the Totals sidebar shows the rate inline: `Tax (Seaside lodging 10%)` and becomes read-only when auto-derived; falls back to editable when no Beacon line is present.
+## Files to add / edit
 
-### 4. UX polish
-- Tooltip on Delivery/Cleaning/Tax rows explaining the auto rule.
-- After Add Line / Save Line / Delete Line, `recomputeQuoteTotals` already runs — totals refresh without extra clicks.
+```text
+src/components/VirtualTour/
+  PannellumViewer.tsx     ← client-only wrapper, injects CDN <script>/<link> once
+  VirtualTour.tsx         ← tabs + viewer container, handles active scene state
+  scenes.ts               ← scene config array (id, label, image url, haov, initial yaw/pitch/hfov)
+src/assets/tour/
+  hall-center.jpg.asset.json
+  hall-north.jpg.asset.json
+  hall-south.jpg.asset.json
+  hall-side-bar.jpg.asset.json
+  (hall-skylight.jpg.asset.json)
+src/routes/beacon-on-broadway.tsx   ← insert <VirtualTour /> section
+src/routes/virtual-tour.tsx         ← standalone page with the same component + SEO head()
+```
 
-## Files touched
-- `supabase/migrations/<new>.sql` — `quotes.cleaning_auto`, `quote_items.is_auto`, `site_content` row for lodging tax rate.
-- `src/lib/quotes.functions.ts` — rewrite `recomputeQuoteTotals` with bucketing + auto-cleaning sync + Beacon tax; call it after item insert/update/delete (already wired).
-- `src/routes/admin.quotes_.$id.edit.tsx` — Totals sidebar: read-only Delivery/Cleaning/Tax when auto, "Coastal cleaning fee" toggle, rate label on Tax row.
+No new npm dependency — pannellum loads via CDN inside `PannellumViewer` with a small promise-based loader guarded by a module-level singleton so React StrictMode double-mounts don't double-load.
 
-## Out of scope (ask before adding)
-- Tax rate UI in Pricing & Content (will default to 10% silently for now).
-- Inland-event detection (we'll keep the toggle as the single source of truth instead of guessing from address).
+## Component behavior
+
+- **Tabs**: horizontal pill row on desktop, horizontal scroll on mobile. Active tab is styled with the site's primary token; matches the existing PageHero look on that route.
+- **Viewer**: 16:9 rounded card, `min-height: 480px` desktop / `320px` mobile, dark bg while loading, skeleton shimmer until pannellum's `load` event fires.
+- **Auto-load**: `autoLoad: true` in pannellum config, no click-to-start.
+- **Controls**: default pannellum HUD kept — zoom +/−, fullscreen. Compass and hotspot debug disabled.
+- **No hotspots / walking arrows** per spec.
+- **Scene switching**: re-instantiate the viewer on scene change (simplest, avoids `loadScene` race with autoload). Previous viewer destroyed in cleanup.
+- **Accessibility**: tabs use `role="tablist"` + arrow-key nav; the viewer canvas gets an `aria-label` describing the current scene; a fallback `<noscript>` shows the still image.
+- **SSR safety**: `PannellumViewer` renders `null` on the server and hydrates on the client (`useEffect` mount + `typeof window` guard).
+
+## Where it appears
+1. **Embedded** on `/beacon-on-broadway` as a new "Take a 360° tour" section between the hero and existing gallery.
+2. **Standalone** route `/virtual-tour` for direct linking / sharing, with its own `head()` (title, description, og image = center scene).
+
+## Out of scope (ask if wanted)
+- Cross-scene hotspots ("click here to jump to bar")
+- VR / stereoscopic mode
+- Auto-rotate on idle
+- Analytics events per scene view
+
+## Technical notes
+- Pannellum CDN pinned: `https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.{js,css}` (SRI hashes added).
+- Types: a tiny local `pannellum.d.ts` declares `window.pannellum.viewer(...)` — no `@types/pannellum` package needed.
+- No changes to auth, DB, or server functions.
