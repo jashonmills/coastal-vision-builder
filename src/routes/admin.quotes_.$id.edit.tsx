@@ -149,12 +149,31 @@ function EditQuotePage() {
             >
               Preview
             </Link>
-            <button
-              onClick={() => setEmailOpen(true)}
+            <a
+              href={buildQuoteMailto({
+                quoteNumber: quote.quote_number,
+                customerName: quote.customer_name,
+                customerEmail: quote.customer_email,
+                eventType: quote.event_type,
+                eventDate: quote.event_date,
+                eventLocation: quote.event_location,
+                guestCount: quote.guest_count,
+                items: items.map((it: any) => ({
+                  name: it.name,
+                  quantity: it.quantity,
+                  line_total_cents: it.line_total_cents,
+                })),
+                subtotalCents: quote.subtotal_cents,
+                deliveryCents: quote.delivery_cents,
+                cleaningCents: quote.cleaning_cents,
+                discountCents: quote.discount_cents,
+                taxCents: quote.tax_cents,
+                totalCents: quote.total_cents,
+              })}
               className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-secondary"
             >
               <Mail className="h-4 w-4" /> Email Customer
-            </button>
+            </a>
             <button
               onClick={() => send.mutate()}
               disabled={send.isPending || quote.status === "sent" || quote.status === "booked"}
