@@ -47,7 +47,7 @@ export function PannellumViewer({ scene }: { scene: Scene }) {
 
   useEffect(() => {
     let destroyed = false;
-    let viewer: { destroy: () => void } | null = null;
+    let viewer: ReturnType<NonNullable<typeof window.pannellum>["viewer"]> | null = null;
     setReady(false);
     setError(null);
 
