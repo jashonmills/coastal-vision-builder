@@ -4,13 +4,20 @@ import pano1 from "@/assets/tour/mobile-pano-1.jpg.asset.json";
 import pano2 from "@/assets/tour/mobile-pano-2.jpg.asset.json";
 import pano3 from "@/assets/tour/mobile-pano-3.jpg.asset.json";
 import pano4 from "@/assets/tour/mobile-pano-4.jpg.asset.json";
+import pano5 from "@/assets/tour/mobile-pano-5.jpg.asset.json";
+import pano6 from "@/assets/tour/mobile-pano-6.jpg.asset.json";
+import pano7 from "@/assets/tour/mobile-pano-7.jpg.asset.json";
 
 const mobilePanoramas = [
   { url: pano1.url, label: "Main Hall — Wide View" },
   { url: pano2.url, label: "Main Hall — Beams & Stair Landing" },
   { url: pano3.url, label: "South End — Window Wall & Bar" },
   { url: pano4.url, label: "Side Bar & Built-Ins" },
+  { url: pano5.url, label: "Main Hall — Floor & Beams" },
+  { url: pano6.url, label: "Bar & Balcony Overlook" },
+  { url: pano7.url, label: "Upper Hall — Skylight & Beams" },
 ];
+
 
 export function VirtualTour() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
