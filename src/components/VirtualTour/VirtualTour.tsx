@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Compass } from "lucide-react";
 import { scenes, type Scene } from "./scenes";
-import { PannellumViewer } from "./PannellumViewer";
+import { CylindricalViewer } from "./CylindricalViewer";
 
 export function VirtualTour() {
   const [activeId, setActiveId] = useState<string>(scenes[0].id);
@@ -68,7 +68,7 @@ export function VirtualTour() {
         style={{ aspectRatio: "16 / 9", minHeight: "min(70vh, 520px)" }}
       >
         {mounted ? (
-          <PannellumViewer scene={active} />
+          <CylindricalViewer scene={active} />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <noscript>

@@ -1,67 +1,49 @@
-# 360° Virtual Tour — Beacon on Broadway
+# Fix panorama distortion — swap to a cylindrical Three.js viewer
 
-## Library choice
-Use **pannellum** loaded from its CDN (single JS + CSS file, ~50KB gz, no build config), wrapped in a small typed React component. Reasons:
-- `react-pannellum` on npm is thinly maintained and pulls the same underlying lib; the CDN + thin wrapper avoids version drift and lets us keep TypeScript strict.
-- Pannellum handles equirectangular panoramas, click-drag, pinch-zoom, fullscreen, and auto-load out of the box — exactly what's asked.
-- No Three.js scene to maintain; SSR-safe because we mount only on the client.
+## Root cause
+Pannellum only supports `equirectangular`, `cubemap`, and `multires` — there is **no cylindrical projection type**. Feeding a phone panorama (uniform-height cylindrical strip) into an equirectangular sphere is what curves the floor and ceiling beams. `haov`/`vaov` shrink the sphere slice used, but the projection stays spherical, so straight lines still bow. We need a real cylindrical projection.
 
-If any uploaded image turns out to be a "partial panorama" rather than a full 360° equirectangular, pannellum still renders it in `equirectangular` mode with horizontal field-of-view configured per scene — we set `haov`/`vaov` per image so it doesn't stretch.
+Photo Sphere Viewer also lacks a still-image cylindrical adapter. The cleanest fix is a small **custom Three.js cylindrical viewer** — mapping the panorama to the inside of an open cylinder gives uniform vertical scale (straight horizontals stay straight), matches how phone panoramas were captured, and stays ~100 lines.
 
-## Assets
-Register the five uploaded panoramas as Lovable Assets (JSON pointers under `src/assets/tour/`) so they get CDN-served, not bundled:
+## Fix
 
-| Scene tab | Source upload | Notes |
-| --- | --- | --- |
-| Main Hall (Center) | `1000032366.jpg` | primary wide interior |
-| North End | `1000032368.jpg` | beamed ceiling, stair rail |
-| South End | `1000032370.jpg` | window wall + bar cabinet |
-| Side Bar | `1000032372.jpg` | white built-ins, bar counter |
-| Skylight (bonus) | `1000032378.jpg` | shown as a 5th tab, optional — say the word to drop it |
+### 1. Replace `PannellumViewer.tsx` with `CylindricalViewer.tsx` (Three.js)
+- Add deps: `three`, `@types/three`.
+- Load the panorama texture (`THREE.TextureLoader`, `colorSpace = SRGBColorSpace`).
+- Build an **open-ended cylinder** (`CylinderGeometry(radius=5, radius=5, height, radialSegments=128, 1, openEnded=true)`), rotate normals inward (`scale.x = -1`), texture on `MeshBasicMaterial`.
+- Set cylinder height from the image aspect: `height = 2π·radius · (imgH/imgW) · (haov/360)` so the image maps 1:1 without vertical stretch. Horizontal wrap length matches `haov` (e.g. 220°) via `Math.PI * 2 * (haov/360)` — segment the cylinder to that arc, not full circle.
+- `PerspectiveCamera` at the cylinder center, `fov ≈ 75` initial.
+- Drag-to-look with pointer events → adjust camera yaw (rotation.y) and pitch (rotation.x), pitch clamped to ~±25° so the viewer can't tilt into blank cylinder caps.
+- Yaw clamped to the horizontal arc actually covered by the image (`± haov/2` around center) so the user can't spin past the edge into black.
+- Wheel + pinch zoom → adjust `camera.fov` between 40°–90° (`updateProjectionMatrix()`).
+- Fullscreen button overlay (top-right) using the Fullscreen API.
+- ResizeObserver to keep the renderer sized to the container.
+- Cleanup: dispose geometry, material, texture, renderer, remove listeners.
 
-Placeholder fallback paths (`/assets/hall-center.jpg` etc.) also honored — if a matching file exists in `public/assets/`, it overrides the uploaded asset, so you can drop in higher-res versions later without a code change.
+### 2. Update `scenes.ts`
+Drop `vaov`/`yaw`/`pitch`/`hfov` fields, replace with:
+- `haov` (kept, per-scene horizontal coverage — 220° for the wide panos, 200° for the side bar, 180° for the skylight looking up).
+- Optional `tilt` in degrees (default 0; skylight uses +40 to angle up naturally).
 
-## Files to add / edit
+### 3. `VirtualTour.tsx` stays the same
+Only the viewer prop shape changes. Tabs, keyboard nav, description caption, aspect ratio card all keep working.
 
-```text
-src/components/VirtualTour/
-  PannellumViewer.tsx     ← client-only wrapper, injects CDN <script>/<link> once
-  VirtualTour.tsx         ← tabs + viewer container, handles active scene state
-  scenes.ts               ← scene config array (id, label, image url, haov, initial yaw/pitch/hfov)
-src/assets/tour/
-  hall-center.jpg.asset.json
-  hall-north.jpg.asset.json
-  hall-south.jpg.asset.json
-  hall-side-bar.jpg.asset.json
-  (hall-skylight.jpg.asset.json)
-src/routes/beacon-on-broadway.tsx   ← insert <VirtualTour /> section
-src/routes/virtual-tour.tsx         ← standalone page with the same component + SEO head()
-```
+### 4. Remove pannellum bits
+- Delete `pannellum.d.ts`.
+- No more CDN script/CSS injection.
 
-No new npm dependency — pannellum loads via CDN inside `PannellumViewer` with a small promise-based loader guarded by a module-level singleton so React StrictMode double-mounts don't double-load.
+## Files touched
+- `package.json` — add `three`, `@types/three`.
+- `src/components/VirtualTour/CylindricalViewer.tsx` — new.
+- `src/components/VirtualTour/PannellumViewer.tsx` — delete.
+- `src/components/VirtualTour/pannellum.d.ts` — delete.
+- `src/components/VirtualTour/scenes.ts` — trim fields.
+- `src/components/VirtualTour/VirtualTour.tsx` — swap import + prop shape.
 
-## Component behavior
-
-- **Tabs**: horizontal pill row on desktop, horizontal scroll on mobile. Active tab is styled with the site's primary token; matches the existing PageHero look on that route.
-- **Viewer**: 16:9 rounded card, `min-height: 480px` desktop / `320px` mobile, dark bg while loading, skeleton shimmer until pannellum's `load` event fires.
-- **Auto-load**: `autoLoad: true` in pannellum config, no click-to-start.
-- **Controls**: default pannellum HUD kept — zoom +/−, fullscreen. Compass and hotspot debug disabled.
-- **No hotspots / walking arrows** per spec.
-- **Scene switching**: re-instantiate the viewer on scene change (simplest, avoids `loadScene` race with autoload). Previous viewer destroyed in cleanup.
-- **Accessibility**: tabs use `role="tablist"` + arrow-key nav; the viewer canvas gets an `aria-label` describing the current scene; a fallback `<noscript>` shows the still image.
-- **SSR safety**: `PannellumViewer` renders `null` on the server and hydrates on the client (`useEffect` mount + `typeof window` guard).
-
-## Where it appears
-1. **Embedded** on `/beacon-on-broadway` as a new "Take a 360° tour" section between the hero and existing gallery.
-2. **Standalone** route `/virtual-tour` for direct linking / sharing, with its own `head()` (title, description, og image = center scene).
+## What the user will see
+Floor lines run straight left-to-right, wood beams stay level, the wide view still curves visually (that's the pano itself) but the viewer no longer adds fish-eye. Drag pans horizontally at natural speed; small vertical drag reveals a bit of ceiling/floor without dumping the user into empty space.
 
 ## Out of scope (ask if wanted)
-- Cross-scene hotspots ("click here to jump to bar")
-- VR / stereoscopic mode
-- Auto-rotate on idle
-- Analytics events per scene view
-
-## Technical notes
-- Pannellum CDN pinned: `https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.{js,css}` (SRI hashes added).
-- Types: a tiny local `pannellum.d.ts` declares `window.pannellum.viewer(...)` — no `@types/pannellum` package needed.
-- No changes to auth, DB, or server functions.
+- Auto-rotate on idle.
+- Nadir/zenith caps (a subtle floor logo texture) — cylinder is open-ended by design.
+- VR mode.
