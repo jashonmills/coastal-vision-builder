@@ -208,6 +208,29 @@ function EditQuotePage() {
           </div>
         )}
 
+        {integrity && integrity.unmapped_lines.length > 0 && (
+          <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="mt-0.5 h-4 w-4 flex-none text-amber-700" />
+              <div>
+                <p className="font-semibold">
+                  {integrity.unmapped_lines.length} line{integrity.unmapped_lines.length === 1 ? "" : "s"} not linked to inventory
+                </p>
+                <p className="mt-0.5">
+                  These lines will NOT reserve stock when the quote is booked. Link each pricing item to an inventory item on the{" "}
+                  <Link to="/admin/pricing" className="underline">Pricing page</Link>.
+                </p>
+                <ul className="mt-1 list-disc pl-5">
+                  {integrity.unmapped_lines.map((u) => (
+                    <li key={u.quote_item_id}>{u.name} × {u.quantity}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="overflow-x-auto rounded-xl border border-border bg-card">
             <table className="w-full text-sm">
