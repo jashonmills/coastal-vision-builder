@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Compass } from "lucide-react";
 import { scenes, type Scene } from "./scenes";
-import { CylindricalViewer } from "./CylindricalViewer";
+import { FlatPanoramaViewer } from "./FlatPanoramaViewer";
 
 export function VirtualTour() {
   const [activeId, setActiveId] = useState<string>(scenes[0].id);
@@ -68,7 +68,7 @@ export function VirtualTour() {
         style={{ aspectRatio: "16 / 9", minHeight: "min(70vh, 520px)" }}
       >
         {mounted ? (
-          <CylindricalViewer scene={active} />
+          <FlatPanoramaViewer image={active.image} label={active.label} />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <noscript>
@@ -83,8 +83,8 @@ export function VirtualTour() {
       </div>
 
       <p className="mt-3 text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">{active.label}.</span> {active.description} Click and drag to look
-        around, pinch or scroll to zoom, or press fullscreen for the full effect.
+        <span className="font-medium text-foreground">{active.label}.</span> {active.description} Click and drag to pan,
+        pinch or scroll to zoom, or press fullscreen for the full effect.
       </p>
     </div>
   );
