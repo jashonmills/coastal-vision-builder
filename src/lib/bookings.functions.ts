@@ -397,8 +397,8 @@ export const getJobSheet = createServerFn({ method: "GET" })
       .eq("quote_id", data.quote_id)
       .order("sort_order");
 
-    const resolved = await resolveInventoryIdsForQuote(supabase, data.quote_id);
-    const invIdByQuoteItem = new Map(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
+    const { resolved } = await resolveInventoryIdsForQuote(supabase, data.quote_id);
+    const invIdByQuoteItem = new Map<string, string>(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
 
     const invIds = Array.from(new Set(resolved.map((r) => r.inventory_item_id)));
     const { data: invRows } = invIds.length
