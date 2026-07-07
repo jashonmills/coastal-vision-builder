@@ -191,6 +191,7 @@ function TotalsRow({ label, value, bold }: { label: string; value: string; bold?
 export const template = {
   component: Email,
   subject: (data: Record<string, any>) => {
+    if (typeof data.subject === 'string' && data.subject.trim()) return data.subject.trim()
     const p = data as Props
     return `Your Pacific North Events Quote${p.quoteNumber ? ' ' + p.quoteNumber : ''}`
   },
