@@ -73,7 +73,7 @@ export const saveRecommendation = createServerFn({ method: "POST" })
         | undefined;
       const recommendedTent =
         rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
-      await sendAdminEmail({
+      const adminPromise = sendAdminEmail({
         templateName: "admin-planner-submission",
         idempotencyKey: `planner-submission-${row.id}`,
         templateData: {
@@ -97,17 +97,31 @@ export const saveRecommendation = createServerFn({ method: "POST" })
       });
 
       // Auto-acknowledgement to the customer (if we have their email)
-      if (contact?.email) {
-        await sendCustomerAcknowledgement({
-          requestId: row.id,
-          recipient: contact.email,
-          customerName: contact?.name ?? null,
-          eventType: input?.eventType ?? null,
-          eventDate: data.event_date ?? null,
-          eventLocation: data.location ?? null,
-          requestType: "planner",
-        });
-      }
+      const customerPromise = contact?.email
+        ? sendCustomerAcknowledgement({
+            requestId: row.id,
+            recipient: contact.email,
+            customerName: contact?.name ?? null,
+            eventType: input?.eventType ?? null,
+            eventDate: data.event_date ?? null,
+            eventLocation: data.location ?? null,
+            requestType: "planner",
+          })
+        : Promise.resolve();
+
+      console.log("[saveRecommendation] scheduling admin+customer emails", {
+        recommendationId: row.id,
+        hasCustomerEmail: !!contact?.email,
+      });
+      const [adminResult, customerResult] = await Promise.allSettled([adminPromise, customerPromise]);
+      console.log("[saveRecommendation] email results", {
+        recommendationId: row.id,
+        admin: adminResult.status,
+        adminReason: adminResult.status === "rejected" ? String(adminResult.reason) : undefined,
+        customer: customerResult.status,
+        customerReason: customerResult.status === "rejected" ? String(customerResult.reason) : undefined,
+      });
+
     } catch (e) {
       console.error("[saveRecommendation] admin email failed", e);
     }
