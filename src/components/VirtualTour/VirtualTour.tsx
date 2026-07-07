@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Compass } from "lucide-react";
 import { scenes, type Scene } from "./scenes";
-import { PannellumViewer } from "./PannellumViewer";
+import { CylindricalViewer } from "./CylindricalViewer";
 
 export function VirtualTour() {
   const [activeId, setActiveId] = useState<string>(scenes[0].id);
