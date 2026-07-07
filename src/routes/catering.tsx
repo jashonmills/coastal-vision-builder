@@ -88,8 +88,14 @@ function Section({
           </h2>
         </div>
         {pricing && (
-          <div className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground">
-            {pricing}
+          <div className="max-w-full rounded-2xl border border-border bg-card px-3 py-2 text-[11px] font-medium text-foreground sm:rounded-full sm:px-4 sm:text-sm">
+            <div className="flex flex-col gap-0.5">
+              {pricing.split("\n").map((line, i) => (
+                <span key={i} className="whitespace-nowrap">
+                  {line}
+                </span>
+              ))}
+            </div>
           </div>
         )}
       </header>
