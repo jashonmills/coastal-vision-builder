@@ -128,7 +128,9 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
     }
 
     const mappedPricingIds = new Set(
-      (pricingMappings.data ?? []).map((m: { pricing_item_id: string }) => m.pricing_item_id),
+      (pricingMappings.data ?? [])
+        .map((m: { pricing_item_id: string | null }) => m.pricing_item_id)
+        .filter((v): v is string => !!v),
     );
     const unmappedPricing = (pricingItems.data ?? []).filter(
       (p: { id: string }) => !mappedPricingIds.has(p.id),
