@@ -69,7 +69,7 @@ export function priceBeaconVenue(eventDateIso: string | null | undefined): {
   }
   const isWeekend = dow === 5 || dow === 6 || dow === 0;
   if (isWeekend) {
-    return { qty: 1, unit: "weekend", unit_price_cents: 150000, label: "Peak weekend package (Fri–Sun, Mar–Sep)", needs_review: false, reason: null };
+    return { qty: 1, unit: "weekend", unit_price_cents: 120000, label: "Peak weekend package (Fri–Sun, Mar–Sep)", needs_review: false, reason: null };
   }
   return { qty: 1, unit: "day", unit_price_cents: 50000, label: "Peak weekday rate (Mon–Thu, Mar–Sep)", needs_review: false, reason: null };
 }
