@@ -299,7 +299,7 @@ function EditQuotePage() {
         customerName={quote.customer_name}
         customerEmail={quote.customer_email}
         totalCents={quote.total_cents}
-        onSent={() => qc.invalidateQueries({ queryKey: ["admin-quote", id] })}
+        onSent={() => invalidateOpsQueries(qc, { quoteId: id })}
       />
     </SiteLayout>
   );
