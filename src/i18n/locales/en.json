@@ -868,7 +868,7 @@
     "gold": {
       "eyebrow": "Gold Buffet",
       "title": "Gold Buffet Menu",
-      "pricing": "$60 / person (100+) · $65 / person (50–99)"
+      "pricing": "50–99 guests: $65/pp | 100+ guests: $60/pp"
     },
     "common": {
       "saladChoose1": "Salad",
