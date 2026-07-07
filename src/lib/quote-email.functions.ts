@@ -61,12 +61,35 @@ export const draftQuoteCoverLetter = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { quote, items } = await loadQuoteBundle(context.supabase, data.quote_id);
 
+    const money = (cents: number) =>
+      (cents / 100).toLocaleString(undefined, { style: "currency", currency: "USD" });
+
+    const topItems = [...items]
+      .sort((a, b) => b.line_total_cents - a.line_total_cents)
+      .slice(0, 3);
+
+    const pricingSummary = {
+      subtotal: money(quote.subtotal_cents),
+      delivery: quote.delivery_fee_cents ? money(quote.delivery_fee_cents) : null,
+      cleaning: quote.cleaning_fee_cents ? money(quote.cleaning_fee_cents) : null,
+      discount: quote.discount_cents ? `-${money(quote.discount_cents)}` : null,
+      tax: quote.tax_cents ? money(quote.tax_cents) : null,
+      total: money(quote.total_cents),
+      top_line_items: topItems.map((it) => ({
+        name: it.name,
+        quantity: it.quantity,
+        line_total: money(it.line_total_cents),
+      })),
+    };
+
     const defaultSubject = `Your Pacific North Events Quote ${quote.quote_number}`;
     const defaultLetter =
       `Hi ${quote.customer_name.split(" ")[0] ?? "there"},\n\n` +
       `Thank you for considering Pacific North Events & Tents for your upcoming ${quote.event_type ?? "event"}` +
       `${quote.event_date ? ` on ${quote.event_date}` : ""}${quote.event_location ? ` in ${quote.event_location}` : ""}. ` +
-      `Your quote ${quote.quote_number} is ready — please review the line items below.\n\n` +
+      `Your quote ${quote.quote_number} comes to a total of ${pricingSummary.total}` +
+      `${topItems.length ? `, including ${topItems.map((it) => `${it.quantity}× ${it.name}`).join(", ")}` : ""}. ` +
+      `Full line items and totals are itemized below.\n\n` +
       `Let us know if you'd like to adjust anything, and we can update this quote before you approve.\n\n` +
       `— Pacific North Events & Tents`;
 
@@ -82,21 +105,21 @@ export const draftQuoteCoverLetter = createServerFn({ method: "POST" })
       event_date: quote.event_date,
       event_location: quote.event_location,
       guest_count: quote.guest_count,
-      total_usd: (quote.total_cents / 100).toFixed(2),
-      line_items: items.map((it) => ({
+      pricing_summary: pricingSummary,
+      all_line_items: items.map((it) => ({
         category: it.category,
         name: it.name,
         quantity: it.quantity,
       })),
     };
 
-    const systemPrompt = `You draft warm, professional cover letters for event rental quotes sent by Pacific North Events & Tents (Oregon Coast). 
+    const systemPrompt = `You draft warm, professional cover letters for event rental quotes sent by Pacific North Events & Tents (Oregon Coast).
 - Address the customer by first name.
 - Reference their event (type, date, location) naturally in 1-2 sentences.
+- Include ONE short paragraph that references the quote total from pricing_summary.total and mentions the 2-3 largest line items (from pricing_summary.top_line_items) naturally in prose — e.g. "Your quote comes to $X, which covers Y and Z." Do NOT reproduce the full line-item table; the email template renders it separately.
 - Invite questions and adjustments.
 - 3-5 short paragraphs, plain text, no markdown, no signature block beyond "— Pacific North Events & Tents".
-- Do NOT list line items or totals — the email template renders those separately.
-- Do NOT invent details not in the context.`;
+- Do NOT invent details or dollar amounts not present in the provided context.`;
 
     try {
       const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -123,6 +146,7 @@ export const draftQuoteCoverLetter = createServerFn({ method: "POST" })
       return { subject: defaultSubject, coverLetter: defaultLetter };
     }
   });
+
 
 /* ------------------------------- send email ------------------------------- */
 
