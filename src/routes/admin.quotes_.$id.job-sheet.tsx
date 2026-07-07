@@ -131,7 +131,7 @@ function JobSheetPage() {
                   key={l.quote_item_id}
                   quoteId={id}
                   line={l}
-                  onChanged={() => refetch()}
+                  onChanged={() => { refetch(); invalidateOpsQueries(qc, { quoteId: id }); }}
                 />
               ))}
             </tbody>
