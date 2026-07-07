@@ -94,7 +94,7 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
         .select("id", { count: "exact", head: true })
         .eq("active", true)
         .is("deleted_at", null),
-      supabase.from("pricing_items").select("id").eq("active", true),
+      supabase.from("pricing_items").select("id"),
       supabase.from("pricing_inventory_mappings").select("pricing_item_id").eq("active", true),
     ]);
 
