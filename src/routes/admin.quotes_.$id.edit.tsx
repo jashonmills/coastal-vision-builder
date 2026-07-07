@@ -19,8 +19,8 @@ import {
 import { bookQuote, unbookQuote, getQuoteBookingStatus, getQuoteBookingIntegrity } from "@/lib/bookings.functions";
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
-import { EmailCustomerDialog } from "@/components/admin/EmailCustomerDialog";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
+import { buildQuoteMailto } from "@/lib/quote-email-mailto";
 
 export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
