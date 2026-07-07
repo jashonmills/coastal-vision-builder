@@ -232,8 +232,8 @@ export const contracts: ContractDoc[] = [
     description:
       "Catering agreement covering event details, deposits, cancellations, gratuity, and portion sizes.",
     downloadUrl: catering.url,
-    downloadFilename: "pacific-north-catering-contract.docx",
-    fileType: "DOCX",
+    downloadFilename: "pacific-north-catering-contract.pdf",
+    fileType: "PDF",
     sections: [
       {
         heading: "Event Details Recorded on Contract",
