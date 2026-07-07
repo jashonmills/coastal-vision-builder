@@ -1,54 +1,40 @@
-## Goal
+# Admin Email Notifications
 
-Show each panorama exactly like it looks in the phone's gallery — no spherical warp, no cylindrical warp, no curved black bars. Just the raw image, cropped to a fixed frame, that the user drags left/right (and up/down when zoomed in) to explore.
+Send an email to **info@pacificnorthrentals.com** every time a customer submits a form on the site, in addition to the existing admin dashboard entry. The email domain `notify.pacificnorthrentals.com` is already verified — no DNS work needed.
 
-## Approach
+## Triggers covered
 
-Delete the Three.js implementation entirely and replace it with a plain 2D image viewer. Because the image is rendered as pixels on a flat plane, straight lines stay straight by definition — nothing to distort.
+1. **Contact form / Request a Quote** (`/contact`) — via `createQuoteRequest`
+2. **AI Tent Planner "Request Quote"** on a saved plan — via `requestQuoteForRecommendation` (and the modal flow in `RequestQuoteModal`)
+3. **Beacon on Broadway venue inquiry** (also `createQuoteRequest`, `request_type: "venue"`)
+4. **AI Tent Planner save/submit** — when a customer saves a recommendation from `/ai-tent-planner`, send the full plan (headline, picks, weather notes, blueprint + perspective images) to admin
 
-### How the viewer works
+## What each email contains
 
-- Fixed-aspect frame (16:9) with `overflow: hidden`.
-- The panorama is rendered as a single `<img>` (or a canvas draw) positioned absolutely inside the frame.
-- On load, the image is scaled so its **height fills the frame** and the natural width overflows horizontally — that gives a flat, floor-to-ceiling crop with the extra width available for horizontal panning. No black bars.
-- State: `scale` (1 = fit-height baseline, up to ~3) and `offsetX` / `offsetY` translation. On pointer drag we update offsets. On wheel / pinch we update scale around the pointer position.
-- Offsets are clamped to the image edges so the user can never drag past the panorama into empty space (no black gutters left/right, no black bars top/bottom).
-- Vertical drag is only active when the current scaled image is taller than the frame (i.e. zoomed in). At baseline zoom the image is exactly frame-height, so vertical dragging is a no-op — the panorama is effectively horizontal-only, matching the user's mental model.
+- **Quote request email**: customer name/email/phone/preferred contact, event type/date/location/guest count, customer note, and — when the request originated from the AI planner — the full recommendation summary and a link to the admin quote-request page.
+- **AI planner submission email**: recommendation headline, recommended tent, complete equipment checklist grouped by category, weather notes, event details, and the blueprint + perspective images embedded inline (they're already generated and stored on `saved_recommendations`).
+- **Beacon venue inquiry email**: same shape as the quote request, flagged as a Beacon inquiry in the subject.
 
-### Controls
+All emails go to a single admin address (`info@pacificnorthrentals.com`), sent from `notify.pacificnorthrentals.com`.
 
-- Drag with mouse or finger to pan.
-- Mouse wheel or pinch to zoom (clamped, e.g. 1x – 3x).
-- Fullscreen button (kept from current viewer).
-- Small "Reset view" button that returns to fit-height, offset = 0.
-- Bottom badge updated to "Drag to pan • Scroll to zoom".
+## Implementation
 
-### Scene config
+1. Run the email infrastructure setup (queues, cron, send log, suppression, unsubscribe) and scaffold the transactional email routes and starter templates.
+2. Add three React Email templates in `src/lib/email-templates/`:
+   - `admin-quote-request.tsx`
+   - `admin-venue-inquiry.tsx`
+   - `admin-planner-submission.tsx`
+   Register them in `src/lib/email-templates/registry.ts`.
+3. Add a small server helper `sendAdminEmail(templateName, data, idempotencyKey)` that posts to the internal `/lovable/email/transactional/send` route with service-role auth. Admin email is a server-side constant (`info@pacificnorthrentals.com`).
+4. Wire it into existing server functions **after** the DB insert succeeds, so email failure never blocks the submission:
+   - `createQuoteRequest` (rental → quote-request template, venue → venue-inquiry template)
+   - `requestQuoteForRecommendation` (quote-request template, includes plan details fetched from the saved row)
+   - `saveRecommendation` (planner-submission template, includes blueprint/perspective images)
+5. Idempotency keys derived from the row id + template name so retries don't duplicate.
+6. Every send is logged to `email_send_log` — visible for troubleshooting.
 
-Simplify `src/components/VirtualTour/scenes.ts` — no more `haov` or `tilt`; those were projection parameters. Each scene just needs `id`, `label`, `description`, `image`. Backward-compatible: leave the fields typed as optional so nothing else in the codebase breaks if it references them.
+## Notes
 
-### File changes
-
-- Delete `src/components/VirtualTour/CylindricalViewer.tsx`.
-- Add `src/components/VirtualTour/FlatPanoramaViewer.tsx` — the new viewer described above. Pure React + DOM, no Three.js.
-- Update `src/components/VirtualTour/VirtualTour.tsx` to import `FlatPanoramaViewer` and pass `scene.image` + `scene.label`.
-- Update `src/components/VirtualTour/scenes.ts` to drop `haov` / `tilt` from the type (keep the five scenes as-is).
-- Remove the `three` and `@types/three` dependencies from `package.json` since nothing else uses them (verify with a quick codebase search during implementation; if anything else imports `three`, leave the packages installed).
-
-### Technical details
-
-- Pointer handling uses `pointerdown` / `pointermove` / `pointerup` with `setPointerCapture` — one code path for mouse, touch, and pen; no separate touch handlers.
-- Zoom-around-cursor math: after changing scale, adjust `offsetX/Y` so the pixel under the cursor stays under the cursor. Standard formula: `offset = cursor - (cursor - offset) * (newScale / oldScale)`.
-- Clamping runs after every drag/zoom step. Given frame size `(W, H)`, scaled image size `(iW*s, iH*s)`, valid offset range is `[W - iW*s, 0]` × `[H - iH*s, 0]` (or centered when the scaled image is smaller than the frame in that axis, which only happens for the vertical axis at baseline zoom).
-- ResizeObserver on the frame recomputes the baseline scale when the container resizes (initial mount, window resize, fullscreen enter/exit).
-- Image loaded via a plain `<img loading="eager" decoding="async">`; while it loads we show the existing "Loading view" spinner. On error we show the existing error state.
-
-### Out of scope
-
-- Auto-rotate / auto-pan.
-- Sharing zoom/pan state via URL.
-- Hotspots (none of the current scenes use them).
-
-## Where it appears
-
-Same two spots as today: the `<VirtualTour />` section on `/beacon-on-broadway` and the standalone `/virtual-tour` route. No route or copy changes.
+- No changes to public form UX. Users still see the same success screen.
+- No customer-facing confirmation emails in this scope (only admin notifications). Say the word if you also want a "we got your request" reply back to the customer — that's a separate template.
+- Email domain is already verified, so sends start immediately after this ships.

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VirtualTourRouteImport } from './routes/virtual-tour'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -31,6 +32,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
@@ -41,8 +43,11 @@ import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicHooksSpreadsheetSyncRouteImport } from './routes/api/public/hooks/spreadsheet-sync'
 import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes_.$id.preview'
@@ -52,6 +57,11 @@ import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes_.$i
 const VirtualTourRoute = VirtualTourRouteImport.update({
   id: '/virtual-tour',
   path: '/virtual-tour',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TentRentalsRoute = TentRentalsRouteImport.update({
@@ -159,6 +169,11 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/account/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminStaffRoute = AdminStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -209,6 +224,11 @@ const AccountIdRoute = AccountIdRouteImport.update({
   path: '/account/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
   id: '/quote-requests_/$id',
   path: '/quote-requests/$id',
@@ -219,6 +239,18 @@ const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   path: '/inventory/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -267,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
@@ -278,15 +311,19 @@ export interface FileRoutesByFullPath {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -307,6 +344,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
@@ -318,15 +356,19 @@ export interface FileRoutesByTo {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -349,6 +391,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tent-rentals': typeof TentRentalsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
@@ -360,15 +403,19 @@ export interface FileRoutesById {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/quotes_/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes_/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes_/$id/preview': typeof AdminQuotesIdPreviewRoute
   '/api/public/hooks/spreadsheet-sync': typeof ApiPublicHooksSpreadsheetSyncRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -392,6 +439,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/unsubscribe'
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
@@ -403,15 +451,19 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/scheduler'
     | '/admin/staff'
+    | '/email/unsubscribe'
     | '/account/'
     | '/admin/'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
+    | '/lovable/email/suppression'
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -432,6 +484,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/unsubscribe'
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
@@ -443,15 +496,19 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/scheduler'
     | '/admin/staff'
+    | '/email/unsubscribe'
     | '/account'
     | '/admin'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
+    | '/lovable/email/suppression'
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   id:
     | '__root__'
     | '/'
@@ -473,6 +530,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/tent-rentals'
+    | '/unsubscribe'
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
@@ -484,15 +542,19 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/scheduler'
     | '/admin/staff'
+    | '/email/unsubscribe'
     | '/account/'
     | '/admin/'
     | '/admin/inventory_/$id'
     | '/admin/quote-requests_/$id'
+    | '/lovable/email/suppression'
     | '/admin/quotes_/$id/edit'
     | '/admin/quotes_/$id/job-sheet'
     | '/admin/quotes_/$id/preview'
     | '/api/public/hooks/spreadsheet-sync'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -515,11 +577,16 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentRentalsRoute: typeof TentRentalsRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   VirtualTourRoute: typeof VirtualTourRoute
   AccountIdRoute: typeof AccountIdRoute
+  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   AccountIndexRoute: typeof AccountIndexRoute
+  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicHooksSpreadsheetSyncRoute: typeof ApiPublicHooksSpreadsheetSyncRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
+  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -529,6 +596,13 @@ declare module '@tanstack/react-router' {
       path: '/virtual-tour'
       fullPath: '/virtual-tour'
       preLoaderRoute: typeof VirtualTourRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tent-rentals': {
@@ -678,6 +752,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/staff': {
       id: '/admin/staff'
       path: '/staff'
@@ -748,6 +829,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/quote-requests_/$id': {
       id: '/admin/quote-requests_/$id'
       path: '/quote-requests/$id'
@@ -761,6 +849,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/inventory/$id'
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -858,11 +960,16 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentRentalsRoute: TentRentalsRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   VirtualTourRoute: VirtualTourRoute,
   AccountIdRoute: AccountIdRoute,
+  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   AccountIndexRoute: AccountIndexRoute,
+  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicHooksSpreadsheetSyncRoute: ApiPublicHooksSpreadsheetSyncRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
+  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

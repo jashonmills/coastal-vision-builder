@@ -49,8 +49,59 @@ export const saveRecommendation = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+
+    // Admin email notification for a new saved AI plan (best-effort)
+    try {
+      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const rec = data.recommendation as
+        | {
+            headline?: string;
+            tent_size?: string;
+            layout_caption?: string;
+            picks?: Array<{ category: string; item_name: string; quantity: number; reason?: string }>;
+            weather_notes?: string[];
+          }
+        | null
+        | undefined;
+      const input = data.input as
+        | { eventType?: string; guestCount?: number }
+        | null
+        | undefined;
+      const contact = data.contact as
+        | { name?: string; email?: string }
+        | null
+        | undefined;
+      const recommendedTent =
+        rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
+      await sendAdminEmail({
+        templateName: "admin-planner-submission",
+        idempotencyKey: `planner-submission-${row.id}`,
+        templateData: {
+          recommendationId: row.id,
+          title: data.title,
+          customerName: contact?.name ?? null,
+          customerEmail: contact?.email ?? null,
+          eventType: input?.eventType ?? null,
+          eventDate: data.event_date ?? null,
+          eventLocation: data.location ?? null,
+          guestCount: input?.guestCount ?? null,
+          headline: rec?.headline ?? null,
+          recommendedTent,
+          tentSize: rec?.tent_size ?? null,
+          layoutCaption: rec?.layout_caption ?? null,
+          picks: rec?.picks ?? [],
+          weatherNotes: rec?.weather_notes ?? [],
+          blueprintImage: data.blueprint_image ?? null,
+          perspectiveImage: data.perspective_image ?? null,
+        },
+      });
+    } catch (e) {
+      console.error("[saveRecommendation] admin email failed", e);
+    }
+
     return { id: row.id };
   });
+
 
 export const listMyRecommendations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -105,7 +156,7 @@ export const requestQuoteForRecommendation = createServerFn({ method: "POST" })
     const { supabase } = context;
     const { data: existing, error: readErr } = await supabase
       .from("saved_recommendations")
-      .select("id, status, quote_requested_at")
+      .select("*")
       .eq("id", data.id)
       .is("deleted_at", null)
       .single();
@@ -124,5 +175,56 @@ export const requestQuoteForRecommendation = createServerFn({ method: "POST" })
       })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+
+    // Admin email notification (best-effort)
+    try {
+      const { sendAdminEmail } = await import("@/lib/email/send-admin.server");
+      const rec = existing.recommendation as
+        | {
+            headline?: string;
+            layout_caption?: string;
+            picks?: Array<{ category: string; item_name: string; quantity: number; reason?: string }>;
+            weather_notes?: string[];
+          }
+        | null
+        | undefined;
+      const input = existing.input as
+        | { eventType?: string; guestCount?: number }
+        | null
+        | undefined;
+      const contact = existing.contact as
+        | { name?: string; email?: string; phone?: string; preferredContact?: string }
+        | null
+        | undefined;
+      const recommendedTent =
+        rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
+      await sendAdminEmail({
+        templateName: "admin-quote-request",
+        idempotencyKey: `plan-quote-request-${existing.id}`,
+        templateData: {
+          requestId: existing.id,
+          requestType: "rental",
+          customerName: contact?.name ?? null,
+          customerEmail: contact?.email ?? null,
+          customerPhone: contact?.phone ?? null,
+          preferredContact: contact?.preferredContact ?? null,
+          eventType: input?.eventType ?? null,
+          eventDate: existing.event_date ?? null,
+          eventLocation: existing.location ?? null,
+          guestCount: input?.guestCount ?? null,
+          customerNote: data.note ?? null,
+          headline: rec?.headline ?? null,
+          recommendedTent,
+          layoutCaption: rec?.layout_caption ?? null,
+          picks: rec?.picks ?? [],
+          weatherNotes: rec?.weather_notes ?? [],
+          savedRecommendationId: existing.id,
+        },
+      });
+    } catch (e) {
+      console.error("[requestQuoteForRecommendation] admin email failed", e);
+    }
+
     return { ok: true, quote_requested_at: now };
   });
+
