@@ -851,7 +851,7 @@
     "buffet": {
       "eyebrow": "Buffet Menu",
       "title": "Crowd-favorite buffets",
-      "pricing": "Taco Bar & Tailgater $30 / person (100+) · $35 / person (50–99) · Pasta Bar $25 / person (100+) · $30 / person (50–99)",
+      "pricing": "Taco Bar & Tailgater $35 / person (100+) · $40 / person (50–99) · Pasta Bar $25 / person (100+) · $30 / person (50–99)",
       "allIncluded": "All included",
       "main": "Main",
       "sides": "Sides",
@@ -863,12 +863,12 @@
     "silver": {
       "eyebrow": "Silver Buffet",
       "title": "Silver Buffet Menu",
-      "pricing": "$35 / person (100+) · $40 / person (50–99)"
+      "pricing": "$40 / person (100+) · $45 / person (50–99)"
     },
     "gold": {
       "eyebrow": "Gold Buffet",
       "title": "Gold Buffet Menu",
-      "pricing": "$50 / person (100+) · $55 / person (50–99)"
+      "pricing": "$60 / person (100+) · $65 / person (50–99)"
     },
     "common": {
       "saladChoose1": "Salad",

@@ -21,6 +21,7 @@ const CATEGORY_ORDER = [
   "Tables",
   "Chairs",
   "Specialty Items",
+  "Cleaning Fee - Beach (Specialty)",
   "Delivery",
 ];
 
@@ -32,6 +33,8 @@ const CATEGORY_BLURB: Record<string, string> = {
   Tables: "Rectangular, round, and specialty options for dining, buffets, and bars.",
   Chairs: "Folding and specialty seating for ceremonies, receptions, and gatherings.",
   "Specialty Items": "Bars, dance floors, stages, heat, sound, and lighting accents.",
+  "Cleaning Fee - Beach (Specialty)":
+    "Specialty equipment used on the beach requires an after-event cleaning to remove sand and salt exposure.",
   Delivery: "Roundtrip delivery rates across the Oregon Coast.",
 };
 

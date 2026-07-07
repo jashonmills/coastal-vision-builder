@@ -203,7 +203,7 @@ export const INVENTORY_FACTS = {
     "White Folding Chairs",
     "Dance Floor Sections",
     "Stage 6x8 Sections",
-    "PA System – Bluetooth with Mic",
+    "Sony ULT10 PA System",
     "Portable Bar",
     "Chafing Dishes",
   ],

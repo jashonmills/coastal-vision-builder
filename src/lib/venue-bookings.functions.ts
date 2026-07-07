@@ -38,9 +38,9 @@ async function loadRequest(supabase: any, id: string) {
 /**
  * Price the Beacon venue rental line based on the event date.
  * Rate card (mirrors the public /beacon-on-broadway page):
- *  - Off-season (Oct–Feb): $500/day, any day
- *  - Peak (Mar–Sep) Mon–Thu:  $500/day
- *  - Peak (Mar–Sep) Fri–Sun:  $1,500 / 2-day weekend package
+ *  - Off-season (Oct–Feb): $500 / 1-day, $750 / 2-day (any day)
+ *  - Peak (Mar–Sep) Mon–Thu:  $500 / 1-day, $750 / 2-day
+ *  - Peak (Mar–Sep) Fri–Sun:  $750 / 1-day, $1,200 / 2-day weekend package
  */
 export function priceBeaconVenue(eventDateIso: string | null | undefined): {
   qty: number;
@@ -69,7 +69,7 @@ export function priceBeaconVenue(eventDateIso: string | null | undefined): {
   }
   const isWeekend = dow === 5 || dow === 6 || dow === 0;
   if (isWeekend) {
-    return { qty: 1, unit: "weekend", unit_price_cents: 150000, label: "Peak weekend package (Fri–Sun, Mar–Sep)", needs_review: false, reason: null };
+    return { qty: 1, unit: "weekend", unit_price_cents: 120000, label: "Peak weekend package (Fri–Sun, Mar–Sep)", needs_review: false, reason: null };
   }
   return { qty: 1, unit: "day", unit_price_cents: 50000, label: "Peak weekday rate (Mon–Thu, Mar–Sep)", needs_review: false, reason: null };
 }
