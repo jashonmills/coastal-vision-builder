@@ -1,10 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Compass } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import pano1 from "@/assets/tour/mobile-pano-1.jpg.asset.json";
 import pano2 from "@/assets/tour/mobile-pano-2.jpg.asset.json";
 import pano3 from "@/assets/tour/mobile-pano-3.jpg.asset.json";
 import pano4 from "@/assets/tour/mobile-pano-4.jpg.asset.json";
+
+const TABLET_BREAKPOINT = 1024;
+
+function useIsMobileOrTablet() {
+  const [matches, setMatches] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${TABLET_BREAKPOINT - 1}px)`);
+    const onChange = () => {
+      setMatches(window.innerWidth < TABLET_BREAKPOINT);
+    };
+    mql.addEventListener("change", onChange);
+    setMatches(window.innerWidth < TABLET_BREAKPOINT);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  return !!matches;
+}
+
 
 const mobilePanoramas = [
   { url: pano1.url, label: "Main Hall — Wide View" },
@@ -15,10 +33,10 @@ const mobilePanoramas = [
 
 export function VirtualTour() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
+  const isMobileOrTablet = useIsMobileOrTablet();
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobileOrTablet) return;
     function handleDeviceMotion(e: DeviceMotionEvent) {
       const iframe = document.getElementById("tour-embeded") as HTMLIFrameElement | null;
       if (!iframe || !iframe.contentWindow) return;
@@ -50,7 +68,7 @@ export function VirtualTour() {
     }
     window.addEventListener("devicemotion", handleDeviceMotion);
     return () => window.removeEventListener("devicemotion", handleDeviceMotion);
-  }, [isMobile]);
+  }, [isMobileOrTablet]);
 
   return (
     <div className="w-full" ref={containerRef}>
@@ -59,7 +77,7 @@ export function VirtualTour() {
         <span className="text-xs font-semibold uppercase tracking-[0.2em]">Virtual tour</span>
       </div>
 
-      {isMobile ? (
+      {isMobileOrTablet ? (
         <div className="flex flex-col gap-4">
           {mobilePanoramas.map((p) => (
             <figure key={p.url} className="flex flex-col gap-2">
@@ -106,3 +124,4 @@ export function VirtualTour() {
     </div>
   );
 }
+
