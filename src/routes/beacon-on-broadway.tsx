@@ -183,22 +183,28 @@ function BeaconPage() {
           <PriceCard
             badge={t("beacon.pricing.offSeason.badge")}
             window={t("beacon.pricing.offSeason.window")}
-            price="$500"
-            unit={t("beacon.pricing.perDay")}
+            priceOneDay={t("beacon.pricing.offSeason.priceOneDay")}
+            priceTwoDay={t("beacon.pricing.offSeason.priceTwoDay")}
+            oneDayLabel={t("beacon.pricing.perDay")}
+            twoDayLabel={t("beacon.pricing.perTwoDay")}
             note={t("beacon.pricing.offSeason.note")}
           />
           <PriceCard
             badge={t("beacon.pricing.peakWeekday.badge")}
             window={t("beacon.pricing.peakWeekday.window")}
-            price="$500"
-            unit={t("beacon.pricing.perDay")}
+            priceOneDay={t("beacon.pricing.peakWeekday.priceOneDay")}
+            priceTwoDay={t("beacon.pricing.peakWeekday.priceTwoDay")}
+            oneDayLabel={t("beacon.pricing.perDay")}
+            twoDayLabel={t("beacon.pricing.perTwoDay")}
             note={t("beacon.pricing.peakWeekday.note")}
           />
           <PriceCard
             badge={t("beacon.pricing.peakWeekend.badge")}
             window={t("beacon.pricing.peakWeekend.window")}
-            price="$1,500"
-            unit={t("beacon.pricing.perWeekend")}
+            priceOneDay={t("beacon.pricing.peakWeekend.priceOneDay")}
+            priceTwoDay={t("beacon.pricing.peakWeekend.priceTwoDay")}
+            oneDayLabel={t("beacon.pricing.perDay")}
+            twoDayLabel={t("beacon.pricing.perTwoDay")}
             note={t("beacon.pricing.peakWeekend.note")}
             highlight
           />
