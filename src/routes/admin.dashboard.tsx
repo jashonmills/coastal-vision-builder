@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   ArrowRight,
   Boxes,
+  PackageCheck,
 } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
