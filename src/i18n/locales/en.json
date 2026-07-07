@@ -863,7 +863,7 @@
     "silver": {
       "eyebrow": "Silver Buffet",
       "title": "Silver Buffet Menu",
-      "pricing": "$40 / person (100+) · $45 / person (50–99)"
+      "pricing": "50–99 guests: $45/pp | 100+ guests: $40/pp"
     },
     "gold": {
       "eyebrow": "Gold Buffet",
