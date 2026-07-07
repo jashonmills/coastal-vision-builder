@@ -205,6 +205,24 @@ function BeaconPage() {
         <p className="mt-6 text-xs text-muted-foreground">{t("beacon.pricing.note")}</p>
       </section>
 
+      {/* 360° Virtual Tour */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-20 lg:px-8">
+          <div className="mb-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
+              Step inside
+            </p>
+            <h2 className="mt-3 font-serif text-3xl text-primary sm:text-4xl">
+              Take a 360° tour
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+              Walk through the hall from your screen — drag to look around, switch between viewpoints to see every corner.
+            </p>
+          </div>
+          <VirtualTour />
+        </div>
+      </section>
+
       {/* Gallery */}
       <section className="bg-background">
         <div className="mx-auto max-w-6xl px-4 pb-20 lg:px-8">
