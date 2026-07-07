@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import { template as adminQuoteRequest } from './admin-quote-request'
 import { template as adminPlannerSubmission } from './admin-planner-submission'
 import { template as customerQuote } from './customer-quote'
+import { template as customerRequestAcknowledgement } from './customer-request-acknowledgement'
 
 export interface TemplateEntry {
   component: ComponentType<any>
@@ -19,4 +20,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'admin-quote-request': adminQuoteRequest,
   'admin-planner-submission': adminPlannerSubmission,
   'customer-quote': customerQuote,
+  'customer-request-acknowledgement': customerRequestAcknowledgement,
 }
