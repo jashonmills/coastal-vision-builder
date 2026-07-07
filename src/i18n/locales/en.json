@@ -797,23 +797,29 @@
     "pricing": {
       "eyebrow": "Pricing",
       "title": "Simple, seasonal rates",
-      "note": "Rates are starting points for the venue only. Add-on rentals, staffing, and custom packages quoted on request.",
-      "perDay": "/ day",
-      "perWeekend": "/ weekend",
+      "note": "Rates cover the venue only. Drapes, lighting, extra tables, catering, and bartending services are available for additional pricing. Ask about weekend deals starting Friday at 5 PM through Monday at noon.",
+      "perDay": "1-day rental",
+      "perTwoDay": "2-day rental",
       "offSeason": {
         "badge": "Off-Season",
         "window": "October – February",
+        "priceOneDay": "$500",
+        "priceTwoDay": "$750",
         "note": "Any day of the week"
       },
       "peakWeekday": {
         "badge": "Peak Weekday",
         "window": "March – September",
+        "priceOneDay": "$500",
+        "priceTwoDay": "$750",
         "note": "Monday – Thursday"
       },
       "peakWeekend": {
         "badge": "Peak Weekend",
         "window": "March – September",
-        "note": "Fri–Sat or Sat–Sun"
+        "priceOneDay": "$750",
+        "priceTwoDay": "$1,200",
+        "note": "Friday – Sunday · ask about the Fri 5 PM – Mon noon special"
       }
     },
     "gallery": {
