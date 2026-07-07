@@ -11,7 +11,7 @@ export const Route = createFileRoute("/catering")({
       {
         name: "description",
         content:
-          "Full-service catering on the Oregon Coast — buffet, silver, and gold menus from $25/person, plus bartending and chef-attended stations.",
+          "Full-service catering on the Oregon Coast — buffet, silver, and gold menus from $25/person, plus bartending and chef-attended stations. $3/mile travel fee beyond 25 miles from Seaside.",
       },
       { property: "og:title", content: "Pacific North Catering — Above expectations" },
       {
