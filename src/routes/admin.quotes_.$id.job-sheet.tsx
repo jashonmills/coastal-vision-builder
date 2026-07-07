@@ -39,7 +39,7 @@ function JobSheetPage() {
     mutationFn: () => completeFn({ data: { quote_id: id } }),
     onSuccess: () => {
       toast.success("Quote marked complete");
-      qc.invalidateQueries({ queryKey: ["job-sheet", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
     },
   });
 
