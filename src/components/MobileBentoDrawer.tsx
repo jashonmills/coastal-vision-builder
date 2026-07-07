@@ -142,6 +142,50 @@ const moreCenter: Center = {
   bgClass: "bg-[color:var(--gold)] text-primary",
 };
 
+// ----- Services & Info tiles -----
+const servicesTiles: Tile[] = [
+  {
+    to: "/catering",
+    label: "Catering",
+    icon: UtensilsCrossed,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_55)] to-[oklch(0.91_0.06_55)] border border-[oklch(0.84_0.08_55)]",
+    iconColor: "text-[color:var(--gold)]",
+  },
+  {
+    to: "/virtual-tour",
+    label: "Virtual Tour",
+    icon: Compass,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.02_220)] to-[oklch(0.92_0.04_220)] border border-[oklch(0.85_0.04_220)]",
+    iconColor: "text-primary",
+  },
+  {
+    to: "/events",
+    label: "Events",
+    icon: CalendarDays,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_25)] to-[oklch(0.91_0.05_25)] border border-[oklch(0.84_0.07_25)]",
+    iconColor: "text-[color:var(--sand-deep)]",
+  },
+  {
+    to: "/rental-contract",
+    label: "Rental Contract",
+    icon: FileSignature,
+    tileBg:
+      "bg-gradient-to-br from-[oklch(0.96_0.03_160)] to-[oklch(0.91_0.05_160)] border border-[oklch(0.84_0.06_160)]",
+    iconColor: "text-[color:var(--forest)]",
+  },
+];
+
+const servicesCenter: Center = {
+  to: "/contact",
+  label: "Contact",
+  icon: Phone,
+  bgClass: "bg-primary",
+};
+
+
 // ----- Admin tiles -----
 const adminOpsTiles: Tile[] = [
   {
