@@ -19,8 +19,8 @@ import {
 import { bookQuote, unbookQuote, getQuoteBookingStatus, getQuoteBookingIntegrity } from "@/lib/bookings.functions";
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
-import { EmailCustomerDialog } from "@/components/admin/EmailCustomerDialog";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
+import { buildQuoteMailto } from "@/lib/quote-email-mailto";
 
 export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
@@ -47,7 +47,7 @@ function EditQuotePage() {
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
-  const [emailOpen, setEmailOpen] = useState(false);
+  
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
@@ -149,12 +149,31 @@ function EditQuotePage() {
             >
               Preview
             </Link>
-            <button
-              onClick={() => setEmailOpen(true)}
+            <a
+              href={buildQuoteMailto({
+                quoteNumber: quote.quote_number,
+                customerName: quote.customer_name,
+                customerEmail: quote.customer_email,
+                eventType: quote.event_type,
+                eventDate: quote.event_date,
+                eventLocation: quote.event_location,
+                guestCount: quote.guest_count,
+                items: items.map((it: any) => ({
+                  name: it.name,
+                  quantity: it.quantity,
+                  line_total_cents: it.line_total_cents,
+                })),
+                subtotalCents: quote.subtotal_cents,
+                deliveryCents: quote.delivery_fee_cents,
+                cleaningCents: quote.cleaning_fee_cents,
+                discountCents: quote.discount_cents,
+                taxCents: quote.tax_cents,
+                totalCents: quote.total_cents,
+              })}
               className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-secondary"
             >
               <Mail className="h-4 w-4" /> Email Customer
-            </button>
+            </a>
             <button
               onClick={() => send.mutate()}
               disabled={send.isPending || quote.status === "sent" || quote.status === "booked"}
@@ -291,16 +310,6 @@ function EditQuotePage() {
           </aside>
         </div>
       </section>
-      <EmailCustomerDialog
-        open={emailOpen}
-        onOpenChange={setEmailOpen}
-        quoteId={id}
-        quoteNumber={quote.quote_number}
-        customerName={quote.customer_name}
-        customerEmail={quote.customer_email}
-        totalCents={quote.total_cents}
-        onSent={() => invalidateOpsQueries(qc, { quoteId: id })}
-      />
     </SiteLayout>
   );
 }
