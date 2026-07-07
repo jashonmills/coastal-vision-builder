@@ -69,6 +69,11 @@ function EditQuotePage() {
     queryFn: () => statusFn({ data: { quote_id: id } }),
     enabled: !!user && isAdmin && !!data,
   });
+  const { data: integrity } = useQuery({
+    queryKey: ["quote-booking-integrity", id],
+    queryFn: () => integrityFn({ data: { quote_id: id } }),
+    enabled: !!user && isAdmin && !!data,
+  });
 
   const send = useMutation({
     mutationFn: () => sendFn({ data: { id } }),
