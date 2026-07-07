@@ -98,7 +98,7 @@ function RecommenderPage() {
         const pcm = (contact.method || "Email").toLowerCase() as "email" | "phone" | "text";
         const notes: string[] = [];
         notes.push("Submitted via AI Tent Planner");
-        if (res.headline) notes.push(`Recommendation: ${res.headline}`);
+        if (res.recommendation?.headline) notes.push(`Recommendation: ${res.recommendation.headline}`);
         if (contact.notes) notes.push(contact.notes);
         leadFn({
           data: {
