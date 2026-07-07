@@ -14,6 +14,7 @@ import {
   completeQuote,
 } from "@/lib/bookings.functions";
 import { AdminTabs } from "./admin.quote-requests";
+import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/quotes_/$id/job-sheet")({
   head: () => ({ meta: [{ title: "Job Sheet | Admin" }] }),
@@ -38,7 +39,7 @@ function JobSheetPage() {
     mutationFn: () => completeFn({ data: { quote_id: id } }),
     onSuccess: () => {
       toast.success("Quote marked complete");
-      qc.invalidateQueries({ queryKey: ["job-sheet", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
     },
   });
 
@@ -130,7 +131,7 @@ function JobSheetPage() {
                   key={l.quote_item_id}
                   quoteId={id}
                   line={l}
-                  onChanged={() => refetch()}
+                  onChanged={() => { refetch(); invalidateOpsQueries(qc, { quoteId: id }); }}
                 />
               ))}
             </tbody>

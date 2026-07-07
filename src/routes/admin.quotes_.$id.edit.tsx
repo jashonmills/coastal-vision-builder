@@ -16,10 +16,11 @@ import {
   listPricingItemsForBuilder,
   getQuoteItemsAvailability,
 } from "@/lib/quotes.functions";
-import { bookQuote, unbookQuote, getQuoteBookingStatus } from "@/lib/bookings.functions";
+import { bookQuote, unbookQuote, getQuoteBookingStatus, getQuoteBookingIntegrity } from "@/lib/bookings.functions";
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
 import { EmailCustomerDialog } from "@/components/admin/EmailCustomerDialog";
+import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
@@ -42,6 +43,7 @@ function EditQuotePage() {
   const bookFn = useServerFn(bookQuote);
   const unbookFn = useServerFn(unbookQuote);
   const statusFn = useServerFn(getQuoteBookingStatus);
+  const integrityFn = useServerFn(getQuoteBookingIntegrity);
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
@@ -67,12 +69,17 @@ function EditQuotePage() {
     queryFn: () => statusFn({ data: { quote_id: id } }),
     enabled: !!user && isAdmin && !!data,
   });
+  const { data: integrity } = useQuery({
+    queryKey: ["quote-booking-integrity", id],
+    queryFn: () => integrityFn({ data: { quote_id: id } }),
+    enabled: !!user && isAdmin && !!data,
+  });
 
   const send = useMutation({
     mutationFn: () => sendFn({ data: { id } }),
     onSuccess: () => {
       toast.success("Quote marked as sent.");
-      qc.invalidateQueries({ queryKey: ["admin-quote", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
     },
   });
 
@@ -85,15 +92,19 @@ function EditQuotePage() {
         const eventMsg = res.has_event_date
           ? `${res.events_created} calendar events created.`
           : "No event date set — calendar events skipped.";
+        const unmapped = (res.unmapped_lines ?? []).length;
+        const unmappedMsg = unmapped > 0 ? ` ${unmapped} line(s) had no inventory link and were NOT reserved.` : "";
         toast.success(
           res.already_reserved
-            ? `Already reserved. ${eventMsg}`
-            : `Reserved ${res.lines_reserved} item(s). ${eventMsg}`,
+            ? `Already reserved. ${eventMsg}${unmappedMsg}`
+            : `Reserved ${res.lines_reserved} item(s). ${eventMsg}${unmappedMsg}`,
         );
+        if (unmapped > 0) toast.warning("Fix inventory links on the Pricing page to reserve these items.");
       }
       refetch();
       refetchStatus();
-      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
+      qc.invalidateQueries({ queryKey: ["quote-booking-integrity", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -104,7 +115,7 @@ function EditQuotePage() {
       toast.success("Reservation released.");
       refetch();
       refetchStatus();
-      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
+      invalidateOpsQueries(qc, { quoteId: id });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -197,6 +208,29 @@ function EditQuotePage() {
           </div>
         )}
 
+        {integrity && integrity.unmapped_lines.length > 0 && (
+          <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="mt-0.5 h-4 w-4 flex-none text-amber-700" />
+              <div>
+                <p className="font-semibold">
+                  {integrity.unmapped_lines.length} line{integrity.unmapped_lines.length === 1 ? "" : "s"} not linked to inventory
+                </p>
+                <p className="mt-0.5">
+                  These lines will NOT reserve stock when the quote is booked. Link each pricing item to an inventory item on the{" "}
+                  <Link to="/admin/pricing" className="underline">Pricing page</Link>.
+                </p>
+                <ul className="mt-1 list-disc pl-5">
+                  {integrity.unmapped_lines.map((u) => (
+                    <li key={u.quote_item_id}>{u.name} × {u.quantity}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="overflow-x-auto rounded-xl border border-border bg-card">
             <table className="w-full text-sm">
@@ -265,7 +299,7 @@ function EditQuotePage() {
         customerName={quote.customer_name}
         customerEmail={quote.customer_email}
         totalCents={quote.total_cents}
-        onSent={() => qc.invalidateQueries({ queryKey: ["admin-quote", id] })}
+        onSent={() => invalidateOpsQueries(qc, { quoteId: id })}
       />
     </SiteLayout>
   );

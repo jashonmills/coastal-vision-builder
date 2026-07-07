@@ -16,6 +16,7 @@ import {
   EVENT_COLORS,
 } from "@/lib/scheduler.functions";
 import { AdminTabs } from "./admin.quote-requests";
+import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/scheduler")({
   head: () => ({ meta: [{ title: "Scheduler | Admin" }] }),
@@ -101,15 +102,15 @@ function SchedulerPage() {
 
   const upsert = useMutation({
     mutationFn: async (e: Partial<CalEvent>) => upsertFn({ data: e as never }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["calendar-events"] }); setEditing(null); setSelected(null); },
+    onSuccess: () => { invalidateOpsQueries(qc); setEditing(null); setSelected(null); },
   });
   const del = useMutation({
     mutationFn: async (id: string) => deleteFn({ data: { id } }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["calendar-events"] }); setSelected(null); },
+    onSuccess: () => { invalidateOpsQueries(qc); setSelected(null); },
   });
   const complete = useMutation({
     mutationFn: async (id: string) => completeFn({ data: { id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["calendar-events"] }),
+    onSuccess: () => invalidateOpsQueries(qc),
   });
 
   if (authLoading || roleLoading)

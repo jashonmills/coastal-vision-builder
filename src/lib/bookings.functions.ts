@@ -7,17 +7,21 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
    ============================================================ */
 
 
-/** Resolve inventory_item_id for a quote_items row (direct or via pricing mapping). */
+/** Resolve inventory_item_id for a quote_items row (direct or via pricing mapping).
+ *  Also returns the list of quote lines that could NOT be resolved (silent-fail surface). */
 async function resolveInventoryIdsForQuote(
   supabase: any,
   quoteId: string,
-): Promise<Array<{ quote_item_id: string; inventory_item_id: string; quantity: number; name: string }>> {
+): Promise<{
+  resolved: Array<{ quote_item_id: string; inventory_item_id: string; quantity: number; name: string }>;
+  unmapped: Array<{ quote_item_id: string; name: string; quantity: number; pricing_item_id: string | null }>;
+}> {
   const { data: items, error } = await supabase
     .from("quote_items")
-    .select("id, name, quantity, inventory_item_id, pricing_item_id")
+    .select("id, name, quantity, inventory_item_id, pricing_item_id, category")
     .eq("quote_id", quoteId);
   if (error) throw new Error(error.message);
-  if (!items || items.length === 0) return [];
+  if (!items || items.length === 0) return { resolved: [], unmapped: [] };
 
   const needMapPricingIds = items
     .filter((i: any) => !i.inventory_item_id && i.pricing_item_id)
@@ -36,7 +40,11 @@ async function resolveInventoryIdsForQuote(
     }, {});
   }
 
+  // Categories that are non-inventory by nature (services / venues / fees)
+  const NON_INV_CATS = new Set(["delivery", "venue", "service", "fee", "labor", "cleaning fee"]);
+
   const resolved: Array<{ quote_item_id: string; inventory_item_id: string; quantity: number; name: string }> = [];
+  const unmapped: Array<{ quote_item_id: string; name: string; quantity: number; pricing_item_id: string | null }> = [];
   for (const it of items) {
     const invId = it.inventory_item_id ?? (it.pricing_item_id ? mapByPricing[it.pricing_item_id] : null);
     if (invId) {
@@ -46,9 +54,18 @@ async function resolveInventoryIdsForQuote(
         quantity: Number(it.quantity ?? 0),
         name: it.name,
       });
+    } else {
+      const cat = (it.category ?? "").toLowerCase();
+      if (NON_INV_CATS.has(cat)) continue; // Delivery / Venue lines don't need inventory
+      unmapped.push({
+        quote_item_id: it.id,
+        name: it.name,
+        quantity: Number(it.quantity ?? 0),
+        pricing_item_id: it.pricing_item_id ?? null,
+      });
     }
   }
-  return resolved;
+  return { resolved, unmapped };
 }
 
 /** Apply a status delta on an inventory_items row and write a transaction record. */
@@ -137,6 +154,19 @@ export const getQuoteBookingStatus = createServerFn({ method: "GET" })
     };
   });
 
+/* ---------------------- Booking integrity (unmapped lines) ---------------------- */
+
+export const getQuoteBookingIntegrity = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { resolved, unmapped } = await resolveInventoryIdsForQuote(context.supabase, data.quote_id);
+    return {
+      resolved_count: resolved.length,
+      unmapped_lines: unmapped,
+    };
+  });
+
 /* ---------------------- Book quote (reserve + schedule) ---------------------- */
 
 export const bookQuote = createServerFn({ method: "POST" })
@@ -154,11 +184,11 @@ export const bookQuote = createServerFn({ method: "POST" })
       .limit(1);
     const alreadyReserved = (existingTx ?? []).length > 0;
 
-    const lines = await resolveInventoryIdsForQuote(supabase, data.quote_id);
+    const { resolved: lines, unmapped } = await resolveInventoryIdsForQuote(supabase, data.quote_id);
 
     // Detect venue-only quotes (no resolvable inventory lines, tied to a venue request).
     let isVenueOnly = false;
-    if (lines.length === 0) {
+    if (lines.length === 0 && unmapped.length === 0) {
       const { data: qrow } = await supabase
         .from("quotes")
         .select("quote_request_id")
@@ -185,6 +215,7 @@ export const bookQuote = createServerFn({ method: "POST" })
         ok: true,
         already_reserved: alreadyReserved,
         lines_reserved: 0,
+        unmapped_lines: [] as Array<{ quote_item_id: string; name: string; quantity: number; pricing_item_id: string | null }>,
         events_created: res.events_created,
         has_event_date: true,
         venue_only: true,
@@ -265,10 +296,35 @@ export const bookQuote = createServerFn({ method: "POST" })
       .update({ status: "booked", booked_at: new Date().toISOString() })
       .eq("id", data.quote_id);
 
+    // Emit notifications
+    try {
+      await supabase.from("admin_notifications").insert({
+        kind: "quote_booked",
+        title: `Quote ${quote?.quote_number ?? ""} booked`,
+        body: `${quote?.customer_name ?? "Customer"} · ${lines.length} reserved line(s)${unmapped.length ? ` · ${unmapped.length} unmapped` : ""}`,
+        severity: unmapped.length > 0 ? "warning" : "info",
+        related_id: data.quote_id,
+        link: `/admin/quotes/${data.quote_id}/edit`,
+      });
+      if (unmapped.length > 0) {
+        await supabase.from("admin_notifications").insert({
+          kind: "quote_unmapped_lines",
+          title: `Booking has ${unmapped.length} unmapped line(s)`,
+          body: `Pricing items missing inventory link on quote ${quote?.quote_number ?? ""}`,
+          severity: "warning",
+          related_id: data.quote_id,
+          link: `/admin/quotes/${data.quote_id}/edit`,
+        });
+      }
+    } catch (e) {
+      console.warn("[bookQuote] notification insert failed", e);
+    }
+
     return {
       ok: true,
       already_reserved: alreadyReserved,
       lines_reserved: alreadyReserved ? 0 : lines.length,
+      unmapped_lines: unmapped,
       events_created: eventsCreated,
       has_event_date: !!quote?.event_date,
     };
@@ -354,8 +410,8 @@ export const getJobSheet = createServerFn({ method: "GET" })
       .eq("quote_id", data.quote_id)
       .order("sort_order");
 
-    const resolved = await resolveInventoryIdsForQuote(supabase, data.quote_id);
-    const invIdByQuoteItem = new Map(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
+    const { resolved } = await resolveInventoryIdsForQuote(supabase, data.quote_id);
+    const invIdByQuoteItem = new Map<string, string>(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
 
     const invIds = Array.from(new Set(resolved.map((r) => r.inventory_item_id)));
     const { data: invRows } = invIds.length
