@@ -10,6 +10,7 @@ import { getQuoteRequest, createQuoteFromRequest, updateQuoteRequestStatus } fro
 import { placeVenueHold, confirmVenueBooking, releaseVenueBooking, listVenueEventsOnDate, BEACON_VENUE } from "@/lib/venue-bookings.functions";
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
+import { buildQuoteRequestMailto } from "@/lib/quote-email-mailto";
 
 export const Route = createFileRoute("/admin/quote-requests_/$id")({
   head: () => ({ meta: [{ title: "Quote Request | Admin" }] }),
