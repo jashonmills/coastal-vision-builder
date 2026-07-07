@@ -9,6 +9,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
 import { getQuoteRequest, createQuoteFromRequest, updateQuoteRequestStatus } from "@/lib/quotes.functions";
 import { placeVenueHold, confirmVenueBooking, releaseVenueBooking, listVenueEventsOnDate, BEACON_VENUE } from "@/lib/venue-bookings.functions";
 import { StatusPill, AdminTabs } from "./admin.quote-requests";
+import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/quote-requests_/$id")({
   head: () => ({ meta: [{ title: "Quote Request | Admin" }] }),
