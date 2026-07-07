@@ -230,7 +230,7 @@ function StatCard({
   value: number;
   icon: typeof Inbox;
   tone: "gold" | "blue" | "green" | "navy" | "muted";
-  to?: "/admin/quote-requests" | "/admin/quotes" | "/admin/scheduler";
+  to?: "/admin/quote-requests" | "/admin/quotes" | "/admin/scheduler" | "/admin/inventory" | "/admin/pricing";
 }) {
   const toneCls: Record<typeof tone, string> = {
     gold: "border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10",
