@@ -18,7 +18,11 @@ export const Route = createFileRoute("/gallery")({
     meta: [
       { title: "Event Inspiration Gallery | Pacific North Events & Tents" },
       { name: "description", content: "Browse tent setups, bar and equipment, furniture, and floor-plan blueprints from Pacific North Events & Tents." },
+      { property: "og:title", content: "Event Inspiration Gallery | Pacific North Events & Tents" },
+      { property: "og:description", content: "Photos of tent setups, bar equipment, furniture, and floor plans from Oregon Coast events." },
+      { property: "og:url", content: "https://pacificnorthrentals.com/gallery" },
     ],
+    links: [{ rel: "canonical", href: "https://pacificnorthrentals.com/gallery" }],
   }),
   component: GalleryPage,
 });
