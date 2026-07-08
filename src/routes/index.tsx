@@ -5,13 +5,63 @@ import { Lightbox, useLightbox } from "@/components/Lightbox";
 import { pickPhoto, pickPhotos } from "@/lib/site-images";
 import { CloudRain, Sparkles, Tent, Users } from "lucide-react";
 
+const HOME_TITLE = "Oregon Coast Event Tent Rentals & Catering | Pacific North";
+const HOME_DESC = "Weather-ready event tent rentals, catering, and setup on the Oregon Coast — weddings, festivals, private parties, and corporate events.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pacific North Events & Tents | Oregon Coast Event Tent Rentals" },
-      { name: "description", content: "Pacific North Events & Tents provides event tent rentals and setup support for weddings, festivals, private parties, corporate events, and year-round celebrations on the Oregon Coast." },
-      { property: "og:title", content: "Pacific North Events & Tents | Oregon Coast Event Tent Rentals" },
-      { property: "og:description", content: "Stylish, weather-ready event tent rentals on the Oregon Coast." },
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESC },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESC },
+      { property: "og:url", content: "https://pacificnorthrentals.com/" },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESC },
+    ],
+    links: [{ rel: "canonical", href: "https://pacificnorthrentals.com/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://pacificnorthrentals.com/#org",
+              name: "Pacific North Events & Tents",
+              url: "https://pacificnorthrentals.com/",
+              logo: "https://pacificnorthrentals.com/favicon.ico",
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://pacificnorthrentals.com/#website",
+              url: "https://pacificnorthrentals.com/",
+              name: "Pacific North Events & Tents",
+              publisher: { "@id": "https://pacificnorthrentals.com/#org" },
+            },
+            {
+              "@type": "LocalBusiness",
+              "@id": "https://pacificnorthrentals.com/#business",
+              name: "Pacific North Events & Tents",
+              url: "https://pacificnorthrentals.com/",
+              description: HOME_DESC,
+              areaServed: [
+                { "@type": "Place", name: "Oregon Coast" },
+                { "@type": "Place", name: "Seaside, Oregon" },
+                { "@type": "Place", name: "Cannon Beach, Oregon" },
+                { "@type": "Place", name: "Astoria, Oregon" },
+              ],
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Seaside",
+                addressRegion: "OR",
+                addressCountry: "US",
+              },
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: Home,

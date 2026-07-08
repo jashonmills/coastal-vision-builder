@@ -19,7 +19,11 @@ export const Route = createFileRoute("/contact")({
     meta: [
       { title: "Request a Quote | Pacific North Events & Tents" },
       { name: "description", content: "Request a quote for tent rentals and event support on the Oregon Coast. Tell us your date, guest count, and vision." },
+      { property: "og:title", content: "Request a Quote | Pacific North Events & Tents" },
+      { property: "og:description", content: "Tell us your date, guest count, and vision — we'll build a tent and event plan for your Oregon Coast celebration." },
+      { property: "og:url", content: "https://pacificnorthrentals.com/contact" },
     ],
+    links: [{ rel: "canonical", href: "https://pacificnorthrentals.com/contact" }],
   }),
   validateSearch: searchSchema,
   component: ContactPage,

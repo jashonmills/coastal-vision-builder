@@ -9,7 +9,11 @@ export const Route = createFileRoute("/about")({
     meta: [
       { title: "About | Pacific North Events & Tents" },
       { name: "description", content: "Pacific North Events & Tents helps Oregon Coast celebrations come together with dependable rentals and weather-ready setups." },
+      { property: "og:title", content: "About | Pacific North Events & Tents" },
+      { property: "og:description", content: "Our story — a family-run Oregon Coast rental team delivering dependable, weather-ready event setups." },
+      { property: "og:url", content: "https://pacificnorthrentals.com/about" },
     ],
+    links: [{ rel: "canonical", href: "https://pacificnorthrentals.com/about" }],
   }),
   component: AboutPage,
 });
