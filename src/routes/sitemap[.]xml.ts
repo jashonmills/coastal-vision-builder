@@ -22,6 +22,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/about", changefreq: "monthly", priority: "0.6" },
           { path: "/beacon-on-broadway", changefreq: "monthly", priority: "0.8" },
           { path: "/contact", changefreq: "monthly", priority: "0.9" },
+          { path: "/login", changefreq: "monthly", priority: "0.5" },
+          { path: "/accept-invite", changefreq: "monthly", priority: "0.3" },
+          { path: "/profile", changefreq: "monthly", priority: "0.3" },
+          { path: "/recommender", changefreq: "monthly", priority: "0.3" },
+          { path: "/rental-contract", changefreq: "monthly", priority: "0.6" },
         ];
         const urls = entries.map((e) => `  <url>\n    <loc>${BASE_URL}${e.path}</loc>\n    <changefreq>${e.changefreq}</changefreq>\n    <priority>${e.priority}</priority>\n  </url>`).join("\n");
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
