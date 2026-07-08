@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "";
+const BASE_URL = "https://pacificnorthrentals.com";
 
 interface SitemapEntry { path: string; changefreq?: string; priority?: string; }
 
@@ -13,9 +13,12 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/services", changefreq: "monthly", priority: "0.9" },
           { path: "/tent-rentals", changefreq: "monthly", priority: "0.9" },
+          { path: "/catering", changefreq: "monthly", priority: "0.8" },
           { path: "/events", changefreq: "monthly", priority: "0.8" },
           { path: "/gallery", changefreq: "monthly", priority: "0.7" },
+          { path: "/inventory", changefreq: "weekly", priority: "0.7" },
           { path: "/ai-tent-planner", changefreq: "monthly", priority: "0.8" },
+          { path: "/virtual-tour", changefreq: "monthly", priority: "0.7" },
           { path: "/about", changefreq: "monthly", priority: "0.6" },
           { path: "/beacon-on-broadway", changefreq: "monthly", priority: "0.8" },
           { path: "/contact", changefreq: "monthly", priority: "0.9" },

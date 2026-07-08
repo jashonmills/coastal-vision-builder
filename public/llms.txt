@@ -1,0 +1,20 @@
+# Pacific North Events & Tents
+
+> Event tent rentals, catering, and setup support for weddings, festivals, private parties, and corporate events on the Oregon Coast.
+
+Pacific North Events & Tents is a family-run Oregon Coast rental company offering weather-ready event tents, catering, bartending, and full event support — including the Beacon on Broadway venue in Seaside, OR.
+
+## Pages
+
+- [Home](/): Overview of tent rentals, catering, and Oregon Coast event services.
+- [Services](/services): Full-service event support — delivery, setup, teardown, coordination.
+- [Tent Rentals](/tent-rentals): Sizes and styles of event tents available for rent.
+- [Catering](/catering): Buffet menus, chef stations, and bartending packages.
+- [Events](/events): Weddings, festivals, private parties, and corporate events we serve.
+- [Gallery](/gallery): Photos of past setups, equipment, furniture, and floor-plan blueprints.
+- [Inventory](/inventory): Browse available rental items.
+- [AI Tent Planner](/ai-tent-planner): Free tool that recommends tent size and equipment for your event.
+- [Virtual Tour](/virtual-tour): 360° tour of the Beacon on Broadway venue.
+- [Beacon on Broadway](/beacon-on-broadway): Our indoor event hall in Seaside, Oregon.
+- [About](/about): Our story, values, and Oregon Coast roots.
+- [Contact](/contact): Request a quote by date, guest count, and event type.
