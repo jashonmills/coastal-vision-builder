@@ -12,7 +12,6 @@ const BUCKET_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/publ
 const GALLERY_BUCKET_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/new-images`;
 
 import sonyUlt10Asset from "@/assets/products/sony-ult10.jpg.asset.json";
-import canopyLightsAsset from "@/assets/products/canopy-lights.jpg.asset.json";
 
 export type SiteImage = {
   file: string;
@@ -72,7 +71,6 @@ export const galleryEquipment: SiteImage[] = [
   galleryImg("55 gallon water barrel.jpg", "55 gallon water barrel"),
   galleryImg("Patio heater.jpg", "Propane patio heater"),
   { file: "sony-ult10-pa-system.jpg", url: sonyUlt10Asset.url, alt: "Sony ULT10 PA system" },
-  { file: "canopy-lights.jpg", url: canopyLightsAsset.url, alt: "Canopy string lights" },
 ];
 
 export const galleryFurniture: SiteImage[] = [
@@ -177,7 +175,6 @@ export const productImages: SiteImage[] = [
   img("469150182_529823540055428_4671922222938595837_n.jpg", "Black folding chair"),
   img("469165463_529823473388768_7013416796850691535_n.jpg", "Outdoor propane patio heater"),
   { file: "sony-ult10-pa-system.jpg", url: sonyUlt10Asset.url, alt: "Sony ULT10 PA system" },
-  { file: "canopy-lights.jpg", url: canopyLightsAsset.url, alt: "Canopy string lights" },
 ];
 
 /**
