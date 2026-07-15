@@ -282,11 +282,9 @@ function CateringPage() {
                   "Surf melt crostinis",
                   "Skewered chicken or shrimp satay",
                   "Mini crab cakes with lemon dill aioli",
-                  "Assorted cheese and cracker platter",
                   "Pastry cups, sweet or savory",
                   "Swedish meatballs",
                   "Chinese bao buns",
-                  "Seasonal veggie platter",
                   "Seasonal fruit tray",
                 ]}
               />
@@ -382,11 +380,9 @@ function CateringPage() {
                     "Surf melt crostinis",
                     "Skewered chicken or shrimp satay",
                     "Mini crab cakes with lemon dill aioli",
-                    "Assorted cheese and cracker platter",
                     "Pastry cups, sweet or savory",
                     "Swedish meatballs",
                     "Chinese bao buns",
-                    "Seasonal veggie platter",
                     "Seasonal fruit tray",
                   ]}
                 />
