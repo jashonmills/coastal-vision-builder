@@ -64,9 +64,9 @@ export const gallerySetups: SiteImage[] = [
 
 export const galleryEquipment: SiteImage[] = [
   galleryImg("6Professionalbarjpg.jpg", "Professional portable bar"),
-  galleryImg("Portable Bar 1.jpg", "Portable bar — option 1"),
-  galleryImg("Portable Bar 2.jpg", "Portable bar — option 2"),
-  galleryImg("Portable Bar 3.jpg", "Portable bar — option 3"),
+  galleryImg("Portable Bar 1.jpg", "Portable bar — view one"),
+  galleryImg("Portable Bar 2.jpg", "Portable bar — view two"),
+  galleryImg("Portable Bar 3.jpg", "Portable bar — view three"),
   galleryImg("fill and chill.jpg", "Fill and chill beverage station"),
   galleryImg("55 gallon water barrel.jpg", "55 gallon water barrel"),
   galleryImg("Patio heater.jpg", "Propane patio heater"),
