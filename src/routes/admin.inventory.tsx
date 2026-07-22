@@ -1,9 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import {
   Loader2, Plus, Box, Boxes, AlertTriangle, Wrench, Sparkles, PackageCheck,
-  Archive, ArrowRight, Search,
+  Archive, ArrowRight, Search, CalendarClock,
 } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
@@ -13,14 +15,18 @@ import {
   computeAvailable, ITEM_TYPE_LABEL, ITEM_TYPES, type InventoryCategory, type InventoryItem, type ItemType,
 } from "@/lib/inventory";
 import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
+import { getInventoryReservationSummaries } from "@/lib/pricing-mappings.functions";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
 
 export const Route = createFileRoute("/admin/inventory")({
   head: () => ({ meta: [{ title: "Inventory Management | Admin" }] }),
+  validateSearch: (s: Record<string, unknown>) =>
+    z.object({ filter: z.enum(["zero"]).optional() }).parse(s),
   component: InventoryAdminPage,
 });
+
 
 function InventoryAdminPage() {
   const { user, loading: authLoading } = useAuth();
