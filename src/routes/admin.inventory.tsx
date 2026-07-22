@@ -261,7 +261,8 @@ function Dashboard() {
               <th className="px-3 py-2">Category</th>
               <th className="px-3 py-2">Type</th>
               <th className="px-3 py-2 text-right">Owned</th>
-              <th className="px-3 py-2 text-right">Avail</th>
+              <th className="px-3 py-2 text-right" title="Physical on-hand right now (total owned minus current buckets). Date-blind.">On hand now</th>
+              <th className="px-3 py-2 text-right" title="Future/active reservations from the date-aware ledger.">Held</th>
               <th className="px-3 py-2 text-right">Reserved</th>
               <th className="px-3 py-2 text-right">Out</th>
               <th className="px-3 py-2 text-right">Cleaning</th>
@@ -273,8 +274,9 @@ function Dashboard() {
           </thead>
           <tbody>
             {filtered.length === 0 && (
-              <tr><td colSpan={12} className="px-3 py-12 text-center text-muted-foreground">No items match these filters.</td></tr>
+              <tr><td colSpan={13} className="px-3 py-12 text-center text-muted-foreground">No items match these filters.</td></tr>
             )}
+
             {filtered.map((i) => {
               const av = computeAvailable(i);
               const cat = i.category_id ? catMap[i.category_id] : null;
