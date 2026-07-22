@@ -244,21 +244,14 @@ function SiteFooter() {
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.servicesHeading")}</h4>
-          <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.weddingTents")}</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.festivalTents")}</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.privateParties")}</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("footer.corporateEvents")}</Link></li>
-            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">{t("footer.vendorTents")}</Link></li>
-          </ul>
-        </div>
-        <div>
           <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.quickLinks")}</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
             <li><Link to="/" className="hover:text-[color:var(--gold)]">{t("nav.home")}</Link></li>
-            <li><Link to="/services" className="hover:text-[color:var(--gold)]">{t("nav.services")}</Link></li>
             <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">{t("nav.tentRentals")}</Link></li>
+            <li><Link to="/inventory" className="hover:text-[color:var(--gold)]">{t("nav.inventory")}</Link></li>
+            <li><Link to="/pricing" className="hover:text-[color:var(--gold)]">{t("nav.pricing")}</Link></li>
+            <li><Link to="/ai-planner" className="hover:text-[color:var(--gold)]">{t("nav.aiPlanner")}</Link></li>
+            <li><Link to="/rental-contract" className="hover:text-[color:var(--gold)]">{t("nav.rentalContract")}</Link></li>
             <li><Link to="/beacon-on-broadway" className="hover:text-[color:var(--gold)]">{t("nav.beacon")}</Link></li>
             <li><Link to="/catering" className="hover:text-[color:var(--gold)]">{t("nav.catering")}</Link></li>
             <li><Link to="/gallery" className="hover:text-[color:var(--gold)]">{t("nav.gallery")}</Link></li>
@@ -269,6 +262,16 @@ function SiteFooter() {
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.contact")}</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
+            <li>
+              <a href="tel:+15037175088" className="hover:text-[color:var(--gold)]">
+                503-717-5088
+              </a>
+            </li>
+            <li>
+              <a href="mailto:info@pacificnorthrentals.com" className="hover:text-[color:var(--gold)] break-all">
+                info@pacificnorthrentals.com
+              </a>
+            </li>
             <li><Link to="/contact" className="hover:text-[color:var(--gold)]">{t("cta.requestQuote")}</Link></li>
             <li>{t("footer.servingOregon")}</li>
             <li>
@@ -284,6 +287,7 @@ function SiteFooter() {
             </li>
           </ul>
         </div>
+
       </div>
       <div className="border-t border-primary-foreground/10">
         <div className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-primary-foreground/65 lg:px-8">
