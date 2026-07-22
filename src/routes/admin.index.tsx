@@ -285,9 +285,21 @@ function CaptionEditor({ row }: { row: GalleryRow }) {
 
 function ImagesAdmin() {
   const { data: content = {} } = useAllSiteContent();
+  const groups = groupImageSlotsByPage();
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {IMAGE_SLOTS.map((s) => <ImageSlotRow key={s.key} slotKey={s.key} label={s.label} url={content[s.key]?.url} />)}
+    <div className="space-y-8">
+      {groups.map((g) => (
+        <div key={g.page}>
+          <h3 className="mb-3 text-lg font-semibold text-foreground">{g.page}</h3>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {g.slots.map((s) => <ImageSlotRow key={s.key} slotKey={s.key} label={s.label} url={content[s.key]?.url} />)}
+          </div>
+        </div>
+      ))}
+      <p className="rounded-lg border border-dashed border-border p-4 text-xs text-muted-foreground">
+        Looking for gallery, product, or floor-plan images? Manage those in the{" "}
+        <Link to="/admin/site-images" className="font-semibold text-primary underline">Site Images Library</Link>.
+      </p>
     </div>
   );
 }
