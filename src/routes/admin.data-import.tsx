@@ -49,8 +49,6 @@ function DataImportPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Spreadsheet Import & Sync" subtitle="Bring your existing inventory, pricing, customer, or rental spreadsheets into the system." />
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
-        <div className="mb-6">
-        </div>
         <ImportWorkflow />
         <ConnectLiveSection />
         <ImportHistory />

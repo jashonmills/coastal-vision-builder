@@ -254,10 +254,3 @@ export function StatusPill({ status }: { status: string }) {
     </span>
   );
 }
-
-// AdminTabs was the old pill-row nav. The admin console now uses a persistent
-// sidebar (see AdminLayout), so this component intentionally renders nothing.
-// Kept exported so existing route files can keep their import without churn.
-export function AdminTabs(_: { active?: string }) {
-  return null;
-}
