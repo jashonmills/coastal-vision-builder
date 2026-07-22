@@ -148,7 +148,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                                   to={child.to}
                                   className="block rounded-md px-3 py-2 hover:bg-secondary"
                                 >
-                                  <div className="text-sm font-medium text-foreground">{t(child.labelKey)}</div>
+                                  <div className="text-sm font-medium text-foreground">{t(child.labelKey!)}</div>
                                   {child.descKey && (
                                     <p className="mt-0.5 text-xs text-muted-foreground">{t(child.descKey)}</p>
                                   )}
