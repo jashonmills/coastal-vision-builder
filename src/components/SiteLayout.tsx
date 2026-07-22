@@ -314,10 +314,9 @@ export function PageHero({
   /** Optional slot prefix. When set, admins can edit eyebrow/title/subtitle inline. */
   slot?: string;
 }) {
-  // Lazy-loaded to avoid circular imports; only used when slot prop is passed.
-  const EditableText = slot
-    ? require("@/components/Editable").EditableText as typeof import("@/components/Editable").EditableText
-    : null;
+  // When `slot` is provided, hero fields become admin-editable inline.
+  const editable = !!slot;
+
 
   return (
     <section className="relative overflow-hidden bg-primary text-primary-foreground">
