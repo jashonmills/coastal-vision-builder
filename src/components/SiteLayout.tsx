@@ -35,17 +35,10 @@ const navGroups: NavGroup[] = [
       { to: "/tent-rentals", labelKey: "nav.tentRentals", descKey: "navDesc.tentRentals" },
       { to: "/inventory", labelKey: "nav.inventoryPricing", descKey: "navDesc.inventoryPricing" },
       { to: "/ai-tent-planner", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
-    ],
-  },
-  {
-    labelKey: "nav.services",
-    children: [
-      { to: "/services", labelKey: "nav.allServices", descKey: "navDesc.allServices" },
-      { to: "/events", labelKey: "nav.events", descKey: "navDesc.events" },
       { to: "/beacon-on-broadway", labelKey: "nav.beacon", descKey: "navDesc.beacon" },
-      { to: "/catering", labelKey: "nav.catering", descKey: "navDesc.catering" },
     ],
   },
+  { labelKey: "nav.catering", to: "/catering" },
 
   { labelKey: "nav.gallery", to: "/gallery" },
   {
