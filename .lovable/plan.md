@@ -1,18 +1,17 @@
 ## Plan
 
-Restructure the desktop nav in `src/components/SiteLayout.tsx`:
+Add a labeled "Venue" section inside the Rentals dropdown containing Beacon on Broadway.
 
-1. **Rentals dropdown** — add Beacon on Broadway at the end:
-  - Tent Rentals
-  - Inventory & Pricing
-  - AI Event Recommender
-  - Beacon on Broadway (moved from Services)
-2. **Rename Services → Catering** — collapse the dropdown into a single top-level link:
-  - Replace the `nav.services` group with `{ labelKey: "nav.catering", to: "/catering" }`.
-  - Removes the "All Services" (`/services`) and "Events" (`/events`) entries entirely from the nav (routes themselves stay in place; only the nav references are dropped).
+**Change in `src/components/SiteLayout.tsx`:**
 
-No changes to the mobile bento drawer or footer in this pass (user asked about the tabs / top nav). If you want the mobile drawer and footer updated to match, say so and I'll extend the plan.
+1. Extend the `NavChild` type with an optional `heading?: string` marker (or use a discriminated union) so a child entry can render as a non-clickable section header instead of a link.
+2. In the Rentals dropdown children, insert a heading entry `"Venue"` above the Beacon child so the dropdown reads:
+   - Tent Rentals
+   - Inventory & Pricing
+   - AI Event Recommender
+   - **Venue** (small uppercase section label, not clickable)
+     - Beacon on Broadway
+3. Update the dropdown render (lines ~130–144) to branch on heading entries: render a `<li>` with muted, uppercase, non-interactive text (e.g. `text-xs font-semibold uppercase tracking-wide text-muted-foreground px-3 pt-3 pb-1`) instead of a `<Link>`.
+4. Add a `nav.venue` translation key (default "Venue") — use `t("nav.venue", { defaultValue: "Venue" })` inline so no locale file edits are required.
 
-&nbsp;
-
-add sub tab called venue and add the beacon under venue
+No other files affected. Mobile drawer and footer unchanged.

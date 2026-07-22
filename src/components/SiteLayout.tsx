@@ -24,7 +24,9 @@ import { MobileBottomNav } from "./MobileBottomNav";
 import { MobileBentoDrawer } from "./MobileBentoDrawer";
 import { MobileHelpButton } from "./MobileHelpButton";
 
-type NavChild = { to: string; labelKey: string; descKey?: string };
+type NavChild =
+  | { to: string; labelKey: string; descKey?: string; heading?: undefined }
+  | { heading: string; to?: undefined; labelKey?: undefined; descKey?: undefined };
 type NavGroup = { labelKey: string; to?: string; children?: NavChild[] };
 
 const navGroups: NavGroup[] = [
@@ -35,6 +37,7 @@ const navGroups: NavGroup[] = [
       { to: "/tent-rentals", labelKey: "nav.tentRentals", descKey: "navDesc.tentRentals" },
       { to: "/inventory", labelKey: "nav.inventoryPricing", descKey: "navDesc.inventoryPricing" },
       { to: "/ai-tent-planner", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
+      { heading: "nav.venue" },
       { to: "/beacon-on-broadway", labelKey: "nav.beacon", descKey: "navDesc.beacon" },
     ],
   },
