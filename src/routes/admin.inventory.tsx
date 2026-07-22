@@ -280,6 +280,8 @@ function Dashboard() {
             {filtered.map((i) => {
               const av = computeAvailable(i);
               const cat = i.category_id ? catMap[i.category_id] : null;
+              const held = (reservationSummaries as Record<string, { held: number; next_date: string | null }>)[i.id];
+              const zeroOwned = (i.total_owned_quantity ?? 0) === 0;
               return (
                 <tr key={i.id} className="border-t border-border hover:bg-muted/30">
                   <td className="px-3 py-2">
@@ -287,16 +289,33 @@ function Dashboard() {
                       {i.name}
                     </Link>
                     {i.sku && <div className="text-xs text-muted-foreground">SKU: {i.sku}</div>}
+                    {zeroOwned && (
+                      <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900" title="Owned quantity is 0 — this item can never be recommended or reserved.">
+                        <AlertTriangle className="h-3 w-3" /> 0 owned
+                      </div>
+                    )}
                   </td>
                   <td className="px-3 py-2 text-muted-foreground">{cat?.name ?? "—"}</td>
                   <td className="px-3 py-2 text-xs text-muted-foreground">{ITEM_TYPE_LABEL[i.item_type]}</td>
                   <td className="px-3 py-2 text-right">{i.total_owned_quantity}</td>
                   <td className={`px-3 py-2 text-right font-medium ${av < 0 ? "text-destructive" : ""}`}>{av}</td>
+                  <td className="px-3 py-2 text-right text-xs">
+                    {held ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 font-semibold text-primary" title={`Held: ${held.held}${held.next_date ? ` · next ${held.next_date}` : ""}`}>
+                        <CalendarClock className="h-3 w-3" />
+                        {held.held}
+                        {held.next_date && <span className="text-muted-foreground">· {held.next_date}</span>}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </td>
                   <td className="px-3 py-2 text-right">{i.reserved_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.checked_out_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.cleaning_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.maintenance_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.damaged_missing_quantity}</td>
+
                   <td className="px-3 py-2">
                     {i.deleted_at ? <Badge tone="muted">Archived</Badge>
                       : i.active ? <Badge tone="success">Active</Badge>
