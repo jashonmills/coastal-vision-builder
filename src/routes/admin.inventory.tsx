@@ -228,7 +228,7 @@ function Dashboard() {
           <option value="archived">Archived only</option>
           <option value="all">All</option>
         </select>
-        <div className="flex items-center gap-3 text-sm">
+        <div className="flex flex-wrap items-center gap-3 text-sm">
           <label className="inline-flex items-center gap-1">
             <input type="checkbox" checked={filterPlanner} onChange={(e) => setFilterPlanner(e.target.checked)} />
             Planner
@@ -237,7 +237,12 @@ function Dashboard() {
             <input type="checkbox" checked={filterChat} onChange={(e) => setFilterChat(e.target.checked)} />
             Chat
           </label>
+          <label className="inline-flex items-center gap-1" title="Items with total owned quantity 0 — can never be reserved.">
+            <input type="checkbox" checked={filterZero} onChange={(e) => setFilterZero(e.target.checked)} />
+            0 owned
+          </label>
         </div>
+
       </div>
 
       <div className="flex justify-end">
