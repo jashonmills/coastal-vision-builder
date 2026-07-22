@@ -177,7 +177,7 @@ function Dashboard() {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
         <SummaryCard icon={<Boxes className="h-4 w-4" />} label="Items" value={items.length} />
         <SummaryCard icon={<Box className="h-4 w-4" />} label="Owned" value={summary.owned} />
-        <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="Available" value={summary.available} />
+        <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="On hand now" value={summary.available} />
         <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="Reserved" value={summary.reserved} />
         <SummaryCard icon={<Box className="h-4 w-4" />} label="Checked out" value={summary.out} />
         <SummaryCard icon={<Sparkles className="h-4 w-4" />} label="Cleaning" value={summary.cleaning} />
