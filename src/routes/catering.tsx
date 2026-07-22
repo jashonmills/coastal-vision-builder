@@ -390,6 +390,21 @@ function CateringPage() {
         </div>
       </Section>
 
+      {/* Platters add-on */}
+      <Section eyebrow="Add-on" title="Platters">
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <div className="flex items-start gap-4">
+            <ChefHat className="mt-1 h-8 w-8 shrink-0 text-[color:var(--gold)]" />
+            <div className="flex-1 space-y-3 text-sm text-foreground sm:text-base">
+              <p className="text-muted-foreground">
+                $175 per platter · each platter feeds up to 50 guests. Available as an add-on to any package.
+              </p>
+              <BulletList items={["Seasonal fruit tray"]} />
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* Bartending */}
       <Section eyebrow={t("catering.bartending.eyebrow")} title={t("catering.bartending.title")}>
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
