@@ -47,7 +47,7 @@ function EditQuotePage() {
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
-  
+  const [allowOverbook, setAllowOverbook] = useState(false);
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
@@ -59,11 +59,15 @@ function EditQuotePage() {
     queryFn: () => pricingFn(),
     enabled: !!user && isAdmin,
   });
-  const { data: availability = {} } = useQuery({
+  const { data: availabilityResp } = useQuery({
     queryKey: ["quote-availability", id],
     queryFn: () => availFn({ data: { quote_id: id } }),
     enabled: !!user && isAdmin && !!data,
   });
+  const availabilityItems =
+    (availabilityResp as any)?.items ??
+    ({} as Record<string, { available: number; total_owned: number; inventory_name: string } | null>);
+  const datesMissing = !!(availabilityResp as any)?.dates_missing;
   const { data: bookingStatus, refetch: refetchStatus } = useQuery({
     queryKey: ["quote-booking-status", id],
     queryFn: () => statusFn({ data: { quote_id: id } }),
@@ -84,7 +88,7 @@ function EditQuotePage() {
   });
 
   const book = useMutation({
-    mutationFn: () => bookFn({ data: { quote_id: id } }),
+    mutationFn: () => bookFn({ data: { quote_id: id, allow_overbook: allowOverbook } }),
     onSuccess: (res: any) => {
       if (res?.venue_only) {
         toast.success(`Beacon booking confirmed. ${res.events_created} calendar event(s) created.`);
@@ -105,6 +109,7 @@ function EditQuotePage() {
       refetchStatus();
       invalidateOpsQueries(qc, { quoteId: id });
       qc.invalidateQueries({ queryKey: ["quote-booking-integrity", id] });
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -116,6 +121,7 @@ function EditQuotePage() {
       refetch();
       refetchStatus();
       invalidateOpsQueries(qc, { quoteId: id });
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -126,6 +132,11 @@ function EditQuotePage() {
   if (!user || !isAdmin || !data) return <SiteLayout><div className="p-12 text-center">Not available.</div></SiteLayout>;
 
   const { quote, items } = data;
+  const anyShort = items.some((it: any) => {
+    const a = availabilityItems[it.id];
+    return a ? Number(it.quantity ?? 0) > a.available : false;
+  });
+  const bookBlocked = anyShort && !allowOverbook;
 
   return (
     <SiteLayout>
@@ -195,7 +206,8 @@ function EditQuotePage() {
             ) : (
               <button
                 onClick={() => book.mutate()}
-                disabled={book.isPending}
+                disabled={book.isPending || bookBlocked}
+                title={bookBlocked ? "One or more lines exceed available inventory for the event window. Tick 'Allow overbook' to override." : undefined}
                 className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
               >
                 {book.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
@@ -225,6 +237,27 @@ function EditQuotePage() {
             )}
           </div>
         )}
+
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+          <label className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5">
+            <input
+              type="checkbox"
+              checked={allowOverbook}
+              onChange={(e) => setAllowOverbook(e.target.checked)}
+            />
+            <span className="font-medium">Allow overbook (override)</span>
+          </label>
+          {datesMissing && (
+            <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-amber-900">
+              Set an event date to enable date-aware availability. Showing global bucket availability instead.
+            </span>
+          )}
+          {anyShort && !allowOverbook && (
+            <span className="rounded-md border border-red-300 bg-red-50 px-2 py-1 text-red-800">
+              One or more lines exceed available inventory for the event window. Fix quantities or tick "Allow overbook".
+            </span>
+          )}
+        </div>
 
         {integrity && integrity.unmapped_lines.length > 0 && (
           <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
@@ -268,7 +301,8 @@ function EditQuotePage() {
                   <ItemRow
                     key={it.id}
                     item={it}
-                    avail={(availability as Record<string, { available: number; total_owned: number; inventory_name: string } | null>)[it.id] ?? null}
+                    avail={availabilityItems[it.id] ?? null}
+                    allowOverbook={allowOverbook}
                     onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); qc.invalidateQueries({ queryKey: ["quote-availability", id] }); }}
                     onDelete={async () => {
                       if (!confirm("Remove this line?")) return;
@@ -313,22 +347,30 @@ function EditQuotePage() {
   );
 }
 
-function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
+function ItemRow({ item, avail, allowOverbook, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; allowOverbook: boolean; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
   const [draft, setDraft] = useState(item);
   useEffect(() => setDraft(item), [item]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
+  const short = avail ? (Number(draft.quantity ?? 0) > avail.available) : false;
+  const saveBlocked = short && !allowOverbook;
   const save = useMutation({
-    mutationFn: () => upsertFn({ data: {
-      id: draft.id, quote_id: draft.quote_id,
-      pricing_item_id: draft.pricing_item_id, inventory_item_id: draft.inventory_item_id,
-      category: draft.category, name: draft.name, description: draft.description,
-      quantity: Number(draft.quantity), unit: draft.unit, unit_price_cents: Number(draft.unit_price_cents),
-      needs_pricing_review: draft.needs_pricing_review, reason: draft.reason, sort_order: draft.sort_order,
-    } }),
+    mutationFn: () => {
+      if (saveBlocked) {
+        throw new Error(
+          `Only ${avail?.available ?? 0} available for the event window. Reduce quantity or tick "Allow overbook".`,
+        );
+      }
+      return upsertFn({ data: {
+        id: draft.id, quote_id: draft.quote_id,
+        pricing_item_id: draft.pricing_item_id, inventory_item_id: draft.inventory_item_id,
+        category: draft.category, name: draft.name, description: draft.description,
+        quantity: Number(draft.quantity), unit: draft.unit, unit_price_cents: Number(draft.unit_price_cents),
+        needs_pricing_review: draft.needs_pricing_review, reason: draft.reason, sort_order: draft.sort_order,
+      } });
+    },
     onSuccess: () => { toast.success("Line saved."); onSaved(); },
     onError: (e: Error) => toast.error(e.message ?? "Failed to save line."),
   });
-  const short = avail ? (draft.quantity > avail.available) : false;
   return (
     <tr className="border-t border-border align-top">
       <td className="px-2 py-2">
@@ -360,10 +402,10 @@ function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avai
       <td className="px-2 py-2">
         <div className="flex flex-col gap-1">
           <button
-            disabled={!dirty || save.isPending}
+            disabled={!dirty || save.isPending || saveBlocked}
             onClick={() => save.mutate()}
-            title={dirty ? "Save changes to this line" : "No changes to save"}
-            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-[10px] font-semibold text-white transition ${dirty ? "bg-emerald-600 hover:bg-emerald-700" : "bg-muted-foreground/40"} disabled:cursor-not-allowed`}
+            title={saveBlocked ? `Only ${avail?.available ?? 0} available for the event window` : (dirty ? "Save changes to this line" : "No changes to save")}
+            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-[10px] font-semibold text-white transition ${dirty && !saveBlocked ? "bg-emerald-600 hover:bg-emerald-700" : "bg-muted-foreground/40"} disabled:cursor-not-allowed`}
           >
             {save.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />}
             {dirty ? "Save" : "Saved"}

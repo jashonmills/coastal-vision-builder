@@ -667,6 +667,15 @@ export const updateQuote = createServerFn({ method: "POST" })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     await recomputeQuoteTotals(context.supabase, data.id);
+    // Release reservation holds when a quote is cancelled.
+    if ((data.patch as any)?.status === "cancelled") {
+      try {
+        const { releaseQuoteHolds } = await import("./reservations.server");
+        await releaseQuoteHolds(data.id);
+      } catch (e) {
+        console.warn("[updateQuote] release-on-cancel failed", e);
+      }
+    }
     return { ok: true };
   });
 
@@ -749,6 +758,24 @@ export const sendQuote = createServerFn({ method: "POST" })
         .update({ status: "quote_sent" })
         .eq("id", q.quote_request_id);
     }
+
+    // Reservation ledger: (re)create SOFT holds for 14 days. Best-effort —
+    // a hold failure must not block the email/status transition. Overbook
+    // is allowed here; the builder's hard gate prevents oversell up front.
+    try {
+      const { releaseQuoteHolds, reserveQuoteHolds } = await import("./reservations.server");
+      await releaseQuoteHolds(data.id);
+      const expires = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+      await reserveQuoteHolds({
+        quoteId: data.id,
+        holdType: "soft",
+        expiresAt: expires,
+        allowOverbook: true,
+      });
+    } catch (e) {
+      console.warn("[sendQuote] soft-hold creation failed (non-blocking)", e);
+    }
+
     return { ok: true, sent_at: now };
   });
 
@@ -904,21 +931,32 @@ export const listPricingItemsForBuilder = createServerFn({ method: "GET" })
 
 /* ----------------------- inventory availability -------------------------- */
 
-// For a given quote, return availability for any line item that maps to an inventory item.
-// Map key = quote_item.id, value = { available, total_owned, inventory_name } | null
+// Date-aware availability for the quote's event window (event_date ± 1 day).
+// Excludes THIS quote's own active holds so editing an already-sent/booked
+// quote doesn't count its own reservations against it. If event_date is
+// missing, falls back to the global bucket calc and sets dates_missing=true.
 export const getQuoteItemsAvailability = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context.userId);
     const { supabase } = context;
+    const { quoteWindowFromEventDate } = await import("./reservations.server");
+
+    const { data: quote } = await supabase
+      .from("quotes")
+      .select("event_date")
+      .eq("id", data.quote_id)
+      .single();
+    const win = quoteWindowFromEventDate((quote as any)?.event_date);
+
     const { data: items } = await supabase
       .from("quote_items")
       .select("id, pricing_item_id, inventory_item_id, name")
       .eq("quote_id", data.quote_id);
-    if (!items || items.length === 0) return {};
+    const emptyResult = { items: {} as Record<string, null>, dates_missing: !win, window: win };
+    if (!items || items.length === 0) return emptyResult;
 
-    // Collect inventory ids: direct link first, fallback via mappings table
     const directIds = items.map((i) => i.inventory_item_id).filter(Boolean) as string[];
     const pricingIds = items
       .filter((i) => !i.inventory_item_id && i.pricing_item_id)
@@ -937,32 +975,67 @@ export const getQuoteItemsAvailability = createServerFn({ method: "GET" })
       }, {});
     }
 
-    const invIds = Array.from(new Set([
-      ...directIds,
-      ...Object.values(mappingByPricing),
-    ]));
-    if (invIds.length === 0) return {};
+    const invIds = Array.from(new Set([...directIds, ...Object.values(mappingByPricing)]));
+    if (invIds.length === 0) return emptyResult;
 
     const { data: inv } = await supabase
       .from("inventory_items")
       .select("id, name, total_owned_quantity, reserved_quantity, checked_out_quantity, cleaning_quantity, maintenance_quantity, damaged_missing_quantity")
       .in("id", invIds);
-
     const invById = new Map((inv ?? []).map((r) => [r.id, r]));
-    const result: Record<string, { available: number; total_owned: number; inventory_name: string } | null> = {};
+
+    // Per-inventory-item effective availability for the quote window.
+    const effectiveByInv = new Map<string, number>();
+    if (win) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      // This quote's own active holds in the window (add back to availability).
+      const { data: ownHolds } = await supabase
+        .from("inventory_reservations")
+        .select("inventory_item_id, quantity, start_date, end_date, expires_at, status")
+        .eq("quote_id", data.quote_id)
+        .eq("status", "active")
+        .in("inventory_item_id", invIds);
+      const ownQty = new Map<string, number>();
+      const nowMs = Date.now();
+      const winStartMs = new Date(win.start).getTime();
+      const winEndMs = new Date(win.end).getTime();
+      for (const h of (ownHolds ?? []) as any[]) {
+        if (h.expires_at && new Date(h.expires_at).getTime() <= nowMs) continue;
+        const hs = new Date(h.start_date).getTime();
+        const he = new Date(h.end_date).getTime();
+        if (hs > winEndMs || he < winStartMs) continue;
+        ownQty.set(h.inventory_item_id, (ownQty.get(h.inventory_item_id) ?? 0) + Number(h.quantity ?? 0));
+      }
+      for (const id of invIds) {
+        const { data: avail, error } = await supabaseAdmin.rpc("inventory_availability", {
+          p_item: id,
+          p_start: win.start,
+          p_end: win.end,
+        });
+        if (error) throw new Error(error.message);
+        effectiveByInv.set(id, Number(avail ?? 0) + (ownQty.get(id) ?? 0));
+      }
+    }
+
+    const itemsResult: Record<string, { available: number; total_owned: number; inventory_name: string } | null> = {};
     for (const it of items) {
       const invId = it.inventory_item_id ?? (it.pricing_item_id ? mappingByPricing[it.pricing_item_id] : null);
-      if (!invId) { result[it.id] = null; continue; }
+      if (!invId) { itemsResult[it.id] = null; continue; }
       const row = invById.get(invId);
-      if (!row) { result[it.id] = null; continue; }
-      const used =
-        (row.reserved_quantity ?? 0) +
-        (row.checked_out_quantity ?? 0) +
-        (row.cleaning_quantity ?? 0) +
-        (row.maintenance_quantity ?? 0) +
-        (row.damaged_missing_quantity ?? 0);
-      const available = Math.max(0, (row.total_owned_quantity ?? 0) - used);
-      result[it.id] = { available, total_owned: row.total_owned_quantity ?? 0, inventory_name: row.name };
+      if (!row) { itemsResult[it.id] = null; continue; }
+      let available: number;
+      if (win) {
+        available = Math.max(0, effectiveByInv.get(invId) ?? 0);
+      } else {
+        const used =
+          (row.reserved_quantity ?? 0) +
+          (row.checked_out_quantity ?? 0) +
+          (row.cleaning_quantity ?? 0) +
+          (row.maintenance_quantity ?? 0) +
+          (row.damaged_missing_quantity ?? 0);
+        available = Math.max(0, (row.total_owned_quantity ?? 0) - used);
+      }
+      itemsResult[it.id] = { available, total_owned: row.total_owned_quantity ?? 0, inventory_name: row.name };
     }
-    return result;
+    return { items: itemsResult, dates_missing: !win, window: win };
   });

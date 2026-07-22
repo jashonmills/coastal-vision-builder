@@ -171,7 +171,12 @@ export const getQuoteBookingIntegrity = createServerFn({ method: "GET" })
 
 export const bookQuote = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
+  .inputValidator((d: unknown) =>
+    z.object({
+      quote_id: z.string().uuid(),
+      allow_overbook: z.boolean().optional(),
+    }).parse(d),
+  )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
@@ -220,6 +225,32 @@ export const bookQuote = createServerFn({ method: "POST" })
         has_event_date: true,
         venue_only: true,
       };
+    }
+
+    // Reservation ledger: convert to FIRM holds BEFORE mutating physical
+    // inventory buckets. If any line is short (and overbook not allowed),
+    // release any holds already created for this quote in this call and
+    // abort before status flips to 'booked'.
+    {
+      const { releaseQuoteHolds, reserveQuoteHolds } = await import("./reservations.server");
+      try {
+        await releaseQuoteHolds(data.quote_id);
+      } catch (e) {
+        console.warn("[bookQuote] pre-book release failed", e);
+      }
+      const res = await reserveQuoteHolds({
+        quoteId: data.quote_id,
+        holdType: "firm",
+        expiresAt: null,
+        allowOverbook: !!data.allow_overbook,
+      });
+      if (res.failures.length) {
+        try { await releaseQuoteHolds(data.quote_id); } catch { /* noop */ }
+        const list = res.failures
+          .map((f) => `${f.name} (need ${f.requested}, ${f.available} available)`)
+          .join("; ");
+        throw new Error(`Cannot book — insufficient inventory for: ${list}`);
+      }
     }
 
     if (!alreadyReserved) {
@@ -337,6 +368,15 @@ export const unbookQuote = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+
+    // Release reservation ledger holds first (independent of physical
+    // bucket accounting below, which stays untouched).
+    try {
+      const { releaseQuoteHolds } = await import("./reservations.server");
+      await releaseQuoteHolds(data.quote_id);
+    } catch (e) {
+      console.warn("[unbookQuote] release holds failed", e);
+    }
 
     // Net out previous moves for this quote on each item
     const { data: txs } = await supabase
