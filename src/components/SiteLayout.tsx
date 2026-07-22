@@ -304,12 +304,20 @@ export function PageHero({
   title,
   subtitle,
   image,
+  slot,
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   image?: string;
+  /** Optional slot prefix. When set, admins can edit eyebrow/title/subtitle inline. */
+  slot?: string;
 }) {
+  // Lazy-loaded to avoid circular imports; only used when slot prop is passed.
+  const EditableText = slot
+    ? require("@/components/Editable").EditableText as typeof import("@/components/Editable").EditableText
+    : null;
+
   return (
     <section className="relative overflow-hidden bg-primary text-primary-foreground">
       {image && (
@@ -325,15 +333,15 @@ export function PageHero({
       <div className="relative mx-auto max-w-5xl px-4 py-20 text-center sm:py-28 lg:px-8">
         {eyebrow && (
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">
-            {eyebrow}
+            {EditableText ? <EditableText slot={`${slot}.eyebrow`} fallback={eyebrow} /> : eyebrow}
           </p>
         )}
         <h1 className="text-balance font-serif text-4xl font-medium leading-[1.05] sm:text-5xl lg:text-6xl">
-          {title}
+          {EditableText ? <EditableText slot={`${slot}.title`} fallback={title} /> : title}
         </h1>
         {subtitle && (
           <p className="mx-auto mt-6 max-w-2xl text-balance text-base text-primary-foreground/85 sm:text-lg">
-            {subtitle}
+            {EditableText ? <EditableText slot={`${slot}.subtitle`} fallback={subtitle} multiline /> : subtitle}
           </p>
         )}
       </div>
