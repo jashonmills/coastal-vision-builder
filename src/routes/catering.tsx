@@ -161,7 +161,7 @@ function CateringPage() {
       >
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <MenuCard
-            title="Menu 1 · Taco Bar"
+            title="Taco Bar"
             subtitle={t("catering.buffet.allIncluded")}
             columns={[
               {
@@ -187,7 +187,7 @@ function CateringPage() {
             ]}
           />
           <MenuCard
-            title="Menu 2 · Tailgater"
+            title="Tailgater"
             subtitle={t("catering.buffet.allIncluded")}
             columns={[
               {
@@ -208,7 +208,7 @@ function CateringPage() {
             ]}
           />
           <MenuCard
-            title="Menu 3 · Pasta Bar"
+            title="Pasta Bar"
             columns={[
               {
                 heading: t("catering.buffet.mainChooseTwo"),
