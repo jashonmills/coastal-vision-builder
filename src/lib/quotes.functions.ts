@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertAdmin } from "@/lib/admins.functions";
 
 /* ----------------------------- Quote Requests ----------------------------- */
 
@@ -195,6 +196,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
 export const listQuoteRequests = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    await assertAdmin(context.userId);
     const { data, error } = await context.supabase
       .from("quote_requests")
       .select(
@@ -221,6 +223,7 @@ export const getQuoteRequest = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const { data: row, error } = await context.supabase
       .from("quote_requests")
       .select("*")
@@ -248,6 +251,7 @@ export const updateQuoteRequestStatus = createServerFn({ method: "POST" })
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const patch: { status: typeof data.status; admin_notes?: string | null } = {
       status: data.status,
     };
@@ -419,6 +423,7 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ quote_request_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const { supabase } = context;
 
     // Load the request
@@ -652,6 +657,7 @@ export const updateQuote = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => QuotePatchSchema.parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const { error } = await context.supabase
       .from("quotes")
       .update(data.patch)
@@ -681,6 +687,7 @@ export const upsertQuoteItem = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => QuoteItemSchema.parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const line_total_cents = data.quantity * data.unit_price_cents;
     const payload = { ...data, line_total_cents };
     if (data.id) {
@@ -703,6 +710,7 @@ export const deleteQuoteItem = createServerFn({ method: "POST" })
     z.object({ id: z.string().uuid(), quote_id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const { error } = await context.supabase.from("quote_items").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     await recomputeQuoteTotals(context.supabase, data.quote_id);
@@ -713,6 +721,7 @@ export const sendQuote = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     // Always email the customer the quote (customer-quote template) before
     // marking as sent so no admin action leaves a "sent" quote un-emailed.
     const { sendCustomerQuoteEmail } = await import("@/lib/quote-email.server");
@@ -880,6 +889,7 @@ async function recomputeQuoteTotals(supabase: any, quoteId: string) {
 export const listPricingItemsForBuilder = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    await assertAdmin(context.userId);
     const { data, error } = await context.supabase
       .from("pricing_items")
       .select("id, category, name, price_cents, unit")
@@ -897,6 +907,7 @@ export const getQuoteItemsAvailability = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const { supabase } = context;
     const { data: items } = await supabase
       .from("quote_items")
