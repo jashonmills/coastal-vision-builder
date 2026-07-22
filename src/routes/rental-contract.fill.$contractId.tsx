@@ -13,6 +13,7 @@ import { CheckCircle2, FileText, ShieldCheck } from 'lucide-react'
 
 export const Route = createFileRoute('/rental-contract/fill/$contractId')({
   component: FillContractPage,
+  validateSearch: z.object({ quoteId: z.string().uuid().optional() }),
   loader: ({ params }) => {
     const schema = CONTRACT_SCHEMAS[params.contractId]
     if (!schema) throw notFound()
