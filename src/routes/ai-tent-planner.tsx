@@ -179,6 +179,7 @@ function RecommenderPage() {
     mutation.reset();
     setViewerOpen(false);
     setStep(0);
+    setSavedId(null);
   }
 
   function sendToQuote() {
