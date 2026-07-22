@@ -245,19 +245,20 @@ function SiteFooter() {
         </div>
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.quickLinks")}</h4>
-          <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
+          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-primary-foreground/80">
             <li><Link to="/" className="hover:text-[color:var(--gold)]">{t("nav.home")}</Link></li>
-            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">{t("nav.tentRentals")}</Link></li>
-            <li><Link to="/inventory" className="hover:text-[color:var(--gold)]">{t("nav.inventory")}</Link></li>
-            <li><Link to="/pricing" className="hover:text-[color:var(--gold)]">{t("nav.pricing")}</Link></li>
-            <li><Link to="/ai-planner" className="hover:text-[color:var(--gold)]">{t("nav.aiPlanner")}</Link></li>
-            <li><Link to="/rental-contract" className="hover:text-[color:var(--gold)]">{t("nav.rentalContract")}</Link></li>
-            <li><Link to="/beacon-on-broadway" className="hover:text-[color:var(--gold)]">{t("nav.beacon")}</Link></li>
             <li><Link to="/catering" className="hover:text-[color:var(--gold)]">{t("nav.catering")}</Link></li>
+            <li><Link to="/tent-rentals" className="hover:text-[color:var(--gold)]">{t("nav.tentRentals")}</Link></li>
             <li><Link to="/gallery" className="hover:text-[color:var(--gold)]">{t("nav.gallery")}</Link></li>
+            <li><Link to="/inventory" className="hover:text-[color:var(--gold)]">{t("nav.inventory")}</Link></li>
+            <li><Link to="/beacon-on-broadway" className="hover:text-[color:var(--gold)]">{t("nav.beacon")}</Link></li>
+            <li><Link to="/pricing" className="hover:text-[color:var(--gold)]">{t("nav.pricing")}</Link></li>
             <li><Link to="/about" className="hover:text-[color:var(--gold)]">{t("nav.about")}</Link></li>
+            <li><Link to="/ai-planner" className="hover:text-[color:var(--gold)]">{t("nav.aiPlanner")}</Link></li>
             <li><Link to="/contact" className="hover:text-[color:var(--gold)]">{t("nav.contact")}</Link></li>
+            <li className="col-span-2"><Link to="/rental-contract" className="hover:text-[color:var(--gold)]">{t("nav.rentalContract")}</Link></li>
           </ul>
+
         </div>
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--gold)]">{t("footer.contact")}</h4>
