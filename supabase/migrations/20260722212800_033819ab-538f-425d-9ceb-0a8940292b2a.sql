@@ -1,0 +1,2 @@
+ALTER TABLE public.site_images ADD COLUMN IF NOT EXISTS archived boolean NOT NULL DEFAULT false;
+CREATE INDEX IF NOT EXISTS site_images_category_archived_sort_idx ON public.site_images (category, archived, sort_order);

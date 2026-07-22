@@ -982,6 +982,7 @@ export type Database = {
       site_images: {
         Row: {
           alt: string
+          archived: boolean
           bucket: string
           caption: string | null
           category: string
@@ -994,6 +995,7 @@ export type Database = {
         }
         Insert: {
           alt?: string
+          archived?: boolean
           bucket?: string
           caption?: string | null
           category: string
@@ -1006,6 +1008,7 @@ export type Database = {
         }
         Update: {
           alt?: string
+          archived?: boolean
           bucket?: string
           caption?: string | null
           category?: string
