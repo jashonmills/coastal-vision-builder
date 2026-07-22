@@ -17,6 +17,7 @@ import {
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
+import { StatusPill } from "./admin.quote-requests";
 import { getAdminDashboard } from "@/lib/dashboard.functions";
 
 export const Route = createFileRoute("/admin/dashboard")({

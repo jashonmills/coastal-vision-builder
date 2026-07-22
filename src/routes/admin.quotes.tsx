@@ -6,7 +6,7 @@ import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { listQuotes } from "@/lib/quotes.functions";
-import { AdminTabs, StatusPill } from "./admin.quote-requests";
+import { StatusPill } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/quotes")({
   head: () => ({ meta: [{ title: "Quotes | Admin" }] }),
@@ -30,7 +30,6 @@ function QuotesPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Quotes" subtitle="Drafted and sent quotes." />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <AdminTabs active="quotes" />
         {isLoading ? (
           <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />
         ) : !data || data.length === 0 ? (
