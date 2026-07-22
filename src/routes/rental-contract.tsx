@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { contracts, type ContractDoc } from "@/data/contracts";
-import { Download, FileText, ChevronDown, Printer } from "lucide-react";
+import { Download, FileText, ChevronDown, Printer, PenLine } from "lucide-react";
 
 const BRAND = "Pacific North Events & Tents";
 
@@ -72,10 +72,17 @@ function ContractCard({ doc }: { doc: ContractDoc }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/rental-contract/fill/$contractId"
+            params={{ contractId: doc.id }}
+            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-4 py-2 text-sm font-semibold text-[color:var(--ink-on-gold,#1a1a1a)] shadow-sm hover:opacity-90"
+          >
+            <PenLine className="h-4 w-4" /> Fill out & sign online
+          </Link>
           <a
             href={doc.downloadUrl}
             download={doc.downloadFilename}
-            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-4 py-2 text-sm font-semibold text-[color:var(--ink-on-gold,#1a1a1a)] shadow-sm hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
           >
             <Download className="h-4 w-4" /> Download {doc.fileType}
           </a>
