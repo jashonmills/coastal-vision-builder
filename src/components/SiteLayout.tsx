@@ -56,7 +56,7 @@ const navGroups: NavGroup[] = [
 
 function isGroupActive(group: NavGroup, pathname: string): boolean {
   if (group.to) return group.to === "/" ? pathname === "/" : pathname.startsWith(group.to);
-  return group.children?.some((c) => pathname.startsWith(c.to)) ?? false;
+  return group.children?.some((c) => !!c.to && pathname.startsWith(c.to)) ?? false;
 }
 
 export function SiteLayout({ children }: { children: ReactNode }) {
