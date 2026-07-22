@@ -112,6 +112,22 @@ export const submitContract = createServerFn({ method: 'POST' })
       .upload(pdfPath, pdfBytes, { contentType: 'application/pdf', upsert: false })
     if (pdfErr) throw new Error('Failed to save signed PDF')
 
+    // Best-effort: link to a customer account by matching email
+    let customerUserId: string | null = null
+    try {
+      const { data: match } = await supabaseAdmin
+        .from('profiles')
+        .select('user_id')
+        .limit(1)
+      // profiles doesn't store email; use auth admin lookup instead
+      void match
+      const { data: list } = await supabaseAdmin.auth.admin.listUsers({ perPage: 200 })
+      const hit = list?.users?.find((u) => (u.email ?? '').toLowerCase() === customerEmail)
+      customerUserId = hit?.id ?? null
+    } catch {
+      customerUserId = null
+    }
+
     // Persist submission row (best-effort; email is the source of truth for admin)
     await supabaseAdmin.from('contract_submissions').insert({
       id: submissionId,
@@ -119,6 +135,8 @@ export const submitContract = createServerFn({ method: 'POST' })
       customer_name: customerName,
       customer_email: customerEmail,
       customer_phone: customerPhone,
+      customer_user_id: customerUserId,
+      quote_id: data.quoteId ?? null,
       event_date: eventDateRaw,
       form_data: fd,
       typed_signature: data.typedSignature,
