@@ -43,6 +43,7 @@ import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
+import { Route as RentalContractFillContractIdRouteImport } from './routes/rental-contract.fill.$contractId'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
@@ -224,6 +225,12 @@ const AccountIdRoute = AccountIdRouteImport.update({
   path: '/account/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RentalContractFillContractIdRoute =
+  RentalContractFillContractIdRouteImport.update({
+    id: '/fill/$contractId',
+    path: '/fill/$contractId',
+    getParentRoute: () => RentalContractRoute,
+  } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -294,7 +301,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
-  '/rental-contract': typeof RentalContractRoute
+  '/rental-contract': typeof RentalContractRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -317,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -339,7 +347,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
-  '/rental-contract': typeof RentalContractRoute
+  '/rental-contract': typeof RentalContractRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -362,6 +370,7 @@ export interface FileRoutesByTo {
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -386,7 +395,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
-  '/rental-contract': typeof RentalContractRoute
+  '/rental-contract': typeof RentalContractRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -409,6 +418,7 @@ export interface FileRoutesById {
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
   '/admin/quotes_/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes_/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes_/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -457,6 +467,7 @@ export interface FileRouteTypes {
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
+    | '/rental-contract/fill/$contractId'
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
@@ -502,6 +513,7 @@ export interface FileRouteTypes {
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
+    | '/rental-contract/fill/$contractId'
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
@@ -548,6 +560,7 @@ export interface FileRouteTypes {
     | '/admin/inventory_/$id'
     | '/admin/quote-requests_/$id'
     | '/lovable/email/suppression'
+    | '/rental-contract/fill/$contractId'
     | '/admin/quotes_/$id/edit'
     | '/admin/quotes_/$id/job-sheet'
     | '/admin/quotes_/$id/preview'
@@ -572,7 +585,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   RecommenderRoute: typeof RecommenderRoute
-  RentalContractRoute: typeof RentalContractRoute
+  RentalContractRoute: typeof RentalContractRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -829,6 +842,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rental-contract/fill/$contractId': {
+      id: '/rental-contract/fill/$contractId'
+      path: '/fill/$contractId'
+      fullPath: '/rental-contract/fill/$contractId'
+      preLoaderRoute: typeof RentalContractFillContractIdRouteImport
+      parentRoute: typeof RentalContractRoute
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -940,6 +960,18 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface RentalContractRouteChildren {
+  RentalContractFillContractIdRoute: typeof RentalContractFillContractIdRoute
+}
+
+const RentalContractRouteChildren: RentalContractRouteChildren = {
+  RentalContractFillContractIdRoute: RentalContractFillContractIdRoute,
+}
+
+const RentalContractRouteWithChildren = RentalContractRoute._addFileChildren(
+  RentalContractRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -955,7 +987,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   RecommenderRoute: RecommenderRoute,
-  RentalContractRoute: RentalContractRoute,
+  RentalContractRoute: RentalContractRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useServerFn } from '@tanstack/react-start'
 import { SiteLayout } from '@/components/SiteLayout'
 import { SignaturePad } from '@/components/contracts/SignaturePad'
-import { CONTRACT_SCHEMAS, type ContractField } from '@/lib/contracts/contract-fields'
+import { CONTRACT_SCHEMAS, type ContractField, type ContractFieldGroup } from '@/lib/contracts/contract-fields'
 import { submitContract } from '@/lib/contracts/submit.functions'
 import { contracts } from '@/data/contracts'
 import { CheckCircle2, FileText, ShieldCheck } from 'lucide-react'
@@ -135,13 +135,13 @@ function FillContractPage() {
         </header>
 
         <form onSubmit={onSubmit} className="mx-auto max-w-3xl px-6 py-10">
-          {schema.groups.map((g) => (
+          {schema.groups.map((g: ContractFieldGroup) => (
             <fieldset key={g.heading} className="mb-8 rounded-2xl border border-border bg-card p-6">
               <legend className="px-2 text-sm font-semibold uppercase tracking-widest text-[color:var(--gold)]">
                 {g.heading}
               </legend>
               <div className="grid gap-5 md:grid-cols-2">
-                {g.fields.map((f) => (
+                {g.fields.map((f: ContractField) => (
                   <FieldInput
                     key={f.name}
                     field={f}
