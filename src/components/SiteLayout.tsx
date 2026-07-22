@@ -11,6 +11,7 @@ import { ChatWidget } from "./ChatWidget";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useSlotImage } from "@/hooks/use-site-content";
+import { EditableText } from "@/components/Editable";
 import {
   NavigationMenu,
   NavigationMenuContent,
