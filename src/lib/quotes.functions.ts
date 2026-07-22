@@ -667,6 +667,15 @@ export const updateQuote = createServerFn({ method: "POST" })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     await recomputeQuoteTotals(context.supabase, data.id);
+    // Release reservation holds when a quote is cancelled.
+    if ((data.patch as any)?.status === "cancelled") {
+      try {
+        const { releaseQuoteHolds } = await import("./reservations.server");
+        await releaseQuoteHolds(data.id);
+      } catch (e) {
+        console.warn("[updateQuote] release-on-cancel failed", e);
+      }
+    }
     return { ok: true };
   });
 
@@ -749,6 +758,24 @@ export const sendQuote = createServerFn({ method: "POST" })
         .update({ status: "quote_sent" })
         .eq("id", q.quote_request_id);
     }
+
+    // Reservation ledger: (re)create SOFT holds for 14 days. Best-effort —
+    // a hold failure must not block the email/status transition. Overbook
+    // is allowed here; the builder's hard gate prevents oversell up front.
+    try {
+      const { releaseQuoteHolds, reserveQuoteHolds } = await import("./reservations.server");
+      await releaseQuoteHolds(data.id);
+      const expires = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+      await reserveQuoteHolds({
+        quoteId: data.id,
+        holdType: "soft",
+        expiresAt: expires,
+        allowOverbook: true,
+      });
+    } catch (e) {
+      console.warn("[sendQuote] soft-hold creation failed (non-blocking)", e);
+    }
+
     return { ok: true, sent_at: now };
   });
 
