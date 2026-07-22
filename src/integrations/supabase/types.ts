@@ -348,6 +348,69 @@ export type Database = {
           },
         ]
       }
+      inventory_reservations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          end_date: string
+          expires_at: string | null
+          hold_type: string
+          id: string
+          inventory_item_id: string
+          notes: string | null
+          quantity: number
+          quote_id: string | null
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          end_date: string
+          expires_at?: string | null
+          hold_type: string
+          id?: string
+          inventory_item_id: string
+          notes?: string | null
+          quantity: number
+          quote_id?: string | null
+          start_date: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          end_date?: string
+          expires_at?: string | null
+          hold_type?: string
+          id?: string
+          inventory_item_id?: string
+          notes?: string | null
+          quantity?: number
+          quote_id?: string | null
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_reservations_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_reservations_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory_transactions: {
         Row: {
           created_at: string
@@ -1317,6 +1380,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      inventory_availability: {
+        Args: { p_end: string; p_item: string; p_start: string }
+        Returns: number
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -1333,6 +1400,20 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      release_quote_reservations: { Args: { p_quote: string }; Returns: number }
+      reserve_inventory: {
+        Args: {
+          p_allow_overbook?: boolean
+          p_end: string
+          p_expires: string
+          p_hold_type: string
+          p_item: string
+          p_qty: number
+          p_quote: string
+          p_start: string
+        }
+        Returns: string
       }
     }
     Enums: {
