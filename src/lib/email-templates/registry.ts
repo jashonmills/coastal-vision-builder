@@ -3,6 +3,7 @@ import { template as adminQuoteRequest } from './admin-quote-request'
 import { template as adminPlannerSubmission } from './admin-planner-submission'
 import { template as customerQuote } from './customer-quote'
 import { template as customerRequestAcknowledgement } from './customer-request-acknowledgement'
+import { template as adminContractSubmission } from './admin-contract-submission'
 
 export interface TemplateEntry {
   component: ComponentType<any>
@@ -21,4 +22,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'admin-planner-submission': adminPlannerSubmission,
   'customer-quote': customerQuote,
   'customer-request-acknowledgement': customerRequestAcknowledgement,
+  'admin-contract-submission': adminContractSubmission,
 }
