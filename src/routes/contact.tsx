@@ -171,10 +171,19 @@ function ContactPage() {
           <div className="rounded-2xl border border-border bg-card p-7 shadow-sm">
             <h3 className="font-serif text-xl text-primary">{t("contact.sidebar.title")}</h3>
             <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.phonePlaceholder")}</li>
-              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.emailPlaceholder")}</li>
+              <li className="flex items-start gap-3">
+                <Phone className="mt-0.5 h-4 w-4 text-primary" />
+                <a href="tel:+15037175088" className="hover:text-primary hover:underline">503-717-5088</a>
+              </li>
+              <li className="flex items-start gap-3">
+                <Mail className="mt-0.5 h-4 w-4 text-primary" />
+                <a href="mailto:info@pacificnorthrentals.com" className="break-all hover:text-primary hover:underline">info@pacificnorthrentals.com</a>
+              </li>
               <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.areaServed")}</li>
-              <li className="flex items-start gap-3"><Facebook className="mt-0.5 h-4 w-4 text-primary" /> {t("contact.sidebar.facebook")}</li>
+              <li className="flex items-start gap-3">
+                <Facebook className="mt-0.5 h-4 w-4 text-primary" />
+                <a href="https://www.facebook.com/pacificnorthrentals" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline">{t("contact.sidebar.facebook")}</a>
+              </li>
             </ul>
           </div>
           <div className="rounded-2xl border border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10 p-6 text-sm text-primary">
