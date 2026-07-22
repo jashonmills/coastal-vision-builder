@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { SiteLayout } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
-import { AdminTabs } from "./admin.quote-requests";
 import { listStaff, upsertStaff, deleteStaff } from "@/lib/staff.functions";
 
 export const Route = createFileRoute("/admin/staff")({
@@ -49,7 +48,6 @@ function StaffPage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-5xl px-4 py-10 lg:px-8">
-        <AdminTabs active="staff" />
         <h1 className="font-serif text-3xl text-primary">Staff</h1>
         <p className="text-sm text-muted-foreground">Team members assignable to calendar events and job sheets.</p>
 

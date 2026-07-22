@@ -90,7 +90,6 @@ function QuoteRequestsPage() {
         subtitle="Customer submissions from the AI Tent Planner. Review and create quotes."
       />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <AdminTabs active="quote-requests" />
         {(() => {
           const all = data ?? [];
           const typed = typeFilter === "all" ? all : all.filter((r) => (r.request_type ?? "rental") === typeFilter);
