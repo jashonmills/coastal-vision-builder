@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Loader2, ArrowLeft, Plus, X, Check, Trash2 } from "lucide-react";
-import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import {

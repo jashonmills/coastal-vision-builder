@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Trash2, Upload, Save, ArrowUp, ArrowDown, ArrowLeft, Archive, ArchiveRestore, RefreshCw } from "lucide-react";
-import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";

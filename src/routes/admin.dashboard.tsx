@@ -14,7 +14,7 @@ import {
   Boxes,
   PackageCheck,
 } from "lucide-react";
-import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { AdminTabs, StatusPill } from "./admin.quote-requests";

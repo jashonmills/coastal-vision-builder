@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Loader2, Upload, FileSpreadsheet, ArrowLeft, RefreshCw, Trash2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
 import * as XLSX from "xlsx";
-import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import {

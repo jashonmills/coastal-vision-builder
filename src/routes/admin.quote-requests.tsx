@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Loader2, Inbox, FileText, Archive, CheckCircle, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
-import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { AdminBell } from "@/components/AdminBell";
@@ -256,51 +256,9 @@ export function StatusPill({ status }: { status: string }) {
   );
 }
 
-export function AdminTabs({ active }: { active: "dashboard" | "admin" | "quote-requests" | "quotes" | "inventory" | "staff" | "scheduler" | "admins" }) {
-  const { isAdmin } = useIsAdmin();
-  const countFn = useServerFn(countNewQuoteRequests);
-  const { data: countData } = useQuery({
-    queryKey: ["new-quote-requests-count"],
-    queryFn: () => countFn(),
-    enabled: isAdmin,
-    refetchInterval: 30_000,
-  });
-  const newCount = countData?.count ?? 0;
-  const tabs = [
-    { key: "dashboard", label: "Dashboard", to: "/admin/dashboard" as const },
-    { key: "quote-requests", label: "Quote Requests", to: "/admin/quote-requests" as const, badge: newCount },
-    { key: "quotes", label: "Quotes", to: "/admin/quotes" as const },
-    { key: "inventory", label: "Inventory", to: "/admin/inventory" as const },
-    { key: "scheduler", label: "Scheduler", to: "/admin/scheduler" as const },
-    { key: "staff", label: "Staff", to: "/admin/staff" as const },
-    { key: "admins", label: "Admins", to: "/admin/admins" as const },
-    { key: "admin", label: "Pricing & Content", to: "/admin" as const },
-  ];
-  return (
-    <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-      <div className="flex flex-wrap gap-2">
-        {tabs.map((t) => (
-          <Link
-            key={t.key}
-            to={t.to}
-            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium ${
-              active === t.key
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-card text-foreground hover:bg-secondary"
-            }`}
-          >
-            {t.label}
-            {"badge" in t && t.badge ? (
-              <span className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                active === t.key ? "bg-primary-foreground text-primary" : "bg-[color:var(--gold)] text-primary"
-              }`}>
-                {t.badge}
-              </span>
-            ) : null}
-          </Link>
-        ))}
-      </div>
-      <AdminBell />
-    </div>
-  );
+// AdminTabs was the old pill-row nav. The admin console now uses a persistent
+// sidebar (see AdminLayout), so this component intentionally renders nothing.
+// Kept exported so existing route files can keep their import without churn.
+export function AdminTabs(_: { active?: string }) {
+  return null;
 }

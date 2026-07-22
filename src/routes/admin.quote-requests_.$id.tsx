@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, ArrowLeft, FileText, ExternalLink, MapPin, CalendarCheck, CalendarPlus, CalendarX, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-import { SiteLayout } from "@/components/SiteLayout";
+import { SiteLayout } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { getQuoteRequest, createQuoteFromRequest, updateQuoteRequestStatus } from "@/lib/quotes.functions";
