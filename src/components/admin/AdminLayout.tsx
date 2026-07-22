@@ -7,14 +7,11 @@ import {
   CalendarDays,
   Boxes,
   Tag,
-  Image as ImageIcon,
-  Type,
-  FolderOpen,
   FileSpreadsheet,
+  FolderOpen,
   Users,
   ShieldCheck,
   Menu,
-  X,
   ExternalLink,
   LogOut,
   Loader2,
@@ -27,7 +24,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
 import { useSlotImage } from "@/hooks/use-site-content";
 import { supabase } from "@/integrations/supabase/client";
 
-type NavItem = { to: string; label: string; icon: typeof Inbox; match?: (p: string) => boolean };
+type NavItem = { to: string; label: string; icon: typeof Inbox };
 type NavGroup = { label: string; items: NavItem[] };
 
 const NAV_GROUPS: NavGroup[] = [
@@ -43,15 +40,12 @@ const NAV_GROUPS: NavGroup[] = [
   },
   {
     label: "Catalog & Pricing",
-    items: [{ to: "/admin/pricing", label: "Pricing", icon: Tag, match: (p) => p === "/admin/pricing" || p === "/admin" }],
+    items: [{ to: "/admin/pricing", label: "Pricing", icon: Tag }],
   },
   {
     label: "Content",
     items: [
-      { to: "/admin/pricing?tab=gallery", label: "Gallery", icon: ImageIcon, match: () => false },
-      { to: "/admin/pricing?tab=images", label: "Site Images", icon: ImageIcon, match: () => false },
-      { to: "/admin/pricing?tab=text", label: "Site Text", icon: Type, match: () => false },
-      { to: "/admin/site-images", label: "Site Images Library", icon: FolderOpen },
+      { to: "/admin/content", label: "Site Content", icon: FolderOpen },
       { to: "/admin/data-import", label: "Data Import", icon: FileSpreadsheet },
     ],
   },
@@ -66,16 +60,17 @@ const NAV_GROUPS: NavGroup[] = [
 
 const ALL_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
+function isItemActive(itemTo: string, pathname: string): boolean {
+  return pathname === itemTo || pathname.startsWith(itemTo + "/");
+}
+
 function currentTitle(pathname: string): string {
-  const match = ALL_ITEMS.find((i) => {
-    if (i.match) return i.match(pathname);
-    const base = i.to.split("?")[0];
-    return pathname === base || pathname.startsWith(base + "/");
-  });
+  const match = ALL_ITEMS.find((i) => isItemActive(i.to, pathname));
   if (match) return match.label;
   if (pathname.startsWith("/admin/quotes")) return "Quotes";
   if (pathname.startsWith("/admin/quote-requests")) return "Quote Requests";
   if (pathname.startsWith("/admin/inventory")) return "Inventory";
+  if (pathname.startsWith("/admin/content") || pathname.startsWith("/admin/site-images")) return "Site Content";
   return "Admin";
 }
 
@@ -89,10 +84,7 @@ function NavBody({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
           </p>
           <ul className="space-y-0.5">
             {group.items.map((item) => {
-              const base = item.to.split("?")[0];
-              const active = item.match
-                ? item.match(pathname)
-                : pathname === base || pathname.startsWith(base + "/");
+              const active = isItemActive(item.to, pathname);
               const Icon = item.icon;
               return (
                 <li key={item.to}>
