@@ -126,13 +126,15 @@ function Dashboard() {
       if (filterActive === "archived" && i.active && !i.deleted_at) return false;
       if (filterPlanner && !i.visible_to_planner) return false;
       if (filterChat && !i.visible_to_chat) return false;
-      if (search) {
-        const q = search.toLowerCase();
+      if (filterZero && (i.total_owned_quantity ?? 0) !== 0) return false;
+      if (searchText) {
+        const q = searchText.toLowerCase();
         if (!i.name.toLowerCase().includes(q) && !(i.sku ?? "").toLowerCase().includes(q)) return false;
       }
       return true;
     });
-  }, [items, filterCat, filterType, filterActive, filterPlanner, filterChat, search]);
+  }, [items, filterCat, filterType, filterActive, filterPlanner, filterChat, filterZero, searchText]);
+
 
   const summary = useMemo(() => {
     let owned = 0, available = 0, reserved = 0, out = 0, cleaning = 0, maint = 0, damaged = 0;
