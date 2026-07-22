@@ -370,6 +370,8 @@ function RecommenderPage() {
             setViewerOpen={setViewerOpen}
             onReset={reset}
             onSend={sendToQuote}
+            savedId={savedId}
+            onSaved={setSavedId}
           />
         )}
       </section>
