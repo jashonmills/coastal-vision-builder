@@ -78,6 +78,7 @@ function InventoryAdminPage() {
 
 function Dashboard() {
   const qc = useQueryClient();
+  const search = Route.useSearch();
   const [creating, setCreating] = useState(false);
   const [adjustItem, setAdjustItem] = useState<InventoryItem | null>(null);
   const [filterCat, setFilterCat] = useState("");
@@ -85,7 +86,15 @@ function Dashboard() {
   const [filterActive, setFilterActive] = useState<"all" | "active" | "archived">("active");
   const [filterPlanner, setFilterPlanner] = useState(false);
   const [filterChat, setFilterChat] = useState(false);
-  const [search, setSearch] = useState("");
+  const [filterZero, setFilterZero] = useState(search.filter === "zero");
+  const [searchText, setSearch] = useState("");
+
+  const summariesFn = useServerFn(getInventoryReservationSummaries);
+  const { data: reservationSummaries = {} } = useQuery({
+    queryKey: ["admin-inventory-reservation-summaries"],
+    queryFn: () => summariesFn(),
+  });
+
 
   const { data: categories = [] } = useQuery({
     queryKey: ["admin-inventory-categories"],
