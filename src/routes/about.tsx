@@ -30,7 +30,7 @@ function AboutPage() {
   const hero = pickPhoto("about-hero");
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="about.hero"
         eyebrow={t("about.hero.eyebrow")}
         title={t("about.hero.title")}
         subtitle={t("about.hero.subtitle")}

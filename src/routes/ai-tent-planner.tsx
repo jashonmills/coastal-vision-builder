@@ -172,7 +172,7 @@ function RecommenderPage() {
 
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="planner.hero"
         eyebrow={t("recommender.heroEyebrow")}
         title={t("recommender.heroTitle")}
         subtitle={t("recommender.heroSubtitle")}

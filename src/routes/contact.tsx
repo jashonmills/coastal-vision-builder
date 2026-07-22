@@ -85,7 +85,7 @@ function ContactPage() {
 
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="contact.hero"
         eyebrow={t("contact.hero.eyebrow")}
         title={t("contact.hero.title")}
         subtitle={t("contact.hero.subtitle")}

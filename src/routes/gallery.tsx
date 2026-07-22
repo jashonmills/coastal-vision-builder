@@ -82,7 +82,7 @@ function GalleryPage() {
 
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="gallery.hero"
         eyebrow={t("gallery.hero.eyebrow")}
         title={t("gallery.hero.title")}
         subtitle={t("gallery.hero.subtitle")}

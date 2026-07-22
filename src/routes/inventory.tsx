@@ -120,7 +120,7 @@ function InventoryPage() {
 
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="inventory.hero"
         eyebrow="Inventory & Pricing"
         title="Rental Inventory & Pricing"
         subtitle="Everything we offer for Oregon Coast events — tents, tables, chairs, lighting, dance floors, bars, and delivery. All rentals include a 3-day rental window."
