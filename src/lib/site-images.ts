@@ -12,6 +12,7 @@ const BUCKET_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/publ
 const GALLERY_BUCKET_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/new-images`;
 
 import sonyUlt10Asset from "@/assets/products/sony-ult10.jpg.asset.json";
+import cafeLightsAsset from "@/assets/products/cafe-lights.webp.asset.json";
 
 export type SiteImage = {
   file: string;
@@ -71,6 +72,7 @@ export const galleryEquipment: SiteImage[] = [
   galleryImg("55 gallon water barrel.jpg", "55 gallon water barrel"),
   galleryImg("Patio heater.jpg", "Propane patio heater"),
   { file: "sony-ult10-pa-system.jpg", url: sonyUlt10Asset.url, alt: "Sony ULT10 PA system" },
+  { file: "cafe-lights.webp", url: cafeLightsAsset.url, alt: "Commercial-grade cafe string lights with Edison bulbs", caption: "Cafe string lights (Edison bulbs)" },
 ];
 
 export const galleryFurniture: SiteImage[] = [
