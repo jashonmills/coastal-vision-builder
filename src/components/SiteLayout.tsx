@@ -333,15 +333,15 @@ export function PageHero({
       <div className="relative mx-auto max-w-5xl px-4 py-20 text-center sm:py-28 lg:px-8">
         {eyebrow && (
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--gold)]">
-            {EditableText ? <EditableText slot={`${slot}.eyebrow`} fallback={eyebrow} /> : eyebrow}
+            {editable ? <EditableText slot={`${slot}.eyebrow`} fallback={eyebrow} /> : eyebrow}
           </p>
         )}
         <h1 className="text-balance font-serif text-4xl font-medium leading-[1.05] sm:text-5xl lg:text-6xl">
-          {EditableText ? <EditableText slot={`${slot}.title`} fallback={title} /> : title}
+          {editable ? <EditableText slot={`${slot}.title`} fallback={title} /> : title}
         </h1>
         {subtitle && (
           <p className="mx-auto mt-6 max-w-2xl text-balance text-base text-primary-foreground/85 sm:text-lg">
-            {EditableText ? <EditableText slot={`${slot}.subtitle`} fallback={subtitle} multiline /> : subtitle}
+            {editable ? <EditableText slot={`${slot}.subtitle`} fallback={subtitle} multiline /> : subtitle}
           </p>
         )}
       </div>
