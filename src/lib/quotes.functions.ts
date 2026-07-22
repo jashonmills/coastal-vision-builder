@@ -713,6 +713,16 @@ export const sendQuote = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    // Always email the customer the quote (customer-quote template) before
+    // marking as sent so no admin action leaves a "sent" quote un-emailed.
+    const { sendCustomerQuoteEmail } = await import("@/lib/quote-email.server");
+    try {
+      await sendCustomerQuoteEmail({ quote_id: data.id });
+    } catch (e) {
+      console.error("[sendQuote] customer email failed", e);
+      throw e instanceof Error ? e : new Error(String(e));
+    }
+
     const now = new Date().toISOString();
     const { data: q, error } = await context.supabase
       .from("quotes")
