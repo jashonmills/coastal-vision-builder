@@ -401,6 +401,8 @@ function AIResult({
   setViewerOpen,
   onReset,
   onSend,
+  savedId,
+  onSaved,
 }: {
   recommendation: AIRecommendation;
   blueprintImage: string | null;
@@ -411,12 +413,16 @@ function AIResult({
   setViewerOpen: (open: boolean) => void;
   onReset: () => void;
   onSend: () => void;
+  savedId: string | null;
+  onSaved: (id: string) => void;
 }) {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const saveFn = useServerFn(saveRecommendation);
-  const [savedId, setSavedId] = useState<string | null>(null);
+  // The parent auto-saves for signed-in users on planner completion (and links
+  // the resulting id to the created lead). This mutation is kept only as a
+  // manual fallback if the parent auto-save failed (e.g. plan-cap error).
   const saveMut = useMutation({
     mutationFn: () => saveFn({ data: {
       title: `${input.eventType} · ${input.guestCount} guests${input.location ? ` · ${input.location}` : ""}`,
@@ -428,12 +434,8 @@ function AIResult({
       perspective_image: perspectiveImage,
       contact,
     } }),
-    onSuccess: (res) => setSavedId(res.id),
+    onSuccess: (res) => onSaved(res.id),
   });
-  useEffect(() => {
-    if (user && !savedId && !saveMut.isPending) saveMut.mutate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
   const [pdfBusy, setPdfBusy] = useState<null | "download" | "print">(null);
   const grouped = new Map<string, Pick[]>();
   for (const p of recommendation.picks ?? []) {
