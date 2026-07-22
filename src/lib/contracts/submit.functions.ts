@@ -13,6 +13,7 @@ const InputSchema = z.object({
   formData: z.record(z.string(), z.string()),
   typedSignature: z.string().min(2).max(120),
   signaturePngDataUrl: z.string().nullable().optional(),
+  quoteId: z.string().uuid().nullable().optional(),
 })
 
 export type SubmitContractInput = z.infer<typeof InputSchema>
