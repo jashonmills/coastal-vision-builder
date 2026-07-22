@@ -270,6 +270,7 @@ export const updateQuoteRequestStatus = createServerFn({ method: "POST" })
 export const listQuotes = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    await assertAdmin(context.userId);
     const { data, error } = await context.supabase
       .from("quotes")
       .select(
@@ -284,6 +285,7 @@ export const getQuote = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
     const { data: q, error } = await context.supabase
       .from("quotes")
       .select("*")
