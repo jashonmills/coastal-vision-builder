@@ -1,12 +1,19 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Plus, Trash2, Save, ShieldCheck } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Loader2, Plus, Trash2, Save, ShieldCheck, AlertTriangle } from "lucide-react";
 import { z } from "zod";
 import { AdminLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  listPricingInventoryMappings,
+  listInventoryOptions,
+  upsertPricingInventoryMapping,
+  removePricingInventoryMapping,
+} from "@/lib/pricing-mappings.functions";
 
 // Legacy tab search values used to deep-link into this page's now-removed
 // gallery/images/text tabs. They now live on /admin/content.
@@ -19,7 +26,9 @@ const LEGACY_TAB_TO_CONTENT: Record<string, "media" | "hero" | "text"> = {
 export const Route = createFileRoute("/admin/pricing")({
   head: () => ({ meta: [{ title: "Pricing | Admin" }] }),
   validateSearch: (s: Record<string, unknown>) =>
-    z.object({ tab: z.string().optional() }).parse(s),
+    z
+      .object({ tab: z.string().optional(), filter: z.enum(["unlinked"]).optional() })
+      .parse(s),
   beforeLoad: ({ search }) => {
     const t = (search as { tab?: string }).tab;
     if (t && LEGACY_TAB_TO_CONTENT[t]) {
@@ -44,7 +53,7 @@ function PricingPage() {
       <AdminPageHeader
         eyebrow="Catalog & Pricing"
         title="Pricing"
-        subtitle="Edit the public rental price list customers see. For stock, reservations and check-in/out, use Inventory."
+        subtitle="Edit the public rental price list customers see. Link each line to its physical inventory item so date-aware availability works."
       />
       <div className="mb-6 rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
         <strong className="text-foreground">Price list.</strong>{" "}
@@ -89,18 +98,45 @@ function ClaimAdmin() {
   );
 }
 
-type InvItem = { id: string; category: string; name: string; price_cents: number; unit: string; notes: string | null; sort_order: number };
+type PriceItem = { id: string; category: string; name: string; price_cents: number; unit: string; notes: string | null; sort_order: number };
+export type InvOption = { id: string; name: string; category: string | null; total_owned_quantity: number };
 
 function PricingAdmin() {
+  const search = Route.useSearch();
+  const [onlyUnlinked, setOnlyUnlinked] = useState(search.filter === "unlinked");
   const qc = useQueryClient();
+  const listMappingsFn = useServerFn(listPricingInventoryMappings);
+  const listInvFn = useServerFn(listInventoryOptions);
+
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["admin-pricing"],
     queryFn: async () => {
       const { data, error } = await supabase.from("pricing_items").select("*").order("category").order("sort_order");
       if (error) throw error;
-      return data as InvItem[];
+      return data as PriceItem[];
     },
   });
+  const { data: mappings = [] } = useQuery({
+    queryKey: ["admin-pricing-mappings"],
+    queryFn: () => listMappingsFn(),
+  });
+  const { data: invOptions = [] } = useQuery({
+    queryKey: ["admin-inventory-options"],
+    queryFn: () => listInvFn(),
+  });
+
+  const mappingByPricing = useMemo(() => {
+    const m: Record<string, string> = {};
+    for (const row of mappings) m[row.pricing_item_id] = row.inventory_item_id;
+    return m;
+  }, [mappings]);
+
+  const filtered = useMemo(() => {
+    if (!onlyUnlinked) return items;
+    return items.filter((i) => !mappingByPricing[i.id]);
+  }, [items, mappingByPricing, onlyUnlinked]);
+
+  const unlinkedCount = items.filter((i) => !mappingByPricing[i.id]).length;
 
   const add = useMutation({
     mutationFn: async () => {
@@ -113,18 +149,46 @@ function PricingAdmin() {
   if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />;
   return (
     <div>
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+          <input type="checkbox" checked={onlyUnlinked} onChange={(e) => setOnlyUnlinked(e.target.checked)} />
+          Show only unlinked
+          {unlinkedCount > 0 && (
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
+              {unlinkedCount} not linked
+            </span>
+          )}
+        </label>
         <button onClick={() => add.mutate()} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Plus className="h-4 w-4" /> Add item</button>
       </div>
       <div className="overflow-x-auto rounded-xl border border-border bg-card">
         <table className="w-full text-sm">
           <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
-              <th className="px-3 py-2">Category</th><th className="px-3 py-2">Name</th><th className="px-3 py-2">Price ($)</th><th className="px-3 py-2">Unit</th><th className="px-3 py-2">Notes</th><th className="px-3 py-2">Order</th><th></th>
+              <th className="px-3 py-2">Category</th>
+              <th className="px-3 py-2">Name</th>
+              <th className="px-3 py-2">Price ($)</th>
+              <th className="px-3 py-2">Unit</th>
+              <th className="px-3 py-2">Notes</th>
+              <th className="px-3 py-2">Linked inventory item</th>
+              <th className="px-3 py-2">Order</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {items.map((it) => <PricingRow key={it.id} item={it} />)}
+            {filtered.map((it) => (
+              <PricingRow
+                key={it.id}
+                item={it}
+                mappedInventoryId={mappingByPricing[it.id] ?? null}
+                invOptions={invOptions}
+              />
+            ))}
+            {filtered.length === 0 && (
+              <tr><td colSpan={8} className="px-3 py-10 text-center text-muted-foreground">
+                {onlyUnlinked ? "Every price-list item is linked to an inventory item." : "No pricing items yet."}
+              </td></tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -132,10 +196,16 @@ function PricingAdmin() {
   );
 }
 
-function PricingRow({ item }: { item: InvItem }) {
+function PricingRow({ item, mappedInventoryId, invOptions }: {
+  item: PriceItem;
+  mappedInventoryId: string | null;
+  invOptions: InvOption[];
+}) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState(item);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
+  const upsertFn = useServerFn(upsertPricingInventoryMapping);
+  const removeFn = useServerFn(removePricingInventoryMapping);
 
   const save = useMutation({
     mutationFn: async () => {
@@ -153,6 +223,22 @@ function PricingRow({ item }: { item: InvItem }) {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
   });
+  const setMapping = useMutation({
+    mutationFn: async (invId: string) => {
+      if (invId === "") await removeFn({ data: { pricing_item_id: item.id } });
+      else await upsertFn({ data: { pricing_item_id: item.id, inventory_item_id: invId } });
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing-mappings"] }),
+  });
+
+  const groups = useMemo(() => {
+    const g: Record<string, InvOption[]> = {};
+    for (const o of invOptions) {
+      const k = o.category ?? "Uncategorized";
+      (g[k] ||= []).push(o);
+    }
+    return Object.entries(g).sort(([a], [b]) => a.localeCompare(b));
+  }, [invOptions]);
 
   return (
     <tr className="border-t border-border">
@@ -161,6 +247,32 @@ function PricingRow({ item }: { item: InvItem }) {
       <td className="px-2 py-1"><input type="number" step="0.01" className="w-24 rounded border px-2 py-1" value={(draft.price_cents / 100).toString()} onChange={(e) => setDraft({ ...draft, price_cents: Math.round(parseFloat(e.target.value || "0") * 100) })} /></td>
       <td className="px-2 py-1"><input className="w-20 rounded border px-2 py-1" value={draft.unit} onChange={(e) => setDraft({ ...draft, unit: e.target.value })} /></td>
       <td className="px-2 py-1"><input className="w-56 rounded border px-2 py-1" value={draft.notes ?? ""} onChange={(e) => setDraft({ ...draft, notes: e.target.value })} /></td>
+      <td className="px-2 py-1">
+        <div className="flex items-center gap-2">
+          <select
+            className="w-56 rounded border px-2 py-1 text-sm"
+            value={mappedInventoryId ?? ""}
+            disabled={setMapping.isPending}
+            onChange={(e) => setMapping.mutate(e.target.value)}
+          >
+            <option value="">— None (not linked)</option>
+            {groups.map(([cat, list]) => (
+              <optgroup key={cat} label={cat}>
+                {list.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.name}{o.total_owned_quantity === 0 ? " (0 owned)" : ""}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          {!mappedInventoryId && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900" title="Not linked to any inventory item — availability can't be checked and no holds will be placed for this line.">
+              <AlertTriangle className="h-3 w-3" /> Not linked
+            </span>
+          )}
+        </div>
+      </td>
       <td className="px-2 py-1"><input type="number" className="w-16 rounded border px-2 py-1" value={draft.sort_order} onChange={(e) => setDraft({ ...draft, sort_order: parseInt(e.target.value || "0", 10) })} /></td>
       <td className="px-2 py-1">
         <div className="flex gap-1">
