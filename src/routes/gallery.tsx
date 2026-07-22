@@ -12,6 +12,7 @@ import {
   pickPhoto,
   type SiteImage,
 } from "@/lib/site-images";
+import { useSiteImagesByCategory, mergeCategory, rowsToSiteImages } from "@/hooks/use-site-images";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
