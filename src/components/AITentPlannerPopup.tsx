@@ -18,25 +18,37 @@ export function AITentPlannerPopup() {
     if (sessionStorage.getItem(DISMISS_KEY)) return;
 
     let timer: number | undefined;
+    let fallback: number | undefined;
+    let triggered = false;
 
-    const schedule = () => {
-      timer = window.setTimeout(() => setOpen(true), POPUP_DELAY_MS);
+    const openOnce = () => {
+      if (triggered) return;
+      triggered = true;
+      if (timer) window.clearTimeout(timer);
+      if (fallback) window.clearTimeout(fallback);
+      setOpen(true);
+    };
+
+    const schedule = (delay: number) => {
+      if (triggered) return;
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(openOnce, delay);
     };
 
     const videoSeen = sessionStorage.getItem(VIDEO_SEEN_KEY);
     if (videoSeen) {
-      schedule();
-    } else {
-      const onVideoDone = () => schedule();
-      window.addEventListener("pn:intro-video-done", onVideoDone, { once: true });
-      timer = window.setTimeout(() => setOpen(true), 18000);
-      return () => {
-        window.removeEventListener("pn:intro-video-done", onVideoDone);
-        if (timer) window.clearTimeout(timer);
-      };
+      schedule(POPUP_DELAY_MS);
+      return () => { if (timer) window.clearTimeout(timer); };
     }
 
-    return () => { if (timer) window.clearTimeout(timer); };
+    const onVideoDone = () => schedule(POPUP_DELAY_MS);
+    window.addEventListener("pn:intro-video-done", onVideoDone, { once: true });
+    fallback = window.setTimeout(openOnce, 18000);
+    return () => {
+      window.removeEventListener("pn:intro-video-done", onVideoDone);
+      if (timer) window.clearTimeout(timer);
+      if (fallback) window.clearTimeout(fallback);
+    };
   }, []);
 
   useEffect(() => {
