@@ -347,7 +347,7 @@ function EditQuotePage() {
   );
 }
 
-function ItemRow({ item, avail, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
+function ItemRow({ item, avail, allowOverbook, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; allowOverbook: boolean; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
   const [draft, setDraft] = useState(item);
   useEffect(() => setDraft(item), [item]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
