@@ -1,49 +1,83 @@
+# Full Customer Account Loop: Planner → Quote → Contract
 
-## Problem
+Goal: any customer who starts an AI Tent Planner (or receives a quote / signs a contract) can see everything for their event in one place at `/account`, and admins have a clean pipeline to build the quote and get it back to them.
 
-Two admin surfaces exist but aren't fully wired to the public site:
+## Current state (verified)
 
-1. **Site Images library** (`/admin/site-images`) — the admin can upload, delete, reorder, and edit alt/caption in the `site_images` table, but every public page still reads a hardcoded list from `src/lib/site-images.ts` (Storage bucket URLs). So admin changes never appear on Gallery, Rentals, Inventory, About, Home, etc. There is also no "archive" concept — only hard delete.
-2. **Editable text/images** — `EditableText` / `EditableImage` components and a `site_content` table exist, plus a slot registry in `src/lib/content-slots.ts`, but no page actually renders them, and there's no admin "Site Text" screen to browse/edit slots page by page.
+- `saved_recommendations` has `user_id` (FK `auth.users`), status enum, and timestamps. The planner only saves when a user is already signed in — **guests lose their plan on refresh**.
+- `quotes` links to `saved_recommendation_id` and stores `customer_email`, but has **no `user_id`** — the account page cannot query them.
+- `contract_submissions` stores `customer_email` only — **no `user_id`, no `quote_id`**, and RLS SELECT is admin-only, so customers cannot see their own signed contracts.
+- `/account` only lists recommendations. No quotes tab, no contracts tab. Contracts are only reachable from the standalone `/rental-contract` page.
 
-## Plan
+## What we'll build
 
-### A. Site Images — make admin the source of truth
+### 1. Planner → sign-up handoff (public → authed)
 
-1. **Add `archived boolean` + `updated_at` handling** to `public.site_images` via migration; default `false`; index on `(category, archived, sort_order)`.
-2. **Rewrite `src/lib/site-images.ts`** to fetch from the `site_images` table (still exporting `gallerySetups`, `galleryEquipment`, `galleryFurniture`, `sketchImages`, `pickPhoto`, `pickPhotos`, `cateringCalloutImage`, type `SiteImage`) via a React Query hook + a small in-module cache. Keep the hardcoded list as a one-time seed fallback only if the table is empty for a category (safety net).
-3. **Update every consumer** (`gallery.tsx`, `tent-rentals.tsx`, `inventory.tsx`, `services.tsx`, `about.tsx`, `events.tsx`, `catering.tsx`, `index.tsx`, `ServicesCallouts.tsx`) to use the new hook — signatures preserved so pages don't need structural changes.
-4. **Extend `/admin/site-images`**:
-   - Add **Archive / Unarchive** toggle (soft delete) alongside hard Delete.
-   - Add **"Show archived"** filter chip per category.
-   - Add **drag-and-drop reorder** (in addition to up/down arrows) using `@dnd-kit`.
-   - Add **replace-image** button per card (keeps id, alt, caption, sort_order; swaps `url`/`file`).
-   - Add **bulk upload** progress + per-file error surfacing (already partial).
-   - Ensure every category the public site uses is present: `gallery_setups`, `gallery_equipment`, `gallery_furniture`, `gallery_uploads`, `blueprints`, `products`, `photos`, `catering_callout`, plus new `home_hero`, `about_photos`, `inventory_hero` as needed for hero backgrounds.
-5. **Backfill** any category still missing rows by seeding from `src/lib/site-images.ts` in a one-shot migration (idempotent — only inserts if the category is empty).
+- After the AI Planner finishes, if the visitor is **not** signed in, show a "Save this plan to your account" step (email + password / Google) inline instead of the current silent skip. Stash the generated `input`, `recommendation`, `blueprint_image`, `perspective_image`, and `contact` in `sessionStorage` under a single key.
+- Signup/login page reads the pending plan from `sessionStorage`, calls `saveRecommendation`, clears the key, and lands on `/account`.
+- Signed-in users keep today's silent auto-save behavior.
 
-### B. Site Text — one place to edit every string
+### 2. Data-model changes (one migration)
 
-1. **Expand `src/lib/content-slots.ts`** to cover every user-visible text field, grouped by page: Home, About, Gallery, Inventory, Rentals, Catering, Events, Contact, Beacon on Broadway, Virtual Tour, AI Planner, Rental Contract, Footer, Nav.
-2. **Wire `<EditableText>` into each page** — replace static strings (or i18n lookups) with `<EditableText slot="page.section.field" fallback={t(...)}>`. Non-admins see the fallback (current i18n text) unchanged; admins see hover pencil + inline edit.
-3. **Wire `<EditableImage>`** for hero backgrounds and marquee images already covered by the `IMAGE_SLOTS` registry.
-4. **New admin page `/admin/site-text`** — grouped by page tab (Home / About / Gallery / ...), each slot rendered as a labeled textarea with a Save button, backed by `useSaveSlot`. Same data as inline editing, just centralized for bulk work.
-5. Add a **"Site Text"** and confirm **"Site Images"** card on `/admin` index for discoverability.
+- `quotes`: add `customer_user_id uuid` (nullable, FK `auth.users(id) ON DELETE SET NULL`) + index. Backfill from `saved_recommendations.user_id` where linked, else by matching `lower(customer_email)` against `profiles.email` (or the auth email view).
+- `quote_items`: no schema change; new SELECT policy so a user can read items for a quote they own.
+- `contract_submissions`: add `customer_user_id uuid` (nullable, FK) + `quote_id uuid` (nullable, FK `quotes(id) ON DELETE SET NULL`) + indexes. Backfill user_id by email match.
+- New/updated RLS (in addition to existing admin policies):
+  - `quotes` SELECT for `authenticated` where `customer_user_id = auth.uid()` OR `lower(customer_email) = lower(auth.jwt() ->> 'email')`.
+  - `quote_items` SELECT for `authenticated` where the parent quote passes the same check (via `EXISTS`).
+  - `contract_submissions` SELECT for `authenticated` where `customer_user_id = auth.uid()` OR email match.
+  - Keep existing admin-manage policies intact.
+- Signed download links for quote PDFs and signed contract PDFs are already generated via server functions; those stay admin-issued but the server fn will now also issue a link when the caller is the owning customer.
 
-### C. Nothing else changes
+### 3. Server functions (all `requireSupabaseAuth`)
 
-- No changes to auth, RLS (existing admin policies on `site_content` + `site_images` already cover it), quotes, email, or contracts.
-- i18n JSON stays as the fallback source; DB overrides win when present.
+- `listMyQuotes()` — returns quotes the signed-in user owns, joined with a lightweight `quote_items` count and totals; includes signed PDF URL when available.
+- `listMyContracts()` — returns the user's contract submissions with contract type, status (signed/pending), signed PDF signed URL (7-day, same helper we already use in admin email), and linked `quote_id`.
+- `getMyQuote(id)` — single quote + items for the account detail view.
+- `startContractForQuote(quoteId, contractType)` — creates a pre-filled `contract_submissions` draft (or returns the draft id) so we can jump to `/rental-contract/fill/$contractId` with the quote's data prefilled.
+- Update `createQuote` / `sendQuote` in `src/lib/quotes.functions.ts` so any newly created quote sets `customer_user_id` from the source recommendation's `user_id`, or by email lookup if the recommendation isn't linked.
+- Update `submitContract` in `src/lib/contracts/submit.functions.ts` so signed-in submissions stamp `customer_user_id` (and `quote_id` when the URL carries `?quote=`).
 
-## Technical notes
+### 4. `/account` page rebuild
 
-- Migration: `ALTER TABLE public.site_images ADD COLUMN archived boolean NOT NULL DEFAULT false;` + new index; seed missing categories via `INSERT ... WHERE NOT EXISTS`.
-- Query key pattern: `["site-images", category, { archived }]`; public consumers always query `archived = false`.
-- `EditableText` already reads from `useAllSiteContent()` which caches all slots in one query — no per-slot request cost.
-- Bundle impact: `@dnd-kit/core` + `@dnd-kit/sortable` (~15KB gz), admin-only route.
+Convert the single-list page into three tabs (URL search param `tab=plans|quotes|contracts`, default `plans`):
+
+- **Plans** — existing recommendations list, unchanged behavior.
+- **Quotes** — cards per quote: quote #, event date/type, total, status (Draft / Sent / Approved / Booked), "View quote PDF" button (signed URL), "Sign rental contract" button when a signable contract type applies and no signed contract exists yet.
+- **Contracts** — cards per submission: contract type, status (Pending signature / Signed on <date>), "Continue signing" (drafts) or "Download signed PDF" (signed). "Start new contract" dropdown seeded from `contract_type` list.
+
+Add a summary strip at the top showing counts (e.g. "2 plans · 1 quote awaiting review · 1 contract to sign").
+
+### 5. Admin quote flow (small touch-ups)
+
+- On the admin quote builder (`admin.quotes_.$id.edit.tsx`), keep today's build/send, and when marking as "sent" also update the linked `saved_recommendations.status` to `quote_sent` (already partially wired — verify + fix gaps).
+- When sending the customer quote email, include a **"View & sign in your account"** CTA linking to `/account?tab=quotes` (and a direct sign-contract link when a contract is required).
+- Admin bell / notifications continue to fire on planner submission and quote request (existing behavior preserved).
+
+### 6. Contract flow adjustments
+
+- `/rental-contract/fill/$contractId` accepts an optional `?quote=<id>` search param. When present and the signed-in user owns the quote, prefill customer name/email/phone/event date from the quote, and set `quote_id` on submit.
+- After a customer submits a contract, redirect to `/account?tab=contracts` with a success toast.
+- Admin submission email already includes the signed PDF link — no change.
+
+## Verification checklist (run after build)
+
+1. Guest completes planner → prompted to create account → after signup lands on `/account` with the plan saved.
+2. Signed-in customer requests a quote from a plan → status shows "Quote requested"; admin sees the request in `/admin/quote-requests`.
+3. Admin builds and sends a quote → customer sees it under `/account?tab=quotes` and receives the acknowledgement + quote email with the "View in account" link.
+4. Customer opens the quote, clicks "Sign rental contract" → lands on the fill page prefilled from the quote → submits → shows in `/account?tab=contracts` as Signed.
+5. Admin sees the new contract submission and the linked quote reference in the admin contract list.
+
+## Technical details
+
+- Migration is additive (new columns + policies); no destructive changes. Backfill runs in the same migration.
+- Route file layout stays flat (`src/routes/account.index.tsx`, `account.$id.tsx`); the tabbed layout is a component swap inside `account.index.tsx` driven by `validateSearch`.
+- All new list/detail server fns are `.middleware([requireSupabaseAuth])` and called from `_authenticated`-safe pages only.
+- Signed PDF URLs use the existing helper in `src/lib/contracts/submit.functions.ts` / quote email pipeline — TTL 7 days, regenerated on each account page view.
+- No changes to Lovable Cloud auth providers, email domain setup, or existing admin RLS.
 
 ## Out of scope
 
-- Rich-text (WYSIWYG) editing — plain text / multiline only, matching existing `EditableText`.
-- Versioning / audit history for slot edits.
-- Per-locale editing (English only for now; other locales continue to use i18n JSON).
+- Payments / deposits (the `quotes` table already has Stripe columns but there's no UI plan here — separate ask).
+- Marketing emails or bulk notifications.
+- Multi-user shared accounts (each customer has their own auth user).
