@@ -34,6 +34,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
+import { Route as AdminSiteImagesRouteImport } from './routes/admin.site-images'
 import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
 import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-requests'
@@ -180,6 +181,11 @@ const AdminStaffRoute = AdminStaffRouteImport.update({
   path: '/staff',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSiteImagesRoute = AdminSiteImagesRouteImport.update({
+  id: '/site-images',
+  path: '/site-images',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSchedulerRoute = AdminSchedulerRouteImport.update({
   id: '/scheduler',
   path: '/scheduler',
@@ -317,6 +323,7 @@ export interface FileRoutesByFullPath {
   '/admin/quote-requests': typeof AdminQuoteRequestsRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
+  '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
@@ -363,6 +370,7 @@ export interface FileRoutesByTo {
   '/admin/quote-requests': typeof AdminQuoteRequestsRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
+  '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account': typeof AccountIndexRoute
@@ -411,6 +419,7 @@ export interface FileRoutesById {
   '/admin/quote-requests': typeof AdminQuoteRequestsRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/scheduler': typeof AdminSchedulerRoute
+  '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
@@ -460,6 +469,7 @@ export interface FileRouteTypes {
     | '/admin/quote-requests'
     | '/admin/quotes'
     | '/admin/scheduler'
+    | '/admin/site-images'
     | '/admin/staff'
     | '/email/unsubscribe'
     | '/account/'
@@ -506,6 +516,7 @@ export interface FileRouteTypes {
     | '/admin/quote-requests'
     | '/admin/quotes'
     | '/admin/scheduler'
+    | '/admin/site-images'
     | '/admin/staff'
     | '/email/unsubscribe'
     | '/account'
@@ -553,6 +564,7 @@ export interface FileRouteTypes {
     | '/admin/quote-requests'
     | '/admin/quotes'
     | '/admin/scheduler'
+    | '/admin/site-images'
     | '/admin/staff'
     | '/email/unsubscribe'
     | '/account/'
@@ -779,6 +791,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStaffRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/site-images': {
+      id: '/admin/site-images'
+      path: '/site-images'
+      fullPath: '/admin/site-images'
+      preLoaderRoute: typeof AdminSiteImagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/scheduler': {
       id: '/admin/scheduler'
       path: '/scheduler'
@@ -931,6 +950,7 @@ interface AdminRouteChildren {
   AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRoute
   AdminQuotesRoute: typeof AdminQuotesRoute
   AdminSchedulerRoute: typeof AdminSchedulerRoute
+  AdminSiteImagesRoute: typeof AdminSiteImagesRoute
   AdminStaffRoute: typeof AdminStaffRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminInventoryIdRoute: typeof AdminInventoryIdRoute
@@ -949,6 +969,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminQuoteRequestsRoute: AdminQuoteRequestsRoute,
   AdminQuotesRoute: AdminQuotesRoute,
   AdminSchedulerRoute: AdminSchedulerRoute,
+  AdminSiteImagesRoute: AdminSiteImagesRoute,
   AdminStaffRoute: AdminStaffRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminInventoryIdRoute: AdminInventoryIdRoute,

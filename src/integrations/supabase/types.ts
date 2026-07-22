@@ -185,30 +185,6 @@ export type Database = {
         }
         Relationships: []
       }
-      gallery_images: {
-        Row: {
-          caption: string | null
-          created_at: string
-          id: string
-          sort_order: number
-          url: string
-        }
-        Insert: {
-          caption?: string | null
-          created_at?: string
-          id?: string
-          sort_order?: number
-          url: string
-        }
-        Update: {
-          caption?: string | null
-          created_at?: string
-          id?: string
-          sort_order?: number
-          url?: string
-        }
-        Relationships: []
-      }
       inventory_categories: {
         Row: {
           active: boolean
@@ -1000,6 +976,45 @@ export type Database = {
           key?: string
           updated_at?: string
           value?: Json
+        }
+        Relationships: []
+      }
+      site_images: {
+        Row: {
+          alt: string
+          bucket: string
+          caption: string | null
+          category: string
+          created_at: string
+          file: string
+          id: string
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          alt?: string
+          bucket?: string
+          caption?: string | null
+          category: string
+          created_at?: string
+          file: string
+          id?: string
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          alt?: string
+          bucket?: string
+          caption?: string | null
+          category?: string
+          created_at?: string
+          file?: string
+          id?: string
+          sort_order?: number
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }

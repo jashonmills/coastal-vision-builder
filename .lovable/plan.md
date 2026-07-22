@@ -1,72 +1,58 @@
-## Plan — Fillable Online Contracts
+## Goal
 
-Let customers fill and sign the four existing contracts (Rental, Beacon Venue, Catering, Credit Card Auth) directly on the site, saving each completed submission as a PDF in Cloud Storage and emailing you a secure download link.
+Give admins full control (upload, replace, delete, edit caption/alt, reorder) over every image rendered on public pages — not just the gallery. Currently all images are hardcoded in `src/lib/site-images.ts` and must be changed via code.
 
-### 1. Storage & data
+## Current state (verified)
 
-- New private storage bucket `contract-submissions` (admin-only via signed URLs).
-- New table `public.contract_submissions`:
-  - `id`, `created_at`, `contract_type` (rental/beacon/catering/cc-auth), `customer_name`, `customer_email`, `customer_phone`, `event_date`, `form_data` (jsonb — all field values), `typed_signature`, `signature_image_path` (storage path to PNG), `pdf_path` (storage path), `ip_address`, `user_agent`, `submitted_at`.
-  - RLS: `INSERT` open to `anon` (public forms); `SELECT/UPDATE/DELETE` admin-only via `has_role`.
-  - GRANTs: `INSERT` to `anon`, full to `authenticated` + `service_role`.
+- `src/lib/site-images.ts` is the single source of truth for images, split into 7 groups: `gallerySetups`, `galleryEquipment`, `galleryFurniture`, `sketchImages` (=`galleryBlueprints`), `productImages`, `photoImages`, and `cateringCalloutImage`.
+- Consumers: `gallery.tsx`, `inventory.tsx`, `ServicesCallouts.tsx`, plus helpers `heroImage()` / `pickPhoto()` / `pickPhotos()` used across many pages.
+- Two public storage buckets already exist: `images` and `new-images`.
+- A `gallery_images` table exists but is minimal (`id, url, caption, sort_order, created_at`) and unused by the site.
 
-### 2. Shared form UI
+## Approach
 
-- Add a **"Fill Out Online"** button next to each contract's Download button in `src/routes/rental-contract.tsx`.
-- New route `/rental-contract/fill/$contractId` renders the correct form via a small component per contract:
-  - `RentalContractForm`, `BeaconContractForm`, `CateringContractForm`, `CreditCardAuthForm`.
-- Common fields captured for every contract: name, email, phone, event date, event address, itemized needs / relevant fields per contract.
-- Signature block (shared component `SignaturePad`):
-  - Typed full legal name (required)
-  - Drawn signature via HTML5 canvas (required) — captured as PNG data URL
-  - "I have read and agree" checkbox, date auto-stamped
-- Zod validation client + server; disable submit until valid; honeypot + basic rate-limit check on server.
+Replace the hardcoded arrays with a database-backed catalog managed by admins, keeping the same `SiteImage` shape and helper API so consumer pages don't have to change.
 
-### 3. Credit Card Authorization — PCI-safe fields only
+### 1. Database
 
-- Collect: cardholder name, billing zip, card brand (dropdown), **last 4 digits only**, authorized amount, authorization date range.
-- Explicit inline disclaimer: "Do NOT enter full card number here — we'll contact you by phone to collect the full number securely."
-- Server-side regex rejects any 13-19 digit sequence in free-text fields.
+New migration:
+- Drop/replace the underused `gallery_images` table with `public.site_images`:
+  - `id uuid pk`, `category text` (enum-like: `gallery_setups`, `gallery_equipment`, `gallery_furniture`, `blueprints`, `products`, `photos`, `catering_callout`), `bucket text`, `file text`, `url text`, `alt text`, `caption text`, `sort_order int`, `created_at`, `updated_at`.
+  - Public `SELECT` policy (anon + authenticated); `INSERT/UPDATE/DELETE` restricted to admins via existing `has_role(auth.uid(), 'admin')`.
+  - Standard GRANTs.
+- Seed the table from the current `site-images.ts` contents so nothing changes visually on first load.
 
-### 4. Server submission flow
+### 2. Data access
 
-New server route `POST /api/public/contracts/submit`:
-1. Validate payload with Zod (per-contract schema).
-2. Reject if free-text contains a full-length card number pattern.
-3. Upload signature PNG to `contract-submissions/{id}/signature.png`.
-4. Generate a filled PDF server-side using `pdf-lib` (Worker-compatible, pure JS): render the contract's static clauses + the customer's filled fields + typed name + signature image + timestamp.
-5. Upload PDF to `contract-submissions/{id}/contract.pdf`.
-6. Insert the row into `contract_submissions` via `supabaseAdmin`.
-7. Create a 7-day signed URL for the PDF.
-8. Call `sendAdminEmail` with new template `admin-contract-submission` → your inbox gets:
-   - Contract type, customer summary, event date
-   - "View signed contract PDF" button → signed URL
-   - "View signature only" link
-9. Also fire `sendCustomerAcknowledgement`-style auto-reply thanking them and confirming receipt (no PDF attached; link expires).
-10. Return `{ ok: true }`; the page shows a success state ("Contract received — check your inbox for confirmation").
+- `src/lib/site-images.functions.ts` — public server fn `listSiteImages()` returning grouped `SiteImage[]` by category.
+- `src/hooks/use-site-images.ts` — `useSuspenseQuery` wrapper that returns the same shape as today's exports.
+- Refactor `src/lib/site-images.ts` to expose the seed data as `DEFAULT_SITE_IMAGES` (fallback when DB is empty) and keep the `SiteImage` type + `pickPhoto`/`pickPhotos` helpers unchanged (helpers accept an array arg or read from context).
+- Update consumers (`gallery.tsx`, `inventory.tsx`, `ServicesCallouts.tsx`, any callers of `heroImage`/`pickPhoto*`) to read from the hook instead of the static export.
 
-### 5. Email template
+### 3. Admin UI — `/admin/images`
 
-New `src/lib/email-templates/admin-contract-submission.tsx`:
-- Brand header, contract title, submitter block (name / email / phone / event date), summary of key fields, prominent CTA button linking to the signed PDF URL, note that the link expires in 7 days.
-- Registered in `src/lib/email-templates/registry.ts`.
+New route `src/routes/admin.images.tsx`:
+- Tabs for each category (Setups, Bar & Equipment, Furniture, Blueprints, Products, Photos, Catering callout).
+- Per-image row: thumbnail, alt text (editable), caption (editable), sort order, Delete button.
+- "Upload images" button — multi-file uploader that pushes to the `new-images` bucket via `supabase.storage`, then inserts rows via an admin server fn.
+- Drag-to-reorder (or up/down arrows) writing back `sort_order`.
+- Replace-file action per row (upload new file, updates `file`/`url`).
+- All mutations go through `src/lib/site-images.functions.ts` admin fns using `requireSupabaseAuth` + `has_role` check, then `supabaseAdmin` for writes.
+- Link the page from the admin sidebar/dashboard.
 
-### 6. Admin viewer (light)
+### 4. Cleanup
 
-- Simple admin page `/admin/contract-submissions` listing submissions with filters (contract type, date) and a "Download PDF" link (generates a fresh signed URL on click via a `requireSupabaseAuth` server function).
+- Remove hardcoded `img(...)` / `galleryImg(...)` arrays from `site-images.ts` once the DB seed is verified, keeping only the type + helpers.
+- Leave the two `.asset.json` CDN assets (`sony-ult10`, `cafe-lights`) reachable — seed their URLs directly into `site_images` rows so admins can delete/replace them like any other.
 
-### 7. Packages
+## Out of scope
 
-- Add `pdf-lib` (pure JS, Worker-compatible) for PDF generation.
-- No native canvas — signature drawing uses the browser's HTML5 canvas; PNG is uploaded as-is.
+- Editing text/copy on public pages (already covered elsewhere).
+- Changing which categories exist or how the gallery filters render.
+- Reworking the AI-generated blueprint on `/recommender`.
 
-### 8. Out of scope for this pass
+## Technical notes
 
-- Full digital-signature legal certification (DocuSign-style audit trail beyond IP + timestamp).
-- Storing full credit card numbers (explicitly excluded — Stripe integration would be a separate follow-up).
-- Editing of already-submitted contracts.
-
-### Verification
-
-- Submit each of the four contracts end-to-end in the preview.
-- Confirm PDF renders correctly, admin email arrives with a working signed link, customer gets the acknowledgement, row appears in the database.
+- Uploads write to the existing public `new-images` bucket; RLS on `storage.objects` will get an admin-only INSERT/DELETE policy for that bucket.
+- Public reads stay cache-friendly: `listSiteImages` runs in the loader via `ensureQueryData`, so SSR renders with the latest set.
+- Fallback to `DEFAULT_SITE_IMAGES` if the DB query returns empty (safety net during the first deploy).
