@@ -402,10 +402,10 @@ function ItemRow({ item, avail, allowOverbook, onSaved, onDelete, upsertFn }: { 
       <td className="px-2 py-2">
         <div className="flex flex-col gap-1">
           <button
-            disabled={!dirty || save.isPending}
+            disabled={!dirty || save.isPending || saveBlocked}
             onClick={() => save.mutate()}
-            title={dirty ? "Save changes to this line" : "No changes to save"}
-            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-[10px] font-semibold text-white transition ${dirty ? "bg-emerald-600 hover:bg-emerald-700" : "bg-muted-foreground/40"} disabled:cursor-not-allowed`}
+            title={saveBlocked ? `Only ${avail?.available ?? 0} available for the event window` : (dirty ? "Save changes to this line" : "No changes to save")}
+            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-[10px] font-semibold text-white transition ${dirty && !saveBlocked ? "bg-emerald-600 hover:bg-emerald-700" : "bg-muted-foreground/40"} disabled:cursor-not-allowed`}
           >
             {save.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />}
             {dirty ? "Save" : "Saved"}
