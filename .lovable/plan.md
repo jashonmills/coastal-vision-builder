@@ -1,22 +1,41 @@
-Update the catering page buffet section to match the Silver/Gold format: remove the "Menu 1 · / Menu 2 · / Menu 3 ·" prefixes from the three buffet card titles and strip the menu names from the section pricing badge so only the two price tiers remain.
+Update the location heading on the Beacon on Broadway page so it no longer says "steps from the Prom" and instead emphasizes the downtown historic district location with accurate "blocks from the Prom" wording.
 
-Changes:
-1. `src/routes/catering.tsx`
-   - Change buffet card titles:
-     - "Menu 1 · Taco Bar" → "Taco Bar"
-     - "Menu 2 · Tailgater" → "Tailgater"
-     - "Menu 3 · Pasta Bar" → "Pasta Bar"
+## Current wording
 
-2. `src/i18n/locales/en.json`
-   - Update `catering.buffet.pricing` from:
-     ```
-     Taco Bar & Tailgater — 50–99 guests: $40/pp | 100+ guests: $35/pp
-     Pasta Bar — 50–99 guests: $30/pp | 100+ guests: $25/pp
-     ```
-     to:
-     ```
-     50–99 guests: $40/pp | 100+ guests: $35/pp
-     50–99 guests: $30/pp | 100+ guests: $25/pp
-     ```
+`src/i18n/locales/en.json` line 834:
 
-This keeps the two existing price tiers while making the buffet section layout consistent with the Silver and Gold buffet sections.
+```
+"title": "Downtown Seaside, steps from the Prom"
+```
+
+## Proposed options
+
+Pick one and I'll apply it:
+
+**A. Direct & accurate**
+
+> Downtown Historic District, blocks from the Prom
+
+**B. Descriptive**
+
+> In the heart of Seaside's downtown historic district — blocks from the Prom
+
+**C. Short & polished**
+
+> Historic downtown Seaside, just blocks from the Prom
+
+**D. Street-level**
+
+> On Broadway in Seaside's downtown historic district, blocks from the beach
+
+## Implementation
+
+1. Update `beacon.visit.title` in `src/i18n/locales/en.json` with the chosen wording.
+2. Optionally adjust the `beacon.visit.body` copy to mention the historic district if it helps the page read consistently.
+3. Run `bun run build:dev` to verify no issues.
+
+Which option do you prefer, or would you like me to combine/tweak any of them?
+
+**A. Direct & accurate**
+
+> Downtown Historic District, blocks from the Prom
