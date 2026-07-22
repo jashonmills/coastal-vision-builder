@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadImage } from "@/lib/upload-image";
-import { TEXT_SLOTS, IMAGE_SLOTS } from "@/lib/content-slots";
+import { TEXT_SLOTS, IMAGE_SLOTS, groupTextSlotsByPage, groupImageSlotsByPage } from "@/lib/content-slots";
 import { useAllSiteContent, useSaveSlot } from "@/hooks/use-site-content";
 import { AdminTabs } from "./admin.quote-requests";
 
