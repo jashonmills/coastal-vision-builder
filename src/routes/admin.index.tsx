@@ -265,7 +265,7 @@ function CaptionEditor({ row }: { row: GalleryRow }) {
   const [v, setV] = useState(row.caption ?? "");
   const save = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("gallery_images").update({ caption: v }).eq("id", row.id);
+      const { error } = await supabase.from("site_images").update({ caption: v }).eq("id", row.id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-gallery"] }),
