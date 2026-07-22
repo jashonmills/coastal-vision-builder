@@ -50,6 +50,54 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_submissions: {
+        Row: {
+          contract_type: string
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          event_date: string | null
+          form_data: Json
+          id: string
+          ip_address: string | null
+          pdf_path: string | null
+          signature_image_path: string | null
+          typed_signature: string
+          user_agent: string | null
+        }
+        Insert: {
+          contract_type: string
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          event_date?: string | null
+          form_data?: Json
+          id?: string
+          ip_address?: string | null
+          pdf_path?: string | null
+          signature_image_path?: string | null
+          typed_signature: string
+          user_agent?: string | null
+        }
+        Update: {
+          contract_type?: string
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          event_date?: string | null
+          form_data?: Json
+          id?: string
+          ip_address?: string | null
+          pdf_path?: string | null
+          signature_image_path?: string | null
+          typed_signature?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
