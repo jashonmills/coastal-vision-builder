@@ -48,6 +48,7 @@ import { Route as RentalContractFillContractIdRouteImport } from './routes/renta
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
+import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -252,6 +253,11 @@ const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   path: '/inventory/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AccountQuoteIdRoute = AccountQuoteIdRouteImport.update({
+  id: '/account/quote/$id',
+  path: '/account/quote/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -328,6 +334,7 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -375,6 +382,7 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
+  '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -424,6 +432,7 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -474,6 +483,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/account/'
     | '/admin/'
+    | '/account/quote/$id'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
@@ -521,6 +531,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/account'
     | '/admin'
+    | '/account/quote/$id'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
@@ -569,6 +580,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/account/'
     | '/admin/'
+    | '/account/quote/$id'
     | '/admin/inventory_/$id'
     | '/admin/quote-requests_/$id'
     | '/lovable/email/suppression'
@@ -607,6 +619,7 @@ export interface RootRouteChildren {
   AccountIdRoute: typeof AccountIdRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   AccountIndexRoute: typeof AccountIndexRoute
+  AccountQuoteIdRoute: typeof AccountQuoteIdRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicHooksSpreadsheetSyncRoute: typeof ApiPublicHooksSpreadsheetSyncRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -889,6 +902,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/account/quote/$id': {
+      id: '/account/quote/$id'
+      path: '/account/quote/$id'
+      fullPath: '/account/quote/$id'
+      preLoaderRoute: typeof AccountQuoteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -1018,6 +1038,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountIdRoute: AccountIdRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   AccountIndexRoute: AccountIndexRoute,
+  AccountQuoteIdRoute: AccountQuoteIdRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicHooksSpreadsheetSyncRoute: ApiPublicHooksSpreadsheetSyncRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
