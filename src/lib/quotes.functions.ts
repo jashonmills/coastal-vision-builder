@@ -211,6 +211,7 @@ export const listQuoteRequests = createServerFn({ method: "GET" })
 export const countNewQuoteRequests = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    await assertAdmin(context.userId);
     const { count, error } = await context.supabase
       .from("quote_requests")
       .select("id", { count: "exact", head: true })
