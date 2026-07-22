@@ -28,7 +28,7 @@ export const Route = createFileRoute("/virtual-tour")({
 function VirtualTourPage() {
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="tour.hero"
         eyebrow="Virtual Tour"
         title="Step inside Beacon on Broadway"
         subtitle="An interactive 360° walk-through of our Seaside event hall."

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Trash2, Upload, Save, ArrowUp, ArrowDown, ArrowLeft } from "lucide-react";
+import { Loader2, Trash2, Upload, Save, ArrowUp, ArrowDown, ArrowLeft, Archive, ArchiveRestore, RefreshCw } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -22,13 +22,14 @@ type Row = {
   alt: string;
   caption: string | null;
   sort_order: number;
+  archived: boolean;
 };
 
 const CATEGORIES: { key: string; label: string; description: string }[] = [
   { key: "gallery_setups", label: "Gallery · Setups", description: "Tent setups shown in the main gallery." },
   { key: "gallery_equipment", label: "Gallery · Equipment", description: "Bars, heaters, PA and specialty equipment." },
   { key: "gallery_furniture", label: "Gallery · Furniture", description: "Tables and chairs." },
-  { key: "gallery_uploads", label: "Gallery · Custom uploads", description: "Photos uploaded from the Gallery tab." },
+  { key: "gallery_uploads", label: "Gallery · Custom uploads", description: "Extra photos appended to the gallery (uploaded here or from the Gallery tab)." },
   { key: "blueprints", label: "Floor plans", description: "Blueprints and seating layouts." },
   { key: "products", label: "Rental product shots", description: "Product photos used on rentals pages." },
   { key: "photos", label: "Photo library", description: "General photo library used across the site." },
@@ -40,6 +41,7 @@ function SiteImagesPage() {
   const { isAdmin, loading: roleLoading } = useIsAdmin();
   const navigate = useNavigate();
   const [category, setCategory] = useState(CATEGORIES[0].key);
+  const [showArchived, setShowArchived] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate({ to: "/login", search: { next: "/admin/site-images" } as never });
@@ -55,7 +57,7 @@ function SiteImagesPage() {
 
   return (
     <SiteLayout>
-      <PageHero eyebrow="Admin" title="Site Images" subtitle="Add, replace, remove and reorder every image shown on the public site." />
+      <PageHero eyebrow="Admin" title="Site Images" subtitle="Add, replace, archive, delete and reorder every image shown on the public site." />
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
         <Link to="/admin" className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to Admin
@@ -73,30 +75,41 @@ function SiteImagesPage() {
             </button>
           ))}
         </div>
-        <p className="mb-6 text-sm text-muted-foreground">{activeMeta.description}</p>
-        <CategoryPanel category={category} />
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-muted-foreground">{activeMeta.description}</p>
+          <label className="inline-flex items-center gap-2 text-sm text-foreground">
+            <input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} className="h-4 w-4" />
+            Show archived
+          </label>
+        </div>
+        <CategoryPanel category={category} showArchived={showArchived} />
       </section>
     </SiteLayout>
   );
 }
 
-function CategoryPanel({ category }: { category: string }) {
+function CategoryPanel({ category, showArchived }: { category: string; showArchived: boolean }) {
   const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
   const { data: images = [], isLoading } = useQuery({
-    queryKey: ["site-images", category],
+    queryKey: ["site-images", category, { archived: showArchived }],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("site_images")
-        .select("*")
-        .eq("category", category)
-        .order("sort_order", { ascending: true });
+      let q = supabase.from("site_images").select("*").eq("category", category).order("sort_order", { ascending: true });
+      if (!showArchived) q = q.eq("archived", false);
+      const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as Row[];
     },
   });
+
+  function invalidate() {
+    qc.invalidateQueries({ queryKey: ["site-images", category] });
+    qc.invalidateQueries({ queryKey: ["site-images-public"] });
+    qc.invalidateQueries({ queryKey: ["gallery"] });
+    qc.invalidateQueries({ queryKey: ["admin-gallery"] });
+  }
 
   async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
@@ -116,7 +129,7 @@ function CategoryPanel({ category }: { category: string }) {
         });
         if (error) throw error;
       }
-      qc.invalidateQueries({ queryKey: ["site-images", category] });
+      invalidate();
     } catch (err) {
       alert("Upload failed: " + (err as Error).message);
     } finally {
@@ -130,7 +143,15 @@ function CategoryPanel({ category }: { category: string }) {
       const { error } = await supabase.from("site_images").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["site-images", category] }),
+    onSuccess: invalidate,
+  });
+
+  const archive = useMutation({
+    mutationFn: async ({ id, archived }: { id: string; archived: boolean }) => {
+      const { error } = await supabase.from("site_images").update({ archived }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: invalidate,
   });
 
   const move = useMutation({
@@ -144,7 +165,7 @@ function CategoryPanel({ category }: { category: string }) {
       const { error: e2 } = await supabase.from("site_images").update({ sort_order: a.sort_order }).eq("id", b.id);
       if (e1 || e2) throw e1 ?? e2;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["site-images", category] }),
+    onSuccess: invalidate,
   });
 
   return (
@@ -163,17 +184,20 @@ function CategoryPanel({ category }: { category: string }) {
       {isLoading ? (
         <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />
       ) : images.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground">No images in this category yet.</p>
+        <p className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground">
+          {showArchived ? "No archived images in this category." : "No images in this category yet."}
+        </p>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {images.map((img, i) => (
             <ImageCard
               key={img.id}
               img={img}
-              onDelete={() => { if (confirm("Delete this image?")) del.mutate(img.id); }}
+              onDelete={() => { if (confirm("Permanently delete this image? Use Archive to hide it without deleting.")) del.mutate(img.id); }}
+              onArchive={() => archive.mutate({ id: img.id, archived: !img.archived })}
               onUp={i > 0 ? () => move.mutate({ id: img.id, dir: -1 }) : undefined}
               onDown={i < images.length - 1 ? () => move.mutate({ id: img.id, dir: 1 }) : undefined}
-              onSaved={() => qc.invalidateQueries({ queryKey: ["site-images", category] })}
+              onSaved={invalidate}
             />
           ))}
         </div>
@@ -185,18 +209,22 @@ function CategoryPanel({ category }: { category: string }) {
 function ImageCard({
   img,
   onDelete,
+  onArchive,
   onUp,
   onDown,
   onSaved,
 }: {
   img: Row;
   onDelete: () => void;
+  onArchive: () => void;
   onUp?: () => void;
   onDown?: () => void;
   onSaved: () => void;
 }) {
   const [alt, setAlt] = useState(img.alt ?? "");
   const [caption, setCaption] = useState(img.caption ?? "");
+  const [replacing, setReplacing] = useState(false);
+  const replaceRef = useRef<HTMLInputElement>(null);
   const dirty = useMemo(() => alt !== (img.alt ?? "") || caption !== (img.caption ?? ""), [alt, caption, img]);
 
   const save = useMutation({
@@ -207,10 +235,30 @@ function ImageCard({
     onSuccess: onSaved,
   });
 
+  async function onReplace(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setReplacing(true);
+    try {
+      const url = await uploadImage(file, img.category);
+      const { error } = await supabase.from("site_images").update({ url, file: file.name, bucket: "images" }).eq("id", img.id);
+      if (error) throw error;
+      onSaved();
+    } catch (err) {
+      alert("Replace failed: " + (err as Error).message);
+    } finally {
+      setReplacing(false);
+      if (replaceRef.current) replaceRef.current.value = "";
+    }
+  }
+
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card">
+    <div className={`overflow-hidden rounded-xl border bg-card ${img.archived ? "border-amber-500/60 opacity-70" : "border-border"}`}>
       <div className="relative">
         <img src={img.url} alt={alt} className="h-48 w-full object-cover" />
+        {img.archived && (
+          <span className="absolute left-2 top-2 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-semibold uppercase text-white">Archived</span>
+        )}
         <div className="absolute right-2 top-2 flex gap-1">
           {onUp && (
             <button onClick={onUp} className="rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80" title="Move up"><ArrowUp className="h-3.5 w-3.5" /></button>
@@ -218,7 +266,18 @@ function ImageCard({
           {onDown && (
             <button onClick={onDown} className="rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80" title="Move down"><ArrowDown className="h-3.5 w-3.5" /></button>
           )}
-          <button onClick={onDelete} className="rounded-full bg-red-600 p-1.5 text-white hover:bg-red-700" title="Delete"><Trash2 className="h-3.5 w-3.5" /></button>
+          <button onClick={() => replaceRef.current?.click()} disabled={replacing} className="rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80 disabled:opacity-50" title="Replace image">
+            {replacing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+          </button>
+          <input ref={replaceRef} type="file" accept="image/*" className="hidden" onChange={onReplace} />
+          <button
+            onClick={onArchive}
+            className={`rounded-full p-1.5 text-white ${img.archived ? "bg-emerald-600 hover:bg-emerald-700" : "bg-amber-600 hover:bg-amber-700"}`}
+            title={img.archived ? "Unarchive (show on site)" : "Archive (hide from site)"}
+          >
+            {img.archived ? <ArchiveRestore className="h-3.5 w-3.5" /> : <Archive className="h-3.5 w-3.5" />}
+          </button>
+          <button onClick={onDelete} className="rounded-full bg-red-600 p-1.5 text-white hover:bg-red-700" title="Delete permanently"><Trash2 className="h-3.5 w-3.5" /></button>
         </div>
       </div>
       <div className="space-y-2 p-3">

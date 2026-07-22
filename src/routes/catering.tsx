@@ -123,7 +123,7 @@ function CateringPage() {
 
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="catering.hero"
         eyebrow={t("catering.hero.eyebrow")}
         title={t("catering.hero.title")}
         subtitle={t("catering.hero.subtitle")}

@@ -20,7 +20,7 @@ function TentRentalsPage() {
   const hero = pickPhoto("tent-rentals-hero");
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="rentals.hero"
         eyebrow={t("tentRentals.hero.eyebrow")}
         title={t("tentRentals.hero.title")}
         subtitle={t("tentRentals.hero.subtitle")}

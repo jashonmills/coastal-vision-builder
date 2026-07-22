@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadImage } from "@/lib/upload-image";
-import { TEXT_SLOTS, IMAGE_SLOTS } from "@/lib/content-slots";
+import { groupTextSlotsByPage, groupImageSlotsByPage } from "@/lib/content-slots";
 import { useAllSiteContent, useSaveSlot } from "@/hooks/use-site-content";
 import { AdminTabs } from "./admin.quote-requests";
 
@@ -285,9 +285,21 @@ function CaptionEditor({ row }: { row: GalleryRow }) {
 
 function ImagesAdmin() {
   const { data: content = {} } = useAllSiteContent();
+  const groups = groupImageSlotsByPage();
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {IMAGE_SLOTS.map((s) => <ImageSlotRow key={s.key} slotKey={s.key} label={s.label} url={content[s.key]?.url} />)}
+    <div className="space-y-8">
+      {groups.map((g) => (
+        <div key={g.page}>
+          <h3 className="mb-3 text-lg font-semibold text-foreground">{g.page}</h3>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {g.slots.map((s) => <ImageSlotRow key={s.key} slotKey={s.key} label={s.label} url={content[s.key]?.url} />)}
+          </div>
+        </div>
+      ))}
+      <p className="rounded-lg border border-dashed border-border p-4 text-xs text-muted-foreground">
+        Looking for gallery, product, or floor-plan images? Manage those in the{" "}
+        <Link to="/admin/site-images" className="font-semibold text-primary underline">Site Images Library</Link>.
+      </p>
     </div>
   );
 }
@@ -322,9 +334,32 @@ function ImageSlotRow({ slotKey, label, url }: { slotKey: string; label: string;
 
 function TextAdmin() {
   const { data: content = {} } = useAllSiteContent();
+  const groups = groupTextSlotsByPage();
+  const [activePage, setActivePage] = useState(groups[0]?.page ?? "Home");
+  const active = groups.find((g) => g.page === activePage) ?? groups[0];
   return (
-    <div className="space-y-4">
-      {TEXT_SLOTS.map((s) => <TextSlotRow key={s.key} slotKey={s.key} label={s.label} fallback={s.default} multiline={s.multiline} current={content[s.key]?.text} />)}
+    <div>
+      <div className="mb-6 flex flex-wrap gap-2">
+        {groups.map((g) => (
+          <button
+            key={g.page}
+            onClick={() => setActivePage(g.page)}
+            className={`rounded-full border px-4 py-1.5 text-sm font-medium ${
+              activePage === g.page ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"
+            }`}
+          >
+            {g.page}
+          </button>
+        ))}
+      </div>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Edits save immediately and update the public site. Admins can also click any hero heading on the site to edit it inline.
+      </p>
+      <div className="space-y-4">
+        {active?.slots.map((s) => (
+          <TextSlotRow key={s.key} slotKey={s.key} label={s.label} fallback={s.default} multiline={s.multiline} current={content[s.key]?.text} />
+        ))}
+      </div>
     </div>
   );
 }

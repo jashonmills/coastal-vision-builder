@@ -22,7 +22,7 @@ function ServicesPage() {
   const hero = pickPhoto("services-hero");
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="services.hero"
         eyebrow={t("services.hero.eyebrow")}
         title={t("services.hero.title")}
         subtitle={t("services.hero.subtitle")}

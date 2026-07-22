@@ -20,7 +20,7 @@ function EventsPage() {
   const hero = pickPhoto("events-hero");
   return (
     <SiteLayout>
-      <PageHero
+      <PageHero slot="events.hero"
         eyebrow={t("events.hero.eyebrow")}
         title={t("events.hero.title")}
         subtitle={t("events.hero.subtitle")}
