@@ -45,7 +45,9 @@ function StaffPage() {
     return <SiteLayout><div className="p-12 text-center">Admin access required. <Link to="/admin" className="text-primary underline">Go to admin</Link></div></SiteLayout>;
   }
 
+  return (
     <SiteLayout>
+      <AdminPageHeader eyebrow="Team" title="Staff" subtitle="Team members assignable to calendar events and job sheets." />
       <AdminPageHeader eyebrow="Team" title="Staff" subtitle="Team members assignable to calendar events and job sheets." />
       <section className="mx-auto max-w-5xl">
 
