@@ -90,7 +90,6 @@ function QuoteRequestsPage() {
         subtitle="Customer submissions from the AI Tent Planner. Review and create quotes."
       />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <AdminTabs active="quote-requests" />
         {(() => {
           const all = data ?? [];
           const typed = typeFilter === "all" ? all : all.filter((r) => (r.request_type ?? "rental") === typeFilter);
@@ -254,11 +253,4 @@ export function StatusPill({ status }: { status: string }) {
       {status.replace(/_/g, " ")}
     </span>
   );
-}
-
-// AdminTabs was the old pill-row nav. The admin console now uses a persistent
-// sidebar (see AdminLayout), so this component intentionally renders nothing.
-// Kept exported so existing route files can keep their import without churn.
-export function AdminTabs(_: { active?: string }) {
-  return null;
 }

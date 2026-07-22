@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
-import { AdminTabs } from "./admin.quote-requests";
 import { listAdmins, inviteAdmin, removeAdmin } from "@/lib/admins.functions";
 
 export const Route = createFileRoute("/admin/admins")({
@@ -65,7 +64,6 @@ function AdminsPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Admins" subtitle="Invite or remove users with admin access." />
       <section className="mx-auto max-w-4xl px-4 py-10 lg:px-8">
-        <AdminTabs active="admins" />
 
         <div className="mb-6 rounded-xl border border-border bg-card p-4">
           <p className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">

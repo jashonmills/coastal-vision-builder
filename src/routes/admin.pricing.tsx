@@ -1,38 +1,37 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Plus, Trash2, Upload, Save, ShieldCheck, Image as ImageIcon, Type, Tag } from "lucide-react";
+import { Loader2, Plus, Trash2, Save, ShieldCheck } from "lucide-react";
 import { z } from "zod";
 import { AdminLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
-import { uploadImage } from "@/lib/upload-image";
-import { groupTextSlotsByPage, groupImageSlotsByPage } from "@/lib/content-slots";
-import { useAllSiteContent, useSaveSlot } from "@/hooks/use-site-content";
 
-type Tab = "pricing" | "gallery" | "images" | "text";
-const TAB_LABELS: Record<Tab, { label: string; icon: typeof Tag }> = {
-  pricing: { label: "Pricing", icon: Tag },
-  gallery: { label: "Gallery", icon: ImageIcon },
-  images: { label: "Site Images", icon: Upload },
-  text: { label: "Site Text", icon: Type },
+// Legacy tab search values used to deep-link into this page's now-removed
+// gallery/images/text tabs. They now live on /admin/content.
+const LEGACY_TAB_TO_CONTENT: Record<string, "media" | "hero" | "text"> = {
+  gallery: "media",
+  images: "hero",
+  text: "text",
 };
 
 export const Route = createFileRoute("/admin/pricing")({
-  head: () => ({ meta: [{ title: "Pricing & Content | Admin" }] }),
+  head: () => ({ meta: [{ title: "Pricing | Admin" }] }),
   validateSearch: (s: Record<string, unknown>) =>
-    z.object({ tab: z.enum(["pricing", "gallery", "images", "text"]).optional() }).parse(s),
-  component: PricingContentPage,
+    z.object({ tab: z.string().optional() }).parse(s),
+  beforeLoad: ({ search }) => {
+    const t = (search as { tab?: string }).tab;
+    if (t && LEGACY_TAB_TO_CONTENT[t]) {
+      throw redirect({ to: "/admin/content", search: { tab: LEGACY_TAB_TO_CONTENT[t] } as never });
+    }
+  },
+  component: PricingPage,
 });
 
-function PricingContentPage() {
+function PricingPage() {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: roleLoading } = useIsAdmin();
-  const navigate = useNavigate();
-  const search = Route.useSearch();
-  const tab: Tab = search.tab ?? "pricing";
-  const setTab = (t: Tab) => navigate({ to: "/admin/pricing", search: { tab: t } });
 
   if (authLoading || roleLoading) {
     return <AdminLayout><div className="flex min-h-[60vh] items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></AdminLayout>;
@@ -43,47 +42,24 @@ function PricingContentPage() {
   return (
     <AdminLayout>
       <AdminPageHeader
-        eyebrow="Catalog & Content"
-        title={TAB_LABELS[tab].label}
-        subtitle="Manage pricing, gallery photos, site images and editable site text."
+        eyebrow="Catalog & Pricing"
+        title="Pricing"
+        subtitle="Edit the public rental price list customers see. For stock, reservations and check-in/out, use Inventory."
       />
-      <div className="mb-6 flex flex-wrap gap-2 rounded-xl border border-border bg-card p-1.5">
-        {(Object.keys(TAB_LABELS) as Tab[]).map((k) => {
-          const { label, icon: Icon } = TAB_LABELS[k];
-          const active = tab === k;
-          return (
-            <button
-              key={k}
-              onClick={() => setTab(k)}
-              className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors ${
-                active ? "bg-primary text-primary-foreground shadow-sm" : "text-foreground hover:bg-secondary"
-              }`}
-            >
-              <Icon className="h-4 w-4" /> {label}
-            </button>
-          );
-        })}
+      <div className="mb-6 rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+        <strong className="text-foreground">Price list.</strong>{" "}
+        For quantities, reservations and check-in/out, use{" "}
+        <Link to="/admin/inventory" className="font-semibold text-primary underline">Inventory Management</Link>.
+        {" "}To edit site text, hero images, or the media library, use{" "}
+        <Link to="/admin/content" className="font-semibold text-primary underline">Site Content</Link>.
       </div>
-
-      {tab === "pricing" && (
-        <div className="mb-6 rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
-          <strong className="text-foreground">Pricing / Public Catalog.</strong>{" "}
-          Edit the public-facing rental price list shown to customers. For owned-stock, reservations, check-in/out and quantity adjustments, use{" "}
-          <Link to="/admin/inventory" className="font-semibold text-primary underline">Inventory Management</Link>.
-        </div>
-      )}
-
-      {tab === "pricing" && <PricingAdmin />}
-      {tab === "gallery" && <GalleryAdmin />}
-      {tab === "images" && <ImagesAdmin />}
-      {tab === "text" && <TextAdmin />}
+      <PricingAdmin />
     </AdminLayout>
   );
 }
 
-
 function ClaimAdmin() {
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -112,8 +88,6 @@ function ClaimAdmin() {
     </div>
   );
 }
-
-/* ---------------- Inventory ---------------- */
 
 type InvItem = { id: string; category: string; name: string; price_cents: number; unit: string; notes: string | null; sort_order: number };
 
@@ -195,205 +169,5 @@ function PricingRow({ item }: { item: InvItem }) {
         </div>
       </td>
     </tr>
-  );
-}
-
-/* ---------------- Gallery ---------------- */
-
-type GalleryRow = { id: string; url: string; caption: string | null; sort_order: number };
-
-function GalleryAdmin() {
-  const qc = useQueryClient();
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
-
-  const { data: images = [], isLoading } = useQuery({
-    queryKey: ["admin-gallery"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("site_images").select("id,url,caption,sort_order").eq("category", "gallery_uploads").order("sort_order");
-      if (error) throw error;
-      return (data ?? []) as GalleryRow[];
-    },
-  });
-
-  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files ?? []);
-    if (!files.length) return;
-    setUploading(true);
-    try {
-      for (const f of files) {
-        const url = await uploadImage(f, "gallery");
-        await supabase.from("site_images").insert({
-          category: "gallery_uploads",
-          bucket: "images",
-          file: f.name,
-          url,
-          alt: f.name,
-          sort_order: images.length,
-        });
-      }
-      qc.invalidateQueries({ queryKey: ["admin-gallery"] });
-      qc.invalidateQueries({ queryKey: ["gallery"] });
-    } catch (err) { alert("Upload failed: " + (err as Error).message); }
-    finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
-  }
-
-  const del = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("site_images").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-gallery"] }); qc.invalidateQueries({ queryKey: ["gallery"] }); },
-  });
-
-  if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />;
-  return (
-    <div>
-      <div className="mb-4 flex justify-end">
-        <button onClick={() => fileRef.current?.click()} disabled={uploading} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">
-          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />} Upload photos
-        </button>
-        <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={onPick} />
-      </div>
-      {images.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground">No gallery photos yet. Upload some to override the default gallery.</p>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {images.map((img) => (
-            <div key={img.id} className="group relative overflow-hidden rounded-xl border border-border bg-card">
-              <img src={img.url} alt={img.caption ?? ""} className="h-40 w-full object-cover" />
-              <button onClick={() => { if (confirm("Delete this image?")) del.mutate(img.id); }} className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white opacity-0 group-hover:opacity-100"><Trash2 className="h-3.5 w-3.5" /></button>
-              <CaptionEditor row={img} />
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CaptionEditor({ row }: { row: GalleryRow }) {
-  const qc = useQueryClient();
-  const [v, setV] = useState(row.caption ?? "");
-  const save = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.from("site_images").update({ caption: v }).eq("id", row.id);
-      if (error) throw error;
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-gallery"] }),
-  });
-  return (
-    <div className="flex gap-1 p-2">
-      <input value={v} onChange={(e) => setV(e.target.value)} placeholder="Caption…" className="flex-1 rounded border px-2 py-1 text-xs" />
-      <button onClick={() => save.mutate()} disabled={v === (row.caption ?? "")} className="rounded-full bg-emerald-600 p-1.5 text-white disabled:opacity-30"><Save className="h-3 w-3" /></button>
-    </div>
-  );
-}
-
-/* ---------------- Site Images ---------------- */
-
-function ImagesAdmin() {
-  const { data: content = {} } = useAllSiteContent();
-  const groups = groupImageSlotsByPage();
-  return (
-    <div className="space-y-8">
-      {groups.map((g) => (
-        <div key={g.page}>
-          <h3 className="mb-3 text-lg font-semibold text-foreground">{g.page}</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {g.slots.map((s) => <ImageSlotRow key={s.key} slotKey={s.key} label={s.label} url={content[s.key]?.url} />)}
-          </div>
-        </div>
-      ))}
-      <p className="rounded-lg border border-dashed border-border p-4 text-xs text-muted-foreground">
-        Looking for gallery, product, or floor-plan images? Manage those in the{" "}
-        <Link to="/admin/site-images" className="font-semibold text-primary underline">Site Images Library</Link>.
-      </p>
-    </div>
-  );
-}
-
-function ImageSlotRow({ slotKey, label, url }: { slotKey: string; label: string; url?: string }) {
-  const save = useSaveSlot();
-  const ref = useRef<HTMLInputElement>(null);
-  const [busy, setBusy] = useState(false);
-
-  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]; if (!file) return;
-    setBusy(true);
-    try { const u = await uploadImage(file, "slots"); await save.mutateAsync({ key: slotKey, value: { url: u } }); }
-    catch (err) { alert("Upload failed: " + (err as Error).message); }
-    finally { setBusy(false); if (ref.current) ref.current.value = ""; }
-  }
-
-  return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <p className="mb-2 text-sm font-medium text-foreground">{label}</p>
-      <p className="mb-3 font-mono text-[10px] text-muted-foreground">{slotKey}</p>
-      {url ? <img src={url} alt="" className="mb-3 h-32 w-full rounded object-cover" /> : <div className="mb-3 flex h-32 items-center justify-center rounded bg-secondary text-xs text-muted-foreground">Using default</div>}
-      <button onClick={() => ref.current?.click()} disabled={busy} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">
-        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />} {url ? "Replace" : "Upload"}
-      </button>
-      <input ref={ref} type="file" accept="image/*" className="hidden" onChange={onPick} />
-    </div>
-  );
-}
-
-/* ---------------- Site Text ---------------- */
-
-function TextAdmin() {
-  const { data: content = {} } = useAllSiteContent();
-  const groups = groupTextSlotsByPage();
-  const [activePage, setActivePage] = useState(groups[0]?.page ?? "Home");
-  const active = groups.find((g) => g.page === activePage) ?? groups[0];
-  return (
-    <div>
-      <div className="mb-6 flex flex-wrap gap-2">
-        {groups.map((g) => (
-          <button
-            key={g.page}
-            onClick={() => setActivePage(g.page)}
-            className={`rounded-full border px-4 py-1.5 text-sm font-medium ${
-              activePage === g.page ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"
-            }`}
-          >
-            {g.page}
-          </button>
-        ))}
-      </div>
-      <p className="mb-4 text-xs text-muted-foreground">
-        Edits save immediately and update the public site. Admins can also click any hero heading on the site to edit it inline.
-      </p>
-      <div className="space-y-4">
-        {active?.slots.map((s) => (
-          <TextSlotRow key={s.key} slotKey={s.key} label={s.label} fallback={s.default} multiline={s.multiline} current={content[s.key]?.text} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function TextSlotRow({ slotKey, label, fallback, multiline, current }: { slotKey: string; label: string; fallback: string; multiline?: boolean; current?: string }) {
-  const save = useSaveSlot();
-  const [v, setV] = useState(current ?? fallback);
-  const dirty = v !== (current ?? fallback);
-  return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="mb-2 flex items-center justify-between">
-        <p className="text-sm font-medium text-foreground">{label}</p>
-        <p className="font-mono text-[10px] text-muted-foreground">{slotKey}</p>
-      </div>
-      {multiline ? (
-        <textarea value={v} onChange={(e) => setV(e.target.value)} rows={3} className="w-full rounded border px-3 py-2 text-sm" />
-      ) : (
-        <input value={v} onChange={(e) => setV(e.target.value)} className="w-full rounded border px-3 py-2 text-sm" />
-      )}
-      <div className="mt-2 flex justify-end gap-2">
-        <button onClick={() => setV(fallback)} className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">Reset to default</button>
-        <button onClick={() => save.mutate({ key: slotKey, value: { text: v } })} disabled={!dirty || save.isPending} className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white disabled:opacity-40">
-          {save.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />} Save
-        </button>
-      </div>
-    </div>
   );
 }

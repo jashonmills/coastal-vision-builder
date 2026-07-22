@@ -17,7 +17,7 @@ import {
   getQuoteItemsAvailability,
 } from "@/lib/quotes.functions";
 import { bookQuote, unbookQuote, getQuoteBookingStatus, getQuoteBookingIntegrity } from "@/lib/bookings.functions";
-import { StatusPill, AdminTabs } from "./admin.quote-requests";
+import { StatusPill } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 import { buildQuoteMailto } from "@/lib/quote-email-mailto";
@@ -130,7 +130,6 @@ function EditQuotePage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <AdminTabs active="quotes" />
         <Link to="/admin/quotes" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
           <ArrowLeft className="h-4 w-4" /> All quotes
         </Link>

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, ArrowLeft, Plus, X, Check, Trash2 } from "lucide-react";
+import { Loader2, Plus, X, Check, Trash2 } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -15,7 +15,6 @@ import {
   EVENT_STATUSES,
   EVENT_COLORS,
 } from "@/lib/scheduler.functions";
-import { AdminTabs } from "./admin.quote-requests";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/scheduler")({
@@ -122,9 +121,7 @@ function SchedulerPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Scheduler" subtitle="Quote requests, rentals, deliveries, pickups, and tasks." />
       <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-        <AdminTabs active="scheduler" />
         <div className="mb-4 flex items-center justify-between">
-          <Link to="/admin" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Back to admin</Link>
           <button onClick={() => setEditing({ event_type: "internal_note", status: "scheduled", start_time: new Date().toISOString() })}
             className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
             <Plus className="h-4 w-4" /> New Event

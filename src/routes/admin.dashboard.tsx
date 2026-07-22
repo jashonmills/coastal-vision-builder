@@ -17,7 +17,7 @@ import {
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
-import { AdminTabs, StatusPill } from "./admin.quote-requests";
+import { StatusPill } from "./admin.quote-requests";
 import { getAdminDashboard } from "@/lib/dashboard.functions";
 
 export const Route = createFileRoute("/admin/dashboard")({
@@ -73,7 +73,6 @@ function DashboardPage() {
         subtitle="What needs attention today across requests, quotes, events, and inventory."
       />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <AdminTabs active="dashboard" />
 
         {isLoading || !data ? (
           <div className="flex justify-center py-12">

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Upload, FileSpreadsheet, ArrowLeft, RefreshCw, Trash2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, Upload, FileSpreadsheet, RefreshCw, Trash2, Link2, CheckCircle2, AlertCircle } from "lucide-react";
 import * as XLSX from "xlsx";
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
@@ -18,7 +18,6 @@ import {
   deleteConnectedSource,
 } from "@/lib/spreadsheet.functions";
 import { FIELD_SCHEMAS, IMPORT_TYPE_LABELS } from "@/lib/spreadsheet-schema";
-import { AdminTabs } from "./admin.quote-requests";
 
 export const Route = createFileRoute("/admin/data-import")({
   head: () => ({ meta: [{ title: "Data Import | Admin" }] }),
@@ -50,10 +49,6 @@ function DataImportPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Spreadsheet Import & Sync" subtitle="Bring your existing inventory, pricing, customer, or rental spreadsheets into the system." />
       <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
-        <AdminTabs active="admin" />
-        <div className="mb-6">
-          <Link to="/admin" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Back to admin</Link>
-        </div>
         <ImportWorkflow />
         <ConnectLiveSection />
         <ImportHistory />
