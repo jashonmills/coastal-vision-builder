@@ -436,6 +436,17 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
     if (pErr) throw new Error(pErr.message);
     const catalog: PricingRow[] = pricing ?? [];
 
+    // Look up owning customer user id (from saved plan if attached)
+    let customerUserId: string | null = null;
+    if (req.saved_recommendation_id) {
+      const { data: sr } = await supabase
+        .from("saved_recommendations")
+        .select("user_id")
+        .eq("id", req.saved_recommendation_id)
+        .maybeSingle();
+      customerUserId = (sr?.user_id as string | null) ?? null;
+    }
+
     // Create the quote (snapshot customer/event info)
     const { data: q, error: qErr } = await supabase
       .from("quotes")
@@ -445,6 +456,7 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
         customer_name: req.customer_name,
         customer_email: req.customer_email,
         customer_phone: req.customer_phone,
+        customer_user_id: customerUserId,
         event_type: req.event_type,
         event_date: req.event_date,
         event_location: req.event_location,

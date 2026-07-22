@@ -57,12 +57,15 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string | null
+          customer_user_id: string | null
           event_date: string | null
           form_data: Json
           id: string
           ip_address: string | null
           pdf_path: string | null
+          quote_id: string | null
           signature_image_path: string | null
+          status: string
           typed_signature: string
           user_agent: string | null
         }
@@ -72,12 +75,15 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone?: string | null
+          customer_user_id?: string | null
           event_date?: string | null
           form_data?: Json
           id?: string
           ip_address?: string | null
           pdf_path?: string | null
+          quote_id?: string | null
           signature_image_path?: string | null
+          status?: string
           typed_signature: string
           user_agent?: string | null
         }
@@ -87,16 +93,27 @@ export type Database = {
           customer_email?: string
           customer_name?: string
           customer_phone?: string | null
+          customer_user_id?: string | null
           event_date?: string | null
           form_data?: Json
           id?: string
           ip_address?: string | null
           pdf_path?: string | null
+          quote_id?: string | null
           signature_image_path?: string | null
+          status?: string
           typed_signature?: string
           user_agent?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "contract_submissions_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       email_send_log: {
         Row: {
@@ -704,6 +721,7 @@ export type Database = {
           customer_name: string
           customer_notes: string | null
           customer_phone: string | null
+          customer_user_id: string | null
           delivery_fee_cents: number
           deposit_amount_cents: number | null
           discount_cents: number
@@ -739,6 +757,7 @@ export type Database = {
           customer_name: string
           customer_notes?: string | null
           customer_phone?: string | null
+          customer_user_id?: string | null
           delivery_fee_cents?: number
           deposit_amount_cents?: number | null
           discount_cents?: number
@@ -774,6 +793,7 @@ export type Database = {
           customer_name?: string
           customer_notes?: string | null
           customer_phone?: string | null
+          customer_user_id?: string | null
           delivery_fee_cents?: number
           deposit_amount_cents?: number | null
           discount_cents?: number

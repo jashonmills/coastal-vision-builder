@@ -1,15 +1,19 @@
 import { createFileRoute, Link, notFound, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useServerFn } from '@tanstack/react-start'
+import { useQuery } from '@tanstack/react-query'
+import { z } from 'zod'
 import { SiteLayout } from '@/components/SiteLayout'
 import { SignaturePad } from '@/components/contracts/SignaturePad'
 import { CONTRACT_SCHEMAS, type ContractField, type ContractFieldGroup } from '@/lib/contracts/contract-fields'
 import { submitContract } from '@/lib/contracts/submit.functions'
+import { getMyQuote } from '@/lib/customer-portal.functions'
 import { contracts } from '@/data/contracts'
 import { CheckCircle2, FileText, ShieldCheck } from 'lucide-react'
 
 export const Route = createFileRoute('/rental-contract/fill/$contractId')({
   component: FillContractPage,
+  validateSearch: z.object({ quoteId: z.string().uuid().optional() }),
   loader: ({ params }) => {
     const schema = CONTRACT_SCHEMAS[params.contractId]
     if (!schema) throw notFound()
@@ -35,9 +39,11 @@ export const Route = createFileRoute('/rental-contract/fill/$contractId')({
 function FillContractPage() {
   const { schema } = Route.useLoaderData()
   const params = Route.useParams()
+  const { quoteId } = Route.useSearch()
   const navigate = useNavigate()
   const submit = useServerFn(submitContract)
   const doc = contracts.find((c) => c.id === params.contractId)
+  const getQuoteFn = useServerFn(getMyQuote)
 
   const [values, setValues] = useState<Record<string, string>>({})
   const [typedSig, setTypedSig] = useState('')
@@ -46,6 +52,27 @@ function FillContractPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+
+  // Prefill from linked quote when accessed via ?quoteId=
+  const quoteQuery = useQuery({
+    queryKey: ['contract-prefill-quote', quoteId],
+    queryFn: () => getQuoteFn({ data: { id: quoteId! } }),
+    enabled: !!quoteId,
+    retry: false,
+  })
+  useEffect(() => {
+    const q = quoteQuery.data?.quote
+    if (!q) return
+    setValues((prev) => ({
+      customer_name: prev.customer_name || q.customer_name || '',
+      customer_email: prev.customer_email || q.customer_email || '',
+      customer_phone: prev.customer_phone || q.customer_phone || '',
+      event_date: prev.event_date || q.event_date || '',
+      event_location: prev.event_location || q.event_location || '',
+      guest_count: prev.guest_count || (q.guest_count != null ? String(q.guest_count) : ''),
+      ...prev,
+    }))
+  }, [quoteQuery.data])
 
   function setField(name: string, v: string) {
     setValues((prev) => ({ ...prev, [name]: v }))
@@ -74,6 +101,7 @@ function FillContractPage() {
           formData: values,
           typedSignature: typedSig.trim(),
           signaturePngDataUrl: drawnSig,
+          quoteId: quoteId ?? null,
         },
       })
       setDone(true)
