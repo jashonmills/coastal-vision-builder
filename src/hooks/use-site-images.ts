@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { SiteImage } from "./site-images";
+import type { SiteImage } from "@/lib/site-images";
 
 export type SiteImageRow = {
   id: string;
