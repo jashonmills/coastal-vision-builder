@@ -37,36 +37,27 @@ type CategorySection = {
   items: SiteImage[];
 };
 
-const SECTIONS: CategorySection[] = [
-  {
-    key: "setups",
-    label: "Event Setups",
-    description: "Past events with tents up, tables dressed, and the lights on.",
-    items: gallerySetups,
-  },
-  {
-    key: "equipment",
-    label: "Bar & Equipment",
-    description: "Portable bars, fill-and-chill, heaters, speakers, and other gear.",
-    items: galleryEquipment,
-  },
-  {
-    key: "furniture",
-    label: "Tables & Chairs",
-    description: "Folding chairs and tables available for any setup.",
-    items: galleryFurniture,
-  },
-  {
-    key: "blueprints",
-    label: "Blueprints & Floor Plans",
-    description: "Hand-drawn layouts showing tent, table, and dance-floor options.",
-    items: galleryBlueprints,
-  },
-];
+function buildSections(admin: Record<string, { url: string; alt: string; caption: string | null; sort_order: number; id: string; category: string }[]> | undefined): CategorySection[] {
+  const setups = mergeCategory(gallerySetups, admin?.gallery_setups);
+  const equipment = mergeCategory(galleryEquipment, admin?.gallery_equipment);
+  const furniture = mergeCategory(galleryFurniture, admin?.gallery_furniture);
+  const blueprints = mergeCategory(galleryBlueprints, admin?.blueprints);
+  // Custom uploads always append at the end of setups
+  const extras = rowsToSiteImages(admin?.gallery_uploads);
+  return [
+    { key: "setups", label: "Event Setups", description: "Past events with tents up, tables dressed, and the lights on.", items: [...setups, ...extras] },
+    { key: "equipment", label: "Bar & Equipment", description: "Portable bars, fill-and-chill, heaters, speakers, and other gear.", items: equipment },
+    { key: "furniture", label: "Tables & Chairs", description: "Folding chairs and tables available for any setup.", items: furniture },
+    { key: "blueprints", label: "Blueprints & Floor Plans", description: "Hand-drawn layouts showing tent, table, and dance-floor options.", items: blueprints },
+  ];
+}
 
 const FILTERS: { key: CategoryKey; label: string }[] = [
   { key: "all", label: "All" },
-  ...SECTIONS.map((s) => ({ key: s.key as CategoryKey, label: s.label })),
+  { key: "setups", label: "Event Setups" },
+  { key: "equipment", label: "Bar & Equipment" },
+  { key: "furniture", label: "Tables & Chairs" },
+  { key: "blueprints", label: "Blueprints & Floor Plans" },
 ];
 
 function GalleryPage() {
@@ -74,10 +65,13 @@ function GalleryPage() {
   const [filter, setFilter] = useState<CategoryKey>("all");
   const hero = pickPhoto("gallery-hero");
   const lb = useLightbox();
+  const { data: admin } = useSiteImagesByCategory();
+
+  const sections = useMemo(() => buildSections(admin), [admin]);
 
   const visibleSections = useMemo(
-    () => (filter === "all" ? SECTIONS : SECTIONS.filter((s) => s.key === filter)),
-    [filter],
+    () => (filter === "all" ? sections : sections.filter((s) => s.key === filter)),
+    [filter, sections],
   );
 
   // Flattened list drives the lightbox so indices stay aligned with what's shown.
