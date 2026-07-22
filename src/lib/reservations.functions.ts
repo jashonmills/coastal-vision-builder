@@ -77,12 +77,12 @@ export const reserveInventory = createServerFn({ method: "POST" })
     await assertAdmin(context.userId);
     const { data: id, error } = await supabaseAdmin.rpc("reserve_inventory", {
       p_item: data.inventory_item_id,
-      p_quote: data.quote_id,
+      p_quote: data.quote_id as unknown as string,
       p_qty: data.quantity,
       p_start: data.start_date,
       p_end: data.end_date,
       p_hold_type: data.hold_type,
-      p_expires: data.expires_at ?? null,
+      p_expires: (data.expires_at ?? null) as unknown as string,
       p_allow_overbook: data.allow_overbook ?? false,
     });
     if (error) throw new Error(error.message);
