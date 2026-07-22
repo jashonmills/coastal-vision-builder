@@ -1,58 +1,17 @@
-## Goal
+## Catering page — Platters sub-section
 
-Give admins full control (upload, replace, delete, edit caption/alt, reorder) over every image rendered on public pages — not just the gallery. Currently all images are hardcoded in `src/lib/site-images.ts` and must be changed via code.
+Instead of shrinking it down, we're going to just move it to the bottom of the screen as- Not all the way to the bottom, but right before bartending services. Right before bartending services as a add-on item
 
-## Current state (verified)
+In `src/routes/catering.tsx`, on both the **Silver** buffet card (around lines 273–292) and the **Gold** buffet card (around lines 371–390):
 
-- `src/lib/site-images.ts` is the single source of truth for images, split into 7 groups: `gallerySetups`, `galleryEquipment`, `galleryFurniture`, `sketchImages` (=`galleryBlueprints`), `productImages`, `photoImages`, and `cateringCalloutImage`.
-- Consumers: `gallery.tsx`, `inventory.tsx`, `ServicesCallouts.tsx`, plus helpers `heroImage()` / `pickPhoto()` / `pickPhotos()` used across many pages.
-- Two public storage buckets already exist: `images` and `new-images`.
-- A `gallery_images` table exists but is minimal (`id, url, caption, sort_order, created_at`) and unused by the site.
+1. **Shrink the Hors d'Oeuvres list** by removing `"Seasonal fruit tray"` from the bulleted items — it stays a per-piece $5/pp add-on list only.
+2. **Append a Platters block** inside the same card, directly below the Hors d'Oeuvres list, so it reads as a related sub-section (smaller heading, thin divider above):
+  - Heading: **Platters** (uses same `ChefHat` treatment, smaller `text-base` heading so hors d'oeuvres remains the primary block)
+  - Note line: **$175 per platter · feeds up to 50 guests**
+  - Bulleted items:
+    - Seasonal fruit tray
+   Structure sketch:
+3. **i18n:** add three new keys under `catering.common` in every locale file (`en`, `es`, plus any other locales in `src/i18n/locales/`) — `platters`, `plattersNote`, `plattersFruitTray` — and reference them via `t(...)` instead of hardcoded strings. Mirror the existing hors d'oeuvres key pattern.
+4. No changes to the top "fine print" pricing pills — fruit tray pricing is contained inside the new Platters block itself, matching the style used for hors d'oeuvres.
 
-## Approach
-
-Replace the hardcoded arrays with a database-backed catalog managed by admins, keeping the same `SiteImage` shape and helper API so consumer pages don't have to change.
-
-### 1. Database
-
-New migration:
-- Drop/replace the underused `gallery_images` table with `public.site_images`:
-  - `id uuid pk`, `category text` (enum-like: `gallery_setups`, `gallery_equipment`, `gallery_furniture`, `blueprints`, `products`, `photos`, `catering_callout`), `bucket text`, `file text`, `url text`, `alt text`, `caption text`, `sort_order int`, `created_at`, `updated_at`.
-  - Public `SELECT` policy (anon + authenticated); `INSERT/UPDATE/DELETE` restricted to admins via existing `has_role(auth.uid(), 'admin')`.
-  - Standard GRANTs.
-- Seed the table from the current `site-images.ts` contents so nothing changes visually on first load.
-
-### 2. Data access
-
-- `src/lib/site-images.functions.ts` — public server fn `listSiteImages()` returning grouped `SiteImage[]` by category.
-- `src/hooks/use-site-images.ts` — `useSuspenseQuery` wrapper that returns the same shape as today's exports.
-- Refactor `src/lib/site-images.ts` to expose the seed data as `DEFAULT_SITE_IMAGES` (fallback when DB is empty) and keep the `SiteImage` type + `pickPhoto`/`pickPhotos` helpers unchanged (helpers accept an array arg or read from context).
-- Update consumers (`gallery.tsx`, `inventory.tsx`, `ServicesCallouts.tsx`, any callers of `heroImage`/`pickPhoto*`) to read from the hook instead of the static export.
-
-### 3. Admin UI — `/admin/images`
-
-New route `src/routes/admin.images.tsx`:
-- Tabs for each category (Setups, Bar & Equipment, Furniture, Blueprints, Products, Photos, Catering callout).
-- Per-image row: thumbnail, alt text (editable), caption (editable), sort order, Delete button.
-- "Upload images" button — multi-file uploader that pushes to the `new-images` bucket via `supabase.storage`, then inserts rows via an admin server fn.
-- Drag-to-reorder (or up/down arrows) writing back `sort_order`.
-- Replace-file action per row (upload new file, updates `file`/`url`).
-- All mutations go through `src/lib/site-images.functions.ts` admin fns using `requireSupabaseAuth` + `has_role` check, then `supabaseAdmin` for writes.
-- Link the page from the admin sidebar/dashboard.
-
-### 4. Cleanup
-
-- Remove hardcoded `img(...)` / `galleryImg(...)` arrays from `site-images.ts` once the DB seed is verified, keeping only the type + helpers.
-- Leave the two `.asset.json` CDN assets (`sony-ult10`, `cafe-lights`) reachable — seed their URLs directly into `site_images` rows so admins can delete/replace them like any other.
-
-## Out of scope
-
-- Editing text/copy on public pages (already covered elsewhere).
-- Changing which categories exist or how the gallery filters render.
-- Reworking the AI-generated blueprint on `/recommender`.
-
-## Technical notes
-
-- Uploads write to the existing public `new-images` bucket; RLS on `storage.objects` will get an admin-only INSERT/DELETE policy for that bucket.
-- Public reads stay cache-friendly: `listSiteImages` runs in the loader via `ensureQueryData`, so SSR renders with the latest set.
-- Fallback to `DEFAULT_SITE_IMAGES` if the DB query returns empty (safety net during the first deploy).
+No pricing math, buffet inclusions, or other menu items change.
