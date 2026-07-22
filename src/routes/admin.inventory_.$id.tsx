@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, ArrowLeft, Save, Sparkles, Wrench, AlertTriangle, Archive } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Loader2, ArrowLeft, Save, Sparkles, Wrench, AlertTriangle, Archive, CalendarClock, Link2 } from "lucide-react";
 import { SiteLayout } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -11,9 +12,14 @@ import {
   type InventoryItem, type InventoryTransaction, type ItemType, STATUS_LABEL,
 } from "@/lib/inventory";
 import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
+import {
+  getInventoryReservationSummaries,
+  listPricingItemsForInventory,
+} from "@/lib/pricing-mappings.functions";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
+
 
 export const Route = createFileRoute("/admin/inventory_/$id")({
   head: () => ({ meta: [{ title: "Inventory Item | Admin" }] }),
