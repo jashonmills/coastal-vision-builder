@@ -207,10 +207,11 @@ function Dashboard() {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             placeholder="Search name or SKU"
-            value={search} onChange={(e) => setSearch(e.target.value)}
+            value={searchText} onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-md border border-border bg-background py-2 pl-9 pr-3 text-sm"
           />
         </label>
+
         <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)}
           className="rounded-md border border-border bg-background px-2 py-2 text-sm">
           <option value="">All categories</option>
