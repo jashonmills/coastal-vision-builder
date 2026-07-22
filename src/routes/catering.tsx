@@ -382,7 +382,6 @@ function CateringPage() {
                     "Pastry cups, sweet or savory",
                     "Swedish meatballs",
                     "Chinese bao buns",
-                    "Seasonal fruit tray",
                   ]}
                 />
               </div>
