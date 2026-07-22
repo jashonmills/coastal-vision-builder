@@ -101,6 +101,7 @@ function FillContractPage() {
           formData: values,
           typedSignature: typedSig.trim(),
           signaturePngDataUrl: drawnSig,
+          quoteId: quoteId ?? null,
         },
       })
       setDone(true)
