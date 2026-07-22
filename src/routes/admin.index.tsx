@@ -334,9 +334,32 @@ function ImageSlotRow({ slotKey, label, url }: { slotKey: string; label: string;
 
 function TextAdmin() {
   const { data: content = {} } = useAllSiteContent();
+  const groups = groupTextSlotsByPage();
+  const [activePage, setActivePage] = useState(groups[0]?.page ?? "Home");
+  const active = groups.find((g) => g.page === activePage) ?? groups[0];
   return (
-    <div className="space-y-4">
-      {TEXT_SLOTS.map((s) => <TextSlotRow key={s.key} slotKey={s.key} label={s.label} fallback={s.default} multiline={s.multiline} current={content[s.key]?.text} />)}
+    <div>
+      <div className="mb-6 flex flex-wrap gap-2">
+        {groups.map((g) => (
+          <button
+            key={g.page}
+            onClick={() => setActivePage(g.page)}
+            className={`rounded-full border px-4 py-1.5 text-sm font-medium ${
+              activePage === g.page ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-secondary"
+            }`}
+          >
+            {g.page}
+          </button>
+        ))}
+      </div>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Edits save immediately and update the public site. Admins can also click any hero heading on the site to edit it inline.
+      </p>
+      <div className="space-y-4">
+        {active?.slots.map((s) => (
+          <TextSlotRow key={s.key} slotKey={s.key} label={s.label} fallback={s.default} multiline={s.multiline} current={content[s.key]?.text} />
+        ))}
+      </div>
     </div>
   );
 }
