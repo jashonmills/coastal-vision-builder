@@ -130,21 +130,33 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="w-[280px] p-2">
-                        {group.children.map((child) => (
-                          <li key={child.to}>
-                            <NavigationMenuLink asChild>
-                              <Link
-                                to={child.to}
-                                className="block rounded-md px-3 py-2 hover:bg-secondary"
+                        {group.children.map((child, idx) => {
+                          if (child.heading) {
+                            return (
+                              <li
+                                key={`heading-${idx}`}
+                                className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
                               >
-                                <div className="text-sm font-medium text-foreground">{t(child.labelKey)}</div>
-                                {child.descKey && (
-                                  <p className="mt-0.5 text-xs text-muted-foreground">{t(child.descKey)}</p>
-                                )}
-                              </Link>
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
+                                {t(child.heading, { defaultValue: "Venue" })}
+                              </li>
+                            );
+                          }
+                          return (
+                            <li key={child.to}>
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  to={child.to}
+                                  className="block rounded-md px-3 py-2 hover:bg-secondary"
+                                >
+                                  <div className="text-sm font-medium text-foreground">{t(child.labelKey)}</div>
+                                  {child.descKey && (
+                                    <p className="mt-0.5 text-xs text-muted-foreground">{t(child.descKey)}</p>
+                                  )}
+                                </Link>
+                              </NavigationMenuLink>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
