@@ -121,7 +121,7 @@ export async function reserveQuoteHolds(opts: {
       p_start: win.start,
       p_end: win.end,
       p_hold_type: opts.holdType,
-      p_expires: opts.expiresAt,
+      p_expires: opts.expiresAt as unknown as string,
       p_allow_overbook: opts.allowOverbook,
     });
     if (error) {
