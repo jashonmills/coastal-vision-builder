@@ -9,7 +9,7 @@ export const listMyQuotes = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("quotes")
       .select(
-        "id, quote_number, status, event_type, event_date, event_location, guest_count, total_cents, subtotal_cents, tax_cents, discount_cents, sent_at, created_at, pdf_url",
+        "id, quote_number, status, event_type, event_date, event_location, guest_count, total_cents, subtotal_cents, tax_cents, discount_cents, sent_at, created_at",
       )
       .in("status", ["sent", "approved", "booked"])
       .order("sent_at", { ascending: false, nullsFirst: false })
@@ -26,7 +26,7 @@ export const getMyQuote = createServerFn({ method: "GET" })
     const { data: quote, error } = await context.supabase
       .from("quotes")
       .select(
-        "id, quote_number, status, customer_name, customer_email, customer_phone, event_type, event_date, event_location, guest_count, customer_notes, terms, subtotal_cents, tax_cents, discount_cents, delivery_fee_cents, cleaning_fee_cents, total_cents, sent_at, created_at, pdf_url",
+        "id, quote_number, status, customer_name, customer_email, customer_phone, event_type, event_date, event_location, guest_count, customer_notes, terms, subtotal_cents, tax_cents, discount_cents, delivery_fee_cents, cleaning_fee_cents, total_cents, sent_at, created_at",
       )
       .eq("id", data.id)
       .in("status", ["sent", "approved", "booked"])
