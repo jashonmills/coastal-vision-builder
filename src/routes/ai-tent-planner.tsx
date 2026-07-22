@@ -73,50 +73,78 @@ const OPT_CONTACT = ["Email","Phone","Text"];
 
 function RecommenderPage() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<RecommenderInput>(empty);
   const [contact, setContact] = useState({ name: "", email: "", phone: "", method: "Email", notes: "" });
   const [viewerOpen, setViewerOpen] = useState(false);
   const [beaconDismissed, setBeaconDismissed] = useState(false);
+  const [savedId, setSavedId] = useState<string | null>(null);
 
   const generateFn = useServerFn(generateRecommendation);
   const leadFn = useServerFn(createQuoteRequest);
+  const saveFn = useServerFn(saveRecommendation);
   const mutation = useMutation({
     mutationFn: (input: RecommenderInput) => generateFn({ data: input }),
     onError: (err) => {
       console.error("[recommender] generateRecommendation failed:", err);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    onSuccess: (res, input) => {
+    onSuccess: async (res, input) => {
       console.log("[recommender] success", res);
       setViewerOpen(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-      // Fire-and-forget: create an admin-visible lead so every planner submission
-      // shows up under Admin → Quote Requests, whether or not the user is signed in.
-      if (contact.name && contact.email) {
-        const pcm = (contact.method || "Email").toLowerCase() as "email" | "phone" | "text";
-        const notes: string[] = [];
-        notes.push("Submitted via AI Tent Planner");
-        if (res.recommendation?.headline) notes.push(`Recommendation: ${res.recommendation.headline}`);
-        if (contact.notes) notes.push(contact.notes);
-        leadFn({
-          data: {
-            customer_name: contact.name,
-            customer_email: contact.email,
-            customer_phone: contact.phone || null,
-            preferred_contact_method: pcm,
-            event_type: input.eventType || null,
-            event_date: input.eventDate || null,
-            event_location: input.location || null,
-            guest_count: input.guestCount ?? null,
-            planner_input: input,
-            recommendation: res.recommendation,
-            customer_note: notes.join("\n\n"),
-            request_type: "rental",
-          },
-        }).catch((err) => console.error("[recommender] lead create failed:", err));
+      if (!contact.name || !contact.email) return;
+
+      // For signed-in users: save the recommendation FIRST so the lead can be
+      // linked back to it. `createQuoteRequest` owns the single admin
+      // notification + single customer acknowledgement email, so we don't
+      // duplicate them from `saveRecommendation`.
+      let linkedSavedId: string | null = null;
+      if (user) {
+        try {
+          const saved = await saveFn({
+            data: {
+              title: `${input.eventType} · ${input.guestCount} guests${input.location ? ` · ${input.location}` : ""}`,
+              event_date: input.eventDate || null,
+              location: input.location || null,
+              input,
+              recommendation: res.recommendation,
+              blueprint_image: res.blueprintImage,
+              perspective_image: res.perspectiveImage ?? null,
+              contact,
+            },
+          });
+          linkedSavedId = saved.id;
+          setSavedId(saved.id);
+        } catch (err) {
+          console.error("[recommender] saveRecommendation failed:", err);
+        }
       }
+
+      const pcm = (contact.method || "Email").toLowerCase() as "email" | "phone" | "text";
+      const notes: string[] = [];
+      notes.push("Submitted via AI Tent Planner");
+      if (res.recommendation?.headline) notes.push(`Recommendation: ${res.recommendation.headline}`);
+      if (contact.notes) notes.push(contact.notes);
+      leadFn({
+        data: {
+          saved_recommendation_id: linkedSavedId,
+          customer_name: contact.name,
+          customer_email: contact.email,
+          customer_phone: contact.phone || null,
+          preferred_contact_method: pcm,
+          event_type: input.eventType || null,
+          event_date: input.eventDate || null,
+          event_location: input.location || null,
+          guest_count: input.guestCount ?? null,
+          planner_input: input,
+          recommendation: res.recommendation,
+          customer_note: notes.join("\n\n"),
+          request_type: "rental",
+        },
+      }).catch((err) => console.error("[recommender] lead create failed:", err));
     },
   });
 
