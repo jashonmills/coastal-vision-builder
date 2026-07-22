@@ -24,7 +24,9 @@ import { MobileBottomNav } from "./MobileBottomNav";
 import { MobileBentoDrawer } from "./MobileBentoDrawer";
 import { MobileHelpButton } from "./MobileHelpButton";
 
-type NavChild = { to: string; labelKey: string; descKey?: string };
+type NavChild =
+  | { to: string; labelKey: string; descKey?: string; heading?: undefined }
+  | { heading: string; to?: undefined; labelKey?: undefined; descKey?: undefined };
 type NavGroup = { labelKey: string; to?: string; children?: NavChild[] };
 
 const navGroups: NavGroup[] = [
@@ -35,6 +37,7 @@ const navGroups: NavGroup[] = [
       { to: "/tent-rentals", labelKey: "nav.tentRentals", descKey: "navDesc.tentRentals" },
       { to: "/inventory", labelKey: "nav.inventoryPricing", descKey: "navDesc.inventoryPricing" },
       { to: "/ai-tent-planner", labelKey: "nav.eventRecommender", descKey: "navDesc.eventRecommender" },
+      { heading: "nav.venue" },
       { to: "/beacon-on-broadway", labelKey: "nav.beacon", descKey: "navDesc.beacon" },
     ],
   },
@@ -53,7 +56,7 @@ const navGroups: NavGroup[] = [
 
 function isGroupActive(group: NavGroup, pathname: string): boolean {
   if (group.to) return group.to === "/" ? pathname === "/" : pathname.startsWith(group.to);
-  return group.children?.some((c) => pathname.startsWith(c.to)) ?? false;
+  return group.children?.some((c) => !!c.to && pathname.startsWith(c.to)) ?? false;
 }
 
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -127,21 +130,33 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="w-[280px] p-2">
-                        {group.children.map((child) => (
-                          <li key={child.to}>
-                            <NavigationMenuLink asChild>
-                              <Link
-                                to={child.to}
-                                className="block rounded-md px-3 py-2 hover:bg-secondary"
+                        {group.children.map((child, idx) => {
+                          if (child.heading) {
+                            return (
+                              <li
+                                key={`heading-${idx}`}
+                                className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
                               >
-                                <div className="text-sm font-medium text-foreground">{t(child.labelKey)}</div>
-                                {child.descKey && (
-                                  <p className="mt-0.5 text-xs text-muted-foreground">{t(child.descKey)}</p>
-                                )}
-                              </Link>
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
+                                {t(child.heading, { defaultValue: "Venue" })}
+                              </li>
+                            );
+                          }
+                          return (
+                            <li key={child.to}>
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  to={child.to}
+                                  className="block rounded-md px-3 py-2 hover:bg-secondary"
+                                >
+                                  <div className="text-sm font-medium text-foreground">{t(child.labelKey!)}</div>
+                                  {child.descKey && (
+                                    <p className="mt-0.5 text-xs text-muted-foreground">{t(child.descKey)}</p>
+                                  )}
+                                </Link>
+                              </NavigationMenuLink>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
