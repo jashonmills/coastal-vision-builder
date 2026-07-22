@@ -206,7 +206,8 @@ function EditQuotePage() {
             ) : (
               <button
                 onClick={() => book.mutate()}
-                disabled={book.isPending}
+                disabled={book.isPending || bookBlocked}
+                title={bookBlocked ? "One or more lines exceed available inventory for the event window. Tick 'Allow overbook' to override." : undefined}
                 className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
               >
                 {book.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
@@ -236,6 +237,27 @@ function EditQuotePage() {
             )}
           </div>
         )}
+
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+          <label className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5">
+            <input
+              type="checkbox"
+              checked={allowOverbook}
+              onChange={(e) => setAllowOverbook(e.target.checked)}
+            />
+            <span className="font-medium">Allow overbook (override)</span>
+          </label>
+          {datesMissing && (
+            <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-amber-900">
+              Set an event date to enable date-aware availability. Showing global bucket availability instead.
+            </span>
+          )}
+          {anyShort && !allowOverbook && (
+            <span className="rounded-md border border-red-300 bg-red-50 px-2 py-1 text-red-800">
+              One or more lines exceed available inventory for the event window. Fix quantities or tick "Allow overbook".
+            </span>
+          )}
+        </div>
 
         {integrity && integrity.unmapped_lines.length > 0 && (
           <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
@@ -279,7 +301,8 @@ function EditQuotePage() {
                   <ItemRow
                     key={it.id}
                     item={it}
-                    avail={(availability as Record<string, { available: number; total_owned: number; inventory_name: string } | null>)[it.id] ?? null}
+                    avail={availabilityItems[it.id] ?? null}
+                    allowOverbook={allowOverbook}
                     onSaved={() => { refetch(); qc.invalidateQueries({ queryKey: ["admin-quotes"] }); qc.invalidateQueries({ queryKey: ["quote-availability", id] }); }}
                     onDelete={async () => {
                       if (!confirm("Remove this line?")) return;
