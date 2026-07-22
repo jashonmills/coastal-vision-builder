@@ -5,7 +5,7 @@ import {
   Loader2, Plus, Box, Boxes, AlertTriangle, Wrench, Sparkles, PackageCheck,
   Archive, ArrowRight, Search,
 } from "lucide-react";
-import { SiteLayout, PageHero } from "@/components/SiteLayout";
+import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
