@@ -351,18 +351,26 @@ function ItemRow({ item, avail, allowOverbook, onSaved, onDelete, upsertFn }: { 
   const [draft, setDraft] = useState(item);
   useEffect(() => setDraft(item), [item]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(item);
+  const short = avail ? (Number(draft.quantity ?? 0) > avail.available) : false;
+  const saveBlocked = short && !allowOverbook;
   const save = useMutation({
-    mutationFn: () => upsertFn({ data: {
-      id: draft.id, quote_id: draft.quote_id,
-      pricing_item_id: draft.pricing_item_id, inventory_item_id: draft.inventory_item_id,
-      category: draft.category, name: draft.name, description: draft.description,
-      quantity: Number(draft.quantity), unit: draft.unit, unit_price_cents: Number(draft.unit_price_cents),
-      needs_pricing_review: draft.needs_pricing_review, reason: draft.reason, sort_order: draft.sort_order,
-    } }),
+    mutationFn: () => {
+      if (saveBlocked) {
+        throw new Error(
+          `Only ${avail?.available ?? 0} available for the event window. Reduce quantity or tick "Allow overbook".`,
+        );
+      }
+      return upsertFn({ data: {
+        id: draft.id, quote_id: draft.quote_id,
+        pricing_item_id: draft.pricing_item_id, inventory_item_id: draft.inventory_item_id,
+        category: draft.category, name: draft.name, description: draft.description,
+        quantity: Number(draft.quantity), unit: draft.unit, unit_price_cents: Number(draft.unit_price_cents),
+        needs_pricing_review: draft.needs_pricing_review, reason: draft.reason, sort_order: draft.sort_order,
+      } });
+    },
     onSuccess: () => { toast.success("Line saved."); onSaved(); },
     onError: (e: Error) => toast.error(e.message ?? "Failed to save line."),
   });
-  const short = avail ? (draft.quantity > avail.available) : false;
   return (
     <tr className="border-t border-border align-top">
       <td className="px-2 py-2">
