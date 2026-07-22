@@ -47,7 +47,7 @@ function EditQuotePage() {
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
-  
+  const [allowOverbook, setAllowOverbook] = useState(false);
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
@@ -59,11 +59,15 @@ function EditQuotePage() {
     queryFn: () => pricingFn(),
     enabled: !!user && isAdmin,
   });
-  const { data: availability = {} } = useQuery({
+  const { data: availabilityResp } = useQuery({
     queryKey: ["quote-availability", id],
     queryFn: () => availFn({ data: { quote_id: id } }),
     enabled: !!user && isAdmin && !!data,
   });
+  const availabilityItems =
+    (availabilityResp as any)?.items ??
+    ({} as Record<string, { available: number; total_owned: number; inventory_name: string } | null>);
+  const datesMissing = !!(availabilityResp as any)?.dates_missing;
   const { data: bookingStatus, refetch: refetchStatus } = useQuery({
     queryKey: ["quote-booking-status", id],
     queryFn: () => statusFn({ data: { quote_id: id } }),
@@ -84,7 +88,7 @@ function EditQuotePage() {
   });
 
   const book = useMutation({
-    mutationFn: () => bookFn({ data: { quote_id: id } }),
+    mutationFn: () => bookFn({ data: { quote_id: id, allow_overbook: allowOverbook } }),
     onSuccess: (res: any) => {
       if (res?.venue_only) {
         toast.success(`Beacon booking confirmed. ${res.events_created} calendar event(s) created.`);
@@ -105,6 +109,7 @@ function EditQuotePage() {
       refetchStatus();
       invalidateOpsQueries(qc, { quoteId: id });
       qc.invalidateQueries({ queryKey: ["quote-booking-integrity", id] });
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -116,6 +121,7 @@ function EditQuotePage() {
       refetch();
       refetchStatus();
       invalidateOpsQueries(qc, { quoteId: id });
+      qc.invalidateQueries({ queryKey: ["quote-availability", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -126,6 +132,11 @@ function EditQuotePage() {
   if (!user || !isAdmin || !data) return <SiteLayout><div className="p-12 text-center">Not available.</div></SiteLayout>;
 
   const { quote, items } = data;
+  const anyShort = items.some((it: any) => {
+    const a = availabilityItems[it.id];
+    return a ? Number(it.quantity ?? 0) > a.available : false;
+  });
+  const bookBlocked = anyShort && !allowOverbook;
 
   return (
     <SiteLayout>
