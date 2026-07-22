@@ -198,9 +198,9 @@ function GalleryAdmin() {
   const { data: images = [], isLoading } = useQuery({
     queryKey: ["admin-gallery"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("gallery_images").select("*").order("sort_order");
+      const { data, error } = await supabase.from("site_images").select("id,url,caption,sort_order").eq("category", "gallery_uploads").order("sort_order");
       if (error) throw error;
-      return data as GalleryRow[];
+      return (data ?? []) as GalleryRow[];
     },
   });
 
@@ -211,7 +211,14 @@ function GalleryAdmin() {
     try {
       for (const f of files) {
         const url = await uploadImage(f, "gallery");
-        await supabase.from("gallery_images").insert({ url, sort_order: images.length });
+        await supabase.from("site_images").insert({
+          category: "gallery_uploads",
+          bucket: "images",
+          file: f.name,
+          url,
+          alt: f.name,
+          sort_order: images.length,
+        });
       }
       qc.invalidateQueries({ queryKey: ["admin-gallery"] });
       qc.invalidateQueries({ queryKey: ["gallery"] });
@@ -221,7 +228,7 @@ function GalleryAdmin() {
 
   const del = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("gallery_images").delete().eq("id", id);
+      const { error } = await supabase.from("site_images").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-gallery"] }); qc.invalidateQueries({ queryKey: ["gallery"] }); },
