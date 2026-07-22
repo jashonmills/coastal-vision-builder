@@ -163,55 +163,26 @@ export const sendQuoteEmail = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    const { quote, items } = await loadQuoteBundle(context.supabase, data.quote_id);
-
-    const origin = process.env.PUBLIC_SITE_URL || "https://www.pacificnorthrentals.com";
-    const viewUrl = `${origin}/admin/quotes/${quote.id}/preview`;
-
-    const templateData = {
-      customerName: quote.customer_name,
-      quoteNumber: quote.quote_number,
-      coverLetter: data.cover_letter,
-      eventType: quote.event_type,
-      eventDate: quote.event_date,
-      eventLocation: quote.event_location,
-      guestCount: quote.guest_count,
-      items: items.map((it) => ({
-        category: it.category,
-        name: it.name,
-        description: it.description,
-        quantity: it.quantity,
-        unit: it.unit,
-        unit_price_cents: it.unit_price_cents,
-        line_total_cents: it.line_total_cents,
-      })),
-      subtotalCents: quote.subtotal_cents,
-      deliveryCents: quote.delivery_fee_cents,
-      cleaningCents: quote.cleaning_fee_cents,
-      discountCents: quote.discount_cents,
-      taxCents: quote.tax_cents,
-      totalCents: quote.total_cents,
-      viewUrl,
-    };
-
-    const idempotencyKey = `quote-email:${quote.id}:${crypto.randomUUID()}`;
-
-    const { sendTransactionalEmail } = await import("@/lib/email/send-admin.server");
-    await sendTransactionalEmail({
-      templateName: "customer-quote",
-      templateData: { ...templateData, subject: data.subject },
-      idempotencyKey,
-      recipient: data.to_email,
+    const { sendCustomerQuoteEmail } = await import("@/lib/quote-email.server");
+    const result = await sendCustomerQuoteEmail({
+      quote_id: data.quote_id,
+      to_email: data.to_email,
+      subject: data.subject,
+      cover_letter: data.cover_letter,
     });
 
     // Advance quote status if not already sent/booked
-    if (quote.status !== "sent" && quote.status !== "booked") {
-      const now = new Date().toISOString();
+    const { data: q } = await context.supabase
+      .from("quotes")
+      .select("status")
+      .eq("id", data.quote_id)
+      .single();
+    if (q && q.status !== "sent" && q.status !== "booked") {
       await context.supabase
         .from("quotes")
-        .update({ status: "sent", sent_at: now })
-        .eq("id", quote.id);
+        .update({ status: "sent", sent_at: new Date().toISOString() })
+        .eq("id", data.quote_id);
     }
 
-    return { ok: true, recipient: data.to_email };
+    return result;
   });

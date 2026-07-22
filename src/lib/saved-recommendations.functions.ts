@@ -50,82 +50,11 @@ export const saveRecommendation = createServerFn({ method: "POST" })
       .single();
     if (error) throw new Error(error.message);
 
-    // Admin email notification for a new saved AI plan (best-effort)
-    try {
-      const { sendAdminEmail, sendCustomerAcknowledgement } = await import("@/lib/email/send-admin.server");
-      const rec = data.recommendation as
-        | {
-            headline?: string;
-            tent_size?: string;
-            layout_caption?: string;
-            picks?: Array<{ category: string; item_name: string; quantity: number; reason?: string }>;
-            weather_notes?: string[];
-          }
-        | null
-        | undefined;
-      const input = data.input as
-        | { eventType?: string; guestCount?: number }
-        | null
-        | undefined;
-      const contact = data.contact as
-        | { name?: string; email?: string }
-        | null
-        | undefined;
-      const recommendedTent =
-        rec?.picks?.find((p) => p.category === "Canopy")?.item_name ?? null;
-      const adminPromise = sendAdminEmail({
-        templateName: "admin-planner-submission",
-        idempotencyKey: `planner-submission-${row.id}`,
-        templateData: {
-          recommendationId: row.id,
-          title: data.title,
-          customerName: contact?.name ?? null,
-          customerEmail: contact?.email ?? null,
-          eventType: input?.eventType ?? null,
-          eventDate: data.event_date ?? null,
-          eventLocation: data.location ?? null,
-          guestCount: input?.guestCount ?? null,
-          headline: rec?.headline ?? null,
-          recommendedTent,
-          tentSize: rec?.tent_size ?? null,
-          layoutCaption: rec?.layout_caption ?? null,
-          picks: rec?.picks ?? [],
-          weatherNotes: rec?.weather_notes ?? [],
-          blueprintImage: data.blueprint_image ?? null,
-          perspectiveImage: data.perspective_image ?? null,
-        },
-      });
-
-      // Auto-acknowledgement to the customer (if we have their email)
-      const customerPromise = contact?.email
-        ? sendCustomerAcknowledgement({
-            requestId: row.id,
-            recipient: contact.email,
-            customerName: contact?.name ?? null,
-            eventType: input?.eventType ?? null,
-            eventDate: data.event_date ?? null,
-            eventLocation: data.location ?? null,
-            requestType: "planner",
-          })
-        : Promise.resolve();
-
-      console.log("[saveRecommendation] scheduling admin+customer emails", {
-        recommendationId: row.id,
-        hasCustomerEmail: !!contact?.email,
-      });
-      const [adminResult, customerResult] = await Promise.allSettled([adminPromise, customerPromise]);
-      console.log("[saveRecommendation] email results", {
-        recommendationId: row.id,
-        admin: adminResult.status,
-        adminReason: adminResult.status === "rejected" ? String(adminResult.reason) : undefined,
-        customer: customerResult.status,
-        customerReason: customerResult.status === "rejected" ? String(customerResult.reason) : undefined,
-      });
-
-    } catch (e) {
-      console.error("[saveRecommendation] admin email failed", e);
-    }
-
+    // NOTE: admin + customer emails are intentionally NOT sent here.
+    // The AI Tent Planner flow creates a `quote_requests` row via
+    // `createQuoteRequest` immediately after saving, and that path owns the
+    // single admin notification + single customer acknowledgement email.
+    // Sending them here too caused duplicate emails on every planner submit.
     return { id: row.id };
   });
 
