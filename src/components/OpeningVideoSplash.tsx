@@ -8,11 +8,18 @@ const VIDEO_SEEN_KEY = "pacificNorthIntroVideoSeen";
 export function OpeningVideoSplash() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const finishedRef = useRef(false);
-  const [visible, setVisible] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return !sessionStorage.getItem(VIDEO_SEEN_KEY);
-  });
+  const [visible, setVisible] = useState(true);
   const [exiting, setExiting] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(VIDEO_SEEN_KEY)) {
+        setVisible(false);
+        window.dispatchEvent(new Event("pn:intro-video-done"));
+      }
+    } catch {}
+  }, []);
+
 
   useEffect(() => {
     if (!visible) {
