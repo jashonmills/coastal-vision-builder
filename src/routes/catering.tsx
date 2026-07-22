@@ -399,7 +399,13 @@ function CateringPage() {
               <p className="text-muted-foreground">
                 $175 per platter · each platter feeds up to 50 guests. Available as an add-on to any package.
               </p>
-              <BulletList items={["Seasonal fruit tray"]} />
+              <BulletList
+                items={[
+                  "Seasonal fruit tray",
+                  "Assorted cheese and crackers",
+                  "Seasonal veggie",
+                ]}
+              />
             </div>
           </div>
         </div>
