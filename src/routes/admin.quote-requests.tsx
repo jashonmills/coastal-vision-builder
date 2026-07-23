@@ -161,7 +161,7 @@ function QuoteRequestsPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-muted-foreground">{r.customer_email}</div>
+                            <div className="max-w-[200px] truncate text-xs text-muted-foreground">{r.customer_email}</div>
                             {r.customer_phone && <div className="text-xs text-muted-foreground">{r.customer_phone}</div>}
                           </td>
 
