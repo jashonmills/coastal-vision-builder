@@ -151,12 +151,12 @@ function JobsPage() {
                       </Link>
                       {q.quote_number && <div className="font-mono text-[11px] text-muted-foreground">{q.quote_number}</div>}
                     </td>
-                    <td className="px-3 py-2">{c.name || q.customer_name || "—"}</td>
+                    <td className="max-w-[160px] truncate px-3 py-2">{c.name || q.customer_name || "—"}</td>
                     <td className="px-3 py-2 text-muted-foreground">
                       {j.event_date ? new Date(j.event_date + "T00:00:00").toLocaleDateString() : "—"}
                     </td>
                     <td className="px-3 py-2"><StatusBadge status={j.status} /></td>
-                    <td className="px-3 py-2 text-muted-foreground">{j.site_address || "—"}</td>
+                    <td className="max-w-[220px] truncate px-3 py-2 text-muted-foreground">{j.site_address || "—"}</td>
                   </tr>
                 );
               })}
