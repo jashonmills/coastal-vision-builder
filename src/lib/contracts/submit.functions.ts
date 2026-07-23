@@ -24,17 +24,11 @@ export type SubmitContractInput = z.infer<typeof InputSchema>
  *  getUserByEmail; paginate until found or exhausted. */
 async function findAuthUserIdByEmail(
   admin: {
-    auth: {
-      admin: {
-        listUsers: (opts: { page: number; perPage: number }) => Promise<{
-          data: { users: Array<{ id: string; email: string | null | undefined }> } | null
-          error: unknown
-        }>
-      }
-    }
+    auth: { admin: { listUsers: (opts: { page: number; perPage: number }) => Promise<{ data: { users: Array<{ id: string; email?: string | null }> }; error: unknown | null }> } }
   },
   email: string,
 ): Promise<string | null> {
+
   const target = email.trim().toLowerCase()
   if (!target) return null
   for (let page = 1; page <= 20; page++) {
