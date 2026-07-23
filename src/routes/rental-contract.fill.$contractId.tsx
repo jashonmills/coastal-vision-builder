@@ -176,7 +176,47 @@ function FillContractPage() {
           </div>
         </header>
 
+        {params.contractId === 'credit-card-authorization' && (
+          <div className="mx-auto mt-6 max-w-3xl px-6">
+            <div className="rounded-xl border border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10 p-4 text-sm text-foreground">
+              <strong>For your security:</strong> only the last 4 digits of your card are collected online.
+              We'll call to capture the full card details before your event.
+            </div>
+          </div>
+        )}
+
+        {doc && doc.sections.length > 0 && (
+          <div className="mx-auto mt-6 max-w-3xl px-6">
+            <details open className="group rounded-2xl border border-border bg-card">
+              <summary className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl px-5 py-4 text-sm font-semibold text-primary hover:bg-secondary/40">
+                <span className="inline-flex items-center gap-2">
+                  <FileText className="h-4 w-4" /> Full contract terms — please read before signing
+                </span>
+                <span className="text-xs uppercase tracking-widest text-muted-foreground group-open:hidden">
+                  Show
+                </span>
+                <span className="hidden text-xs uppercase tracking-widest text-muted-foreground group-open:inline">
+                  Hide
+                </span>
+              </summary>
+              <div className="max-h-[420px] overflow-y-auto border-t border-border px-5 py-4 text-sm leading-relaxed text-foreground">
+                {doc.sections.map((s) => (
+                  <section key={s.heading} className="mb-5 last:mb-0">
+                    <h3 className="font-serif text-base text-primary">{s.heading}</h3>
+                    {s.paragraphs.map((p, i) => (
+                      <p key={i} className="mt-2 whitespace-pre-wrap text-muted-foreground">
+                        {p}
+                      </p>
+                    ))}
+                  </section>
+                ))}
+              </div>
+            </details>
+          </div>
+        )}
+
         <form onSubmit={onSubmit} className="mx-auto max-w-3xl px-6 py-10">
+
           {schema.groups.map((g: ContractFieldGroup) => (
             <fieldset key={g.heading} className="mb-8 rounded-2xl border border-border bg-card p-6">
               <legend className="px-2 text-sm font-semibold uppercase tracking-widest text-[color:var(--gold)]">
