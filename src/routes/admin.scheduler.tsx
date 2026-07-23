@@ -15,6 +15,8 @@ import {
   EVENT_STATUSES,
   EVENT_COLORS,
 } from "@/lib/scheduler.functions";
+import { listEventStaffForEvents } from "@/lib/assignments.functions";
+import { CrewAssign, StaffDots } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/scheduler")({
