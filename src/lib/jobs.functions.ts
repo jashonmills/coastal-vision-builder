@@ -336,7 +336,48 @@ export const acknowledgeAssignment = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
+/* ---------------- Company-wide read (staff or admin) ---------------- */
+
+export const listCompanyJobs = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ start_date: z.string(), end_date: z.string() }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    // RLS: admins get all jobs; active staff get SELECT via "staff read all jobs" policy.
+    const { data: jobs, error } = await context.supabase
+      .from("jobs")
+      .select(
+        "id, quote_id, title, event_date, start_time, end_time, status, site_address",
+      )
+      .gte("event_date", data.start_date.slice(0, 10))
+      .lte("event_date", data.end_date.slice(0, 10))
+      .order("event_date", { ascending: true });
+    if (error) throw new Error(error.message);
+
+    // Determine which are "mine" (assigned).
+    const myStaffId = await getCallerStaffId(context.supabase, context.userId);
+    let mineQuoteIds = new Set<string>();
+    if (myStaffId && (jobs ?? []).length) {
+      const { data: assigns } = await context.supabase
+        .from("event_staff")
+        .select("event:event_id (quote_id)")
+        .eq("staff_id", myStaffId);
+      mineQuoteIds = new Set(
+        (assigns ?? [])
+          .map((a) => (a.event as { quote_id?: string | null } | null)?.quote_id)
+          .filter((v): v is string => !!v),
+      );
+    }
+
+    return (jobs ?? []).map((j) => ({
+      ...j,
+      is_mine: mineQuoteIds.has(j.quote_id as string),
+    }));
+  });
+
 /* ---------------- Shared helper used by bookings ---------------- */
+
 
 export async function upsertJobForQuote(supabase: any, quoteId: string): Promise<void> {
   const { data: existing } = await supabase.from("jobs").select("id").eq("quote_id", quoteId).maybeSingle();
