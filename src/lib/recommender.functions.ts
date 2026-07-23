@@ -91,6 +91,7 @@ RULES:
 - "tent_size": short label of the chosen tent, e.g. "20×40 Frame Tent" or "20×60 Frame Tent".
 - "layout_caption": ONE short line describing the floor plan, formatted like the references: e.g. "20×40 Frame Tent · 8 round tables · 64 chairs · dance floor".
 - "blueprint_prompt": 1-2 sentences describing the top-down arrangement of tables, chairs, dance floor, bar, DJ/stage, and entrance inside the tent footprint.
+- If an inventory item includes a "max_available_qty" field, DO NOT recommend more than that quantity for that item — it reflects stock available for the event dates. Items without this field are considered fully available.
 - Do NOT include prices. Recommendation is an estimate; customer requests a final quote.`;
 
     const userPrompt = `EVENT DETAILS:
