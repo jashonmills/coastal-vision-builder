@@ -440,6 +440,9 @@ function StatCell({ label, value, tone }: { label: string; value: number | strin
       <div className={`font-semibold ${tone === "danger" ? "text-destructive" : "text-foreground"}`}>{value}</div>
     </div>
   );
+}
+
+
 
 function Warning({ children, tone = "warning" }: { children: React.ReactNode; tone?: "warning" | "error" }) {
   const cls = tone === "error"
