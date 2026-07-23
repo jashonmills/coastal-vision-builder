@@ -13,6 +13,7 @@ import {
   checkInQuoteItem,
   completeQuote,
 } from "@/lib/bookings.functions";
+import { CrewAssign } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/quotes_/$id/job-sheet")({
@@ -97,13 +98,32 @@ function JobSheetPage() {
             <div><strong className="text-foreground">Phone:</strong> {quote.customer_phone || "—"}</div>
             <div><strong className="text-foreground">Email:</strong> {quote.customer_email}</div>
           </div>
-          {events.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2 text-xs">
+          {events.length > 0 ? (
+            <div className="mt-3 space-y-3">
               {events.map((e) => (
-                <span key={e.id} className="rounded-full bg-secondary px-3 py-1">
-                  {e.event_type}: {new Date(e.start_time).toLocaleString()}
-                </span>
+                <div key={e.id} className="rounded-lg border border-border bg-secondary/20 p-3 print:hidden">
+                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span className="rounded-full bg-secondary px-2 py-0.5 font-medium">
+                      {e.event_type}: {new Date(e.start_time).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Crew</div>
+                  <div className="mt-1"><CrewAssign eventId={e.id} compact /></div>
+                </div>
               ))}
+              <div className="hidden flex-wrap gap-2 text-xs print:flex">
+                {events.map((e) => (
+                  <span key={e.id} className="rounded-full bg-secondary px-3 py-1">
+                    {e.event_type}: {new Date(e.start_time).toLocaleString()}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 rounded-lg border border-dashed border-border bg-secondary/20 p-3 text-xs text-muted-foreground print:hidden">
+              No calendar event linked yet.{" "}
+              <Link to="/admin/scheduler" className="text-primary underline">Schedule this job</Link>{" "}
+              to assign crew.
             </div>
           )}
         </header>

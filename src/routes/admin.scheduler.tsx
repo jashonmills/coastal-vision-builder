@@ -15,6 +15,8 @@ import {
   EVENT_STATUSES,
   EVENT_COLORS,
 } from "@/lib/scheduler.functions";
+import { listEventStaffForEvents } from "@/lib/assignments.functions";
+import { CrewAssign, StaffDots } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/scheduler")({
@@ -99,6 +101,31 @@ function SchedulerPage() {
     return true;
   });
 
+  const eventIds = useMemo(() => filtered.map((e) => e.id).sort(), [filtered]);
+  const bulkFn = useServerFn(listEventStaffForEvents);
+  const { data: crewRows = [] } = useQuery({
+    queryKey: ["event-staff-bulk", eventIds.join(",")],
+    queryFn: async () =>
+      (await bulkFn({ data: { event_ids: eventIds } })) as Array<{
+        event_id: string;
+        staff_id: string;
+        name: string;
+        color: string | null;
+        role: string | null;
+      }>,
+    enabled: !!user && isAdmin && eventIds.length > 0,
+    staleTime: 30_000,
+  });
+  const crewByEvent = useMemo(() => {
+    const m = new Map<string, Array<{ staff_id: string; name: string; color: string | null }>>();
+    for (const r of crewRows) {
+      const arr = m.get(r.event_id) ?? [];
+      arr.push({ staff_id: r.staff_id, name: r.name, color: r.color });
+      m.set(r.event_id, arr);
+    }
+    return m;
+  }, [crewRows]);
+
   const upsert = useMutation({
     mutationFn: async (e: Partial<CalEvent>) => upsertFn({ data: e as never }),
     onSuccess: () => { invalidateOpsQueries(qc); setEditing(null); setSelected(null); },
@@ -170,9 +197,9 @@ function SchedulerPage() {
         </div>
 
         {/* Views */}
-        {view === "month" && <MonthGrid cursor={cursor} events={filtered} onSelect={(e) => setSelected(e)} />}
-        {view === "week" && <WeekList cursor={cursor} events={filtered} onSelect={(e) => setSelected(e)} />}
-        {view === "list" && <AgendaList events={filtered} onSelect={(e) => setSelected(e)} />}
+        {view === "month" && <MonthGrid cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
+        {view === "week" && <WeekList cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
+        {view === "list" && <AgendaList events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
       </section>
 
       {/* Detail modal */}
@@ -191,6 +218,12 @@ function SchedulerPage() {
           <p className="mt-3 text-sm"><strong>When:</strong> {new Date(selected.start_time).toLocaleString()}</p>
           {selected.location && <p className="text-sm"><strong>Where:</strong> {selected.location}</p>}
           {selected.notes && <p className="mt-2 whitespace-pre-wrap text-sm">{selected.notes}</p>}
+
+          <div className="mt-4 rounded-lg border border-border bg-secondary/20 p-3">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Assigned crew</div>
+            <CrewAssign eventId={selected.id} compact />
+          </div>
+
           <div className="mt-4 flex flex-wrap gap-2">
             {selected.quote_request_id && <Link to="/admin/quote-requests/$id" params={{ id: selected.quote_request_id }} className="rounded-full border border-border bg-card px-3 py-1 text-xs">View Request</Link>}
             {selected.quote_id && <Link to="/admin/quotes/$id/edit" params={{ id: selected.quote_id }} className="rounded-full border border-border bg-card px-3 py-1 text-xs">View Quote</Link>}
@@ -245,7 +278,9 @@ function labelForView(d: Date, view: ViewMode) {
   return "Upcoming";
 }
 
-function MonthGrid({ cursor, events, onSelect }: { cursor: Date; events: CalEvent[]; onSelect: (e: CalEvent) => void }) {
+type CrewMap = Map<string, Array<{ staff_id: string; name: string; color: string | null }>>;
+
+function MonthGrid({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
   const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
   const startDow = first.getDay();
   const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
@@ -274,8 +309,9 @@ function MonthGrid({ cursor, events, onSelect }: { cursor: Date; events: CalEven
               {c.date && <div className="mb-1 text-xs font-medium">{c.date.getDate()}</div>}
               <div className="space-y-1">
                 {evs.slice(0, 3).map((e) => (
-                  <button key={e.id} onClick={() => onSelect(e)} className="block w-full truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
-                    {e.title}
+                  <button key={e.id} onClick={() => onSelect(e)} className="flex w-full items-center justify-between gap-1 truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
+                    <span className="truncate">{e.title}</span>
+                    <StaffDots entries={crewByEvent.get(e.id) ?? []} max={3} />
                   </button>
                 ))}
                 {evs.length > 3 && <div className="text-[10px] text-muted-foreground">+{evs.length - 3} more</div>}
@@ -288,7 +324,7 @@ function MonthGrid({ cursor, events, onSelect }: { cursor: Date; events: CalEven
   );
 }
 
-function WeekList({ cursor, events, onSelect }: { cursor: Date; events: CalEvent[]; onSelect: (e: CalEvent) => void }) {
+function WeekList({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
   const start = new Date(cursor); start.setDate(cursor.getDate() - cursor.getDay());
   const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return d; });
   return (
@@ -299,7 +335,7 @@ function WeekList({ cursor, events, onSelect }: { cursor: Date; events: CalEvent
           <div key={d.toISOString()} className="rounded-xl border border-border bg-card">
             <div className="border-b border-border px-3 py-2 text-sm font-medium">{d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</div>
             {evs.length === 0 ? <p className="px-3 py-2 text-xs text-muted-foreground">No events</p> : (
-              <div className="divide-y divide-border">{evs.map((e) => <EventRow key={e.id} e={e} onSelect={onSelect} />)}</div>
+              <div className="divide-y divide-border">{evs.map((e) => <EventRow key={e.id} e={e} crew={crewByEvent.get(e.id) ?? []} onSelect={onSelect} />)}</div>
             )}
           </div>
         );
@@ -308,17 +344,17 @@ function WeekList({ cursor, events, onSelect }: { cursor: Date; events: CalEvent
   );
 }
 
-function AgendaList({ events, onSelect }: { events: CalEvent[]; onSelect: (e: CalEvent) => void }) {
+function AgendaList({ events, crewByEvent, onSelect }: { events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
   return (
     <div className="rounded-xl border border-border bg-card">
       {events.length === 0 ? <p className="p-6 text-center text-sm text-muted-foreground">No upcoming events.</p> : (
-        <div className="divide-y divide-border">{events.map((e) => <EventRow key={e.id} e={e} onSelect={onSelect} />)}</div>
+        <div className="divide-y divide-border">{events.map((e) => <EventRow key={e.id} e={e} crew={crewByEvent.get(e.id) ?? []} onSelect={onSelect} />)}</div>
       )}
     </div>
   );
 }
 
-function EventRow({ e, onSelect }: { e: CalEvent; onSelect: (e: CalEvent) => void }) {
+function EventRow({ e, crew, onSelect }: { e: CalEvent; crew: Array<{ staff_id: string; name: string; color: string | null }>; onSelect: (e: CalEvent) => void }) {
   return (
     <button onClick={() => onSelect(e)} className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-secondary/40">
       <span className="h-3 w-3 flex-none rounded-full" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }} />
@@ -327,6 +363,7 @@ function EventRow({ e, onSelect }: { e: CalEvent; onSelect: (e: CalEvent) => voi
         <p className="text-xs text-muted-foreground">{new Date(e.start_time).toLocaleString()} · {EVENT_TYPE_LABELS[e.event_type]} · {e.status}</p>
         {e.location && <p className="truncate text-xs text-muted-foreground">{e.location}</p>}
       </div>
+      <StaffDots entries={crew} max={5} />
     </button>
   );
 }
@@ -366,6 +403,16 @@ function EventForm({ value, onCancel, onSave, saving }: { value: Partial<CalEven
       </label>
       <label className="block text-sm">Location<input value={v.location ?? ""} onChange={(e) => setV({ ...v, location: e.target.value })} className="mt-1 w-full rounded border px-2 py-1" /></label>
       <label className="block text-sm">Notes<textarea value={v.notes ?? ""} onChange={(e) => setV({ ...v, notes: e.target.value })} rows={3} className="mt-1 w-full rounded border px-2 py-1" /></label>
+
+      {value.id ? (
+        <div className="rounded-lg border border-border bg-secondary/20 p-3">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Assigned crew</div>
+          <CrewAssign eventId={value.id} compact />
+          <p className="mt-2 text-[10px] text-muted-foreground">Crew changes save immediately — the Save button below only saves the event details.</p>
+        </div>
+      ) : (
+        <p className="rounded-lg border border-dashed border-border bg-secondary/20 px-3 py-2 text-xs text-muted-foreground">Save the event first, then assign crew.</p>
+      )}
       <div className="flex justify-end gap-2">
         <button onClick={onCancel} className="rounded-full border border-border px-4 py-1 text-sm">Cancel</button>
         <button disabled={saving || !v.title || !v.event_type || !v.start_time} onClick={() => onSave(v)} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-1 text-sm font-semibold text-primary-foreground disabled:opacity-50">
