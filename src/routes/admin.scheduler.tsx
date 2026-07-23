@@ -278,7 +278,9 @@ function labelForView(d: Date, view: ViewMode) {
   return "Upcoming";
 }
 
-function MonthGrid({ cursor, events, onSelect }: { cursor: Date; events: CalEvent[]; onSelect: (e: CalEvent) => void }) {
+type CrewMap = Map<string, Array<{ staff_id: string; name: string; color: string | null }>>;
+
+function MonthGrid({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
   const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
   const startDow = first.getDay();
   const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
@@ -307,8 +309,9 @@ function MonthGrid({ cursor, events, onSelect }: { cursor: Date; events: CalEven
               {c.date && <div className="mb-1 text-xs font-medium">{c.date.getDate()}</div>}
               <div className="space-y-1">
                 {evs.slice(0, 3).map((e) => (
-                  <button key={e.id} onClick={() => onSelect(e)} className="block w-full truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
-                    {e.title}
+                  <button key={e.id} onClick={() => onSelect(e)} className="flex w-full items-center justify-between gap-1 truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
+                    <span className="truncate">{e.title}</span>
+                    <StaffDots entries={crewByEvent.get(e.id) ?? []} max={3} />
                   </button>
                 ))}
                 {evs.length > 3 && <div className="text-[10px] text-muted-foreground">+{evs.length - 3} more</div>}
@@ -321,7 +324,7 @@ function MonthGrid({ cursor, events, onSelect }: { cursor: Date; events: CalEven
   );
 }
 
-function WeekList({ cursor, events, onSelect }: { cursor: Date; events: CalEvent[]; onSelect: (e: CalEvent) => void }) {
+function WeekList({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
   const start = new Date(cursor); start.setDate(cursor.getDate() - cursor.getDay());
   const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return d; });
   return (
@@ -332,7 +335,7 @@ function WeekList({ cursor, events, onSelect }: { cursor: Date; events: CalEvent
           <div key={d.toISOString()} className="rounded-xl border border-border bg-card">
             <div className="border-b border-border px-3 py-2 text-sm font-medium">{d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</div>
             {evs.length === 0 ? <p className="px-3 py-2 text-xs text-muted-foreground">No events</p> : (
-              <div className="divide-y divide-border">{evs.map((e) => <EventRow key={e.id} e={e} onSelect={onSelect} />)}</div>
+              <div className="divide-y divide-border">{evs.map((e) => <EventRow key={e.id} e={e} crew={crewByEvent.get(e.id) ?? []} onSelect={onSelect} />)}</div>
             )}
           </div>
         );
@@ -341,17 +344,17 @@ function WeekList({ cursor, events, onSelect }: { cursor: Date; events: CalEvent
   );
 }
 
-function AgendaList({ events, onSelect }: { events: CalEvent[]; onSelect: (e: CalEvent) => void }) {
+function AgendaList({ events, crewByEvent, onSelect }: { events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
   return (
     <div className="rounded-xl border border-border bg-card">
       {events.length === 0 ? <p className="p-6 text-center text-sm text-muted-foreground">No upcoming events.</p> : (
-        <div className="divide-y divide-border">{events.map((e) => <EventRow key={e.id} e={e} onSelect={onSelect} />)}</div>
+        <div className="divide-y divide-border">{events.map((e) => <EventRow key={e.id} e={e} crew={crewByEvent.get(e.id) ?? []} onSelect={onSelect} />)}</div>
       )}
     </div>
   );
 }
 
-function EventRow({ e, onSelect }: { e: CalEvent; onSelect: (e: CalEvent) => void }) {
+function EventRow({ e, crew, onSelect }: { e: CalEvent; crew: Array<{ staff_id: string; name: string; color: string | null }>; onSelect: (e: CalEvent) => void }) {
   return (
     <button onClick={() => onSelect(e)} className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-secondary/40">
       <span className="h-3 w-3 flex-none rounded-full" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }} />
@@ -360,6 +363,7 @@ function EventRow({ e, onSelect }: { e: CalEvent; onSelect: (e: CalEvent) => voi
         <p className="text-xs text-muted-foreground">{new Date(e.start_time).toLocaleString()} · {EVENT_TYPE_LABELS[e.event_type]} · {e.status}</p>
         {e.location && <p className="truncate text-xs text-muted-foreground">{e.location}</p>}
       </div>
+      <StaffDots entries={crew} max={5} />
     </button>
   );
 }
