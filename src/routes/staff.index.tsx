@@ -155,6 +155,42 @@ function StaffHome() {
   );
 }
 
+function ActiveBanner({
+  entry, onClockOut, pending,
+}: {
+  entry: { clock_in: string; category: string; task_label: string | null; jobs?: { title?: string | null } | null };
+  onClockOut: () => void;
+  pending: boolean;
+}) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const secs = Math.max(0, Math.floor((now - new Date(entry.clock_in).getTime()) / 1000));
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  const elapsed = h > 0 ? `${h}h ${m}m` : `${m}m ${s.toString().padStart(2, "0")}s`;
+  const label = entry.jobs?.title ?? entry.task_label ?? entry.category;
+  return (
+    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border-2 border-emerald-500/60 bg-emerald-50 px-4 py-3 shadow-sm">
+      <span className="grid h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-600" />
+      <div className="min-w-0">
+        <p className="truncate text-sm font-semibold text-emerald-900">On the clock — {label}</p>
+        <p className="font-mono text-xs tabular-nums text-emerald-800">{elapsed}</p>
+      </div>
+      <button
+        onClick={onClockOut}
+        disabled={pending}
+        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-rose-600 px-3 text-xs font-semibold text-white hover:bg-rose-700 disabled:opacity-60"
+      >
+        <Square className="h-3.5 w-3.5" /> Clock out
+      </button>
+    </div>
+  );
+}
+
 function Kpi({ label, value, sub, tone = "default" }: { label: string; value: number; sub?: string; tone?: "default" | "warn" | "muted" }) {
   const cls =
     tone === "warn" ? "border-amber-300 bg-amber-50" :
