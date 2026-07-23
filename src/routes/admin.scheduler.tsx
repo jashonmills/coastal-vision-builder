@@ -288,7 +288,12 @@ function labelForView(d: Date, view: ViewMode) {
 
 type CrewMap = Map<string, Array<{ staff_id: string; name: string; color: string | null }>>;
 
-function MonthGrid({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
+function startOfDayAt9(d: Date) {
+  const n = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0, 0, 0);
+  return n;
+}
+
+function MonthGrid({ cursor, events, crewByEvent, onSelect, onAddOnDate }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void; onAddOnDate: (d: Date) => void }) {
   const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
   const startDow = first.getDay();
   const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
