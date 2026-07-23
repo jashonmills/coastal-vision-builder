@@ -97,7 +97,9 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
 
-    // Mark linked saved recommendation as quote_requested (if any)
+    // Mark linked saved recommendation as quote_requested (if any). For guest
+    // requests where we just created the saved_recommendation above we already
+    // inserted it in the quote_requested state, so skip the redundant update.
     if (data.saved_recommendation_id) {
       await supabaseAdmin
         .from("saved_recommendations")
@@ -108,6 +110,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         })
         .eq("id", data.saved_recommendation_id);
     }
+
 
     // Auto-create scheduler entries: one on the request date, one on event date
     const guests = data.guest_count ? `${data.guest_count} guests` : "";
