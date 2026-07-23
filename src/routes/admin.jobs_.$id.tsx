@@ -233,9 +233,52 @@ function JobDetailPage() {
         <h3 className="mb-3 font-serif text-lg text-primary">Crew notes</h3>
         <JobNotesList jobId={job.id} />
       </section>
+      <PullProgressSection jobId={job.id} />
     </AdminLayout>
   );
 }
+
+function PullProgressSection({ jobId }: { jobId: string }) {
+  const fn = useServerFn(getPullList);
+  const q = useQuery({
+    queryKey: ["admin-pull-list", jobId],
+    queryFn: () => fn({ data: { job_id: jobId } as never }),
+  });
+  if (q.isLoading) return null;
+  const d = q.data as any;
+  if (!d || !d.summary || d.summary.total === 0) {
+    return (
+      <section className="mt-6 rounded-xl border border-border bg-card p-5">
+        <h3 className="mb-2 font-serif text-lg text-primary">Pull progress</h3>
+        <p className="text-sm text-muted-foreground">No physical items on this job's quote.</p>
+      </section>
+    );
+  }
+  const s = d.summary as { total: number; fully_pulled: number; total_required: number; total_pulled: number };
+  const pct = s.total_required ? Math.round((s.total_pulled / s.total_required) * 100) : 0;
+  return (
+    <section className="mt-6 rounded-xl border border-border bg-card p-5">
+      <div className="flex items-center justify-between">
+        <h3 className="font-serif text-lg text-primary">Pull progress</h3>
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          {s.fully_pulled} / {s.total} lines · {s.total_pulled} / {s.total_required} units
+        </span>
+      </div>
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
+        <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
+      </div>
+      <ul className="mt-4 space-y-1 text-sm">
+        {(d.groups as Array<{ category: string; fully_pulled: number; total: number }>).map((g) => (
+          <li key={g.category} className="flex items-center justify-between border-b border-border/40 py-1">
+            <span className="text-foreground">{g.category}</span>
+            <span className="text-xs font-semibold tabular-nums text-muted-foreground">{g.fully_pulled} / {g.total}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 
 
 function AckPill({ status, reason }: { status: string; reason: string | null }) {
