@@ -1,10 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
+import { Loader2, Save, Trash2, X } from "lucide-react";
+import { toast } from "sonner";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { listTimeEntries } from "@/lib/time.functions";
+import { listTimeEntries, updateTimeEntry, deleteTimeEntry } from "@/lib/time.functions";
 import { listStaff } from "@/lib/staff.functions";
 
 export const Route = createFileRoute("/admin/timesheets")({
@@ -17,14 +18,20 @@ export const Route = createFileRoute("/admin/timesheets")({
   component: TimesheetsPage,
 });
 
-function fmtHours(seconds: number) {
-  return `${(seconds / 3600).toFixed(2)}h`;
-}
+const CATEGORIES = ["job", "warehouse", "maintenance", "travel", "admin", "other"] as const;
+type Cat = (typeof CATEGORIES)[number];
+
+function fmtHours(seconds: number) { return `${(seconds / 3600).toFixed(2)}h`; }
 function fmtDT(iso: string) {
-  return new Date(iso).toLocaleString(undefined, {
-    month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
-  });
+  return new Date(iso).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 }
+function toLocalInput(iso: string | null | undefined) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function fromLocalInput(s: string): string { return new Date(s).toISOString(); }
 
 function TimesheetsPage() {
   const listFn = useServerFn(listTimeEntries);
@@ -32,6 +39,7 @@ function TimesheetsPage() {
 
   const [staffId, setStaffId] = useState<string>("");
   const [days, setDays] = useState<7 | 14 | 30 | 90>(14);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const range = useMemo(() => {
     const end = new Date();
@@ -40,52 +48,34 @@ function TimesheetsPage() {
     return { start_date: start.toISOString(), end_date: end.toISOString() };
   }, [days]);
 
-  const staffQ = useQuery({
-    queryKey: ["admin-staff-list"],
-    queryFn: () => staffFn(),
-  });
-
+  const staffQ = useQuery({ queryKey: ["admin-staff-list"], queryFn: () => staffFn() });
   const q = useQuery({
     queryKey: ["admin-timesheets", staffId, range.start_date, range.end_date],
-    queryFn: () =>
-      listFn({
-        data: {
-          ...(staffId ? { staff_id: staffId } : {}),
-          start_date: range.start_date,
-          end_date: range.end_date,
-        } as never,
-      }),
+    queryFn: () => listFn({ data: { ...(staffId ? { staff_id: staffId } : {}), start_date: range.start_date, end_date: range.end_date } as never }),
   });
+
+  const entries = q.data?.entries ?? [];
+  const active = entries.find((e: any) => e.id === openId) ?? null;
 
   return (
     <AdminLayout>
       <div className="space-y-6">
         <header>
           <h1 className="text-2xl font-serif text-primary">Timesheets</h1>
-          <p className="text-sm text-muted-foreground">Crew hours across jobs and ad-hoc work.</p>
+          <p className="text-sm text-muted-foreground">Crew hours across jobs and ad-hoc work. Tap any row to view or correct.</p>
         </header>
 
         <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Staff</label>
-            <select
-              value={staffId}
-              onChange={(e) => setStaffId(e.target.value)}
-              className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
-            >
+            <select value={staffId} onChange={(e) => setStaffId(e.target.value)} className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm">
               <option value="">All staff</option>
-              {(staffQ.data ?? []).map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
+              {(staffQ.data ?? []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Range</label>
-            <select
-              value={days}
-              onChange={(e) => setDays(Number(e.target.value) as 7 | 14 | 30 | 90)}
-              className="mt-1 h-10 rounded-md border border-border bg-background px-3 text-sm"
-            >
+            <select value={days} onChange={(e) => setDays(Number(e.target.value) as 7 | 14 | 30 | 90)} className="mt-1 h-10 rounded-md border border-border bg-background px-3 text-sm">
               <option value={7}>Last 7 days</option>
               <option value={14}>Last 14 days</option>
               <option value={30}>Last 30 days</option>
@@ -102,14 +92,8 @@ function TimesheetsPage() {
         ) : (
           <>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <SummaryCard
-                title="By staff"
-                rows={(q.data?.by_staff ?? []).map((r) => ({ label: r.name, seconds: r.seconds }))}
-              />
-              <SummaryCard
-                title="By job"
-                rows={(q.data?.by_job ?? []).map((r) => ({ label: r.title, seconds: r.seconds }))}
-              />
+              <SummaryCard title="By staff" rows={(q.data?.by_staff ?? []).map((r) => ({ label: r.name, seconds: r.seconds }))} />
+              <SummaryCard title="By job" rows={(q.data?.by_job ?? []).map((r) => ({ label: r.title, seconds: r.seconds }))} />
             </div>
 
             <section className="rounded-2xl border border-border bg-card shadow-sm">
@@ -125,45 +109,40 @@ function TimesheetsPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {(q.data?.entries ?? []).length === 0 ? (
+                    {entries.length === 0 ? (
                       <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">No entries in this range.</td></tr>
-                    ) : (
-                      (q.data?.entries ?? []).map((e) => {
-                        const staffRow = e.staff as { name?: string } | null;
-                        const jobRow = e.jobs as { title?: string | null } | null;
-                        return (
-                          <tr key={e.id} className="border-t border-border/60">
-                            <td className="max-w-[160px] truncate px-4 py-2 font-medium text-foreground">{staffRow?.name ?? "—"}</td>
-                            <td className="max-w-[220px] truncate px-4 py-2">
-                              {jobRow?.title ?? e.task_label ?? (
-                                <span className="capitalize text-muted-foreground">{e.category}</span>
-                              )}
-                            </td>
-                            <td className="px-4 py-2 text-muted-foreground">{fmtDT(e.clock_in)}</td>
-                            <td className="px-4 py-2 text-muted-foreground">{e.clock_out ? fmtDT(e.clock_out) : <span className="text-emerald-700">open</span>}</td>
-                            <td className="px-4 py-2 text-right font-semibold">{e.duration_seconds != null ? fmtHours(e.duration_seconds) : "—"}</td>
-                          </tr>
-                        );
-                      })
-                    )}
+                    ) : entries.map((e: any) => {
+                      const staffRow = e.staff as { name?: string } | null;
+                      const jobRow = e.jobs as { title?: string | null } | null;
+                      return (
+                        <tr key={e.id} onClick={() => setOpenId(e.id)} className="cursor-pointer border-t border-border/60 hover:bg-secondary/40">
+                          <td className="max-w-[160px] truncate px-4 py-2 font-medium text-foreground">{staffRow?.name ?? "—"}</td>
+                          <td className="max-w-[220px] truncate px-4 py-2">
+                            {jobRow?.title ?? e.task_label ?? <span className="capitalize text-muted-foreground">{e.category}</span>}
+                          </td>
+                          <td className="px-4 py-2 text-muted-foreground">{fmtDT(e.clock_in)}</td>
+                          <td className="px-4 py-2 text-muted-foreground">{e.clock_out ? fmtDT(e.clock_out) : <span className="text-emerald-700">open</span>}</td>
+                          <td className="px-4 py-2 text-right font-semibold">{e.duration_seconds != null ? fmtHours(e.duration_seconds) : "—"}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
 
-              {/* Mobile stacked cards */}
               <ul className="divide-y divide-border md:hidden">
-                {(q.data?.entries ?? []).length === 0 ? (
+                {entries.length === 0 ? (
                   <li className="px-4 py-10 text-center text-muted-foreground">No entries in this range.</li>
-                ) : (
-                  (q.data?.entries ?? []).map((e) => {
-                    const staffRow = e.staff as { name?: string } | null;
-                    const jobRow = e.jobs as { title?: string | null } | null;
-                    const work = jobRow?.title ?? e.task_label ?? e.category;
-                    return (
-                      <li key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 px-4 py-3 text-sm">
+                ) : entries.map((e: any) => {
+                  const staffRow = e.staff as { name?: string } | null;
+                  const jobRow = e.jobs as { title?: string | null } | null;
+                  const work = jobRow?.title ?? e.task_label ?? e.category;
+                  return (
+                    <li key={e.id}>
+                      <button onClick={() => setOpenId(e.id)} className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-2 px-4 py-3 text-left text-sm hover:bg-secondary/40">
                         <div className="min-w-0">
                           <p className="truncate font-semibold text-foreground">{staffRow?.name ?? "—"}</p>
-                          <p className="truncate text-xs text-muted-foreground capitalize">{work}</p>
+                          <p className="truncate text-xs capitalize text-muted-foreground">{work}</p>
                           <p className="mt-1 text-[11px] text-muted-foreground">
                             {fmtDT(e.clock_in)} → {e.clock_out ? fmtDT(e.clock_out) : <span className="text-emerald-700">open</span>}
                           </p>
@@ -171,16 +150,119 @@ function TimesheetsPage() {
                         <div className="shrink-0 text-right">
                           <p className="font-semibold">{e.duration_seconds != null ? fmtHours(e.duration_seconds) : "—"}</p>
                         </div>
-                      </li>
-                    );
-                  })
-                )}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           </>
         )}
       </div>
+
+      {active && <TimeEntryDialog entry={active} onClose={() => setOpenId(null)} />}
     </AdminLayout>
+  );
+}
+
+function TimeEntryDialog({ entry, onClose }: { entry: any; onClose: () => void }) {
+  const qc = useQueryClient();
+  const updFn = useServerFn(updateTimeEntry);
+  const delFn = useServerFn(deleteTimeEntry);
+
+  const [category, setCategory] = useState<Cat>(entry.category);
+  const [taskLabel, setTaskLabel] = useState<string>(entry.task_label ?? "");
+  const [clockIn, setClockIn] = useState<string>(toLocalInput(entry.clock_in));
+  const [clockOut, setClockOut] = useState<string>(toLocalInput(entry.clock_out));
+  const [notes, setNotes] = useState<string>(entry.notes ?? "");
+
+  useEffect(() => {
+    setCategory(entry.category); setTaskLabel(entry.task_label ?? "");
+    setClockIn(toLocalInput(entry.clock_in)); setClockOut(toLocalInput(entry.clock_out));
+    setNotes(entry.notes ?? "");
+  }, [entry.id]);
+
+  const save = useMutation({
+    mutationFn: () => updFn({ data: {
+      id: entry.id,
+      category,
+      task_label: taskLabel.trim() ? taskLabel.trim() : null,
+      clock_in: clockIn ? fromLocalInput(clockIn) : undefined,
+      clock_out: clockOut ? fromLocalInput(clockOut) : null,
+      notes: notes.trim() ? notes.trim() : null,
+    } as never }),
+    onSuccess: () => { toast.success("Updated"); qc.invalidateQueries({ queryKey: ["admin-timesheets"] }); onClose(); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const del = useMutation({
+    mutationFn: () => delFn({ data: { id: entry.id } }),
+    onSuccess: () => { toast.success("Deleted"); qc.invalidateQueries({ queryKey: ["admin-timesheets"] }); onClose(); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const duration = clockIn && clockOut
+    ? Math.max(0, Math.floor((new Date(clockOut).getTime() - new Date(clockIn).getTime()) / 1000))
+    : null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={onClose}>
+      <div className="w-full max-w-lg overflow-hidden rounded-t-2xl bg-card shadow-xl sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
+        <header className="flex items-center justify-between border-b border-border px-4 py-3">
+          <div className="min-w-0">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Time entry</p>
+            <h2 className="truncate font-serif text-lg text-foreground">
+              {entry.staff?.id ? (
+                <Link to="/admin/staff_/$id" params={{ id: entry.staff.id }} className="hover:underline" onClick={onClose}>{entry.staff?.name}</Link>
+              ) : entry.staff?.name ?? "Entry"}
+            </h2>
+          </div>
+          <button onClick={onClose} className="rounded-full p-1 text-muted-foreground hover:bg-secondary"><X className="h-5 w-5" /></button>
+        </header>
+        <div className="max-h-[70vh] space-y-3 overflow-y-auto p-4 text-sm">
+          {entry.jobs?.id && (
+            <p className="rounded-lg bg-secondary/50 p-2 text-xs text-muted-foreground">
+              Linked job: <Link to="/admin/jobs/$id" params={{ id: entry.jobs.id }} className="text-primary hover:underline" onClick={onClose}>{entry.jobs.title ?? "Job"}</Link>
+            </p>
+          )}
+          <label className="block">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Category</span>
+            <select value={category} onChange={(e) => setCategory(e.target.value as Cat)} className="mt-1 w-full rounded border border-border bg-background px-3 py-2 text-sm">
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Task label (ad-hoc)</span>
+            <input value={taskLabel} onChange={(e) => setTaskLabel(e.target.value)} placeholder="e.g. Organizing warehouse" className="mt-1 w-full rounded border border-border bg-background px-3 py-2 text-sm" />
+          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="block">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Clock in</span>
+              <input type="datetime-local" value={clockIn} onChange={(e) => setClockIn(e.target.value)} className="mt-1 w-full rounded border border-border bg-background px-3 py-2 text-sm" />
+            </label>
+            <label className="block">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Clock out</span>
+              <input type="datetime-local" value={clockOut} onChange={(e) => setClockOut(e.target.value)} className="mt-1 w-full rounded border border-border bg-background px-3 py-2 text-sm" />
+            </label>
+          </div>
+          <p className="text-xs text-muted-foreground">Duration: <span className="font-semibold text-foreground">{duration != null ? fmtHours(duration) : "—"}</span></p>
+          <label className="block">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Notes</span>
+            <textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 w-full rounded border border-border bg-background px-3 py-2 text-sm" />
+          </label>
+        </div>
+        <footer className="flex items-center justify-between gap-2 border-t border-border px-4 py-3">
+          <button onClick={() => { if (confirm("Delete this entry?")) del.mutate(); }} className="inline-flex items-center gap-1 rounded-full border border-red-600/30 px-3 py-2 text-xs font-semibold text-red-600">
+            <Trash2 className="h-3.5 w-3.5" /> Delete
+          </button>
+          <div className="flex gap-2">
+            <button onClick={onClose} className="rounded-full border border-border px-3 py-2 text-xs text-muted-foreground">Cancel</button>
+            <button disabled={save.isPending} onClick={() => save.mutate()} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground disabled:opacity-50">
+              {save.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />} Save
+            </button>
+          </div>
+        </footer>
+      </div>
+    </div>
   );
 }
 
@@ -188,9 +270,7 @@ function SummaryCard({ title, rows }: { title: string; rows: { label: string; se
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
       <h2 className="mb-2 text-sm font-semibold text-foreground">{title}</h2>
-      {rows.length === 0 ? (
-        <p className="text-xs text-muted-foreground">No data.</p>
-      ) : (
+      {rows.length === 0 ? <p className="text-xs text-muted-foreground">No data.</p> : (
         <ul className="space-y-1.5">
           {rows.slice(0, 8).map((r) => (
             <li key={r.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-sm">
