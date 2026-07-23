@@ -777,6 +777,10 @@ export const setQuotePayment = createServerFn({ method: "POST" })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true, ...patch };
+  });
+
+
+
 
 
 const QuoteItemSchema = z.object({
