@@ -31,7 +31,7 @@ type PullLineRow = {
 };
 
 const PULL_COLS =
-  "id, job_id, name, category, inventory_item_id, quote_item_id, quantity_required, quantity_pulled, quantity_returned_ok, quantity_cleaning, quantity_damaged, quantity_missing, checked_out_applied, checkin_notes, checked_in_at, checked_in_by";
+  "id, job_id, name, category, inventory_item_id, quote_item_id, quantity_required, quantity_pulled, quantity_returned_ok, quantity_cleaning, quantity_damaged, quantity_missing, checked_out_applied, checkin_notes, checked_in_at, checked_in_by, damage_photo_paths";
 
 async function isAdmin(supabase: any, userId: string): Promise<boolean> {
   const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
