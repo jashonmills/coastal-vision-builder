@@ -326,12 +326,26 @@ async function draftPicksWithAI(
     console.warn("[createQuoteFromRequest] LOVABLE_API_KEY missing — skipping AI draft.");
     return [];
   }
-  const categories = Array.from(new Set(pricing.map((i) => i.category).filter(Boolean))) as string[];
+
+  // Date-aware availability filter — no-op if no event date, no mappings, or on error.
+  const { filterCatalogByAvailability } = await import("./availability-catalog.server");
+  const { filtered: availablePricing, info: availabilityInfo } =
+    await filterCatalogByAvailability(pricing, req.event_date);
+
+  const categories = Array.from(new Set(availablePricing.map((i) => i.category).filter(Boolean))) as string[];
   const inventoryByCategory = categories.map((cat) => ({
     category: cat,
-    items: pricing
+    items: availablePricing
       .filter((i) => i.category === cat)
-      .map((i) => ({ id: i.id, name: i.name, unit: i.unit })),
+      .map((i) => {
+        const availQty = availabilityInfo.availableByPricingId[i.id];
+        return {
+          id: i.id,
+          name: i.name,
+          unit: i.unit,
+          ...(typeof availQty === "number" ? { max_available_qty: availQty } : {}),
+        };
+      }),
   }));
 
   const systemPrompt = `You are drafting an internal event rental quote for Pacific North Events & Tents (Oregon Coast). Given a customer request and the full pricing catalog, choose sensible line items.
@@ -344,6 +358,7 @@ RULES:
 - Add Specialty Items that match the customer's "Interested in" note (bar, dance floor, PA, heaters, stage, grill).
 - Include ONE Delivery zone that best matches the event location text; if nothing matches, pick "Beyond listed locations".
 - Include the matching "Canopy Cleaning Fee - Beach" for the chosen tent when the location suggests a beach event.
+- If an item includes a "max_available_qty" field, DO NOT draft more than that quantity — it reflects stock available for the requested dates. Items without this field are considered fully available.
 - Provide a 1-sentence "reason" per pick.`;
 
   const userPrompt = `EVENT REQUEST:
@@ -513,17 +528,31 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
     // --- Match picks against catalog ---
     const byId = new Map(catalog.map((p) => [p.id, p]));
     const byName = new Map(catalog.map((p) => [(p.name ?? "").toLowerCase(), p]));
+
+    // Date-aware availability caps for mapped items (no-op on error / no date / no mappings).
+    const { filterCatalogByAvailability: _filterAvail } = await import("./availability-catalog.server");
+    const { info: availInfo } = await _filterAvail(catalog, req.event_date);
+
     const rows = picks.map((pick, idx) => {
       const match =
         (pick.item_id && byId.get(pick.item_id)) ||
         (pick.item_name && byName.get(pick.item_name.toLowerCase())) ||
         null;
-      const qty = Math.max(1, Math.floor(pick.quantity ?? 1));
+      let qty = Math.max(1, Math.floor(pick.quantity ?? 1));
+      let capReason: string | null = null;
+      if (match) {
+        const cap = availInfo.availableByPricingId[match.id];
+        if (typeof cap === "number" && qty > cap && cap > 0) {
+          capReason = ` [Capped to ${cap} available for event dates]`;
+          qty = cap;
+        }
+      }
       const unit_price_cents = match?.price_cents ?? 0;
       const needsReview = !match;
-      const reason = needsReview
+      const baseReason = needsReview
         ? `[Needs pricing] ${pick.reason ?? ""}`.trim()
         : pick.reason ?? null;
+      const reason = capReason ? `${baseReason ?? ""}${capReason}`.trim() : baseReason;
       return {
         quote_id: q.id,
         pricing_item_id: match?.id ?? null,

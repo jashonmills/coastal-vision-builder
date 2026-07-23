@@ -53,13 +53,29 @@ export const generateRecommendation = createServerFn({ method: "POST" })
       .order("sort_order");
     if (invErr) throw new Error(`Inventory load failed: ${invErr.message}`);
 
-    const categories = Array.from(new Set((inventory ?? []).map((i) => i.category)));
+    // Date-aware availability filter: drop mapped items that are out of stock
+    // for the event window, and annotate mapped items with limited stock.
+    // Fully no-op if no event date, no mappings, or any lookup error.
+    const { filterCatalogByAvailability } = await import("./availability-catalog.server");
+    const { filtered: availableInventory, info: availabilityInfo } =
+      await filterCatalogByAvailability(inventory ?? [], data.eventDate);
+
+    const categories = Array.from(new Set(availableInventory.map((i) => i.category)));
 
     const inventoryByCategory = categories.map((cat) => ({
       category: cat,
-      items: (inventory ?? [])
+      items: availableInventory
         .filter((i) => i.category === cat)
-        .map((i) => ({ id: i.id, name: i.name, unit: i.unit, notes: i.notes })),
+        .map((i) => {
+          const availQty = availabilityInfo.availableByPricingId[i.id];
+          return {
+            id: i.id,
+            name: i.name,
+            unit: i.unit,
+            notes: i.notes,
+            ...(typeof availQty === "number" ? { max_available_qty: availQty } : {}),
+          };
+        }),
     }));
 
     const systemPrompt = `You are a senior event planner for Pacific North Events & Tents, an Oregon Coast event rental company. Given a customer's event details and the full rental inventory, recommend a thorough event setup.
@@ -75,6 +91,7 @@ RULES:
 - "tent_size": short label of the chosen tent, e.g. "20×40 Frame Tent" or "20×60 Frame Tent".
 - "layout_caption": ONE short line describing the floor plan, formatted like the references: e.g. "20×40 Frame Tent · 8 round tables · 64 chairs · dance floor".
 - "blueprint_prompt": 1-2 sentences describing the top-down arrangement of tables, chairs, dance floor, bar, DJ/stage, and entrance inside the tent footprint.
+- If an inventory item includes a "max_available_qty" field, DO NOT recommend more than that quantity for that item — it reflects stock available for the event dates. Items without this field are considered fully available.
 - Do NOT include prices. Recommendation is an estimate; customer requests a final quote.`;
 
     const userPrompt = `EVENT DETAILS:
