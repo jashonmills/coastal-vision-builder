@@ -1,21 +1,18 @@
 ## Problem
 
-Clicking "Sign Contract" from `/account` navigates to `/rental-contract/fill/rental-contract?quoteId=...` but the page shown is the contracts hub (list of PDFs), not the signing form.
-
-Root cause (confirmed in `src/routeTree.gen.ts`): TanStack Router treats `rental-contract.fill.$contractId.tsx` as a child of `rental-contract.tsx` because of flat dot-nesting. `src/routes/rental-contract.tsx` renders `ContractsHubPage` with no `<Outlet />`, so on any `/rental-contract/*` URL the child route matches but has nowhere to render — the hub renders instead.
+`src/routes/accept-invite.tsx` decides post-signup destination by checking only the `admin` role. Staff members (rows in `public.staff` with `user_id = auth.uid()`) aren't recognized, so they fall through to the default `/account` (customer dashboard) instead of their staff dashboard.
 
 ## Fix
 
-Convert `rental-contract` from a de-facto layout into a leaf sibling so both routes are independent:
+Update the post-password-save redirect in `src/routes/accept-invite.tsx` to:
 
-1. Rename `src/routes/rental-contract.tsx` → `src/routes/rental-contract.index.tsx`. No code changes inside — `createFileRoute("/rental-contract")` stays valid (index files keep the parent's path).
-2. Let the router plugin regenerate `src/routeTree.gen.ts`. After regen, `/rental-contract` and `/rental-contract/fill/$contractId` are sibling leaves; the signing form mounts.
+1. If user has `admin` role → `/admin` (unchanged).
+2. Else, check `public.staff` for an active row with `user_id = uid` (single-row select via the browser Supabase client — RLS already allows a staff member to read their own row). If found → `/my-schedule`.
+3. Else → `/account` (unchanged).
 
-## Verify
+That is the only code change. No schema, no server function, no other flow touched.
 
-- Navigate to `/rental-contract` → still shows the contracts hub.
-- From `/account` → Quotes tab → "Sign Contract" opens the fill form with the quote prefilled.
-- Direct visit to `/rental-contract/fill/rental-contract` still works.
-- Typecheck passes.
+## Verification
 
-No other files need to change.
+- Typecheck.
+- Manually: an invited staff user, on completing password setup, lands on `/my-schedule`; an invited admin still lands on `/admin`; a regular customer invite (if ever used) still lands on `/account`.
