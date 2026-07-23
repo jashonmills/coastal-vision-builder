@@ -14,6 +14,8 @@ import {
   UserSquare2,
   ShieldCheck,
   Clock,
+  DollarSign,
+
   Menu,
   ExternalLink,
   LogOut,
