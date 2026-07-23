@@ -15,6 +15,7 @@ import {
 } from "@/lib/bookings.functions";
 import { CrewAssign } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
+import { JobCrossLink } from "@/components/admin/JobCrossLink";
 
 export const Route = createFileRoute("/admin/quotes_/$id/job-sheet")({
   head: () => ({ meta: [{ title: "Job Sheet | Admin" }] }),
