@@ -69,7 +69,7 @@ export async function resolveInventoryIdsForQuote(
 }
 
 /** Apply a status delta on an inventory_items row and write a transaction record. */
-async function applyInventoryMove(
+export async function applyInventoryMove(
   supabase: any,
   opts: {
     inventory_item_id: string;
