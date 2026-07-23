@@ -108,8 +108,11 @@ function DashboardPage() {
               <StatCard label="Events (7 days)" value={c!.upcomingEvents} icon={CalendarDays} tone="navy" to="/admin/scheduler" />
               <StatCard label="Over-committed" value={(c as any).overCommittedInventory ?? 0} icon={AlertTriangle}
                 tone={((c as any).overCommittedInventory ?? 0) > 0 ? "gold" : "muted"} to="/admin/inventory" />
-              <StatCard label="Pricing Unmapped" value={(c as any).unmappedPricing ?? 0} icon={Boxes}
-                tone={((c as any).unmappedPricing ?? 0) > 0 ? "gold" : "muted"} to="/admin/pricing" />
+             <StatCard label="Pricing Unmapped" value={(c as any).unmappedPricing ?? 0} icon={Boxes}
+               tone={((c as any).unmappedPricing ?? 0) > 0 ? "gold" : "muted"} to="/admin/pricing" search={{ filter: "unlinked" }} />
+             <StatCard label="Inventory: 0 owned" value={(c as any).zeroOwnedInventory ?? 0} icon={AlertTriangle}
+               tone={((c as any).zeroOwnedInventory ?? 0) > 0 ? "gold" : "muted"} to="/admin/inventory" search={{ filter: "zero" }} />
+
               <StatCard label="Unread Alerts" value={c!.unreadNotifications} icon={Bell}
                 tone={c!.unreadNotifications > 0 ? "gold" : "muted"} />
             </div>
