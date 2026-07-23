@@ -1,6 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { type ReactNode } from "react";
-import { CalendarDays, ClipboardList, Home, LogOut, MoreHorizontal } from "lucide-react";
+import { CalendarDays, ClipboardList, Clock, Home, LogOut, MoreHorizontal } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ const TABS: Tab[] = [
   { to: "/staff", label: "Home", icon: Home, exact: true },
   { to: "/staff/calendar", label: "Calendar", icon: CalendarDays },
   { to: "/staff/jobs", label: "Jobs", icon: ClipboardList },
+  { to: "/staff/clock", label: "Clock", icon: Clock },
   { to: "/staff/more", label: "More", icon: MoreHorizontal },
 ];
 
