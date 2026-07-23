@@ -35,8 +35,10 @@ import { Route as StaffIndexRouteImport } from './routes/staff.index'
 import { Route as RentalContractIndexRouteImport } from './routes/rental-contract.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
+import { Route as StaffNotesRouteImport } from './routes/staff.notes'
 import { Route as StaffMoreRouteImport } from './routes/staff.more'
 import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
+import { Route as StaffExpensesRouteImport } from './routes/staff.expenses'
 import { Route as StaffClockRouteImport } from './routes/staff.clock'
 import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
@@ -49,6 +51,7 @@ import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-req
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
+import { Route as AdminExpensesRouteImport } from './routes/admin.expenses'
 import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
@@ -201,6 +204,11 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/account/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffNotesRoute = StaffNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => StaffRoute,
+} as any)
 const StaffMoreRoute = StaffMoreRouteImport.update({
   id: '/more',
   path: '/more',
@@ -209,6 +217,11 @@ const StaffMoreRoute = StaffMoreRouteImport.update({
 const StaffJobsRoute = StaffJobsRouteImport.update({
   id: '/jobs',
   path: '/jobs',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffExpensesRoute = StaffExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
   getParentRoute: () => StaffRoute,
 } as any)
 const StaffClockRoute = StaffClockRouteImport.update({
@@ -269,6 +282,11 @@ const AdminJobsRoute = AdminJobsRouteImport.update({
 const AdminInventoryRoute = AdminInventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExpensesRoute = AdminExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDataImportRoute = AdminDataImportRouteImport.update({
@@ -411,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
+  '/admin/expenses': typeof AdminExpensesRoute
   '/admin/inventory': typeof AdminInventoryRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/pricing': typeof AdminPricingRoute
@@ -423,8 +442,10 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
   '/staff/clock': typeof StaffClockRoute
+  '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
   '/staff/more': typeof StaffMoreRoute
+  '/staff/notes': typeof StaffNotesRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/rental-contract/': typeof RentalContractIndexRoute
@@ -472,6 +493,7 @@ export interface FileRoutesByTo {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
+  '/admin/expenses': typeof AdminExpensesRoute
   '/admin/inventory': typeof AdminInventoryRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/pricing': typeof AdminPricingRoute
@@ -484,8 +506,10 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
   '/staff/clock': typeof StaffClockRoute
+  '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
   '/staff/more': typeof StaffMoreRoute
+  '/staff/notes': typeof StaffNotesRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/rental-contract': typeof RentalContractIndexRoute
@@ -536,6 +560,7 @@ export interface FileRoutesById {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
+  '/admin/expenses': typeof AdminExpensesRoute
   '/admin/inventory': typeof AdminInventoryRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/pricing': typeof AdminPricingRoute
@@ -548,8 +573,10 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
   '/staff/clock': typeof StaffClockRoute
+  '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
   '/staff/more': typeof StaffMoreRoute
+  '/staff/notes': typeof StaffNotesRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/rental-contract/': typeof RentalContractIndexRoute
@@ -601,6 +628,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/dashboard'
     | '/admin/data-import'
+    | '/admin/expenses'
     | '/admin/inventory'
     | '/admin/jobs'
     | '/admin/pricing'
@@ -613,8 +641,10 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/staff/calendar'
     | '/staff/clock'
+    | '/staff/expenses'
     | '/staff/jobs'
     | '/staff/more'
+    | '/staff/notes'
     | '/account/'
     | '/admin/'
     | '/rental-contract/'
@@ -662,6 +692,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/dashboard'
     | '/admin/data-import'
+    | '/admin/expenses'
     | '/admin/inventory'
     | '/admin/jobs'
     | '/admin/pricing'
@@ -674,8 +705,10 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/staff/calendar'
     | '/staff/clock'
+    | '/staff/expenses'
     | '/staff/jobs'
     | '/staff/more'
+    | '/staff/notes'
     | '/account'
     | '/admin'
     | '/rental-contract'
@@ -725,6 +758,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/dashboard'
     | '/admin/data-import'
+    | '/admin/expenses'
     | '/admin/inventory'
     | '/admin/jobs'
     | '/admin/pricing'
@@ -737,8 +771,10 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/staff/calendar'
     | '/staff/clock'
+    | '/staff/expenses'
     | '/staff/jobs'
     | '/staff/more'
+    | '/staff/notes'
     | '/account/'
     | '/admin/'
     | '/rental-contract/'
@@ -980,6 +1016,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/notes': {
+      id: '/staff/notes'
+      path: '/notes'
+      fullPath: '/staff/notes'
+      preLoaderRoute: typeof StaffNotesRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/more': {
       id: '/staff/more'
       path: '/more'
@@ -992,6 +1035,13 @@ declare module '@tanstack/react-router' {
       path: '/jobs'
       fullPath: '/staff/jobs'
       preLoaderRoute: typeof StaffJobsRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/expenses': {
+      id: '/staff/expenses'
+      path: '/expenses'
+      fullPath: '/staff/expenses'
+      preLoaderRoute: typeof StaffExpensesRouteImport
       parentRoute: typeof StaffRoute
     }
     '/staff/clock': {
@@ -1076,6 +1126,13 @@ declare module '@tanstack/react-router' {
       path: '/inventory'
       fullPath: '/admin/inventory'
       preLoaderRoute: typeof AdminInventoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/expenses': {
+      id: '/admin/expenses'
+      path: '/expenses'
+      fullPath: '/admin/expenses'
+      preLoaderRoute: typeof AdminExpensesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/data-import': {
@@ -1234,6 +1291,7 @@ interface AdminRouteChildren {
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminDataImportRoute: typeof AdminDataImportRoute
+  AdminExpensesRoute: typeof AdminExpensesRoute
   AdminInventoryRoute: typeof AdminInventoryRoute
   AdminJobsRoute: typeof AdminJobsRoute
   AdminPricingRoute: typeof AdminPricingRoute
@@ -1259,6 +1317,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCustomersRoute: AdminCustomersRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminDataImportRoute: AdminDataImportRoute,
+  AdminExpensesRoute: AdminExpensesRoute,
   AdminInventoryRoute: AdminInventoryRoute,
   AdminJobsRoute: AdminJobsRoute,
   AdminPricingRoute: AdminPricingRoute,
@@ -1283,8 +1342,10 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 interface StaffRouteChildren {
   StaffCalendarRoute: typeof StaffCalendarRoute
   StaffClockRoute: typeof StaffClockRoute
+  StaffExpensesRoute: typeof StaffExpensesRoute
   StaffJobsRoute: typeof StaffJobsRoute
   StaffMoreRoute: typeof StaffMoreRoute
+  StaffNotesRoute: typeof StaffNotesRoute
   StaffIndexRoute: typeof StaffIndexRoute
   StaffJobsIdRoute: typeof StaffJobsIdRoute
 }
@@ -1292,8 +1353,10 @@ interface StaffRouteChildren {
 const StaffRouteChildren: StaffRouteChildren = {
   StaffCalendarRoute: StaffCalendarRoute,
   StaffClockRoute: StaffClockRoute,
+  StaffExpensesRoute: StaffExpensesRoute,
   StaffJobsRoute: StaffJobsRoute,
   StaffMoreRoute: StaffMoreRoute,
+  StaffNotesRoute: StaffNotesRoute,
   StaffIndexRoute: StaffIndexRoute,
   StaffJobsIdRoute: StaffJobsIdRoute,
 }
