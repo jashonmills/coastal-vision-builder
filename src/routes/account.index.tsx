@@ -292,17 +292,84 @@ function ContractsTab() {
     }
   }
 
-  if (isLoading) return <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
-  if (!data || data.length === 0) {
-    return (
-      <EmptyState
-        icon={<FileSignature className="mx-auto h-10 w-10 text-muted-foreground" />}
-        title="No signed contracts yet"
-        body="Once you sign a contract online, it will appear here and you can download the signed PDF anytime."
-        cta={<Link to="/rental-contract" className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">View Contracts</Link>}
-      />
-    );
-  }
+  return (
+    <div className="space-y-8">
+      <div>
+        <h3 className="mb-3 font-serif text-lg text-primary">Sign a new contract</h3>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {(Object.keys(CONTRACT_LABEL) as Array<keyof typeof CONTRACT_LABEL>).map((cid) => (
+            <Link
+              key={cid}
+              to="/rental-contract/fill/$contractId"
+              params={{ contractId: cid }}
+              className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 text-sm shadow-sm hover:border-[color:var(--gold)] hover:bg-secondary/40"
+            >
+              <span className="inline-flex items-center gap-2 font-medium text-foreground">
+                <FileSignature className="h-4 w-4 text-[color:var(--gold)]" /> {CONTRACT_LABEL[cid]}
+              </span>
+              <span className="text-xs text-muted-foreground">Open →</span>
+            </Link>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Signing from a quote pre-fills your event details automatically. Open your quote and use the sign buttons for the fastest path.
+        </p>
+      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+      ) : !data || data.length === 0 ? (
+        <EmptyState
+          icon={<FileSignature className="mx-auto h-10 w-10 text-muted-foreground" />}
+          title="No signed contracts yet"
+          body="Once you sign a contract online, it will appear here and you can download the signed PDF anytime."
+        />
+      ) : (
+        <SignedContractsList data={data} busyId={busyId} onDownload={download} />
+      )}
+    </div>
+  );
+}
+
+function SignedContractsList({
+  data,
+  busyId,
+  onDownload,
+}: {
+  data: Array<{ id: string; contract_type: string; created_at: string; event_date: string | null }>;
+  busyId: string | null;
+  onDownload: (id: string) => void;
+}) {
+  return (
+    <div>
+      <h3 className="mb-3 font-serif text-lg text-primary">Your signed contracts</h3>
+      <ul className="space-y-3">
+        {data.map((c) => (
+          <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="min-w-0 flex-1">
+              <p className="font-serif text-lg text-primary">
+                {CONTRACT_LABEL[c.contract_type] ?? c.contract_type}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Signed {new Date(c.created_at).toLocaleDateString()}
+                {c.event_date ? ` · Event ${new Date(c.event_date + "T00:00:00").toLocaleDateString()}` : ""}
+              </p>
+            </div>
+            <button
+              onClick={() => onDownload(c.id)}
+              disabled={busyId === c.id}
+              className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)] disabled:opacity-60"
+            >
+              {busyId === c.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+              Download PDF
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 
   return (
     <ul className="space-y-3">
