@@ -15,7 +15,6 @@ import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RentalContractRouteImport } from './routes/rental-contract'
 import { Route as RecommenderRouteImport } from './routes/recommender'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MyScheduleRouteImport } from './routes/my-schedule'
@@ -31,6 +30,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RentalContractIndexRouteImport } from './routes/rental-contract.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
@@ -91,11 +91,6 @@ const ServicesRoute = ServicesRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RentalContractRoute = RentalContractRouteImport.update({
-  id: '/rental-contract',
-  path: '/rental-contract',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecommenderRoute = RecommenderRouteImport.update({
@@ -171,6 +166,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentalContractIndexRoute = RentalContractIndexRouteImport.update({
+  id: '/rental-contract/',
+  path: '/rental-contract/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -260,9 +260,9 @@ const AccountIdRoute = AccountIdRouteImport.update({
 } as any)
 const RentalContractFillContractIdRoute =
   RentalContractFillContractIdRouteImport.update({
-    id: '/fill/$contractId',
-    path: '/fill/$contractId',
-    getParentRoute: () => RentalContractRoute,
+    id: '/rental-contract/fill/$contractId',
+    path: '/rental-contract/fill/$contractId',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
@@ -350,7 +350,6 @@ export interface FileRoutesByFullPath {
   '/my-schedule': typeof MyScheduleRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
-  '/rental-contract': typeof RentalContractRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -374,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/rental-contract/': typeof RentalContractIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
@@ -404,7 +404,6 @@ export interface FileRoutesByTo {
   '/my-schedule': typeof MyScheduleRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
-  '/rental-contract': typeof RentalContractRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -428,6 +427,7 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
+  '/rental-contract': typeof RentalContractIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
@@ -460,7 +460,6 @@ export interface FileRoutesById {
   '/my-schedule': typeof MyScheduleRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
-  '/rental-contract': typeof RentalContractRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -484,6 +483,7 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/rental-contract/': typeof RentalContractIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers_/$id': typeof AdminCustomersIdRoute
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
@@ -517,7 +517,6 @@ export interface FileRouteTypes {
     | '/my-schedule'
     | '/profile'
     | '/recommender'
-    | '/rental-contract'
     | '/reset-password'
     | '/services'
     | '/sitemap.xml'
@@ -541,6 +540,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/account/'
     | '/admin/'
+    | '/rental-contract/'
     | '/account/quote/$id'
     | '/admin/customers/$id'
     | '/admin/inventory/$id'
@@ -571,7 +571,6 @@ export interface FileRouteTypes {
     | '/my-schedule'
     | '/profile'
     | '/recommender'
-    | '/rental-contract'
     | '/reset-password'
     | '/services'
     | '/sitemap.xml'
@@ -595,6 +594,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/account'
     | '/admin'
+    | '/rental-contract'
     | '/account/quote/$id'
     | '/admin/customers/$id'
     | '/admin/inventory/$id'
@@ -626,7 +626,6 @@ export interface FileRouteTypes {
     | '/my-schedule'
     | '/profile'
     | '/recommender'
-    | '/rental-contract'
     | '/reset-password'
     | '/services'
     | '/sitemap.xml'
@@ -650,6 +649,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/account/'
     | '/admin/'
+    | '/rental-contract/'
     | '/account/quote/$id'
     | '/admin/customers_/$id'
     | '/admin/inventory_/$id'
@@ -682,7 +682,6 @@ export interface RootRouteChildren {
   MyScheduleRoute: typeof MyScheduleRoute
   ProfileRoute: typeof ProfileRoute
   RecommenderRoute: typeof RecommenderRoute
-  RentalContractRoute: typeof RentalContractRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -692,8 +691,10 @@ export interface RootRouteChildren {
   AccountIdRoute: typeof AccountIdRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   AccountIndexRoute: typeof AccountIndexRoute
+  RentalContractIndexRoute: typeof RentalContractIndexRoute
   AccountQuoteIdRoute: typeof AccountQuoteIdRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  RentalContractFillContractIdRoute: typeof RentalContractFillContractIdRoute
   ApiPublicHooksSpreadsheetSyncRoute: typeof ApiPublicHooksSpreadsheetSyncRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -742,13 +743,6 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rental-contract': {
-      id: '/rental-contract'
-      path: '/rental-contract'
-      fullPath: '/rental-contract'
-      preLoaderRoute: typeof RentalContractRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recommender': {
@@ -854,6 +848,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rental-contract/': {
+      id: '/rental-contract/'
+      path: '/rental-contract'
+      fullPath: '/rental-contract/'
+      preLoaderRoute: typeof RentalContractIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -977,10 +978,10 @@ declare module '@tanstack/react-router' {
     }
     '/rental-contract/fill/$contractId': {
       id: '/rental-contract/fill/$contractId'
-      path: '/fill/$contractId'
+      path: '/rental-contract/fill/$contractId'
       fullPath: '/rental-contract/fill/$contractId'
       preLoaderRoute: typeof RentalContractFillContractIdRouteImport
-      parentRoute: typeof RentalContractRoute
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
@@ -1126,18 +1127,6 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface RentalContractRouteChildren {
-  RentalContractFillContractIdRoute: typeof RentalContractFillContractIdRoute
-}
-
-const RentalContractRouteChildren: RentalContractRouteChildren = {
-  RentalContractFillContractIdRoute: RentalContractFillContractIdRoute,
-}
-
-const RentalContractRouteWithChildren = RentalContractRoute._addFileChildren(
-  RentalContractRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -1154,7 +1143,6 @@ const rootRouteChildren: RootRouteChildren = {
   MyScheduleRoute: MyScheduleRoute,
   ProfileRoute: ProfileRoute,
   RecommenderRoute: RecommenderRoute,
-  RentalContractRoute: RentalContractRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -1164,8 +1152,10 @@ const rootRouteChildren: RootRouteChildren = {
   AccountIdRoute: AccountIdRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   AccountIndexRoute: AccountIndexRoute,
+  RentalContractIndexRoute: RentalContractIndexRoute,
   AccountQuoteIdRoute: AccountQuoteIdRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  RentalContractFillContractIdRoute: RentalContractFillContractIdRoute,
   ApiPublicHooksSpreadsheetSyncRoute: ApiPublicHooksSpreadsheetSyncRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
@@ -1174,13 +1164,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

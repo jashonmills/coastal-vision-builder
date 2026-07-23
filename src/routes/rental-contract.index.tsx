@@ -6,7 +6,7 @@ import { Download, FileText, ChevronDown, Printer, PenLine } from "lucide-react"
 
 const BRAND = "Pacific North Events & Tents";
 
-export const Route = createFileRoute("/rental-contract")({
+export const Route = createFileRoute("/rental-contract/")({
   component: ContractsHubPage,
   head: () => ({
     meta: [
