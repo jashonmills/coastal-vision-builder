@@ -158,7 +158,7 @@ function CustomersPage() {
                       {c.name || "—"}
                     </Link>
                   </td>
-                  <td className="px-3 py-2">{c.email}</td>
+                  <td className="max-w-[220px] truncate px-3 py-2">{c.email}</td>
                   <td className="px-3 py-2 text-muted-foreground">{c.phone || "—"}</td>
                   <td className="px-3 py-2">
                     <StageBadge stage={c.lifecycle_stage} />
