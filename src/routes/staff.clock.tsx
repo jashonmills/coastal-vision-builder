@@ -13,6 +13,7 @@ import {
   listMyTimeEntries,
   type TimeCategory,
 } from "@/lib/time.functions";
+import { HelpTip } from "@/components/HelpTip";
 
 export const Route = createFileRoute("/staff/clock")({
   component: ClockPage,
@@ -118,6 +119,12 @@ function ClockPage() {
       <header>
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Crew</p>
         <h1 className="mt-1 text-2xl font-serif text-primary sm:text-3xl">Clock</h1>
+      </header>
+
+      <HelpTip hintKey="staff-clock-intro">
+        Clock into a specific job, or an ad-hoc task like "organizing the warehouse".
+      </HelpTip>
+
       </header>
 
       {active ? (

@@ -14,6 +14,7 @@ import {
   upsertPricingInventoryMapping,
   removePricingInventoryMapping,
 } from "@/lib/pricing-mappings.functions";
+import { HelpTip } from "@/components/HelpTip";
 
 // Legacy tab search values used to deep-link into this page's now-removed
 // gallery/images/text tabs. They now live on /admin/content.
@@ -55,6 +56,9 @@ function PricingPage() {
         title="Pricing"
         subtitle="Edit the public rental price list customers see. Link each line to its physical inventory item so date-aware availability works."
       />
+      <HelpTip hintKey="admin-pricing-intro" className="mb-4">
+        Link each price-list item to an inventory item so date-based availability works.
+      </HelpTip>
       <div className="mb-6 rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
         <strong className="text-foreground">Price list.</strong>{" "}
         For quantities, reservations and check-in/out, use{" "}

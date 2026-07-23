@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useIsStaff } from "@/hooks/use-staff";
 import { listMyJobs, acknowledgeAssignment } from "@/lib/jobs.functions";
 import { getActiveTimeEntry, getWeeklyHours, clockOut } from "@/lib/time.functions";
+import { HelpTip } from "@/components/HelpTip";
 
 export const Route = createFileRoute("/staff/")({
   component: StaffHome,
@@ -91,6 +92,11 @@ function StaffHome() {
           {salute}, {firstName}
         </h1>
       </header>
+
+      <HelpTip hintKey="staff-home-intro">
+        This is your dashboard — today's jobs, clock in/out, and your upcoming schedule.
+      </HelpTip>
+
 
       {activeQ.data && (
         <ActiveBanner

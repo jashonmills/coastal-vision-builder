@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ArrowLeft, Check, Loader2, Minus, Plus, RotateCcw, Truck } from "lucide-react";
 import { toast } from "sonner";
 import { getPullList, markJobLoaded, setPullLineProgress } from "@/lib/pull.functions";
+import { HelpTip } from "@/components/HelpTip";
 
 export const Route = createFileRoute("/staff/jobs_/$id/pull")({
   component: PullListPage,
@@ -84,6 +85,11 @@ function PullListPage() {
       <Link to="/staff/jobs/$id" params={{ id }} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-3 w-3" /> Job details
       </Link>
+
+      <HelpTip hintKey="staff-pull-intro">
+        Tap +/− as you pull each item; hit "Mark truck loaded" when the order's complete.
+      </HelpTip>
+
 
       <div className="sticky top-0 z-10 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur">
         <div className="flex items-center justify-between">

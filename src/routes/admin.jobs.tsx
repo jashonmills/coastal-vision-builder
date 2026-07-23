@@ -7,6 +7,7 @@ import { AdminLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { listJobs } from "@/lib/jobs.functions";
+import { HelpTip } from "@/components/HelpTip";
 
 const STATUSES = [
   "booked", "prep", "loaded", "en_route", "on_site", "event",
@@ -91,6 +92,11 @@ function JobsPage() {
         title="Jobs"
         subtitle="Operational execution of every booked quote."
       />
+
+      <HelpTip hintKey="admin-jobs-intro" className="mb-4">
+        Jobs are created automatically when a quote is booked. Open a job to assign crew and move it through its status.
+      </HelpTip>
+
 
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
         <div className="relative flex-1">
