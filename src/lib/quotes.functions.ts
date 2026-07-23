@@ -71,10 +71,25 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
       }
     }
 
+    // Best-effort: find-or-create the CRM customer for this email.
+    let customerId: string | null = null;
+    try {
+      const { upsertCustomerByEmail } = await import("@/lib/customers.server");
+      customerId = await upsertCustomerByEmail({
+        email: data.customer_email,
+        name: data.customer_name,
+        phone: data.customer_phone ?? null,
+        lifecycle_stage: "lead",
+      });
+    } catch (e) {
+      console.warn("[createQuoteRequest] customer upsert failed", e);
+    }
+
     const { data: row, error } = await supabaseAdmin
       .from("quote_requests")
       .insert({
         saved_recommendation_id: savedRecommendationId,
+        customer_id: customerId,
         customer_name: data.customer_name,
         customer_email: data.customer_email,
         customer_phone: data.customer_phone ?? null,
