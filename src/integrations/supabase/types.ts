@@ -1596,6 +1596,7 @@ export type Database = {
         Args: { p_end: string; p_item: string; p_start: string }
         Returns: number
       }
+      is_active_staff: { Args: { _user_id: string }; Returns: boolean }
       is_staff_on_job: { Args: { _job_id: string }; Returns: boolean }
       move_to_dlq: {
         Args: {
