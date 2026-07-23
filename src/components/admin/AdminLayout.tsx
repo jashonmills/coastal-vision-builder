@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Clock,
   DollarSign,
+  Sparkles,
 
   Menu,
   ExternalLink,
