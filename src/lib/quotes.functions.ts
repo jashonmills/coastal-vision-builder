@@ -326,12 +326,26 @@ async function draftPicksWithAI(
     console.warn("[createQuoteFromRequest] LOVABLE_API_KEY missing — skipping AI draft.");
     return [];
   }
-  const categories = Array.from(new Set(pricing.map((i) => i.category).filter(Boolean))) as string[];
+
+  // Date-aware availability filter — no-op if no event date, no mappings, or on error.
+  const { filterCatalogByAvailability } = await import("./availability-catalog.server");
+  const { filtered: availablePricing, info: availabilityInfo } =
+    await filterCatalogByAvailability(pricing, req.event_date);
+
+  const categories = Array.from(new Set(availablePricing.map((i) => i.category).filter(Boolean))) as string[];
   const inventoryByCategory = categories.map((cat) => ({
     category: cat,
-    items: pricing
+    items: availablePricing
       .filter((i) => i.category === cat)
-      .map((i) => ({ id: i.id, name: i.name, unit: i.unit })),
+      .map((i) => {
+        const availQty = availabilityInfo.availableByPricingId[i.id];
+        return {
+          id: i.id,
+          name: i.name,
+          unit: i.unit,
+          ...(typeof availQty === "number" ? { max_available_qty: availQty } : {}),
+        };
+      }),
   }));
 
   const systemPrompt = `You are drafting an internal event rental quote for Pacific North Events & Tents (Oregon Coast). Given a customer request and the full pricing catalog, choose sensible line items.
@@ -344,6 +358,7 @@ RULES:
 - Add Specialty Items that match the customer's "Interested in" note (bar, dance floor, PA, heaters, stage, grill).
 - Include ONE Delivery zone that best matches the event location text; if nothing matches, pick "Beyond listed locations".
 - Include the matching "Canopy Cleaning Fee - Beach" for the chosen tent when the location suggests a beach event.
+- If an item includes a "max_available_qty" field, DO NOT draft more than that quantity — it reflects stock available for the requested dates. Items without this field are considered fully available.
 - Provide a 1-sentence "reason" per pick.`;
 
   const userPrompt = `EVENT REQUEST:
