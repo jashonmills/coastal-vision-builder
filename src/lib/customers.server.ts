@@ -31,7 +31,13 @@ export async function upsertCustomerByEmail(
       .maybeSingle();
 
     if (existing?.id) {
-      const patch: Record<string, unknown> = { last_activity_at: new Date().toISOString() };
+      const patch: {
+        last_activity_at: string;
+        name?: string;
+        phone?: string;
+        user_id?: string;
+        lifecycle_stage?: "lead" | "quoted" | "booked" | "repeat" | "archived";
+      } = { last_activity_at: new Date().toISOString() };
       if (input.name && !existing.name) patch.name = input.name;
       if (input.phone && !existing.phone) patch.phone = input.phone;
       if (input.user_id && !existing.user_id) patch.user_id = input.user_id;
