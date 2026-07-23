@@ -322,6 +322,8 @@ export const getJobReconciliation = createServerFn({ method: "GET" })
         missing,
         outstanding,
         checked_in_at: r.checked_in_at,
+        checkin_notes: r.checkin_notes,
+        damage_photo_paths: (r.damage_photo_paths ?? []) as string[],
       };
     });
 
