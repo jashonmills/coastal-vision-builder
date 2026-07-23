@@ -35,6 +35,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
       { to: "/admin/quote-requests", label: "Quote Requests", icon: Inbox },
       { to: "/admin/quotes", label: "Quotes", icon: FileText },
+      { to: "/admin/customers", label: "Customers", icon: UserSquare2 },
       { to: "/admin/scheduler", label: "Scheduler", icon: CalendarDays },
       { to: "/admin/inventory", label: "Inventory", icon: Boxes },
     ],
