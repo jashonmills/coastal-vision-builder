@@ -71,10 +71,25 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
       }
     }
 
+    // Best-effort: find-or-create the CRM customer for this email.
+    let customerId: string | null = null;
+    try {
+      const { upsertCustomerByEmail } = await import("@/lib/customers.server");
+      customerId = await upsertCustomerByEmail({
+        email: data.customer_email,
+        name: data.customer_name,
+        phone: data.customer_phone ?? null,
+        lifecycle_stage: "lead",
+      });
+    } catch (e) {
+      console.warn("[createQuoteRequest] customer upsert failed", e);
+    }
+
     const { data: row, error } = await supabaseAdmin
       .from("quote_requests")
       .insert({
         saved_recommendation_id: savedRecommendationId,
+        customer_id: customerId,
         customer_name: data.customer_name,
         customer_email: data.customer_email,
         customer_phone: data.customer_phone ?? null,
@@ -516,12 +531,42 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
       customerUserId = (sr?.user_id as string | null) ?? null;
     }
 
+    // Carry the CRM customer_id from the request (or upsert by email if missing).
+    let customerId: string | null = (req as { customer_id?: string | null }).customer_id ?? null;
+    if (!customerId && req.customer_email) {
+      try {
+        const { upsertCustomerByEmail } = await import("@/lib/customers.server");
+        customerId = await upsertCustomerByEmail({
+          email: req.customer_email,
+          name: req.customer_name,
+          phone: req.customer_phone,
+          user_id: customerUserId ?? null,
+          lifecycle_stage: "quoted",
+        });
+      } catch (e) {
+        console.warn("[createQuoteFromRequest] customer upsert failed", e);
+      }
+    } else if (customerId) {
+      // Bump lifecycle to 'quoted' when a quote is being drafted.
+      try {
+        const { upsertCustomerByEmail } = await import("@/lib/customers.server");
+        await upsertCustomerByEmail({
+          email: req.customer_email,
+          name: req.customer_name,
+          phone: req.customer_phone,
+          user_id: customerUserId ?? null,
+          lifecycle_stage: "quoted",
+        });
+      } catch { /* noop */ }
+    }
+
     // Create the quote (snapshot customer/event info)
     const { data: q, error: qErr } = await supabase
       .from("quotes")
       .insert({
         quote_request_id: req.id,
         saved_recommendation_id: req.saved_recommendation_id,
+        customer_id: customerId,
         customer_name: req.customer_name,
         customer_email: req.customer_email,
         customer_phone: req.customer_phone,

@@ -55,6 +55,7 @@ export type Database = {
           contract_type: string
           created_at: string
           customer_email: string
+          customer_id: string | null
           customer_name: string
           customer_phone: string | null
           customer_user_id: string | null
@@ -73,6 +74,7 @@ export type Database = {
           contract_type: string
           created_at?: string
           customer_email: string
+          customer_id?: string | null
           customer_name: string
           customer_phone?: string | null
           customer_user_id?: string | null
@@ -91,6 +93,7 @@ export type Database = {
           contract_type?: string
           created_at?: string
           customer_email?: string
+          customer_id?: string | null
           customer_name?: string
           customer_phone?: string | null
           customer_user_id?: string | null
@@ -107,6 +110,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "contract_submissions_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "contract_submissions_quote_id_fkey"
             columns: ["quote_id"]
             isOneToOne: false
@@ -114,6 +124,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      customers: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          first_seen_at: string
+          id: string
+          last_activity_at: string
+          lifecycle_stage: string
+          name: string | null
+          notes: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          first_seen_at?: string
+          id?: string
+          last_activity_at?: string
+          lifecycle_stage?: string
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          first_seen_at?: string
+          id?: string
+          last_activity_at?: string
+          lifecycle_stage?: string
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       email_send_log: {
         Row: {
@@ -770,7 +825,15 @@ export type Database = {
           user_id?: string | null
           venue?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "quote_requests_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       quote_returns: {
         Row: {
@@ -823,6 +886,7 @@ export type Database = {
           cleaning_fee_cents: number
           created_at: string
           customer_email: string
+          customer_id: string | null
           customer_name: string
           customer_notes: string | null
           customer_phone: string | null
@@ -861,6 +925,7 @@ export type Database = {
           cleaning_fee_cents?: number
           created_at?: string
           customer_email: string
+          customer_id?: string | null
           customer_name: string
           customer_notes?: string | null
           customer_phone?: string | null
@@ -899,6 +964,7 @@ export type Database = {
           cleaning_fee_cents?: number
           created_at?: string
           customer_email?: string
+          customer_id?: string | null
           customer_name?: string
           customer_notes?: string | null
           customer_phone?: string | null
@@ -930,6 +996,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "quotes_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "quotes_quote_request_id_fkey"
             columns: ["quote_request_id"]
