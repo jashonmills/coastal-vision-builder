@@ -153,7 +153,18 @@ function EditQuotePage() {
             <div className="font-mono text-xs text-muted-foreground">{quote.quote_number}</div>
             <h1 className="font-serif text-3xl text-primary">{quote.customer_name}</h1>
             <p className="text-sm text-muted-foreground">{quote.event_type || "—"} · {quote.event_date || "—"} · {quote.event_location || "—"} · {quote.guest_count ?? "?"} guests</p>
-            <div className="mt-2"><StatusPill status={quote.status} /></div>
+            <div className="mt-2 flex items-center gap-3">
+              <StatusPill status={quote.status} />
+              {(quote as { customer_id?: string | null }).customer_id && (
+                <Link
+                  to="/admin/customers/$id"
+                  params={{ id: (quote as { customer_id: string }).customer_id }}
+                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                >
+                  View customer →
+                </Link>
+              )}
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link
