@@ -261,10 +261,11 @@ function FillContractPage() {
                 className="mt-1 h-4 w-4"
               />
               <span>
-                I have read and agree to the terms of the {schema.title.toLowerCase()}. I understand that
-                typing my name and drawing my signature above has the same legal effect as a handwritten
-                signature.
+                I have read and agree to the terms of the {schema.title.toLowerCase()} shown above.
+                I understand that typing my name and drawing my signature above has the same legal effect as
+                a handwritten signature.
               </span>
+
             </label>
           </fieldset>
 
