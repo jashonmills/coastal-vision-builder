@@ -67,7 +67,11 @@ function SchedulerPage() {
   const { isAdmin, loading: roleLoading } = useIsAdmin();
   const navigate = useNavigate();
   const [cursor, setCursor] = useState(() => new Date());
-  const [view, setView] = useState<ViewMode>("month");
+  const [view, setView] = useState<ViewMode>(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) return "list";
+    return "month";
+  });
+
   const [filterType, setFilterType] = useState<string>("all");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [venueFilter, setVenueFilter] = useState<"all" | "rentals" | "beacon">("all");
