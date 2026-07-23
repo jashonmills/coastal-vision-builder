@@ -182,19 +182,32 @@ function ItemEditor({ id }: { id: string }) {
       {/* Quantity breakdown */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-7">
         <QtyCard label="Owned" value={form.total_owned_quantity} />
-        <QtyCard label="Available" value={av} tone={av < 0 ? "error" : "primary"} />
+        <QtyCard label="On hand now" value={av} tone={av < 0 ? "error" : "primary"} />
         <QtyCard label="Reserved" value={form.reserved_quantity} />
         <QtyCard label="Checked out" value={form.checked_out_quantity} />
         <QtyCard label="Cleaning" value={form.cleaning_quantity} icon={<Sparkles className="h-4 w-4" />} />
         <QtyCard label="Maintenance" value={form.maintenance_quantity} icon={<Wrench className="h-4 w-4" />} />
         <QtyCard label="Damaged/Missing" value={form.damaged_missing_quantity} icon={<AlertTriangle className="h-4 w-4" />} />
       </div>
+      <p className="text-xs text-muted-foreground">
+        <strong className="text-foreground">Owned</strong> = how many you physically own — this drives availability. Use{" "}
+        <button type="button" onClick={() => setAdjustOpen(undefined)} className="underline hover:text-foreground">Adjust quantity</button>{" "}
+        to change it. <strong className="text-foreground">On hand now</strong> is date-blind (owned minus current buckets); the quote builder uses the date-aware reservation ledger for a given event window.
+      </p>
+
+      {form.total_owned_quantity === 0 && (
+        <div className="rounded-lg border border-amber-400/40 bg-amber-50/50 p-3 text-sm text-amber-900 dark:bg-amber-900/10 dark:text-amber-200">
+          <AlertTriangle className="mr-1 inline h-4 w-4" />
+          Owned quantity is 0 — this item can never be recommended or reserved. Set the real count via Adjust quantity.
+        </div>
+      )}
 
       {av < 0 && (
         <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
           Available is negative. Reconcile buckets via Adjust Quantity → Admin correction.
         </div>
       )}
+
 
       {/* Form sections */}
       <div className="grid gap-6 lg:grid-cols-2">
