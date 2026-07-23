@@ -8,7 +8,9 @@ import { AdminLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { getJob, updateJob } from "@/lib/jobs.functions";
+import { getPullList } from "@/lib/pull.functions";
 import { JobNotesList } from "@/components/JobNotesList";
+
 
 import { StatusBadge } from "./admin.jobs";
 
