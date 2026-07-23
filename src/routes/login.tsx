@@ -20,7 +20,24 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const search = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-  const next = search.get("next") || "/account";
+  const explicitNext = search.get("next");
+
+  async function resolveDefaultLanding(): Promise<string> {
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const uid = userData.user?.id;
+      if (!uid) return "/account";
+      const [{ data: adminRow }, { data: staffRow }] = await Promise.all([
+        supabase.rpc("has_role", { _user_id: uid, _role: "admin" }),
+        supabase.from("staff").select("id").eq("user_id", uid).eq("active", true).maybeSingle(),
+      ]);
+      if (adminRow === true) return "/admin";
+      if (staffRow) return "/my-schedule";
+      return "/account";
+    } catch {
+      return "/account";
+    }
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -41,7 +58,8 @@ function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      navigate({ to: next });
+      const dest = explicitNext || (await resolveDefaultLanding());
+      navigate({ to: dest });
     } catch (err) {
       setError((err as Error).message);
     } finally {
