@@ -327,6 +327,14 @@ export const bookQuote = createServerFn({ method: "POST" })
       .update({ status: "booked", booked_at: new Date().toISOString() })
       .eq("id", data.quote_id);
 
+    // Ensure a Job exists for this booked quote (best-effort).
+    try {
+      const { upsertJobForQuote } = await import("./jobs.functions");
+      await upsertJobForQuote(supabase, data.quote_id);
+    } catch (e) {
+      console.warn("[bookQuote] upsertJobForQuote failed", e);
+    }
+
     // Emit notifications
     try {
       await supabase.from("admin_notifications").insert({

@@ -259,24 +259,33 @@ export type Database = {
       }
       event_staff: {
         Row: {
+          ack_status: string
+          acknowledged_at: string | null
           created_at: string
           created_by: string | null
+          decline_reason: string | null
           event_id: string
           id: string
           role: string | null
           staff_id: string
         }
         Insert: {
+          ack_status?: string
+          acknowledged_at?: string | null
           created_at?: string
           created_by?: string | null
+          decline_reason?: string | null
           event_id: string
           id?: string
           role?: string | null
           staff_id: string
         }
         Update: {
+          ack_status?: string
+          acknowledged_at?: string | null
           created_at?: string
           created_by?: string | null
+          decline_reason?: string | null
           event_id?: string
           id?: string
           role?: string | null
@@ -560,6 +569,81 @@ export type Database = {
             columns: ["inventory_item_id"]
             isOneToOne: false
             referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          access_notes: string | null
+          created_at: string
+          customer_id: string | null
+          end_time: string | null
+          event_date: string | null
+          gate_code: string | null
+          id: string
+          notes: string | null
+          parking_notes: string | null
+          quote_id: string
+          site_address: string | null
+          site_contact_name: string | null
+          site_contact_phone: string | null
+          start_time: string | null
+          status: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_notes?: string | null
+          created_at?: string
+          customer_id?: string | null
+          end_time?: string | null
+          event_date?: string | null
+          gate_code?: string | null
+          id?: string
+          notes?: string | null
+          parking_notes?: string | null
+          quote_id: string
+          site_address?: string | null
+          site_contact_name?: string | null
+          site_contact_phone?: string | null
+          start_time?: string | null
+          status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_notes?: string | null
+          created_at?: string
+          customer_id?: string | null
+          end_time?: string | null
+          event_date?: string | null
+          gate_code?: string | null
+          id?: string
+          notes?: string | null
+          parking_notes?: string | null
+          quote_id?: string
+          site_address?: string | null
+          site_contact_name?: string | null
+          site_contact_phone?: string | null
+          start_time?: string | null
+          status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: true
+            referencedRelation: "quotes"
             referencedColumns: ["id"]
           },
         ]
@@ -1512,6 +1596,7 @@ export type Database = {
         Args: { p_end: string; p_item: string; p_start: string }
         Returns: number
       }
+      is_staff_on_job: { Args: { _job_id: string }; Returns: boolean }
       move_to_dlq: {
         Args: {
           dlq_name: string
