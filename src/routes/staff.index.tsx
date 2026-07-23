@@ -26,7 +26,11 @@ function fmtTime(iso: string) {
 function StaffHome() {
   const { user } = useAuth();
   const { staff } = useIsStaff();
+  const qc = useQueryClient();
   const listFn = useServerFn(listMyJobs);
+  const activeFn = useServerFn(getActiveTimeEntry);
+  const weekFn = useServerFn(getWeeklyHours);
+  const outFn = useServerFn(clockOut);
 
   const range = useMemo(() => {
     const now = new Date();
@@ -43,6 +47,29 @@ function StaffHome() {
     queryFn: async () => (await listFn({ data: range })) as unknown as MyJob[],
   });
 
+  const activeQ = useQuery({
+    queryKey: ["time-active", user?.id ?? "anon"],
+    enabled: !!user,
+    refetchInterval: 60_000,
+    queryFn: () => activeFn(),
+  });
+  const weekQ = useQuery({
+    queryKey: ["time-week-total", user?.id ?? "anon"],
+    enabled: !!user,
+    queryFn: () => weekFn(),
+  });
+
+  const outMut = useMutation({
+    mutationFn: () => outFn({ data: {} as never }),
+    onSuccess: () => {
+      toast.success("Clocked out");
+      qc.invalidateQueries({ queryKey: ["time-active"] });
+      qc.invalidateQueries({ queryKey: ["time-week-total"] });
+      qc.invalidateQueries({ queryKey: ["time-week"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const tk = todayKey();
   const today = jobs.filter((j) => (j.job.event_date ?? "").slice(0, 10) === tk);
   const upcoming = jobs.filter((j) => (j.job.event_date ?? "") > tk);
@@ -50,6 +77,7 @@ function StaffHome() {
     (n, j) => n + j.events.filter((e) => e.ack_status === "assigned").length,
     0,
   );
+  const weekHours = ((weekQ.data?.seconds ?? 0) / 3600).toFixed(1);
 
   const firstName = staff?.name?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
   const hour = new Date().getHours();
