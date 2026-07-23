@@ -69,7 +69,7 @@ function InventoryAdminPage() {
         title="Inventory Management"
         subtitle="Rental operating system: stock, status, reservations, and lifecycle."
       />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <section className="py-8">
         <Dashboard />
       </section>
     </SiteLayout>
