@@ -261,12 +261,47 @@ function ItemEditor({ id }: { id: string }) {
         </button>
       </div>
 
-      {/* Upcoming reservations placeholder */}
-      <Section title="Upcoming reservations">
-        <p className="text-sm text-muted-foreground">
-          Reservations appear here once the rental events module ships. They will roll up from approved quotes.
-        </p>
-      </Section>
+      {/* Reservations & linked pricing */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Section title="Committed by date (reservation ledger)">
+          {(() => {
+            const held = (reservationSummaries as Record<string, { held: number; next_date: string | null }>)[id];
+            if (!held) {
+              return <p className="text-sm text-muted-foreground">No active future holds. Nothing is committed on the date-aware ledger.</p>;
+            }
+            return (
+              <div className="flex items-center gap-3 text-sm">
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
+                  <CalendarClock className="h-4 w-4" /> {held.held} held
+                </span>
+                {held.next_date && (
+                  <span className="text-muted-foreground">Next committed date: <strong className="text-foreground">{held.next_date}</strong></span>
+                )}
+              </div>
+            );
+          })()}
+        </Section>
+        <Section title="Linked price-list items">
+          {linkedPricing.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No price-list items link to this inventory item. Add a link on the{" "}
+              <Link to="/admin/pricing" className="text-primary underline">Pricing page</Link> so quote lines can reserve stock.
+            </p>
+          ) : (
+            <ul className="space-y-1 text-sm">
+              {linkedPricing.map((p) => (
+                <li key={p.id} className="flex items-center gap-2">
+                  <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-muted-foreground">{p.category} ·</span>
+                  <span className="text-foreground">{p.name}</span>
+                  <span className="text-muted-foreground">— ${(p.price_cents / 100).toFixed(2)}/{p.unit}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Section>
+      </div>
+
 
       {/* Transaction history */}
       <Section title="Transaction history">
