@@ -8,7 +8,10 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { acknowledgeAssignment, getMyJob } from "@/lib/jobs.functions";
+import { addStaffNote } from "@/lib/notes.functions";
+import { JobNotesList } from "@/components/JobNotesList";
 import { StatusPill } from "./staff.index";
+
 
 export const Route = createFileRoute("/staff/jobs_/$id")({
   component: StaffJobDetail,
