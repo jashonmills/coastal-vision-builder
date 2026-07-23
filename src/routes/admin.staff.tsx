@@ -8,6 +8,7 @@ import { SiteLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { listStaff, upsertStaff } from "@/lib/staff.functions";
+import { HelpTip } from "@/components/HelpTip";
 
 export const Route = createFileRoute("/admin/staff")({
   head: () => ({ meta: [{ title: "Staff | Admin" }] }),
@@ -57,6 +58,9 @@ function StaffPage() {
     <SiteLayout>
       <AdminPageHeader eyebrow="Team" title="Staff" subtitle="Click any card to open a full profile." />
       <section>
+        <HelpTip hintKey="admin-staff-intro" className="mb-4">
+          Tap a staff member to open their profile. Use "Invite to log in" on the profile to give them app access.
+        </HelpTip>
         <NewStaffForm saving={save.isPending} onCreate={(s) => save.mutate(s)} />
 
         {data.length === 0 ? (

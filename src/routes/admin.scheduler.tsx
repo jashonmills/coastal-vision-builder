@@ -18,6 +18,7 @@ import {
 import { listEventStaffForEvents } from "@/lib/assignments.functions";
 import { CrewAssign, StaffDots } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
+import { HelpTip } from "@/components/HelpTip";
 
 export const Route = createFileRoute("/admin/scheduler")({
   head: () => ({ meta: [{ title: "Scheduler | Admin" }] }),
@@ -152,6 +153,9 @@ function SchedulerPage() {
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Scheduler" subtitle="Quote requests, rentals, deliveries, pickups, and tasks." />
       <section className="py-8">
+        <HelpTip hintKey="admin-scheduler-intro" className="mb-4">
+          Click a day to add an event, then assign crew to it — or assign crew right from a Job.
+        </HelpTip>
         <div className="mb-4 flex items-center justify-between">
           <button onClick={() => setEditing({ event_type: "internal_note", status: "scheduled", start_time: new Date().toISOString() })}
             className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
