@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequestHeader } from '@tanstack/react-start/server'
 import { z } from 'zod'
 
 const CONTRACT_IDS = [
@@ -18,13 +19,32 @@ const InputSchema = z.object({
 
 export type SubmitContractInput = z.infer<typeof InputSchema>
 
+/** Look up an auth user by email via paginated listUsers.
+ *  Supabase's admin API caps perPage at 1000 and has no direct
+ *  getUserByEmail; paginate until found or exhausted. */
+async function findAuthUserIdByEmail(
+  admin: Awaited<ReturnType<typeof import('@/integrations/supabase/client.server')>>['supabaseAdmin'],
+  email: string,
+): Promise<string | null> {
+  const target = email.trim().toLowerCase()
+  if (!target) return null
+  for (let page = 1; page <= 20; page++) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 1000 })
+    if (error) return null
+    const hit = data?.users?.find((u) => (u.email ?? '').toLowerCase() === target)
+    if (hit) return hit.id
+    if (!data?.users || data.users.length < 1000) return null
+  }
+  return null
+}
+
 export const submitContract = createServerFn({ method: 'POST' })
   .inputValidator((data: unknown) => InputSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
     const { renderSignedContractPdf } = await import('./contract-pdf.server')
     const { CONTRACT_SCHEMAS } = await import('./contract-fields')
-    const { sendAdminEmail } = await import('@/lib/email/send-admin.server')
+    const { sendAdminEmail, sendCustomerAcknowledgement } = await import('@/lib/email/send-admin.server')
 
     const schema = CONTRACT_SCHEMAS[data.contractType]
     if (!schema) throw new Error('Unknown contract type')
@@ -112,20 +132,28 @@ export const submitContract = createServerFn({ method: 'POST' })
       .upload(pdfPath, pdfBytes, { contentType: 'application/pdf', upsert: false })
     if (pdfErr) throw new Error('Failed to save signed PDF')
 
-    // Best-effort: link to a customer account by matching email
+    // Best-effort: link to a customer account. Prefer the signed-in caller's
+    // bearer token (attach middleware forwards it); fall back to matching by
+    // email in auth.users via paginated listUsers.
     let customerUserId: string | null = null
     try {
-      const { data: match } = await supabaseAdmin
-        .from('profiles')
-        .select('user_id')
-        .limit(1)
-      // profiles doesn't store email; use auth admin lookup instead
-      void match
-      const { data: list } = await supabaseAdmin.auth.admin.listUsers({ perPage: 200 })
-      const hit = list?.users?.find((u) => (u.email ?? '').toLowerCase() === customerEmail)
-      customerUserId = hit?.id ?? null
+      const authHeader = getRequestHeader('authorization') ?? getRequestHeader('Authorization')
+      const token = authHeader?.toLowerCase().startsWith('bearer ')
+        ? authHeader.slice(7).trim()
+        : null
+      if (token) {
+        const { data: userRes } = await supabaseAdmin.auth.getUser(token)
+        if (userRes?.user?.id) customerUserId = userRes.user.id
+      }
     } catch {
-      customerUserId = null
+      /* noop */
+    }
+    if (!customerUserId) {
+      try {
+        customerUserId = await findAuthUserIdByEmail(supabaseAdmin, customerEmail)
+      } catch {
+        customerUserId = null
+      }
     }
 
     // Persist submission row (best-effort; email is the source of truth for admin)
@@ -156,12 +184,84 @@ export const submitContract = createServerFn({ method: 'POST' })
       sigSignedUrl = sig?.signedUrl ?? null
     }
 
-    // Notify admin
+    // ============================================================
+    // Quote lockstep — only when a quoteId is supplied AND the
+    // signer's submitted email matches the quote's customer_email.
+    // This endpoint is PUBLIC and unauthenticated; we must never let
+    // an arbitrary caller mutate a quote they don't own.
+    // ============================================================
+    let quoteLinked = false
+    let quoteTransitioned = false
+    if (data.quoteId) {
+      try {
+        const { data: q } = await supabaseAdmin
+          .from('quotes')
+          .select('id, status, customer_email, customer_name, quote_request_id')
+          .eq('id', data.quoteId)
+          .maybeSingle()
+        if (q && (q.customer_email ?? '').toLowerCase() === customerEmail) {
+          quoteLinked = true
+          const skipStates = new Set(['pending_confirmation', 'booked', 'completed', 'cancelled'])
+          if (!skipStates.has(String(q.status))) {
+            // Firm up inventory. Signing must never fail on availability.
+            try {
+              const { releaseQuoteHolds, reserveQuoteHolds } = await import(
+                '@/lib/reservations.server'
+              )
+              await releaseQuoteHolds(q.id)
+              await reserveQuoteHolds({
+                quoteId: q.id,
+                holdType: 'firm',
+                expiresAt: null,
+                allowOverbook: true,
+              })
+            } catch (e) {
+              console.warn('[submitContract] firm-up holds failed', e)
+            }
+            // Transition the quote
+            await supabaseAdmin
+              .from('quotes')
+              .update({ status: 'pending_confirmation' })
+              .eq('id', q.id)
+            // Propagate to linked quote_request (use existing 'booked' bucket)
+            if (q.quote_request_id) {
+              await supabaseAdmin
+                .from('quote_requests')
+                .update({ status: 'booked' })
+                .eq('id', q.quote_request_id)
+              // And the associated saved_recommendation, if any
+              const { data: reqRow } = await supabaseAdmin
+                .from('quote_requests')
+                .select('saved_recommendation_id')
+                .eq('id', q.quote_request_id)
+                .maybeSingle()
+              if (reqRow?.saved_recommendation_id) {
+                await supabaseAdmin
+                  .from('saved_recommendations')
+                  .update({ status: 'booked' })
+                  .eq('id', reqRow.saved_recommendation_id)
+              }
+            }
+            quoteTransitioned = true
+          }
+        } else if (q) {
+          console.warn('[submitContract] quote email mismatch — refusing to mutate', {
+            quoteId: q.id,
+          })
+        }
+      } catch (e) {
+        console.warn('[submitContract] quote lockstep failed', e)
+      }
+    }
+
+    // Notify admin (title reflects whether we advanced the quote)
     await sendAdminEmail({
       templateName: 'admin-contract-submission',
       idempotencyKey: `contract-${submissionId}`,
       templateData: {
-        contractTitle: schema.title,
+        contractTitle: quoteTransitioned
+          ? `${schema.title} — pending confirmation`
+          : schema.title,
         contractType: data.contractType,
         submissionId,
         customerName,
@@ -176,5 +276,24 @@ export const submitContract = createServerFn({ method: 'POST' })
       },
     })
 
-    return { ok: true as const, submissionId }
+    // Customer acknowledgement — only when we actually transitioned a matched
+    // quote; skip when the submission was not linked or was already advanced,
+    // to avoid duplicate/misleading emails.
+    if (quoteTransitioned) {
+      try {
+        await sendCustomerAcknowledgement({
+          requestId: submissionId,
+          recipient: customerEmail,
+          customerName: customerName || null,
+          eventType: null,
+          eventDate: eventDateRaw,
+          eventLocation: null,
+          requestType: 'rental',
+        })
+      } catch (e) {
+        console.warn('[submitContract] customer ack failed', e)
+      }
+    }
+
+    return { ok: true as const, submissionId, quoteLinked, quoteTransitioned }
   })
