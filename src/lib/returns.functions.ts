@@ -343,3 +343,21 @@ export const getJobReconciliation = createServerFn({ method: "GET" })
 
     return { job_id: data.job_id, items, totals };
   });
+
+/* ---------------------- Damage photo signed URLs ---------------------- */
+
+export const getJobPhotoSignedUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ path: z.string().min(1).max(500) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    // RLS on storage.objects already gates read access to admins or
+    // staff-on-job. Use the caller's client so the policy is enforced,
+    // then fall back to admin only if that succeeds (path is authorised).
+    const { data: signed, error } = await context.supabase.storage
+      .from("job-photos")
+      .createSignedUrl(data.path, 60 * 60);
+    if (error) throw new Error(error.message);
+    return { url: signed?.signedUrl ?? null };
+  });
