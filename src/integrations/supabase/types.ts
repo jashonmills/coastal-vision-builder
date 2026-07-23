@@ -1751,6 +1751,24 @@ export type Database = {
           },
         ]
       }
+      user_dismissed_hints: {
+        Row: {
+          dismissed_at: string
+          hint_key: string
+          user_id: string
+        }
+        Insert: {
+          dismissed_at?: string
+          hint_key: string
+          user_id: string
+        }
+        Update: {
+          dismissed_at?: string
+          hint_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
