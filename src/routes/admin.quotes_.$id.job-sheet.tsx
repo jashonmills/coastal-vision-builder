@@ -13,6 +13,7 @@ import {
   checkInQuoteItem,
   completeQuote,
 } from "@/lib/bookings.functions";
+import { CrewAssign } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 
 export const Route = createFileRoute("/admin/quotes_/$id/job-sheet")({
