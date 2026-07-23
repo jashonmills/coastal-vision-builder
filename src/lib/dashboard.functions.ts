@@ -1,6 +1,32 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+export const getOnboardingStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    const { data: isAdmin } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
+    if (!isAdmin) throw new Error("Admin required");
+
+    const [inv, mappings, staff, staffLogins, bookedJobs, crew] = await Promise.all([
+      supabase.from("inventory_items").select("id", { count: "exact", head: true }).gt("total_owned_quantity", 0),
+      supabase.from("pricing_inventory_mappings").select("id", { count: "exact", head: true }).eq("active", true),
+      supabase.from("staff").select("id", { count: "exact", head: true }),
+      supabase.from("staff").select("id", { count: "exact", head: true }).not("user_id", "is", null),
+      supabase.from("jobs").select("id", { count: "exact", head: true }),
+      supabase.from("event_staff").select("id", { count: "exact", head: true }),
+    ]);
+
+    return {
+      hasInventoryCounts: (inv.count ?? 0) > 0,
+      hasMappings: (mappings.count ?? 0) > 0,
+      hasStaff: (staff.count ?? 0) > 0,
+      hasStaffLogins: (staffLogins.count ?? 0) > 0,
+      hasBookedJob: (bookedJobs.count ?? 0) > 0,
+      hasCrewAssigned: (crew.count ?? 0) > 0,
+    };
+  });
+
 // Event types that represent actual field operations (not internal quote notes)
 const OPS_EVENT_TYPES = [
   "delivery",
