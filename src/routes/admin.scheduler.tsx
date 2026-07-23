@@ -318,11 +318,16 @@ function MonthGrid({ cursor, events, crewByEvent, onSelect, onAddOnDate }: { cur
           const evs = c.date ? byDay.get(c.date.toDateString()) ?? [] : [];
           const isToday = c.date?.toDateString() === new Date().toDateString();
           return (
-            <div key={i} className={`min-h-[100px] border-b border-r border-border p-1 ${isToday ? "bg-primary/5" : ""}`}>
+            <div
+              key={i}
+              onClick={c.date ? () => onAddOnDate(c.date!) : undefined}
+              className={`min-h-[100px] border-b border-r border-border p-1 ${isToday ? "bg-primary/5" : ""} ${c.date ? "cursor-pointer hover:bg-secondary/40" : ""}`}
+              aria-label={c.date ? `Add event on ${c.date.toDateString()}` : undefined}
+            >
               {c.date && <div className="mb-1 text-xs font-medium">{c.date.getDate()}</div>}
               <div className="space-y-1">
                 {evs.slice(0, 3).map((e) => (
-                  <button key={e.id} onClick={() => onSelect(e)} className="flex w-full items-center justify-between gap-1 truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
+                  <button key={e.id} onClick={(ev) => { ev.stopPropagation(); onSelect(e); }} className="flex w-full items-center justify-between gap-1 truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
                     <span className="truncate">{e.title}</span>
                     <StaffDots entries={crewByEvent.get(e.id) ?? []} max={3} />
                   </button>
