@@ -342,7 +342,7 @@ function MonthGrid({ cursor, events, crewByEvent, onSelect, onAddOnDate }: { cur
   );
 }
 
-function WeekList({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
+function WeekList({ cursor, events, crewByEvent, onSelect, onAddOnDate }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void; onAddOnDate: (d: Date) => void }) {
   const start = new Date(cursor); start.setDate(cursor.getDate() - cursor.getDay());
   const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return d; });
   return (
@@ -351,7 +351,10 @@ function WeekList({ cursor, events, crewByEvent, onSelect }: { cursor: Date; eve
         const evs = events.filter((e) => new Date(e.start_time).toDateString() === d.toDateString());
         return (
           <div key={d.toISOString()} className="rounded-xl border border-border bg-card">
-            <div className="border-b border-border px-3 py-2 text-sm font-medium">{d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</div>
+            <div className="flex items-center justify-between border-b border-border px-3 py-2 text-sm font-medium">
+              <span>{d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</span>
+              <button onClick={() => onAddOnDate(d)} className="rounded-full border border-border bg-card px-2 py-0.5 text-xs text-muted-foreground hover:bg-secondary/40">+ Add</button>
+            </div>
             {evs.length === 0 ? <p className="px-3 py-2 text-xs text-muted-foreground">No events</p> : (
               <div className="divide-y divide-border">{evs.map((e) => <EventRow key={e.id} e={e} crew={crewByEvent.get(e.id) ?? []} onSelect={onSelect} />)}</div>
             )}
