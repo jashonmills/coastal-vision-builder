@@ -227,9 +227,14 @@ function JobDetailPage() {
           </div>
         )}
       </section>
+      <section className="mt-6 rounded-xl border border-border bg-card p-5">
+        <h3 className="mb-3 font-serif text-lg text-primary">Crew notes</h3>
+        <JobNotesList jobId={job.id} />
+      </section>
     </AdminLayout>
   );
 }
+
 
 function AckPill({ status, reason }: { status: string; reason: string | null }) {
   const map: Record<string, string> = {
