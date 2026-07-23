@@ -1018,6 +1018,7 @@ export type Database = {
           contact: Json | null
           created_at: string
           customer_confirmation_sent_at: string | null
+          customer_email: string | null
           customer_id: string | null
           deleted_at: string | null
           event_date: string | null
@@ -1034,7 +1035,7 @@ export type Database = {
           status: string
           title: string
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           blueprint_image?: string | null
@@ -1042,6 +1043,7 @@ export type Database = {
           contact?: Json | null
           created_at?: string
           customer_confirmation_sent_at?: string | null
+          customer_email?: string | null
           customer_id?: string | null
           deleted_at?: string | null
           event_date?: string | null
@@ -1058,7 +1060,7 @@ export type Database = {
           status?: string
           title: string
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           blueprint_image?: string | null
@@ -1066,6 +1068,7 @@ export type Database = {
           contact?: Json | null
           created_at?: string
           customer_confirmation_sent_at?: string | null
+          customer_email?: string | null
           customer_id?: string | null
           deleted_at?: string | null
           event_date?: string | null
@@ -1082,7 +1085,7 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
