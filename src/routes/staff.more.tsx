@@ -69,8 +69,8 @@ function MorePage() {
       <section>
         <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tools</h2>
         <ul className="space-y-2">
-          <SoonRow icon={DollarSign} label="Expenses" desc="Submit reimbursements with photos" />
-          <SoonRow icon={FileText} label="Notes & handoffs" desc="Leave notes for the next crew" />
+          <LinkRow to="/staff/expenses" icon={DollarSign} label="Expenses" desc="Log spend and attach receipt photos" />
+          <LinkRow to="/staff/notes" icon={FileText} label="Notes & handoffs" desc="Leave notes for admins or the next crew" />
         </ul>
       </section>
 
@@ -84,17 +84,23 @@ function MorePage() {
   );
 }
 
-function SoonRow({ icon: Icon, label, desc }: { icon: typeof DollarSign; label: string; desc: string }) {
+function LinkRow({ to, icon: Icon, label, desc }: { to: string; icon: typeof DollarSign; label: string; desc: string }) {
   return (
-    <li className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-dashed border-border bg-card/60 p-3">
-      <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-muted-foreground">
-        <Icon className="h-4 w-4" />
-      </span>
-      <div className="min-w-0">
-        <p className="text-sm font-semibold text-foreground">{label}</p>
-        <p className="truncate text-xs text-muted-foreground">{desc}</p>
-      </div>
-      <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Soon</span>
+    <li>
+      <Link
+        to={to}
+        className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-sm hover:bg-secondary/40"
+      >
+        <span className="grid h-9 w-9 place-items-center rounded-full bg-primary/10 text-primary">
+          <Icon className="h-4 w-4" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-foreground">{label}</p>
+          <p className="truncate text-xs text-muted-foreground">{desc}</p>
+        </div>
+        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+      </Link>
     </li>
   );
 }
+
