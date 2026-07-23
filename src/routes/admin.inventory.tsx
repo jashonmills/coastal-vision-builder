@@ -1,9 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import {
   Loader2, Plus, Box, Boxes, AlertTriangle, Wrench, Sparkles, PackageCheck,
-  Archive, ArrowRight, Search,
+  Archive, ArrowRight, Search, CalendarClock,
 } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
@@ -13,14 +15,18 @@ import {
   computeAvailable, ITEM_TYPE_LABEL, ITEM_TYPES, type InventoryCategory, type InventoryItem, type ItemType,
 } from "@/lib/inventory";
 import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
+import { getInventoryReservationSummaries } from "@/lib/pricing-mappings.functions";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
 
 export const Route = createFileRoute("/admin/inventory")({
   head: () => ({ meta: [{ title: "Inventory Management | Admin" }] }),
+  validateSearch: (s: Record<string, unknown>) =>
+    z.object({ filter: z.enum(["zero"]).optional() }).parse(s),
   component: InventoryAdminPage,
 });
+
 
 function InventoryAdminPage() {
   const { user, loading: authLoading } = useAuth();
@@ -72,6 +78,7 @@ function InventoryAdminPage() {
 
 function Dashboard() {
   const qc = useQueryClient();
+  const search = Route.useSearch();
   const [creating, setCreating] = useState(false);
   const [adjustItem, setAdjustItem] = useState<InventoryItem | null>(null);
   const [filterCat, setFilterCat] = useState("");
@@ -79,7 +86,15 @@ function Dashboard() {
   const [filterActive, setFilterActive] = useState<"all" | "active" | "archived">("active");
   const [filterPlanner, setFilterPlanner] = useState(false);
   const [filterChat, setFilterChat] = useState(false);
-  const [search, setSearch] = useState("");
+  const [filterZero, setFilterZero] = useState(search.filter === "zero");
+  const [searchText, setSearch] = useState("");
+
+  const summariesFn = useServerFn(getInventoryReservationSummaries);
+  const { data: reservationSummaries = {} } = useQuery({
+    queryKey: ["admin-inventory-reservation-summaries"],
+    queryFn: () => summariesFn(),
+  });
+
 
   const { data: categories = [] } = useQuery({
     queryKey: ["admin-inventory-categories"],
@@ -111,13 +126,15 @@ function Dashboard() {
       if (filterActive === "archived" && i.active && !i.deleted_at) return false;
       if (filterPlanner && !i.visible_to_planner) return false;
       if (filterChat && !i.visible_to_chat) return false;
-      if (search) {
-        const q = search.toLowerCase();
+      if (filterZero && (i.total_owned_quantity ?? 0) !== 0) return false;
+      if (searchText) {
+        const q = searchText.toLowerCase();
         if (!i.name.toLowerCase().includes(q) && !(i.sku ?? "").toLowerCase().includes(q)) return false;
       }
       return true;
     });
-  }, [items, filterCat, filterType, filterActive, filterPlanner, filterChat, search]);
+  }, [items, filterCat, filterType, filterActive, filterPlanner, filterChat, filterZero, searchText]);
+
 
   const summary = useMemo(() => {
     let owned = 0, available = 0, reserved = 0, out = 0, cleaning = 0, maint = 0, damaged = 0;
@@ -160,7 +177,7 @@ function Dashboard() {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
         <SummaryCard icon={<Boxes className="h-4 w-4" />} label="Items" value={items.length} />
         <SummaryCard icon={<Box className="h-4 w-4" />} label="Owned" value={summary.owned} />
-        <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="Available" value={summary.available} />
+        <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="On hand now" value={summary.available} />
         <SummaryCard icon={<PackageCheck className="h-4 w-4" />} label="Reserved" value={summary.reserved} />
         <SummaryCard icon={<Box className="h-4 w-4" />} label="Checked out" value={summary.out} />
         <SummaryCard icon={<Sparkles className="h-4 w-4" />} label="Cleaning" value={summary.cleaning} />
@@ -190,10 +207,11 @@ function Dashboard() {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             placeholder="Search name or SKU"
-            value={search} onChange={(e) => setSearch(e.target.value)}
+            value={searchText} onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-md border border-border bg-background py-2 pl-9 pr-3 text-sm"
           />
         </label>
+
         <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)}
           className="rounded-md border border-border bg-background px-2 py-2 text-sm">
           <option value="">All categories</option>
@@ -210,7 +228,7 @@ function Dashboard() {
           <option value="archived">Archived only</option>
           <option value="all">All</option>
         </select>
-        <div className="flex items-center gap-3 text-sm">
+        <div className="flex flex-wrap items-center gap-3 text-sm">
           <label className="inline-flex items-center gap-1">
             <input type="checkbox" checked={filterPlanner} onChange={(e) => setFilterPlanner(e.target.checked)} />
             Planner
@@ -219,7 +237,12 @@ function Dashboard() {
             <input type="checkbox" checked={filterChat} onChange={(e) => setFilterChat(e.target.checked)} />
             Chat
           </label>
+          <label className="inline-flex items-center gap-1" title="Items with total owned quantity 0 — can never be reserved.">
+            <input type="checkbox" checked={filterZero} onChange={(e) => setFilterZero(e.target.checked)} />
+            0 owned
+          </label>
         </div>
+
       </div>
 
       <div className="flex justify-end">
@@ -238,7 +261,8 @@ function Dashboard() {
               <th className="px-3 py-2">Category</th>
               <th className="px-3 py-2">Type</th>
               <th className="px-3 py-2 text-right">Owned</th>
-              <th className="px-3 py-2 text-right">Avail</th>
+              <th className="px-3 py-2 text-right" title="Physical on-hand right now (total owned minus current buckets). Date-blind.">On hand now</th>
+              <th className="px-3 py-2 text-right" title="Future/active reservations from the date-aware ledger.">Held</th>
               <th className="px-3 py-2 text-right">Reserved</th>
               <th className="px-3 py-2 text-right">Out</th>
               <th className="px-3 py-2 text-right">Cleaning</th>
@@ -250,11 +274,14 @@ function Dashboard() {
           </thead>
           <tbody>
             {filtered.length === 0 && (
-              <tr><td colSpan={12} className="px-3 py-12 text-center text-muted-foreground">No items match these filters.</td></tr>
+              <tr><td colSpan={13} className="px-3 py-12 text-center text-muted-foreground">No items match these filters.</td></tr>
             )}
+
             {filtered.map((i) => {
               const av = computeAvailable(i);
               const cat = i.category_id ? catMap[i.category_id] : null;
+              const held = (reservationSummaries as Record<string, { held: number; next_date: string | null }>)[i.id];
+              const zeroOwned = (i.total_owned_quantity ?? 0) === 0;
               return (
                 <tr key={i.id} className="border-t border-border hover:bg-muted/30">
                   <td className="px-3 py-2">
@@ -262,16 +289,33 @@ function Dashboard() {
                       {i.name}
                     </Link>
                     {i.sku && <div className="text-xs text-muted-foreground">SKU: {i.sku}</div>}
+                    {zeroOwned && (
+                      <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900" title="Owned quantity is 0 — this item can never be recommended or reserved.">
+                        <AlertTriangle className="h-3 w-3" /> 0 owned
+                      </div>
+                    )}
                   </td>
                   <td className="px-3 py-2 text-muted-foreground">{cat?.name ?? "—"}</td>
                   <td className="px-3 py-2 text-xs text-muted-foreground">{ITEM_TYPE_LABEL[i.item_type]}</td>
                   <td className="px-3 py-2 text-right">{i.total_owned_quantity}</td>
                   <td className={`px-3 py-2 text-right font-medium ${av < 0 ? "text-destructive" : ""}`}>{av}</td>
+                  <td className="px-3 py-2 text-right text-xs">
+                    {held ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 font-semibold text-primary" title={`Held: ${held.held}${held.next_date ? ` · next ${held.next_date}` : ""}`}>
+                        <CalendarClock className="h-3 w-3" />
+                        {held.held}
+                        {held.next_date && <span className="text-muted-foreground">· {held.next_date}</span>}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </td>
                   <td className="px-3 py-2 text-right">{i.reserved_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.checked_out_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.cleaning_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.maintenance_quantity}</td>
                   <td className="px-3 py-2 text-right">{i.damaged_missing_quantity}</td>
+
                   <td className="px-3 py-2">
                     {i.deleted_at ? <Badge tone="muted">Archived</Badge>
                       : i.active ? <Badge tone="success">Active</Badge>

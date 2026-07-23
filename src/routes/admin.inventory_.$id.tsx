@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, ArrowLeft, Save, Sparkles, Wrench, AlertTriangle, Archive } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Loader2, ArrowLeft, Save, Sparkles, Wrench, AlertTriangle, Archive, CalendarClock, Link2 } from "lucide-react";
 import { SiteLayout } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
@@ -11,9 +12,14 @@ import {
   type InventoryItem, type InventoryTransaction, type ItemType, STATUS_LABEL,
 } from "@/lib/inventory";
 import { AdjustQuantityModal } from "@/components/admin/AdjustQuantityModal";
+import {
+  getInventoryReservationSummaries,
+  listPricingItemsForInventory,
+} from "@/lib/pricing-mappings.functions";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: any = supabase;
+
 
 export const Route = createFileRoute("/admin/inventory_/$id")({
   head: () => ({ meta: [{ title: "Inventory Item | Admin" }] }),
@@ -60,6 +66,8 @@ function ItemDetailPage() {
 function ItemEditor({ id }: { id: string }) {
   const qc = useQueryClient();
   const [adjustOpen, setAdjustOpen] = useState<null | undefined>(null);
+  const summariesFn = useServerFn(getInventoryReservationSummaries);
+  const pricingRevFn = useServerFn(listPricingItemsForInventory);
 
   const { data: item, isLoading } = useQuery({
     queryKey: ["admin-inventory-item", id],
@@ -88,6 +96,16 @@ function ItemEditor({ id }: { id: string }) {
       return data ?? [];
     },
   });
+
+  const { data: reservationSummaries = {} } = useQuery({
+    queryKey: ["admin-inventory-reservation-summaries"],
+    queryFn: () => summariesFn(),
+  });
+  const { data: linkedPricing = [] } = useQuery({
+    queryKey: ["admin-inventory-linked-pricing", id],
+    queryFn: () => pricingRevFn({ data: { inventory_item_id: id } }),
+  });
+
 
   const [form, setForm] = useState<InventoryItem | null>(null);
   useEffect(() => { if (item) setForm(item); }, [item]);
@@ -164,19 +182,32 @@ function ItemEditor({ id }: { id: string }) {
       {/* Quantity breakdown */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-7">
         <QtyCard label="Owned" value={form.total_owned_quantity} />
-        <QtyCard label="Available" value={av} tone={av < 0 ? "error" : "primary"} />
+        <QtyCard label="On hand now" value={av} tone={av < 0 ? "error" : "primary"} />
         <QtyCard label="Reserved" value={form.reserved_quantity} />
         <QtyCard label="Checked out" value={form.checked_out_quantity} />
         <QtyCard label="Cleaning" value={form.cleaning_quantity} icon={<Sparkles className="h-4 w-4" />} />
         <QtyCard label="Maintenance" value={form.maintenance_quantity} icon={<Wrench className="h-4 w-4" />} />
         <QtyCard label="Damaged/Missing" value={form.damaged_missing_quantity} icon={<AlertTriangle className="h-4 w-4" />} />
       </div>
+      <p className="text-xs text-muted-foreground">
+        <strong className="text-foreground">Owned</strong> = how many you physically own — this drives availability. Use{" "}
+        <button type="button" onClick={() => setAdjustOpen(undefined)} className="underline hover:text-foreground">Adjust quantity</button>{" "}
+        to change it. <strong className="text-foreground">On hand now</strong> is date-blind (owned minus current buckets); the quote builder uses the date-aware reservation ledger for a given event window.
+      </p>
+
+      {form.total_owned_quantity === 0 && (
+        <div className="rounded-lg border border-amber-400/40 bg-amber-50/50 p-3 text-sm text-amber-900 dark:bg-amber-900/10 dark:text-amber-200">
+          <AlertTriangle className="mr-1 inline h-4 w-4" />
+          Owned quantity is 0 — this item can never be recommended or reserved. Set the real count via Adjust quantity.
+        </div>
+      )}
 
       {av < 0 && (
         <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
           Available is negative. Reconcile buckets via Adjust Quantity → Admin correction.
         </div>
       )}
+
 
       {/* Form sections */}
       <div className="grid gap-6 lg:grid-cols-2">
@@ -230,12 +261,47 @@ function ItemEditor({ id }: { id: string }) {
         </button>
       </div>
 
-      {/* Upcoming reservations placeholder */}
-      <Section title="Upcoming reservations">
-        <p className="text-sm text-muted-foreground">
-          Reservations appear here once the rental events module ships. They will roll up from approved quotes.
-        </p>
-      </Section>
+      {/* Reservations & linked pricing */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Section title="Committed by date (reservation ledger)">
+          {(() => {
+            const held = (reservationSummaries as Record<string, { held: number; next_date: string | null }>)[id];
+            if (!held) {
+              return <p className="text-sm text-muted-foreground">No active future holds. Nothing is committed on the date-aware ledger.</p>;
+            }
+            return (
+              <div className="flex items-center gap-3 text-sm">
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
+                  <CalendarClock className="h-4 w-4" /> {held.held} held
+                </span>
+                {held.next_date && (
+                  <span className="text-muted-foreground">Next committed date: <strong className="text-foreground">{held.next_date}</strong></span>
+                )}
+              </div>
+            );
+          })()}
+        </Section>
+        <Section title="Linked price-list items">
+          {linkedPricing.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No price-list items link to this inventory item. Add a link on the{" "}
+              <Link to="/admin/pricing" className="text-primary underline">Pricing page</Link> so quote lines can reserve stock.
+            </p>
+          ) : (
+            <ul className="space-y-1 text-sm">
+              {linkedPricing.map((p) => (
+                <li key={p.id} className="flex items-center gap-2">
+                  <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-muted-foreground">{p.category} ·</span>
+                  <span className="text-foreground">{p.name}</span>
+                  <span className="text-muted-foreground">— ${(p.price_cents / 100).toFixed(2)}/{p.unit}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Section>
+      </div>
+
 
       {/* Transaction history */}
       <Section title="Transaction history">
