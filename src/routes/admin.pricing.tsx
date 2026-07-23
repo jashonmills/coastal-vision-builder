@@ -161,7 +161,7 @@ function PricingAdmin() {
         </label>
         <button onClick={() => add.mutate()} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Plus className="h-4 w-4" /> Add item</button>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+      <div className="hidden overflow-x-auto rounded-xl border border-border bg-card sm:block">
         <table className="w-full text-sm">
           <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
@@ -191,6 +191,23 @@ function PricingAdmin() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile stacked editor */}
+      <div className="space-y-3 sm:hidden">
+        {filtered.length === 0 && (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            {onlyUnlinked ? "Every price-list item is linked to an inventory item." : "No pricing items yet."}
+          </div>
+        )}
+        {filtered.map((it) => (
+          <PricingCard
+            key={it.id}
+            item={it}
+            mappedInventoryId={mappingByPricing[it.id] ?? null}
+            invOptions={invOptions}
+          />
+        ))}
       </div>
     </div>
   );
