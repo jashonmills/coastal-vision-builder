@@ -68,7 +68,6 @@ function MorePage() {
       <section>
         <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tools</h2>
         <ul className="space-y-2">
-          <SoonRow icon={Clock} label="Clock in / out" desc="Track hours for each job" />
           <SoonRow icon={DollarSign} label="Expenses" desc="Submit reimbursements with photos" />
           <SoonRow icon={FileText} label="Notes & handoffs" desc="Leave notes for the next crew" />
         </ul>
