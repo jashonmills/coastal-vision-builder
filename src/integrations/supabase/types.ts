@@ -308,6 +308,60 @@ export type Database = {
           },
         ]
       }
+      expenses: {
+        Row: {
+          amount_cents: number
+          category: string
+          created_at: string
+          id: string
+          incurred_on: string
+          job_id: string | null
+          note: string | null
+          receipt_path: string | null
+          staff_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          category: string
+          created_at?: string
+          id?: string
+          incurred_on?: string
+          job_id?: string | null
+          note?: string | null
+          receipt_path?: string | null
+          staff_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          category?: string
+          created_at?: string
+          id?: string
+          incurred_on?: string
+          job_id?: string | null
+          note?: string | null
+          receipt_path?: string | null
+          staff_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expenses_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory_categories: {
         Row: {
           active: boolean
@@ -1522,6 +1576,45 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      staff_notes: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          job_id: string | null
+          staff_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          staff_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          staff_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_notes_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "staff_notes_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       suppressed_emails: {
         Row: {
