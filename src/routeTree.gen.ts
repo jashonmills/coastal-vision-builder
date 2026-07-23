@@ -68,6 +68,7 @@ import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.
 import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
 import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
 import { Route as StaffJobsIdPullRouteImport } from './routes/staff.jobs_.$id.pull'
+import { Route as StaffJobsIdCheckinRouteImport } from './routes/staff.jobs_.$id.checkin'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -372,6 +373,11 @@ const StaffJobsIdPullRoute = StaffJobsIdPullRouteImport.update({
   path: '/pull',
   getParentRoute: () => StaffJobsIdRoute,
 } as any)
+const StaffJobsIdCheckinRoute = StaffJobsIdCheckinRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => StaffJobsIdRoute,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -478,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs/$id/checkin': typeof StaffJobsIdCheckinRoute
   '/staff/jobs/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRoutesByTo {
@@ -544,6 +551,7 @@ export interface FileRoutesByTo {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs/$id/checkin': typeof StaffJobsIdCheckinRoute
   '/staff/jobs/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRoutesById {
@@ -613,6 +621,7 @@ export interface FileRoutesById {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs_/$id/checkin': typeof StaffJobsIdCheckinRoute
   '/staff/jobs_/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRouteTypes {
@@ -683,6 +692,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs/$id/checkin'
     | '/staff/jobs/$id/pull'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -749,6 +759,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs/$id/checkin'
     | '/staff/jobs/$id/pull'
   id:
     | '__root__'
@@ -817,6 +828,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs_/$id/checkin'
     | '/staff/jobs_/$id/pull'
   fileRoutesById: FileRoutesById
 }
@@ -1271,6 +1283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffJobsIdPullRouteImport
       parentRoute: typeof StaffJobsIdRoute
     }
+    '/staff/jobs_/$id/checkin': {
+      id: '/staff/jobs_/$id/checkin'
+      path: '/checkin'
+      fullPath: '/staff/jobs/$id/checkin'
+      preLoaderRoute: typeof StaffJobsIdCheckinRouteImport
+      parentRoute: typeof StaffJobsIdRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -1380,10 +1399,12 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface StaffJobsIdRouteChildren {
+  StaffJobsIdCheckinRoute: typeof StaffJobsIdCheckinRoute
   StaffJobsIdPullRoute: typeof StaffJobsIdPullRoute
 }
 
 const StaffJobsIdRouteChildren: StaffJobsIdRouteChildren = {
+  StaffJobsIdCheckinRoute: StaffJobsIdCheckinRoute,
   StaffJobsIdPullRoute: StaffJobsIdPullRoute,
 }
 
