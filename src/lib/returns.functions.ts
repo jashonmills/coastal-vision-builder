@@ -28,6 +28,7 @@ type PullLineRow = {
   checkin_notes: string | null;
   checked_in_at: string | null;
   checked_in_by: string | null;
+  damage_photo_paths: string[] | null;
 };
 
 const PULL_COLS =
