@@ -159,6 +159,8 @@ function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between text-muted-foreground"><span>{label}</span><span className="text-foreground">{value}</span></div>
   );
+}
+
 
 function ContractActions({
   quote,
