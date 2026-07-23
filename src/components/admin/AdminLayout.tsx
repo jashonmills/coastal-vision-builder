@@ -5,6 +5,7 @@ import {
   Inbox,
   FileText,
   CalendarDays,
+  Truck,
   Boxes,
   Tag,
   FileSpreadsheet,
