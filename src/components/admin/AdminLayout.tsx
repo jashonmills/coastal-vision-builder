@@ -13,6 +13,7 @@ import {
   Users,
   UserSquare2,
   ShieldCheck,
+  Clock,
   Menu,
   ExternalLink,
   LogOut,
