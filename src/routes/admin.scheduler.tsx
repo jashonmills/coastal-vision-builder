@@ -101,6 +101,31 @@ function SchedulerPage() {
     return true;
   });
 
+  const eventIds = useMemo(() => filtered.map((e) => e.id).sort(), [filtered]);
+  const bulkFn = useServerFn(listEventStaffForEvents);
+  const { data: crewRows = [] } = useQuery({
+    queryKey: ["event-staff-bulk", eventIds.join(",")],
+    queryFn: async () =>
+      (await bulkFn({ data: { event_ids: eventIds } })) as Array<{
+        event_id: string;
+        staff_id: string;
+        name: string;
+        color: string | null;
+        role: string | null;
+      }>,
+    enabled: !!user && isAdmin && eventIds.length > 0,
+    staleTime: 30_000,
+  });
+  const crewByEvent = useMemo(() => {
+    const m = new Map<string, Array<{ staff_id: string; name: string; color: string | null }>>();
+    for (const r of crewRows) {
+      const arr = m.get(r.event_id) ?? [];
+      arr.push({ staff_id: r.staff_id, name: r.name, color: r.color });
+      m.set(r.event_id, arr);
+    }
+    return m;
+  }, [crewRows]);
+
   const upsert = useMutation({
     mutationFn: async (e: Partial<CalEvent>) => upsertFn({ data: e as never }),
     onSuccess: () => { invalidateOpsQueries(qc); setEditing(null); setSelected(null); },
