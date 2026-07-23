@@ -160,6 +160,20 @@ export const submitContract = createServerFn({ method: 'POST' })
       }
     }
 
+    // Best-effort: link/create the CRM customer for this submitter.
+    let customerId: string | null = null;
+    try {
+      const { upsertCustomerByEmail } = await import('@/lib/customers.server')
+      customerId = await upsertCustomerByEmail({
+        email: customerEmail,
+        name: customerName,
+        phone: customerPhone,
+        user_id: customerUserId ?? null,
+      })
+    } catch (e) {
+      console.warn('[submitContract] customer upsert failed', e)
+    }
+
     // Persist submission row (best-effort; email is the source of truth for admin)
     await supabaseAdmin.from('contract_submissions').insert({
       id: submissionId,
@@ -168,6 +182,7 @@ export const submitContract = createServerFn({ method: 'POST' })
       customer_email: customerEmail,
       customer_phone: customerPhone,
       customer_user_id: customerUserId,
+      customer_id: customerId,
       quote_id: data.quoteId ?? null,
       event_date: eventDateRaw,
       form_data: fd,
