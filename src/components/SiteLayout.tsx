@@ -10,6 +10,7 @@ import { AccessibilityFontButton } from "./AccessibilityFontButton";
 import { ChatWidget } from "./ChatWidget";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
+import { useIsStaff } from "@/hooks/use-staff";
 import { useSlotImage } from "@/hooks/use-site-content";
 import { EditableText } from "@/components/Editable";
 import {
@@ -65,6 +66,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
+  const { isStaff } = useIsStaff();
   const dynamicLogo = useSlotImage("site.logo", logoUrl);
   const { t } = useTranslation();
 
@@ -189,6 +191,15 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <User className="h-4 w-4" />
               {user ? t("nav.myAccount", { defaultValue: "Profile" }) : t("nav.signIn")}
             </Link>
+            {isStaff && !isAdmin && (
+              <Link
+                to="/my-schedule"
+                className="inline-flex items-center gap-1 rounded-full border border-primary/40 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-all hover:border-primary hover:bg-primary/10"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                My Schedule
+              </Link>
+            )}
             {isAdmin && (
               <Link
                 to="/admin"

@@ -18,6 +18,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RentalContractRouteImport } from './routes/rental-contract'
 import { Route as RecommenderRouteImport } from './routes/recommender'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as MyScheduleRouteImport } from './routes/my-schedule'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -101,6 +102,11 @@ const RecommenderRoute = RecommenderRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyScheduleRoute = MyScheduleRouteImport.update({
+  id: '/my-schedule',
+  path: '/my-schedule',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -317,6 +323,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
   '/login': typeof LoginRoute
+  '/my-schedule': typeof MyScheduleRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
   '/rental-contract': typeof RentalContractRouteWithChildren
@@ -366,6 +373,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
   '/login': typeof LoginRoute
+  '/my-schedule': typeof MyScheduleRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
   '/rental-contract': typeof RentalContractRouteWithChildren
@@ -417,6 +425,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/inventory': typeof InventoryRoute
   '/login': typeof LoginRoute
+  '/my-schedule': typeof MyScheduleRoute
   '/profile': typeof ProfileRoute
   '/recommender': typeof RecommenderRoute
   '/rental-contract': typeof RentalContractRouteWithChildren
@@ -469,6 +478,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/inventory'
     | '/login'
+    | '/my-schedule'
     | '/profile'
     | '/recommender'
     | '/rental-contract'
@@ -518,6 +528,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/inventory'
     | '/login'
+    | '/my-schedule'
     | '/profile'
     | '/recommender'
     | '/rental-contract'
@@ -568,6 +579,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/inventory'
     | '/login'
+    | '/my-schedule'
     | '/profile'
     | '/recommender'
     | '/rental-contract'
@@ -619,6 +631,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   InventoryRoute: typeof InventoryRoute
   LoginRoute: typeof LoginRoute
+  MyScheduleRoute: typeof MyScheduleRoute
   ProfileRoute: typeof ProfileRoute
   RecommenderRoute: typeof RecommenderRoute
   RentalContractRoute: typeof RentalContractRouteWithChildren
@@ -702,6 +715,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-schedule': {
+      id: '/my-schedule'
+      path: '/my-schedule'
+      fullPath: '/my-schedule'
+      preLoaderRoute: typeof MyScheduleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -1047,6 +1067,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   InventoryRoute: InventoryRoute,
   LoginRoute: LoginRoute,
+  MyScheduleRoute: MyScheduleRoute,
   ProfileRoute: ProfileRoute,
   RecommenderRoute: RecommenderRoute,
   RentalContractRoute: RentalContractRouteWithChildren,
