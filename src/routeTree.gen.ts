@@ -51,6 +51,7 @@ import { Route as RentalContractFillContractIdRouteImport } from './routes/renta
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
+import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
 import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -271,6 +272,11 @@ const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   path: '/inventory/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCustomersIdRoute = AdminCustomersIdRouteImport.update({
+  id: '/customers_/$id',
+  path: '/customers/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AccountQuoteIdRoute = AccountQuoteIdRouteImport.update({
   id: '/account/quote/$id',
   path: '/account/quote/$id',
@@ -356,6 +362,7 @@ export interface FileRoutesByFullPath {
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
+  '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -407,6 +414,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
+  '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -460,6 +468,7 @@ export interface FileRoutesById {
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
+  '/admin/customers_/$id': typeof AdminCustomersIdRoute
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -514,6 +523,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/admin/'
     | '/account/quote/$id'
+    | '/admin/customers/$id'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
@@ -565,6 +575,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/account/quote/$id'
+    | '/admin/customers/$id'
     | '/admin/inventory/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
@@ -617,6 +628,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/admin/'
     | '/account/quote/$id'
+    | '/admin/customers_/$id'
     | '/admin/inventory_/$id'
     | '/admin/quote-requests_/$id'
     | '/lovable/email/suppression'
@@ -960,6 +972,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/customers_/$id': {
+      id: '/admin/customers_/$id'
+      path: '/customers/$id'
+      fullPath: '/admin/customers/$id'
+      preLoaderRoute: typeof AdminCustomersIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/account/quote/$id': {
       id: '/account/quote/$id'
       path: '/account/quote/$id'
@@ -1033,6 +1052,7 @@ interface AdminRouteChildren {
   AdminSiteImagesRoute: typeof AdminSiteImagesRoute
   AdminStaffRoute: typeof AdminStaffRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminInventoryIdRoute: typeof AdminInventoryIdRoute
   AdminQuoteRequestsIdRoute: typeof AdminQuoteRequestsIdRoute
   AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
@@ -1054,6 +1074,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSiteImagesRoute: AdminSiteImagesRoute,
   AdminStaffRoute: AdminStaffRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminInventoryIdRoute: AdminInventoryIdRoute,
   AdminQuoteRequestsIdRoute: AdminQuoteRequestsIdRoute,
   AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
