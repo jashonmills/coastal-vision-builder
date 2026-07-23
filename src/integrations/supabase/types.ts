@@ -836,6 +836,8 @@ export type Database = {
           guest_count: number | null
           id: string
           internal_notes: string | null
+          payment_received: boolean
+          payment_received_at: string | null
           payment_status: string | null
           quote_number: string
           quote_request_id: string | null
@@ -872,6 +874,8 @@ export type Database = {
           guest_count?: number | null
           id?: string
           internal_notes?: string | null
+          payment_received?: boolean
+          payment_received_at?: string | null
           payment_status?: string | null
           quote_number?: string
           quote_request_id?: string | null
@@ -908,6 +912,8 @@ export type Database = {
           guest_count?: number | null
           id?: string
           internal_notes?: string | null
+          payment_received?: boolean
+          payment_received_at?: string | null
           payment_status?: string | null
           quote_number?: string
           quote_request_id?: string | null
