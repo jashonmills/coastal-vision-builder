@@ -15,7 +15,9 @@ import {
   sendQuote,
   listPricingItemsForBuilder,
   getQuoteItemsAvailability,
+  setQuotePayment,
 } from "@/lib/quotes.functions";
+
 import { bookQuote, unbookQuote, getQuoteBookingStatus, getQuoteBookingIntegrity } from "@/lib/bookings.functions";
 import { StatusPill } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
@@ -186,7 +188,12 @@ function EditQuotePage() {
             </a>
             <button
               onClick={() => send.mutate()}
-              disabled={send.isPending || quote.status === "sent" || quote.status === "booked"}
+              disabled={
+                send.isPending ||
+                quote.status === "sent" ||
+                quote.status === "pending_confirmation" ||
+                quote.status === "booked"
+              }
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
             >
               {send.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
@@ -211,9 +218,10 @@ function EditQuotePage() {
                 className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
               >
                 {book.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
-                Book & Reserve
+                {quote.status === "pending_confirmation" ? "Confirm Booking" : "Book & Reserve"}
               </button>
             )}
+
             <Link
               to="/admin/quotes/$id/job-sheet"
               params={{ id }}
