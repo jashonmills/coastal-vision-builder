@@ -262,6 +262,19 @@ export const submitContract = createServerFn({ method: 'POST' })
               }
             }
             quoteTransitioned = true
+            // Promote CRM customer to 'booked'
+            if (customerId) {
+              try {
+                const { upsertCustomerByEmail } = await import('@/lib/customers.server')
+                await upsertCustomerByEmail({
+                  email: customerEmail,
+                  name: customerName,
+                  phone: customerPhone,
+                  user_id: customerUserId ?? null,
+                  lifecycle_stage: 'booked',
+                })
+              } catch { /* noop */ }
+            }
           }
         } else if (q) {
           console.warn('[submitContract] quote email mismatch — refusing to mutate', {
