@@ -13,14 +13,16 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
+  const search = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+  const explicitNext = search.get("next");
+  const prefillEmail = search.get("email") || "";
+  const initialMode: "signin" | "signup" = search.get("mode") === "signup" ? "signup" : "signin";
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
+  const [email, setEmail] = useState(prefillEmail);
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const search = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-  const explicitNext = search.get("next");
 
   async function resolveDefaultLanding(): Promise<string> {
     try {
