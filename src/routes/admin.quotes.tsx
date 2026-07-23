@@ -29,7 +29,7 @@ function QuotesPage() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Quotes" subtitle="Drafted and sent quotes." />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <section className="py-8">
         {isLoading ? (
           <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />
         ) : !data || data.length === 0 ? (
