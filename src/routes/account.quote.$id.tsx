@@ -5,12 +5,21 @@ import { useEffect } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { getMyQuote } from "@/lib/customer-portal.functions";
+import { detectContractTypesForQuote, type ContractId } from "@/lib/contracts/detect-type";
 import { ArrowLeft, FileSignature, Loader2 } from "lucide-react";
+
+const CONTRACT_LABEL: Record<ContractId, string> = {
+  "rental-contract": "Rental Contract",
+  "beacon-contract": "Beacon Venue Agreement",
+  "catering-contract": "Catering Contract",
+  "credit-card-authorization": "Credit Card Authorization",
+};
 
 export const Route = createFileRoute("/account/quote/$id")({
   head: () => ({ meta: [{ title: "Your Quote | Pacific North Events & Tents" }, { name: "robots", content: "noindex" }] }),
   component: QuoteViewPage,
 });
+
 
 function money(cents: number | null | undefined) {
   const c = cents ?? 0;
