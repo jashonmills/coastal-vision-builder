@@ -77,7 +77,7 @@ export function AcceptInvitePage() {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       setDone(true);
-      // Decide destination based on admin role
+      // Decide destination based on role: admin → /admin, staff → /my-schedule, else /account
       const { data: userRes } = await supabase.auth.getUser();
       const uid = userRes.user?.id;
       let to = "/account";
@@ -86,7 +86,17 @@ export function AcceptInvitePage() {
           _user_id: uid,
           _role: "admin",
         });
-        if (isAdmin) to = "/admin";
+        if (isAdmin) {
+          to = "/admin";
+        } else {
+          const { data: staffRow } = await supabase
+            .from("staff")
+            .select("id")
+            .eq("user_id", uid)
+            .eq("active", true)
+            .maybeSingle();
+          if (staffRow) to = "/my-schedule";
+        }
       }
       setTimeout(() => navigate({ to }), 900);
     } catch (err) {
