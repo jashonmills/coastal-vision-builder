@@ -33,10 +33,16 @@ export const saveRecommendation = createServerFn({ method: "POST" })
       );
     }
 
+    const contactEmail =
+      (data.contact && typeof data.contact === "object" && data.contact !== null
+        ? (data.contact as { email?: string | null }).email ?? null
+        : null);
+
     const { data: row, error } = await supabase
       .from("saved_recommendations")
       .insert({
         user_id: userId,
+        customer_email: contactEmail,
         title: data.title,
         event_date: data.event_date ?? null,
         location: data.location ?? null,
@@ -49,6 +55,7 @@ export const saveRecommendation = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+
 
     // NOTE: admin + customer emails are intentionally NOT sent here.
     // The AI Tent Planner flow creates a `quote_requests` row via

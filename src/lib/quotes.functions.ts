@@ -206,7 +206,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
           layoutCaption: rec?.layout_caption ?? null,
           picks: rec?.picks ?? [],
           weatherNotes: rec?.weather_notes ?? [],
-          savedRecommendationId: data.saved_recommendation_id ?? null,
+          savedRecommendationId: savedRecommendationId,
         },
       });
 
