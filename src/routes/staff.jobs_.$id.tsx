@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { acknowledgeAssignment, getMyJob } from "@/lib/jobs.functions";
 import { StatusPill } from "./staff.index";
 
-export const Route = createFileRoute("/staff/jobs/$id")({
+export const Route = createFileRoute("/staff/jobs_/$id")({
   component: StaffJobDetail,
 });
 

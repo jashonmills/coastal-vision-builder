@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VirtualTourRouteImport } from './routes/virtual-tour'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -30,9 +31,13 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StaffIndexRouteImport } from './routes/staff.index'
 import { Route as RentalContractIndexRouteImport } from './routes/rental-contract.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
+import { Route as StaffMoreRouteImport } from './routes/staff.more'
+import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
+import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSiteImagesRouteImport } from './routes/admin.site-images'
@@ -48,6 +53,7 @@ import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
+import { Route as StaffJobsIdRouteImport } from './routes/staff.jobs_.$id'
 import { Route as RentalContractFillContractIdRouteImport } from './routes/rental-contract.fill.$contractId'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
@@ -76,6 +82,11 @@ const UnsubscribeRoute = UnsubscribeRouteImport.update({
 const TentRentalsRoute = TentRentalsRouteImport.update({
   id: '/tent-rentals',
   path: '/tent-rentals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -168,6 +179,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffIndexRoute = StaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StaffRoute,
+} as any)
 const RentalContractIndexRoute = RentalContractIndexRouteImport.update({
   id: '/rental-contract/',
   path: '/rental-contract/',
@@ -182,6 +198,21 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/account/',
   path: '/account/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StaffMoreRoute = StaffMoreRouteImport.update({
+  id: '/more',
+  path: '/more',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffJobsRoute = StaffJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffCalendarRoute = StaffCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => StaffRoute,
 } as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
@@ -257,6 +288,11 @@ const AccountIdRoute = AccountIdRouteImport.update({
   id: '/account/$id',
   path: '/account/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StaffJobsIdRoute = StaffJobsIdRouteImport.update({
+  id: '/jobs_/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => StaffRoute,
 } as any)
 const RentalContractFillContractIdRoute =
   RentalContractFillContractIdRouteImport.update({
@@ -353,6 +389,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRouteWithChildren
   '/tent-rentals': typeof TentRentalsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
@@ -371,9 +408,13 @@ export interface FileRoutesByFullPath {
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/jobs': typeof StaffJobsRoute
+  '/staff/more': typeof StaffMoreRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/rental-contract/': typeof RentalContractIndexRoute
+  '/staff/': typeof StaffIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
@@ -381,6 +422,7 @@ export interface FileRoutesByFullPath {
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
+  '/staff/jobs/$id': typeof StaffJobsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -425,9 +467,13 @@ export interface FileRoutesByTo {
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/jobs': typeof StaffJobsRoute
+  '/staff/more': typeof StaffMoreRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/rental-contract': typeof RentalContractIndexRoute
+  '/staff': typeof StaffIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
@@ -435,6 +481,7 @@ export interface FileRoutesByTo {
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
+  '/staff/jobs/$id': typeof StaffJobsIdRoute
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -463,6 +510,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRouteWithChildren
   '/tent-rentals': typeof TentRentalsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/virtual-tour': typeof VirtualTourRoute
@@ -481,9 +529,13 @@ export interface FileRoutesById {
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/jobs': typeof StaffJobsRoute
+  '/staff/more': typeof StaffMoreRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/rental-contract/': typeof RentalContractIndexRoute
+  '/staff/': typeof StaffIndexRoute
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers_/$id': typeof AdminCustomersIdRoute
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
@@ -491,6 +543,7 @@ export interface FileRoutesById {
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
+  '/staff/jobs_/$id': typeof StaffJobsIdRoute
   '/admin/quotes_/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes_/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes_/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -520,6 +573,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/services'
     | '/sitemap.xml'
+    | '/staff'
     | '/tent-rentals'
     | '/unsubscribe'
     | '/virtual-tour'
@@ -538,9 +592,13 @@ export interface FileRouteTypes {
     | '/admin/site-images'
     | '/admin/staff'
     | '/email/unsubscribe'
+    | '/staff/calendar'
+    | '/staff/jobs'
+    | '/staff/more'
     | '/account/'
     | '/admin/'
     | '/rental-contract/'
+    | '/staff/'
     | '/account/quote/$id'
     | '/admin/customers/$id'
     | '/admin/inventory/$id'
@@ -548,6 +606,7 @@ export interface FileRouteTypes {
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
+    | '/staff/jobs/$id'
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
@@ -592,9 +651,13 @@ export interface FileRouteTypes {
     | '/admin/site-images'
     | '/admin/staff'
     | '/email/unsubscribe'
+    | '/staff/calendar'
+    | '/staff/jobs'
+    | '/staff/more'
     | '/account'
     | '/admin'
     | '/rental-contract'
+    | '/staff'
     | '/account/quote/$id'
     | '/admin/customers/$id'
     | '/admin/inventory/$id'
@@ -602,6 +665,7 @@ export interface FileRouteTypes {
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
+    | '/staff/jobs/$id'
     | '/admin/quotes/$id/edit'
     | '/admin/quotes/$id/job-sheet'
     | '/admin/quotes/$id/preview'
@@ -629,6 +693,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/services'
     | '/sitemap.xml'
+    | '/staff'
     | '/tent-rentals'
     | '/unsubscribe'
     | '/virtual-tour'
@@ -647,9 +712,13 @@ export interface FileRouteTypes {
     | '/admin/site-images'
     | '/admin/staff'
     | '/email/unsubscribe'
+    | '/staff/calendar'
+    | '/staff/jobs'
+    | '/staff/more'
     | '/account/'
     | '/admin/'
     | '/rental-contract/'
+    | '/staff/'
     | '/account/quote/$id'
     | '/admin/customers_/$id'
     | '/admin/inventory_/$id'
@@ -657,6 +726,7 @@ export interface FileRouteTypes {
     | '/admin/quote-requests_/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
+    | '/staff/jobs_/$id'
     | '/admin/quotes_/$id/edit'
     | '/admin/quotes_/$id/job-sheet'
     | '/admin/quotes_/$id/preview'
@@ -685,6 +755,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StaffRoute: typeof StaffRouteWithChildren
   TentRentalsRoute: typeof TentRentalsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VirtualTourRoute: typeof VirtualTourRoute
@@ -722,6 +793,13 @@ declare module '@tanstack/react-router' {
       path: '/tent-rentals'
       fullPath: '/tent-rentals'
       preLoaderRoute: typeof TentRentalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -850,6 +928,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/': {
+      id: '/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof StaffIndexRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/rental-contract/': {
       id: '/rental-contract/'
       path: '/rental-contract'
@@ -870,6 +955,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/'
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/staff/more': {
+      id: '/staff/more'
+      path: '/more'
+      fullPath: '/staff/more'
+      preLoaderRoute: typeof StaffMoreRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/jobs': {
+      id: '/staff/jobs'
+      path: '/jobs'
+      fullPath: '/staff/jobs'
+      preLoaderRoute: typeof StaffJobsRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/calendar': {
+      id: '/staff/calendar'
+      path: '/calendar'
+      fullPath: '/staff/calendar'
+      preLoaderRoute: typeof StaffCalendarRouteImport
+      parentRoute: typeof StaffRoute
     }
     '/email/unsubscribe': {
       id: '/email/unsubscribe'
@@ -975,6 +1081,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/$id'
       preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/staff/jobs_/$id': {
+      id: '/staff/jobs_/$id'
+      path: '/jobs/$id'
+      fullPath: '/staff/jobs/$id'
+      preLoaderRoute: typeof StaffJobsIdRouteImport
+      parentRoute: typeof StaffRoute
     }
     '/rental-contract/fill/$contractId': {
       id: '/rental-contract/fill/$contractId'
@@ -1127,6 +1240,24 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface StaffRouteChildren {
+  StaffCalendarRoute: typeof StaffCalendarRoute
+  StaffJobsRoute: typeof StaffJobsRoute
+  StaffMoreRoute: typeof StaffMoreRoute
+  StaffIndexRoute: typeof StaffIndexRoute
+  StaffJobsIdRoute: typeof StaffJobsIdRoute
+}
+
+const StaffRouteChildren: StaffRouteChildren = {
+  StaffCalendarRoute: StaffCalendarRoute,
+  StaffJobsRoute: StaffJobsRoute,
+  StaffMoreRoute: StaffMoreRoute,
+  StaffIndexRoute: StaffIndexRoute,
+  StaffJobsIdRoute: StaffJobsIdRoute,
+}
+
+const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -1146,6 +1277,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StaffRoute: StaffRouteWithChildren,
   TentRentalsRoute: TentRentalsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VirtualTourRoute: VirtualTourRoute,
