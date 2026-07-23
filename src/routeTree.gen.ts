@@ -40,6 +40,7 @@ import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
 import { Route as StaffClockRouteImport } from './routes/staff.clock'
 import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSiteImagesRouteImport } from './routes/admin.site-images'
 import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
@@ -224,6 +225,11 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTimesheetsRoute = AdminTimesheetsRouteImport.update({
+  id: '/timesheets',
+  path: '/timesheets',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminStaffRoute = AdminStaffRouteImport.update({
   id: '/staff',
@@ -413,6 +419,7 @@ export interface FileRoutesByFullPath {
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
   '/staff/clock': typeof StaffClockRoute
@@ -473,6 +480,7 @@ export interface FileRoutesByTo {
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
   '/staff/clock': typeof StaffClockRoute
@@ -536,6 +544,7 @@ export interface FileRoutesById {
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
   '/staff/clock': typeof StaffClockRoute
@@ -600,6 +609,7 @@ export interface FileRouteTypes {
     | '/admin/scheduler'
     | '/admin/site-images'
     | '/admin/staff'
+    | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
     | '/staff/clock'
@@ -660,6 +670,7 @@ export interface FileRouteTypes {
     | '/admin/scheduler'
     | '/admin/site-images'
     | '/admin/staff'
+    | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
     | '/staff/clock'
@@ -722,6 +733,7 @@ export interface FileRouteTypes {
     | '/admin/scheduler'
     | '/admin/site-images'
     | '/admin/staff'
+    | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
     | '/staff/clock'
@@ -1003,6 +1015,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/timesheets': {
+      id: '/admin/timesheets'
+      path: '/timesheets'
+      fullPath: '/admin/timesheets'
+      preLoaderRoute: typeof AdminTimesheetsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/staff': {
       id: '/admin/staff'
       path: '/staff'
@@ -1223,6 +1242,7 @@ interface AdminRouteChildren {
   AdminSchedulerRoute: typeof AdminSchedulerRoute
   AdminSiteImagesRoute: typeof AdminSiteImagesRoute
   AdminStaffRoute: typeof AdminStaffRoute
+  AdminTimesheetsRoute: typeof AdminTimesheetsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminInventoryIdRoute: typeof AdminInventoryIdRoute
@@ -1247,6 +1267,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSchedulerRoute: AdminSchedulerRoute,
   AdminSiteImagesRoute: AdminSiteImagesRoute,
   AdminStaffRoute: AdminStaffRoute,
+  AdminTimesheetsRoute: AdminTimesheetsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminInventoryIdRoute: AdminInventoryIdRoute,
