@@ -58,7 +58,22 @@ async function ensurePullLines(
     .select("*")
     .eq("job_id", job.id);
   if (exErr) throw new Error(exErr.message);
-  if ((existing ?? []).length > 0) return existing as PullLineRow[];
+  if ((existing ?? []).length > 0) {
+    // Backfill inventory_item_id on any pre-existing lines that don't have one yet.
+    const rows = existing as PullLineRow[];
+    const missing = rows.filter((r) => !r.inventory_item_id && r.quote_item_id);
+    if (missing.length > 0) {
+      const { resolved } = await resolveInventoryIdsForQuote(supabase, job.quote_id);
+      const byQuoteItem = new Map(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
+      for (const r of missing) {
+        const invId = byQuoteItem.get(r.quote_item_id!);
+        if (!invId) continue;
+        await supabase.from("job_pull_lines").update({ inventory_item_id: invId }).eq("id", r.id);
+        r.inventory_item_id = invId;
+      }
+    }
+    return rows;
+  }
 
   const { data: items, error: qErr } = await supabase
     .from("quote_items")
@@ -67,11 +82,15 @@ async function ensurePullLines(
     .order("sort_order");
   if (qErr) throw new Error(qErr.message);
 
+  const { resolved } = await resolveInventoryIdsForQuote(supabase, job.quote_id);
+  const invByQuoteItem = new Map(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
+
   const toInsert = (items as QuoteItem[] | null | undefined ?? [])
     .filter((i) => !i.is_auto && !isNonPhysical(i.name, i.category))
     .map((i) => ({
       job_id: job.id,
       quote_item_id: i.id,
+      inventory_item_id: invByQuoteItem.get(i.id) ?? null,
       name: i.name,
       category: i.category,
       quantity_required: Math.max(1, i.quantity ?? 1),
