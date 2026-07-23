@@ -726,7 +726,7 @@ const QuotePatchSchema = z.object({
     internal_notes: z.string().max(4000).nullable().optional(),
     customer_notes: z.string().max(4000).nullable().optional(),
     terms: z.string().max(4000).nullable().optional(),
-    status: z.enum(["draft", "sent", "approved", "booked", "cancelled"]).optional(),
+    status: z.enum(["draft", "sent", "approved", "pending_confirmation", "booked", "cancelled"]).optional(),
   }),
 });
 

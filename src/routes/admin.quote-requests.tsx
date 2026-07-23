@@ -246,7 +246,9 @@ export function StatusPill({ status }: { status: string }) {
     draft: "bg-secondary text-foreground",
     sent: "bg-emerald-100 text-emerald-800 border-emerald-300",
     approved: "bg-emerald-200 text-emerald-900 border-emerald-400",
+    pending_confirmation: "bg-amber-100 text-amber-900 border-amber-300",
     cancelled: "bg-red-100 text-red-800 border-red-300",
+
   };
   return (
     <span className={`inline-flex items-center rounded-full border border-transparent px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${map[status] || map.new}`}>
