@@ -101,10 +101,15 @@ function DashboardPage() {
               <StatCard label="In Review" value={c!.inReview} icon={FileText} tone="blue" to="/admin/quote-requests" />
               <StatCard label="Draft Quotes" value={c!.draftQuotes} icon={FileText} tone="muted" to="/admin/quotes" />
               <StatCard label="Sent Quotes" value={c!.sentQuotes} icon={Send} tone="blue" to="/admin/quotes" />
+              <StatCard label="Pending Confirmation" value={(c as any).pendingConfirmation ?? 0} icon={FileText}
+                tone={((c as any).pendingConfirmation ?? 0) > 0 ? "gold" : "muted"} to="/admin/quotes" />
               <StatCard label="Approved" value={(c as any).approvedQuotes ?? 0} icon={FileText}
                 tone={((c as any).approvedQuotes ?? 0) > 0 ? "green" : "muted"} to="/admin/quotes" />
               <StatCard label="Booked" value={(c as any).bookedQuotes ?? 0} icon={PackageCheck}
                 tone={((c as any).bookedQuotes ?? 0) > 0 ? "green" : "muted"} to="/admin/quotes" />
+              <StatCard label="Paid" value={(c as any).paidQuotes ?? 0} icon={PackageCheck}
+                tone={((c as any).paidQuotes ?? 0) > 0 ? "green" : "muted"} to="/admin/quotes" />
+
               <StatCard label="Events (7 days)" value={c!.upcomingEvents} icon={CalendarDays} tone="navy" to="/admin/scheduler" />
               <StatCard label="Over-committed" value={(c as any).overCommittedInventory ?? 0} icon={AlertTriangle}
                 tone={((c as any).overCommittedInventory ?? 0) > 0 ? "gold" : "muted"} to="/admin/inventory" />

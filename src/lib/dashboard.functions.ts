@@ -29,8 +29,10 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
       inReview,
       draftQuotes,
       sentQuotes,
+      pendingConfirmationQuotes,
       bookedQuotes,
       approvedQuotes,
+      paidQuotes,
       upcoming,
       recentReq,
       upcomingEvents,
@@ -46,8 +48,11 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
       supabase.from("quote_requests").select("id", { count: "exact", head: true }).eq("status", "in_review"),
       supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "draft"),
       supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "sent"),
+      supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "pending_confirmation"),
       supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "booked"),
       supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "approved"),
+      supabase.from("quotes").select("id", { count: "exact", head: true }).eq("payment_received", true),
+
       supabase
         .from("rental_calendar_events")
         .select("id", { count: "exact", head: true })
@@ -161,9 +166,12 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
         inReview: inReview.count ?? 0,
         draftQuotes: draftQuotes.count ?? 0,
         sentQuotes: sentQuotes.count ?? 0,
+        pendingConfirmation: pendingConfirmationQuotes.count ?? 0,
         bookedQuotes: bookedQuotes.count ?? 0,
         approvedQuotes: approvedQuotes.count ?? 0,
+        paidQuotes: paidQuotes.count ?? 0,
         upcomingEvents: upcoming.count ?? 0,
+
         unreadNotifications: unreadNotifs.count ?? 0,
         newVenueRequests: newVenueReq.count ?? 0,
         venueBookings30: venueBookings30.count ?? 0,

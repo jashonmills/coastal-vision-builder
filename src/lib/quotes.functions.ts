@@ -726,7 +726,7 @@ const QuotePatchSchema = z.object({
     internal_notes: z.string().max(4000).nullable().optional(),
     customer_notes: z.string().max(4000).nullable().optional(),
     terms: z.string().max(4000).nullable().optional(),
-    status: z.enum(["draft", "sent", "approved", "booked", "cancelled"]).optional(),
+    status: z.enum(["draft", "sent", "approved", "pending_confirmation", "booked", "cancelled"]).optional(),
   }),
 });
 
@@ -753,6 +753,35 @@ export const updateQuote = createServerFn({ method: "POST" })
     }
     return { ok: true };
   });
+
+export const setQuotePayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({
+      id: z.string().uuid(),
+      payment_received: z.boolean(),
+      payment_received_at: z.string().nullable().optional(),
+    }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const patch: { payment_received: boolean; payment_received_at: string | null } = {
+      payment_received: data.payment_received,
+      payment_received_at: data.payment_received
+        ? (data.payment_received_at ?? new Date().toISOString())
+        : null,
+    };
+    const { error } = await context.supabase
+      .from("quotes")
+      .update(patch)
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true, ...patch };
+  });
+
+
+
+
 
 const QuoteItemSchema = z.object({
   id: z.string().uuid().optional(),
