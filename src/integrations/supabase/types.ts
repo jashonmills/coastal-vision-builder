@@ -1547,6 +1547,60 @@ export type Database = {
         }
         Relationships: []
       }
+      time_entries: {
+        Row: {
+          category: string
+          clock_in: string
+          clock_out: string | null
+          created_at: string
+          id: string
+          job_id: string | null
+          notes: string | null
+          staff_id: string
+          task_label: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          clock_in?: string
+          clock_out?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          notes?: string | null
+          staff_id: string
+          task_label?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          clock_in?: string
+          clock_out?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          notes?: string | null
+          staff_id?: string
+          task_label?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
