@@ -308,3 +308,93 @@ function EmptyHint({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+function OnboardingChecklist() {
+  const qc = useQueryClient();
+  const fn = useServerFn(getOnboardingStatus);
+  const hintsFn = useServerFn(listMyDismissedHints);
+  const dismissFn = useServerFn(dismissHint);
+  const [collapsed, setCollapsed] = useState(false);
+
+  const status = useQuery({
+    queryKey: ["admin-onboarding"],
+    queryFn: () => fn(),
+    staleTime: 60_000,
+  });
+  const hints = useQuery({
+    queryKey: ["dismissed-hints"],
+    queryFn: async () => (await hintsFn()) as string[],
+    staleTime: 5 * 60_000,
+  });
+  const dismiss = useMutation({
+    mutationFn: () => dismissFn({ data: { hint_key: "admin-getting-started" } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["dismissed-hints"] }),
+  });
+
+  const dismissed = (hints.data ?? []).includes("admin-getting-started");
+  const s = status.data;
+  if (!s || dismissed) return null;
+
+  const steps: Array<{ done: boolean; label: string; to: "/admin/inventory" | "/admin/pricing" | "/admin/staff" | "/admin/quotes" | "/admin/jobs"; sub: string }> = [
+    { done: s.hasInventoryCounts, label: "Set inventory counts", to: "/admin/inventory", sub: "Enter what you actually own." },
+    { done: s.hasMappings, label: "Link price list to inventory", to: "/admin/pricing", sub: "So date-based availability works." },
+    { done: s.hasStaff && s.hasStaffLogins, label: "Add & invite staff", to: "/admin/staff", sub: s.hasStaff && !s.hasStaffLogins ? "Staff added — send them logins." : "Add your crew and invite them." },
+    { done: s.hasBookedJob, label: "Get your first booked job", to: "/admin/quotes", sub: "Send a quote, then book it." },
+    { done: s.hasCrewAssigned, label: "Assign crew to a job", to: "/admin/jobs", sub: "Open a job → assign crew per event." },
+  ];
+  const completed = steps.filter((x) => x.done).length;
+  if (completed === steps.length) return null;
+
+  return (
+    <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm">
+      <div className="flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={() => setCollapsed((v) => !v)}
+          className="flex flex-1 items-center gap-2 text-left"
+        >
+          {collapsed ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronUp className="h-4 w-4 text-muted-foreground" />}
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Getting started</p>
+            <p className="text-sm font-semibold text-foreground">{completed} of {steps.length} steps complete</p>
+          </div>
+        </button>
+        <button
+          type="button"
+          onClick={() => dismiss.mutate()}
+          className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-foreground"
+          aria-label="Dismiss checklist"
+          title="Dismiss for good"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-secondary">
+        <div className="h-full bg-primary transition-all" style={{ width: `${(completed / steps.length) * 100}%` }} />
+      </div>
+      {!collapsed && (
+        <ul className="mt-4 divide-y divide-border">
+          {steps.map((step) => (
+            <li key={step.label}>
+              <Link
+                to={step.to}
+                className="flex items-start gap-3 py-3 hover:bg-secondary/40"
+              >
+                {step.done ? (
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald-600" />
+                ) : (
+                  <Circle className="mt-0.5 h-5 w-5 flex-none text-muted-foreground" />
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className={`text-sm font-medium ${step.done ? "text-muted-foreground line-through" : "text-foreground"}`}>{step.label}</p>
+                  <p className="text-xs text-muted-foreground">{step.sub}</p>
+                </div>
+                <ArrowRight className="mt-1 h-4 w-4 flex-none text-muted-foreground" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
