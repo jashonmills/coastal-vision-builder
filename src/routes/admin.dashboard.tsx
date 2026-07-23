@@ -18,7 +18,11 @@ import { SiteLayout, PageHero } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { StatusPill } from "./admin.quote-requests";
-import { getAdminDashboard } from "@/lib/dashboard.functions";
+import { getAdminDashboard, getOnboardingStatus } from "@/lib/dashboard.functions";
+import { HelpTip } from "@/components/HelpTip";
+import { useDismissedHints } from "@/components/HelpTip";
+import { useServerFn as _useServerFn } from "@tanstack/react-start";
+import { ChevronDown, ChevronUp, CheckCircle2, Circle } from "lucide-react";
 
 export const Route = createFileRoute("/admin/dashboard")({
   head: () => ({ meta: [{ title: "Admin Dashboard | Pacific North Events & Tents" }] }),
@@ -80,6 +84,15 @@ function DashboardPage() {
           </div>
         ) : (
           <>
+            <HelpTip
+              hintKey="admin-dashboard-welcome"
+              title="Welcome to your admin console"
+              className="mb-4"
+            >
+              Get set up: add real inventory counts, link your price list to inventory, and invite your staff. The checklist below tracks your progress.
+            </HelpTip>
+            <OnboardingChecklist />
+
             <div className="mb-3 flex items-center justify-end">
               <button
                 onClick={() => refetch()}
