@@ -1,15 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CalendarDays, Clock, MapPin, Navigation, Phone, Check, X, ClipboardList,
-  Loader2, ChevronRight,
+  Loader2, ChevronRight, Square,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsStaff } from "@/hooks/use-staff";
 import { listMyJobs, acknowledgeAssignment } from "@/lib/jobs.functions";
+import { getActiveTimeEntry, getWeeklyHours, clockOut } from "@/lib/time.functions";
 
 export const Route = createFileRoute("/staff/")({
   component: StaffHome,
