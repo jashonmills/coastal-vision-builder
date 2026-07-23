@@ -202,6 +202,48 @@ export type Database = {
         }
         Relationships: []
       }
+      event_staff: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          event_id: string
+          id: string
+          role: string | null
+          staff_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          event_id: string
+          id?: string
+          role?: string | null
+          staff_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          event_id?: string
+          id?: string
+          role?: string | null
+          staff_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_staff_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "rental_calendar_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_staff_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory_categories: {
         Row: {
           active: boolean
@@ -1281,6 +1323,7 @@ export type Database = {
           notes: string | null
           phone: string | null
           role: string | null
+          roles: string[]
           updated_at: string
           user_id: string | null
         }
@@ -1294,6 +1337,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           role?: string | null
+          roles?: string[]
           updated_at?: string
           user_id?: string | null
         }
@@ -1307,6 +1351,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           role?: string | null
+          roles?: string[]
           updated_at?: string
           user_id?: string | null
         }
@@ -1363,6 +1408,7 @@ export type Database = {
     }
     Functions: {
       claim_first_admin: { Args: never; Returns: boolean }
+      current_staff_id: { Args: never; Returns: string }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
