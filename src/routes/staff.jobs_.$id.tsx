@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   ArrowLeft, Car, Check, ClipboardList, Clock, Info, KeyRound, Loader2,
-  MapPin, Navigation, Phone, Truck, Wine, Wrench, X,
+  MapPin, Navigation, PackageCheck, Phone, Truck, Wine, Wrench, X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { acknowledgeAssignment, getMyJob } from "@/lib/jobs.functions";

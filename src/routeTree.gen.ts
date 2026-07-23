@@ -57,6 +57,7 @@ import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
+import { Route as AdminCleaningRouteImport } from './routes/admin.cleaning'
 import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as StaffJobsIdRouteImport } from './routes/staff.jobs_.$id'
@@ -318,6 +319,11 @@ const AdminContentRoute = AdminContentRouteImport.update({
   path: '/content',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCleaningRoute = AdminCleaningRouteImport.update({
+  id: '/cleaning',
+  path: '/cleaning',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAdminsRoute = AdminAdminsRouteImport.update({
   id: '/admins',
   path: '/admins',
@@ -449,6 +455,7 @@ export interface FileRoutesByFullPath {
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
+  '/admin/cleaning': typeof AdminCleaningRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -517,6 +524,7 @@ export interface FileRoutesByTo {
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
+  '/admin/cleaning': typeof AdminCleaningRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -588,6 +596,7 @@ export interface FileRoutesById {
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
+  '/admin/cleaning': typeof AdminCleaningRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -660,6 +669,7 @@ export interface FileRouteTypes {
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
+    | '/admin/cleaning'
     | '/admin/content'
     | '/admin/customers'
     | '/admin/dashboard'
@@ -728,6 +738,7 @@ export interface FileRouteTypes {
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
+    | '/admin/cleaning'
     | '/admin/content'
     | '/admin/customers'
     | '/admin/dashboard'
@@ -798,6 +809,7 @@ export interface FileRouteTypes {
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
+    | '/admin/cleaning'
     | '/admin/content'
     | '/admin/customers'
     | '/admin/dashboard'
@@ -1218,6 +1230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminContentRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/cleaning': {
+      id: '/admin/cleaning'
+      path: '/cleaning'
+      fullPath: '/admin/cleaning'
+      preLoaderRoute: typeof AdminCleaningRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/admins': {
       id: '/admin/admins'
       path: '/admins'
@@ -1363,6 +1382,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAdminsRoute: typeof AdminAdminsRoute
+  AdminCleaningRoute: typeof AdminCleaningRoute
   AdminContentRoute: typeof AdminContentRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
@@ -1390,6 +1410,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminsRoute: AdminAdminsRoute,
+  AdminCleaningRoute: AdminCleaningRoute,
   AdminContentRoute: AdminContentRoute,
   AdminCustomersRoute: AdminCustomersRoute,
   AdminDashboardRoute: AdminDashboardRoute,
