@@ -40,6 +40,7 @@ import { Route as StaffMoreRouteImport } from './routes/staff.more'
 import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
 import { Route as StaffExpensesRouteImport } from './routes/staff.expenses'
 import { Route as StaffClockRouteImport } from './routes/staff.clock'
+import { Route as StaffCleaningRouteImport } from './routes/staff.cleaning'
 import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
@@ -56,6 +57,7 @@ import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
+import { Route as AdminCleaningRouteImport } from './routes/admin.cleaning'
 import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as StaffJobsIdRouteImport } from './routes/staff.jobs_.$id'
@@ -68,6 +70,7 @@ import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.
 import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
 import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
 import { Route as StaffJobsIdPullRouteImport } from './routes/staff.jobs_.$id.pull'
+import { Route as StaffJobsIdCheckinRouteImport } from './routes/staff.jobs_.$id.checkin'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -231,6 +234,11 @@ const StaffClockRoute = StaffClockRouteImport.update({
   path: '/clock',
   getParentRoute: () => StaffRoute,
 } as any)
+const StaffCleaningRoute = StaffCleaningRouteImport.update({
+  id: '/cleaning',
+  path: '/cleaning',
+  getParentRoute: () => StaffRoute,
+} as any)
 const StaffCalendarRoute = StaffCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
@@ -311,6 +319,11 @@ const AdminContentRoute = AdminContentRouteImport.update({
   path: '/content',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCleaningRoute = AdminCleaningRouteImport.update({
+  id: '/cleaning',
+  path: '/cleaning',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAdminsRoute = AdminAdminsRouteImport.update({
   id: '/admins',
   path: '/admins',
@@ -370,6 +383,11 @@ const AccountQuoteIdRoute = AccountQuoteIdRouteImport.update({
 const StaffJobsIdPullRoute = StaffJobsIdPullRouteImport.update({
   id: '/pull',
   path: '/pull',
+  getParentRoute: () => StaffJobsIdRoute,
+} as any)
+const StaffJobsIdCheckinRoute = StaffJobsIdCheckinRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
   getParentRoute: () => StaffJobsIdRoute,
 } as any)
 const LovableEmailTransactionalSendRoute =
@@ -437,6 +455,7 @@ export interface FileRoutesByFullPath {
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
+  '/admin/cleaning': typeof AdminCleaningRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -453,6 +472,7 @@ export interface FileRoutesByFullPath {
   '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/cleaning': typeof StaffCleaningRoute
   '/staff/clock': typeof StaffClockRoute
   '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
@@ -478,6 +498,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs/$id/checkin': typeof StaffJobsIdCheckinRoute
   '/staff/jobs/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRoutesByTo {
@@ -503,6 +524,7 @@ export interface FileRoutesByTo {
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
+  '/admin/cleaning': typeof AdminCleaningRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -519,6 +541,7 @@ export interface FileRoutesByTo {
   '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/cleaning': typeof StaffCleaningRoute
   '/staff/clock': typeof StaffClockRoute
   '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
@@ -544,6 +567,7 @@ export interface FileRoutesByTo {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs/$id/checkin': typeof StaffJobsIdCheckinRoute
   '/staff/jobs/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRoutesById {
@@ -572,6 +596,7 @@ export interface FileRoutesById {
   '/virtual-tour': typeof VirtualTourRoute
   '/account/$id': typeof AccountIdRoute
   '/admin/admins': typeof AdminAdminsRoute
+  '/admin/cleaning': typeof AdminCleaningRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -588,6 +613,7 @@ export interface FileRoutesById {
   '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/cleaning': typeof StaffCleaningRoute
   '/staff/clock': typeof StaffClockRoute
   '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
@@ -613,6 +639,7 @@ export interface FileRoutesById {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs_/$id/checkin': typeof StaffJobsIdCheckinRoute
   '/staff/jobs_/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRouteTypes {
@@ -642,6 +669,7 @@ export interface FileRouteTypes {
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
+    | '/admin/cleaning'
     | '/admin/content'
     | '/admin/customers'
     | '/admin/dashboard'
@@ -658,6 +686,7 @@ export interface FileRouteTypes {
     | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/cleaning'
     | '/staff/clock'
     | '/staff/expenses'
     | '/staff/jobs'
@@ -683,6 +712,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs/$id/checkin'
     | '/staff/jobs/$id/pull'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -708,6 +738,7 @@ export interface FileRouteTypes {
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
+    | '/admin/cleaning'
     | '/admin/content'
     | '/admin/customers'
     | '/admin/dashboard'
@@ -724,6 +755,7 @@ export interface FileRouteTypes {
     | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/cleaning'
     | '/staff/clock'
     | '/staff/expenses'
     | '/staff/jobs'
@@ -749,6 +781,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs/$id/checkin'
     | '/staff/jobs/$id/pull'
   id:
     | '__root__'
@@ -776,6 +809,7 @@ export interface FileRouteTypes {
     | '/virtual-tour'
     | '/account/$id'
     | '/admin/admins'
+    | '/admin/cleaning'
     | '/admin/content'
     | '/admin/customers'
     | '/admin/dashboard'
@@ -792,6 +826,7 @@ export interface FileRouteTypes {
     | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/cleaning'
     | '/staff/clock'
     | '/staff/expenses'
     | '/staff/jobs'
@@ -817,6 +852,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs_/$id/checkin'
     | '/staff/jobs_/$id/pull'
   fileRoutesById: FileRoutesById
 }
@@ -1075,6 +1111,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffClockRouteImport
       parentRoute: typeof StaffRoute
     }
+    '/staff/cleaning': {
+      id: '/staff/cleaning'
+      path: '/cleaning'
+      fullPath: '/staff/cleaning'
+      preLoaderRoute: typeof StaffCleaningRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/calendar': {
       id: '/staff/calendar'
       path: '/calendar'
@@ -1187,6 +1230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminContentRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/cleaning': {
+      id: '/admin/cleaning'
+      path: '/cleaning'
+      fullPath: '/admin/cleaning'
+      preLoaderRoute: typeof AdminCleaningRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/admins': {
       id: '/admin/admins'
       path: '/admins'
@@ -1271,6 +1321,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffJobsIdPullRouteImport
       parentRoute: typeof StaffJobsIdRoute
     }
+    '/staff/jobs_/$id/checkin': {
+      id: '/staff/jobs_/$id/checkin'
+      path: '/checkin'
+      fullPath: '/staff/jobs/$id/checkin'
+      preLoaderRoute: typeof StaffJobsIdCheckinRouteImport
+      parentRoute: typeof StaffJobsIdRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -1325,6 +1382,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAdminsRoute: typeof AdminAdminsRoute
+  AdminCleaningRoute: typeof AdminCleaningRoute
   AdminContentRoute: typeof AdminContentRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
@@ -1352,6 +1410,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminsRoute: AdminAdminsRoute,
+  AdminCleaningRoute: AdminCleaningRoute,
   AdminContentRoute: AdminContentRoute,
   AdminCustomersRoute: AdminCustomersRoute,
   AdminDashboardRoute: AdminDashboardRoute,
@@ -1380,10 +1439,12 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface StaffJobsIdRouteChildren {
+  StaffJobsIdCheckinRoute: typeof StaffJobsIdCheckinRoute
   StaffJobsIdPullRoute: typeof StaffJobsIdPullRoute
 }
 
 const StaffJobsIdRouteChildren: StaffJobsIdRouteChildren = {
+  StaffJobsIdCheckinRoute: StaffJobsIdCheckinRoute,
   StaffJobsIdPullRoute: StaffJobsIdPullRoute,
 }
 
@@ -1393,6 +1454,7 @@ const StaffJobsIdRouteWithChildren = StaffJobsIdRoute._addFileChildren(
 
 interface StaffRouteChildren {
   StaffCalendarRoute: typeof StaffCalendarRoute
+  StaffCleaningRoute: typeof StaffCleaningRoute
   StaffClockRoute: typeof StaffClockRoute
   StaffExpensesRoute: typeof StaffExpensesRoute
   StaffJobsRoute: typeof StaffJobsRoute
@@ -1404,6 +1466,7 @@ interface StaffRouteChildren {
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffCalendarRoute: StaffCalendarRoute,
+  StaffCleaningRoute: StaffCleaningRoute,
   StaffClockRoute: StaffClockRoute,
   StaffExpensesRoute: StaffExpensesRoute,
   StaffJobsRoute: StaffJobsRoute,

@@ -28,10 +28,11 @@ type PullLineRow = {
   checkin_notes: string | null;
   checked_in_at: string | null;
   checked_in_by: string | null;
+  damage_photo_paths: string[] | null;
 };
 
 const PULL_COLS =
-  "id, job_id, name, category, inventory_item_id, quote_item_id, quantity_required, quantity_pulled, quantity_returned_ok, quantity_cleaning, quantity_damaged, quantity_missing, checked_out_applied, checkin_notes, checked_in_at, checked_in_by";
+  "id, job_id, name, category, inventory_item_id, quote_item_id, quantity_required, quantity_pulled, quantity_returned_ok, quantity_cleaning, quantity_damaged, quantity_missing, checked_out_applied, checkin_notes, checked_in_at, checked_in_by, damage_photo_paths";
 
 async function isAdmin(supabase: any, userId: string): Promise<boolean> {
   const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
@@ -55,6 +56,7 @@ export const checkInJobLines = createServerFn({ method: "POST" })
               damaged: z.number().int().min(0).default(0),
               missing: z.number().int().min(0).default(0),
               notes: z.string().max(2000).optional().nullable(),
+              photo_path: z.string().max(500).optional().nullable(),
             }),
           )
           .min(1),
@@ -164,6 +166,9 @@ export const checkInJobLines = createServerFn({ method: "POST" })
           });
         }
 
+        const nextPhotos = inp.photo_path
+          ? [ ...((line.damage_photo_paths ?? []) as string[]), inp.photo_path ]
+          : (line.damage_photo_paths ?? []);
         const patch = {
           quantity_returned_ok: (line.quantity_returned_ok ?? 0) + inp.returned_ok,
           quantity_cleaning: (line.quantity_cleaning ?? 0) + inp.cleaning,
@@ -172,6 +177,7 @@ export const checkInJobLines = createServerFn({ method: "POST" })
           checkin_notes: inp.notes ?? line.checkin_notes,
           checked_in_at: new Date().toISOString(),
           checked_in_by: userId,
+          damage_photo_paths: nextPhotos,
         };
         const { error: upErr } = await supabase
           .from("job_pull_lines")
@@ -316,6 +322,8 @@ export const getJobReconciliation = createServerFn({ method: "GET" })
         missing,
         outstanding,
         checked_in_at: r.checked_in_at,
+        checkin_notes: r.checkin_notes,
+        damage_photo_paths: (r.damage_photo_paths ?? []) as string[],
       };
     });
 
@@ -334,4 +342,22 @@ export const getJobReconciliation = createServerFn({ method: "GET" })
     );
 
     return { job_id: data.job_id, items, totals };
+  });
+
+/* ---------------------- Damage photo signed URLs ---------------------- */
+
+export const getJobPhotoSignedUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ path: z.string().min(1).max(500) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    // RLS on storage.objects already gates read access to admins or
+    // staff-on-job. Use the caller's client so the policy is enforced,
+    // then fall back to admin only if that succeeds (path is authorised).
+    const { data: signed, error } = await context.supabase.storage
+      .from("job-photos")
+      .createSignedUrl(data.path, 60 * 60);
+    if (error) throw new Error(error.message);
+    return { url: signed?.signedUrl ?? null };
   });

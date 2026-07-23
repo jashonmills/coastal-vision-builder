@@ -635,6 +635,7 @@ export type Database = {
           checked_out_applied: boolean
           checkin_notes: string | null
           created_at: string
+          damage_photo_paths: string[]
           id: string
           inventory_item_id: string | null
           job_id: string
@@ -657,6 +658,7 @@ export type Database = {
           checked_out_applied?: boolean
           checkin_notes?: string | null
           created_at?: string
+          damage_photo_paths?: string[]
           id?: string
           inventory_item_id?: string | null
           job_id: string
@@ -679,6 +681,7 @@ export type Database = {
           checked_out_applied?: boolean
           checkin_notes?: string | null
           created_at?: string
+          damage_photo_paths?: string[]
           id?: string
           inventory_item_id?: string | null
           job_id?: string

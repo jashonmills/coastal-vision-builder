@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Clock,
   DollarSign,
+  Sparkles,
 
   Menu,
   ExternalLink,
@@ -43,6 +44,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/scheduler", label: "Scheduler", icon: CalendarDays },
       { to: "/admin/jobs", label: "Jobs", icon: Truck },
       { to: "/admin/inventory", label: "Inventory", icon: Boxes },
+      { to: "/admin/cleaning", label: "Cleaning", icon: Sparkles },
     ],
   },
   {

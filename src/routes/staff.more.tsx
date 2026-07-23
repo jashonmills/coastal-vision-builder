@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, DollarSign, FileText, LogOut, Mail, Phone, User } from "lucide-react";
+import { ChevronRight, DollarSign, FileText, LogOut, Mail, Phone, Sparkles, User } from "lucide-react";
 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -70,6 +70,7 @@ function MorePage() {
         <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tools</h2>
         <ul className="space-y-2">
           <LinkRow to="/staff/expenses" icon={DollarSign} label="Expenses" desc="Log spend and attach receipt photos" />
+          <LinkRow to="/staff/cleaning" icon={Sparkles} label="Cleaning queue" desc="Return cleaned gear to available" />
           <LinkRow to="/staff/notes" icon={FileText} label="Notes & handoffs" desc="Leave notes for admins or the next crew" />
         </ul>
       </section>
