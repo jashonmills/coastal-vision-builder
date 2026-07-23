@@ -40,6 +40,7 @@ import { Route as StaffMoreRouteImport } from './routes/staff.more'
 import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
 import { Route as StaffExpensesRouteImport } from './routes/staff.expenses'
 import { Route as StaffClockRouteImport } from './routes/staff.clock'
+import { Route as StaffCleaningRouteImport } from './routes/staff.cleaning'
 import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
@@ -230,6 +231,11 @@ const StaffExpensesRoute = StaffExpensesRouteImport.update({
 const StaffClockRoute = StaffClockRouteImport.update({
   id: '/clock',
   path: '/clock',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffCleaningRoute = StaffCleaningRouteImport.update({
+  id: '/cleaning',
+  path: '/cleaning',
   getParentRoute: () => StaffRoute,
 } as any)
 const StaffCalendarRoute = StaffCalendarRouteImport.update({
@@ -459,6 +465,7 @@ export interface FileRoutesByFullPath {
   '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/cleaning': typeof StaffCleaningRoute
   '/staff/clock': typeof StaffClockRoute
   '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
@@ -526,6 +533,7 @@ export interface FileRoutesByTo {
   '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/cleaning': typeof StaffCleaningRoute
   '/staff/clock': typeof StaffClockRoute
   '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
@@ -596,6 +604,7 @@ export interface FileRoutesById {
   '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/cleaning': typeof StaffCleaningRoute
   '/staff/clock': typeof StaffClockRoute
   '/staff/expenses': typeof StaffExpensesRoute
   '/staff/jobs': typeof StaffJobsRoute
@@ -667,6 +676,7 @@ export interface FileRouteTypes {
     | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/cleaning'
     | '/staff/clock'
     | '/staff/expenses'
     | '/staff/jobs'
@@ -734,6 +744,7 @@ export interface FileRouteTypes {
     | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/cleaning'
     | '/staff/clock'
     | '/staff/expenses'
     | '/staff/jobs'
@@ -803,6 +814,7 @@ export interface FileRouteTypes {
     | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/cleaning'
     | '/staff/clock'
     | '/staff/expenses'
     | '/staff/jobs'
@@ -1085,6 +1097,13 @@ declare module '@tanstack/react-router' {
       path: '/clock'
       fullPath: '/staff/clock'
       preLoaderRoute: typeof StaffClockRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/cleaning': {
+      id: '/staff/cleaning'
+      path: '/cleaning'
+      fullPath: '/staff/cleaning'
+      preLoaderRoute: typeof StaffCleaningRouteImport
       parentRoute: typeof StaffRoute
     }
     '/staff/calendar': {
@@ -1414,6 +1433,7 @@ const StaffJobsIdRouteWithChildren = StaffJobsIdRoute._addFileChildren(
 
 interface StaffRouteChildren {
   StaffCalendarRoute: typeof StaffCalendarRoute
+  StaffCleaningRoute: typeof StaffCleaningRoute
   StaffClockRoute: typeof StaffClockRoute
   StaffExpensesRoute: typeof StaffExpensesRoute
   StaffJobsRoute: typeof StaffJobsRoute
@@ -1425,6 +1445,7 @@ interface StaffRouteChildren {
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffCalendarRoute: StaffCalendarRoute,
+  StaffCleaningRoute: StaffCleaningRoute,
   StaffClockRoute: StaffClockRoute,
   StaffExpensesRoute: StaffExpensesRoute,
   StaffJobsRoute: StaffJobsRoute,
