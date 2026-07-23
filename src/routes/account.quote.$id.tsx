@@ -70,15 +70,11 @@ function QuoteViewPage() {
       <section className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <Link to="/account" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"><ArrowLeft className="h-4 w-4" /> All quotes</Link>
-          <Link
-            to="/rental-contract/fill/$contractId"
-            params={{ contractId: "rental-contract" }}
-            search={{ quoteId: quote.id }}
-            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-5 py-2 text-sm font-semibold text-[color:var(--ink-on-gold,#1a1a1a)] hover:opacity-90"
-          >
-            <FileSignature className="h-4 w-4" /> Sign Rental Contract
-          </Link>
         </div>
+
+        <ContractActions quote={quote} items={items} />
+
+
 
         <div className="grid gap-4 sm:grid-cols-2">
           <InfoBlock label="Customer">
