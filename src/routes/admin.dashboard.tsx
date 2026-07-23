@@ -20,9 +20,9 @@ import { useIsAdmin } from "@/hooks/use-admin";
 import { StatusPill } from "./admin.quote-requests";
 import { getAdminDashboard, getOnboardingStatus } from "@/lib/dashboard.functions";
 import { HelpTip } from "@/components/HelpTip";
-import { useDismissedHints } from "@/components/HelpTip";
-import { useServerFn as _useServerFn } from "@tanstack/react-start";
-import { ChevronDown, ChevronUp, CheckCircle2, Circle } from "lucide-react";
+import { ChevronDown, ChevronUp, CheckCircle2, Circle, X } from "lucide-react";
+import { dismissHint, listMyDismissedHints } from "@/lib/hints.functions";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/admin/dashboard")({
   head: () => ({ meta: [{ title: "Admin Dashboard | Pacific North Events & Tents" }] }),
