@@ -92,10 +92,23 @@ function StaffHome() {
         </h1>
       </header>
 
-      <section className="grid grid-cols-3 gap-3">
+      {activeQ.data && (
+        <ActiveBanner
+          entry={activeQ.data}
+          onClockOut={() => outMut.mutate()}
+          pending={outMut.isPending}
+        />
+      )}
+
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Kpi label="Today" value={today.length} />
         <Kpi label="Upcoming" value={upcoming.length} sub="next 45 days" />
         <Kpi label="Pending" value={pending} sub="acceptances" tone={pending ? "warn" : "muted"} />
+        <Link to="/staff/clock" className="rounded-2xl border border-border bg-card p-3 shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Hours</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{weekHours}</p>
+          <p className="text-[10px] text-muted-foreground">this week</p>
+        </Link>
       </section>
 
       <section>
