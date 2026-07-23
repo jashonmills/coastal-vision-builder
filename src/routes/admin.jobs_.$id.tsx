@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Loader2, ArrowLeft, Save, MapPin, Phone, User } from "lucide-react";
+import { Loader2, ArrowLeft, Save, CalendarPlus } from "lucide-react";
 import { toast } from "sonner";
 import { AdminLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
@@ -10,6 +10,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
 import { getJob, updateJob } from "@/lib/jobs.functions";
 import { getPullList } from "@/lib/pull.functions";
 import { JobNotesList } from "@/components/JobNotesList";
+import { CrewAssign } from "@/components/admin/CrewAssign";
 
 
 import { StatusBadge } from "./admin.jobs";
@@ -192,7 +193,17 @@ function JobDetailPage() {
       <section className="mt-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-3 font-serif text-lg text-primary">Assigned crew</h3>
         {events.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No calendar events yet.</p>
+          <div className="rounded-lg border border-dashed border-border bg-secondary/20 p-4 text-center">
+            <p className="mb-3 text-sm text-muted-foreground">
+              Crew is assigned per calendar event. Schedule this job on the calendar first, then add crew.
+            </p>
+            <Link
+              to="/admin/scheduler"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            >
+              <CalendarPlus className="h-4 w-4" /> Schedule &amp; assign crew
+            </Link>
+          </div>
         ) : (
           <div className="space-y-4">
             {events.map((ev) => {
@@ -205,23 +216,29 @@ function JobDetailPage() {
                     </span>
                     {ev.location && <span className="text-muted-foreground">{ev.location}</span>}
                   </div>
-                  {list.length === 0 ? (
-                    <p className="text-xs text-muted-foreground">No crew assigned.</p>
-                  ) : (
-                    <ul className="grid gap-2 sm:grid-cols-2">
-                      {list.map((c) => (
-                        <li key={c.id} className="flex items-center justify-between rounded-md border border-border bg-background px-3 py-2 text-sm">
-                          <div className="flex min-w-0 items-center gap-2">
-                            <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: c.color ?? "#888" }} />
-                            <div className="min-w-0">
-                              <div className="truncate font-medium">{c.name}</div>
-                              {c.role && <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{c.role}</div>}
+
+                  <CrewAssign eventId={ev.id} />
+
+                  {list.length > 0 && (
+                    <div className="mt-3">
+                      <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Acknowledgment status
+                      </p>
+                      <ul className="grid gap-2 sm:grid-cols-2">
+                        {list.map((c) => (
+                          <li key={c.id} className="flex items-center justify-between rounded-md border border-border bg-background px-3 py-2 text-sm">
+                            <div className="flex min-w-0 items-center gap-2">
+                              <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: c.color ?? "#888" }} />
+                              <div className="min-w-0">
+                                <div className="truncate font-medium">{c.name}</div>
+                                {c.role && <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{c.role}</div>}
+                              </div>
                             </div>
-                          </div>
-                          <AckPill status={c.ack_status} reason={c.decline_reason} />
-                        </li>
-                      ))}
-                    </ul>
+                            <AckPill status={c.ack_status} reason={c.decline_reason} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </div>
               );
