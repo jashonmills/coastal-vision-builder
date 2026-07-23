@@ -72,7 +72,7 @@ function DashboardPage() {
         title="Dashboard"
         subtitle="What needs attention today across requests, quotes, events, and inventory."
       />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <section className="py-8">
 
         {isLoading || !data ? (
           <div className="flex justify-center py-12">

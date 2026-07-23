@@ -67,7 +67,11 @@ function SchedulerPage() {
   const { isAdmin, loading: roleLoading } = useIsAdmin();
   const navigate = useNavigate();
   const [cursor, setCursor] = useState(() => new Date());
-  const [view, setView] = useState<ViewMode>("month");
+  const [view, setView] = useState<ViewMode>(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) return "list";
+    return "month";
+  });
+
   const [filterType, setFilterType] = useState<string>("all");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [venueFilter, setVenueFilter] = useState<"all" | "rentals" | "beacon">("all");
@@ -147,7 +151,7 @@ function SchedulerPage() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Scheduler" subtitle="Quote requests, rentals, deliveries, pickups, and tasks." />
-      <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+      <section className="py-8">
         <div className="mb-4 flex items-center justify-between">
           <button onClick={() => setEditing({ event_type: "internal_note", status: "scheduled", start_time: new Date().toISOString() })}
             className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">

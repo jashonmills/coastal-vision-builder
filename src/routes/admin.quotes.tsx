@@ -29,7 +29,7 @@ function QuotesPage() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Quotes" subtitle="Drafted and sent quotes." />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <section className="py-8">
         {isLoading ? (
           <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />
         ) : !data || data.length === 0 ? (
@@ -55,9 +55,9 @@ function QuotesPage() {
                 {data.map((q) => (
                   <tr key={q.id} className="border-t border-border">
                     <td className="px-3 py-2 font-mono text-xs">{q.quote_number}</td>
-                    <td className="px-3 py-2">
-                      <div className="font-medium">{q.customer_name}</div>
-                      <div className="text-xs text-muted-foreground">{q.customer_email}</div>
+                    <td className="max-w-[220px] px-3 py-2">
+                      <div className="truncate font-medium">{q.customer_name}</div>
+                      <div className="truncate text-xs text-muted-foreground">{q.customer_email}</div>
                     </td>
                     <td className="px-3 py-2">{q.event_type || "—"}</td>
                     <td className="px-3 py-2">{q.event_date || "—"}</td>

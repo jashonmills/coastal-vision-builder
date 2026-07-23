@@ -92,43 +92,71 @@ function AdminExpensesPage() {
               <SummaryCard title="By job" rows={(q.data?.by_job ?? []).map((r) => ({ label: r.title, cents: r.cents }))} />
             </div>
 
-            <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-              <table className="w-full text-sm">
-                <thead className="bg-secondary/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-2">Date</th>
-                    <th className="px-4 py-2">Staff</th>
-                    <th className="px-4 py-2">Category</th>
-                    <th className="px-4 py-2">Job</th>
-                    <th className="px-4 py-2">Note</th>
-                    <th className="px-4 py-2 text-center">Receipt</th>
-                    <th className="px-4 py-2 text-right">Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(q.data?.expenses ?? []).length === 0 ? (
-                    <tr><td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">No expenses in this range.</td></tr>
-                  ) : (
-                    (q.data?.expenses ?? []).map((e: any) => (
-                      <tr key={e.id} className="border-t border-border/60">
-                        <td className="px-4 py-2 text-muted-foreground">{e.incurred_on}</td>
-                        <td className="px-4 py-2 font-medium text-foreground">{e.staff?.name ?? "—"}</td>
-                        <td className="px-4 py-2 capitalize text-muted-foreground">{e.category}</td>
-                        <td className="px-4 py-2 text-muted-foreground">{e.jobs?.title ?? "—"}</td>
-                        <td className="px-4 py-2 text-muted-foreground">{e.note ?? ""}</td>
-                        <td className="px-4 py-2 text-center">
-                          {e.receipt_path ? (
-                            <button onClick={() => openReceipt(e.receipt_path)} className="inline-flex items-center gap-1 text-primary hover:underline">
-                              <Receipt className="h-3.5 w-3.5" /> View
-                            </button>
-                          ) : "—"}
-                        </td>
-                        <td className="px-4 py-2 text-right font-semibold">{fmt$(e.amount_cents)}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+            <section className="rounded-2xl border border-border bg-card shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="hidden w-full text-sm md:table">
+                  <thead className="bg-secondary/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-2">Date</th>
+                      <th className="px-4 py-2">Staff</th>
+                      <th className="px-4 py-2">Category</th>
+                      <th className="px-4 py-2">Job</th>
+                      <th className="px-4 py-2">Note</th>
+                      <th className="px-4 py-2 text-center">Receipt</th>
+                      <th className="px-4 py-2 text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(q.data?.expenses ?? []).length === 0 ? (
+                      <tr><td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">No expenses in this range.</td></tr>
+                    ) : (
+                      (q.data?.expenses ?? []).map((e: any) => (
+                        <tr key={e.id} className="border-t border-border/60">
+                          <td className="px-4 py-2 text-muted-foreground">{e.incurred_on}</td>
+                          <td className="px-4 py-2 font-medium text-foreground">{e.staff?.name ?? "—"}</td>
+                          <td className="px-4 py-2 capitalize text-muted-foreground">{e.category}</td>
+                          <td className="max-w-[180px] truncate px-4 py-2 text-muted-foreground">{e.jobs?.title ?? "—"}</td>
+                          <td className="max-w-[200px] truncate px-4 py-2 text-muted-foreground">{e.note ?? ""}</td>
+                          <td className="px-4 py-2 text-center">
+                            {e.receipt_path ? (
+                              <button onClick={() => openReceipt(e.receipt_path)} className="inline-flex items-center gap-1 text-primary hover:underline">
+                                <Receipt className="h-3.5 w-3.5" /> View
+                              </button>
+                            ) : "—"}
+                          </td>
+                          <td className="px-4 py-2 text-right font-semibold">{fmt$(e.amount_cents)}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile stacked cards */}
+              <ul className="divide-y divide-border md:hidden">
+                {(q.data?.expenses ?? []).length === 0 ? (
+                  <li className="px-4 py-10 text-center text-muted-foreground">No expenses in this range.</li>
+                ) : (
+                  (q.data?.expenses ?? []).map((e: any) => (
+                    <li key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 px-4 py-3 text-sm">
+                      <div className="min-w-0 space-y-0.5">
+                        <p className="truncate font-semibold text-foreground">{e.staff?.name ?? "—"}</p>
+                        <p className="text-[11px] text-muted-foreground">
+                          <span>{e.incurred_on}</span> · <span className="capitalize">{e.category}</span>
+                        </p>
+                        {e.jobs?.title && <p className="truncate text-xs text-muted-foreground">Job: {e.jobs.title}</p>}
+                        {e.note && <p className="truncate text-xs text-muted-foreground">{e.note}</p>}
+                        {e.receipt_path && (
+                          <button onClick={() => openReceipt(e.receipt_path)} className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                            <Receipt className="h-3.5 w-3.5" /> View receipt
+                          </button>
+                        )}
+                      </div>
+                      <div className="shrink-0 text-right font-semibold">{fmt$(e.amount_cents)}</div>
+                    </li>
+                  ))
+                )}
+              </ul>
             </section>
           </>
         )}

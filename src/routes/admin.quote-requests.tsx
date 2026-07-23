@@ -89,7 +89,7 @@ function QuoteRequestsPage() {
         title="Quote Requests"
         subtitle="Customer submissions from the AI Tent Planner. Review and create quotes."
       />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <section className="py-8">
         {(() => {
           const all = data ?? [];
           const typed = typeFilter === "all" ? all : all.filter((r) => (r.request_type ?? "rental") === typeFilter);
@@ -161,7 +161,7 @@ function QuoteRequestsPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-muted-foreground">{r.customer_email}</div>
+                            <div className="max-w-[200px] truncate text-xs text-muted-foreground">{r.customer_email}</div>
                             {r.customer_phone && <div className="text-xs text-muted-foreground">{r.customer_phone}</div>}
                           </td>
 
