@@ -371,32 +371,6 @@ function SignedContractsList({
 }
 
 
-  return (
-    <ul className="space-y-3">
-      {data.map((c) => (
-        <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-5 shadow-sm">
-          <div className="min-w-0 flex-1">
-            <p className="font-serif text-lg text-primary">
-              {CONTRACT_LABEL[c.contract_type] ?? c.contract_type}
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Signed {new Date(c.created_at).toLocaleDateString()}
-              {c.event_date ? ` · Event ${new Date(c.event_date + "T00:00:00").toLocaleDateString()}` : ""}
-            </p>
-          </div>
-          <button
-            onClick={() => download(c.id)}
-            disabled={busyId === c.id}
-            className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)] disabled:opacity-60"
-          >
-            {busyId === c.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-            Download PDF
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 /* -------------------------------- Shared --------------------------------- */
 
