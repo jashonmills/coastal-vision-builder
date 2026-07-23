@@ -169,8 +169,10 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
         venueBookings30: venueBookings30.count ?? 0,
         overCommittedInventory: overCommitted.length,
         plannerNoStock: plannerNoStock.length,
+        zeroOwnedInventory: invRows.filter((r) => (r.total_owned_quantity ?? 0) === 0).length,
         unmappedPricing,
         totalInventoryItems: (allInventory.count ?? invRows.length) as number,
+
       },
       recentRequests: recentReq.data ?? [],
       upcomingEvents: upcomingEvents.data ?? [],
