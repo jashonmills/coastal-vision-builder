@@ -66,6 +66,8 @@ function ItemDetailPage() {
 function ItemEditor({ id }: { id: string }) {
   const qc = useQueryClient();
   const [adjustOpen, setAdjustOpen] = useState<null | undefined>(null);
+  const summariesFn = useServerFn(getInventoryReservationSummaries);
+  const pricingRevFn = useServerFn(listPricingItemsForInventory);
 
   const { data: item, isLoading } = useQuery({
     queryKey: ["admin-inventory-item", id],
@@ -94,6 +96,16 @@ function ItemEditor({ id }: { id: string }) {
       return data ?? [];
     },
   });
+
+  const { data: reservationSummaries = {} } = useQuery({
+    queryKey: ["admin-inventory-reservation-summaries"],
+    queryFn: () => summariesFn(),
+  });
+  const { data: linkedPricing = [] } = useQuery({
+    queryKey: ["admin-inventory-linked-pricing", id],
+    queryFn: () => pricingRevFn({ data: { inventory_item_id: id } }),
+  });
+
 
   const [form, setForm] = useState<InventoryItem | null>(null);
   useEffect(() => { if (item) setForm(item); }, [item]);
