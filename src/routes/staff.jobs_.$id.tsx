@@ -203,6 +203,14 @@ function StaffJobDetail() {
         )}
       </section>
 
+      {/* Crew notes on this job */}
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <AddJobNote jobId={job.id} />
+        <div className="mt-4">
+          <JobNotesList jobId={job.id} />
+        </div>
+      </section>
+
       {/* Role-aware next actions (placeholders — next stages) */}
       {roles.length > 0 && (
         <section>
@@ -230,6 +238,55 @@ function StaffJobDetail() {
     </div>
   );
 }
+
+function AddJobNote({ jobId }: { jobId: string }) {
+  const qc = useQueryClient();
+  const addFn = useServerFn(addStaffNote);
+  const [open, setOpen] = useState(false);
+  const [body, setBody] = useState("");
+  const mut = useMutation({
+    mutationFn: () => addFn({ data: { job_id: jobId, body } as never }),
+    onSuccess: () => {
+      toast.success("Note added");
+      setBody(""); setOpen(false);
+      qc.invalidateQueries({ queryKey: ["job-notes", jobId] });
+      qc.invalidateQueries({ queryKey: ["my-notes"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-background px-4 text-sm font-semibold text-primary hover:bg-secondary"
+      >
+        + Add note
+      </button>
+    );
+  }
+  return (
+    <div className="space-y-2">
+      <textarea
+        rows={3}
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+        placeholder="What should the team or admin know?"
+        className="w-full rounded-md border border-border bg-background p-3 text-sm"
+      />
+      <div className="flex justify-end gap-2">
+        <button onClick={() => { setOpen(false); setBody(""); }} className="rounded-full border border-border px-4 py-2 text-xs font-semibold">Cancel</button>
+        <button
+          onClick={() => mut.mutate()}
+          disabled={mut.isPending || !body.trim()}
+          className="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground disabled:opacity-60"
+        >
+          {mut.isPending ? "Saving…" : "Save note"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 function actionForRole(role: string): { label: string; icon: typeof ClipboardList } | null {
   const r = role.toLowerCase();
