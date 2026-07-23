@@ -62,17 +62,31 @@ function FillContractPage() {
   })
   useEffect(() => {
     const q = quoteQuery.data?.quote
+    const items = quoteQuery.data?.items ?? []
     if (!q) return
+    const itemsList = items
+      .map((i: any) => `- ${i.quantity ?? 1} × ${i.name ?? 'Item'}`)
+      .join('\n')
+      .slice(0, 1900)
     setValues((prev) => ({
       customer_name: prev.customer_name || q.customer_name || '',
       customer_email: prev.customer_email || q.customer_email || '',
       customer_phone: prev.customer_phone || q.customer_phone || '',
+      billing_address: prev.billing_address || q.event_location || '',
+      event_type: prev.event_type || q.event_type || '',
       event_date: prev.event_date || q.event_date || '',
       event_location: prev.event_location || q.event_location || '',
       guest_count: prev.guest_count || (q.guest_count != null ? String(q.guest_count) : ''),
+      guest_count_estimated:
+        prev.guest_count_estimated || (q.guest_count != null ? String(q.guest_count) : ''),
+      delivery_date: prev.delivery_date || q.event_date || '',
+      pickup_date: prev.pickup_date || q.event_date || '',
+      rental_items: prev.rental_items || itemsList,
+      menu_selection: prev.menu_selection || itemsList,
       ...prev,
     }))
   }, [quoteQuery.data])
+
 
   function setField(name: string, v: string) {
     setValues((prev) => ({ ...prev, [name]: v }))
