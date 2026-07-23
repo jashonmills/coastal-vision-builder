@@ -403,6 +403,16 @@ function EventForm({ value, onCancel, onSave, saving }: { value: Partial<CalEven
       </label>
       <label className="block text-sm">Location<input value={v.location ?? ""} onChange={(e) => setV({ ...v, location: e.target.value })} className="mt-1 w-full rounded border px-2 py-1" /></label>
       <label className="block text-sm">Notes<textarea value={v.notes ?? ""} onChange={(e) => setV({ ...v, notes: e.target.value })} rows={3} className="mt-1 w-full rounded border px-2 py-1" /></label>
+
+      {value.id ? (
+        <div className="rounded-lg border border-border bg-secondary/20 p-3">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Assigned crew</div>
+          <CrewAssign eventId={value.id} compact />
+          <p className="mt-2 text-[10px] text-muted-foreground">Crew changes save immediately — the Save button below only saves the event details.</p>
+        </div>
+      ) : (
+        <p className="rounded-lg border border-dashed border-border bg-secondary/20 px-3 py-2 text-xs text-muted-foreground">Save the event first, then assign crew.</p>
+      )}
       <div className="flex justify-end gap-2">
         <button onClick={onCancel} className="rounded-full border border-border px-4 py-1 text-sm">Cancel</button>
         <button disabled={saving || !v.title || !v.event_type || !v.start_time} onClick={() => onSave(v)} className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-1 text-sm font-semibold text-primary-foreground disabled:opacity-50">
