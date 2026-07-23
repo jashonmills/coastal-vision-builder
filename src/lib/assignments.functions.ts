@@ -144,3 +144,35 @@ export const listMyAssignments = createServerFn({ method: "GET" })
         return av.localeCompare(bv);
       });
   });
+
+export const listEventStaffForEvents = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ event_ids: z.array(z.string().uuid()).max(500) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    if (data.event_ids.length === 0) return [] as Array<{
+      event_id: string;
+      staff_id: string;
+      role: string | null;
+      name: string;
+      color: string | null;
+    }>;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rows, error } = await supabaseAdmin
+      .from("event_staff")
+      .select("event_id, staff_id, role, staff:staff_id (name, color)")
+      .in("event_id", data.event_ids);
+    if (error) throw new Error(error.message);
+    return (rows ?? []).map((r) => {
+      const s = r.staff as { name?: string; color?: string | null } | null;
+      return {
+        event_id: r.event_id as string,
+        staff_id: r.staff_id as string,
+        role: (r.role as string | null) ?? null,
+        name: s?.name ?? "",
+        color: s?.color ?? null,
+      };
+    });
+  });
