@@ -211,30 +211,39 @@ function StaffJobDetail() {
         </div>
       </section>
 
-      {/* Role-aware next actions (placeholders — next stages) */}
-      {roles.length > 0 && (
-        <section>
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Next actions</h2>
-          <div className="grid grid-cols-2 gap-2">
-            {roles.map((r) => {
-              const cfg = actionForRole(r);
-              if (!cfg) return null;
-              const Icon = cfg.icon;
-              return (
-                <button
-                  key={r}
-                  disabled
-                  title="Coming soon"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background/60 text-xs font-semibold text-muted-foreground"
-                >
-                  <Icon className="h-4 w-4" /> {cfg.label}
-                  <span className="ml-1 rounded-full bg-secondary px-1.5 py-0.5 text-[9px] uppercase tracking-wider">Soon</span>
-                </button>
-              );
-            })}
+      {/* Pull list — available to everyone on the job */}
+      <section>
+        <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Next actions</h2>
+        <Link
+          to="/staff/jobs/$id/pull"
+          params={{ id: job.id }}
+          className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+        >
+          <ClipboardList className="h-5 w-5" /> Open pull list
+        </Link>
+        {roles.length > 0 && (
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {roles
+              .map((r) => actionForRole(r))
+              .filter((cfg): cfg is { label: string; icon: typeof ClipboardList } => !!cfg && cfg.label !== "Pull list")
+              .map((cfg) => {
+                const Icon = cfg.icon;
+                return (
+                  <button
+                    key={cfg.label}
+                    disabled
+                    title="Coming soon"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background/60 text-xs font-semibold text-muted-foreground"
+                  >
+                    <Icon className="h-4 w-4" /> {cfg.label}
+                    <span className="ml-1 rounded-full bg-secondary px-1.5 py-0.5 text-[9px] uppercase tracking-wider">Soon</span>
+                  </button>
+                );
+              })}
           </div>
-        </section>
-      )}
+        )}
+      </section>
+
     </div>
   );
 }

@@ -627,6 +627,63 @@ export type Database = {
           },
         ]
       }
+      job_pull_lines: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          job_id: string
+          name: string
+          pulled_at: string | null
+          pulled_by: string | null
+          quantity_pulled: number
+          quantity_required: number
+          quote_item_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          job_id: string
+          name: string
+          pulled_at?: string | null
+          pulled_by?: string | null
+          quantity_pulled?: number
+          quantity_required?: number
+          quote_item_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          name?: string
+          pulled_at?: string | null
+          pulled_by?: string | null
+          quantity_pulled?: number
+          quantity_required?: number
+          quote_item_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_pull_lines_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_pull_lines_quote_item_id_fkey"
+            columns: ["quote_item_id"]
+            isOneToOne: false
+            referencedRelation: "quote_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jobs: {
         Row: {
           access_notes: string | null

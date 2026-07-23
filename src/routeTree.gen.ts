@@ -66,6 +66,7 @@ import { Route as AdminJobsIdRouteImport } from './routes/admin.jobs_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
 import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
 import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
+import { Route as StaffJobsIdPullRouteImport } from './routes/staff.jobs_.$id.pull'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -360,6 +361,11 @@ const AccountQuoteIdRoute = AccountQuoteIdRouteImport.update({
   path: '/account/quote/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffJobsIdPullRoute = StaffJobsIdPullRouteImport.update({
+  id: '/pull',
+  path: '/pull',
+  getParentRoute: () => StaffJobsIdRoute,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -457,7 +463,7 @@ export interface FileRoutesByFullPath {
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
-  '/staff/jobs/$id': typeof StaffJobsIdRoute
+  '/staff/jobs/$id': typeof StaffJobsIdRouteWithChildren
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -465,6 +471,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -521,7 +528,7 @@ export interface FileRoutesByTo {
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
-  '/staff/jobs/$id': typeof StaffJobsIdRoute
+  '/staff/jobs/$id': typeof StaffJobsIdRouteWithChildren
   '/admin/quotes/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -529,6 +536,7 @@ export interface FileRoutesByTo {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -588,7 +596,7 @@ export interface FileRoutesById {
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
-  '/staff/jobs_/$id': typeof StaffJobsIdRoute
+  '/staff/jobs_/$id': typeof StaffJobsIdRouteWithChildren
   '/admin/quotes_/$id/edit': typeof AdminQuotesIdEditRoute
   '/admin/quotes_/$id/job-sheet': typeof AdminQuotesIdJobSheetRoute
   '/admin/quotes_/$id/preview': typeof AdminQuotesIdPreviewRoute
@@ -596,6 +604,7 @@ export interface FileRoutesById {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/staff/jobs_/$id/pull': typeof StaffJobsIdPullRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -664,6 +673,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs/$id/pull'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -728,6 +738,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs/$id/pull'
   id:
     | '__root__'
     | '/'
@@ -794,6 +805,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/staff/jobs_/$id/pull'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1233,6 +1245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountQuoteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/jobs_/$id/pull': {
+      id: '/staff/jobs_/$id/pull'
+      path: '/pull'
+      fullPath: '/staff/jobs/$id/pull'
+      preLoaderRoute: typeof StaffJobsIdPullRouteImport
+      parentRoute: typeof StaffJobsIdRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -1339,6 +1358,18 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface StaffJobsIdRouteChildren {
+  StaffJobsIdPullRoute: typeof StaffJobsIdPullRoute
+}
+
+const StaffJobsIdRouteChildren: StaffJobsIdRouteChildren = {
+  StaffJobsIdPullRoute: StaffJobsIdPullRoute,
+}
+
+const StaffJobsIdRouteWithChildren = StaffJobsIdRoute._addFileChildren(
+  StaffJobsIdRouteChildren,
+)
+
 interface StaffRouteChildren {
   StaffCalendarRoute: typeof StaffCalendarRoute
   StaffClockRoute: typeof StaffClockRoute
@@ -1347,7 +1378,7 @@ interface StaffRouteChildren {
   StaffMoreRoute: typeof StaffMoreRoute
   StaffNotesRoute: typeof StaffNotesRoute
   StaffIndexRoute: typeof StaffIndexRoute
-  StaffJobsIdRoute: typeof StaffJobsIdRoute
+  StaffJobsIdRoute: typeof StaffJobsIdRouteWithChildren
 }
 
 const StaffRouteChildren: StaffRouteChildren = {
@@ -1358,7 +1389,7 @@ const StaffRouteChildren: StaffRouteChildren = {
   StaffMoreRoute: StaffMoreRoute,
   StaffNotesRoute: StaffNotesRoute,
   StaffIndexRoute: StaffIndexRoute,
-  StaffJobsIdRoute: StaffJobsIdRoute,
+  StaffJobsIdRoute: StaffJobsIdRouteWithChildren,
 }
 
 const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
