@@ -112,41 +112,70 @@ function TimesheetsPage() {
               />
             </div>
 
-            <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-              <table className="w-full text-sm">
-                <thead className="bg-secondary/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-2">Staff</th>
-                    <th className="px-4 py-2">Work</th>
-                    <th className="px-4 py-2">In</th>
-                    <th className="px-4 py-2">Out</th>
-                    <th className="px-4 py-2 text-right">Duration</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(q.data?.entries ?? []).length === 0 ? (
-                    <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">No entries in this range.</td></tr>
-                  ) : (
-                    (q.data?.entries ?? []).map((e) => {
-                      const staffRow = e.staff as { name?: string } | null;
-                      const jobRow = e.jobs as { title?: string | null } | null;
-                      return (
-                        <tr key={e.id} className="border-t border-border/60">
-                          <td className="px-4 py-2 font-medium text-foreground">{staffRow?.name ?? "—"}</td>
-                          <td className="px-4 py-2">
-                            {jobRow?.title ?? e.task_label ?? (
-                              <span className="capitalize text-muted-foreground">{e.category}</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-2 text-muted-foreground">{fmtDT(e.clock_in)}</td>
-                          <td className="px-4 py-2 text-muted-foreground">{e.clock_out ? fmtDT(e.clock_out) : <span className="text-emerald-700">open</span>}</td>
-                          <td className="px-4 py-2 text-right font-semibold">{e.duration_seconds != null ? fmtHours(e.duration_seconds) : "—"}</td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+            <section className="rounded-2xl border border-border bg-card shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="hidden w-full text-sm md:table">
+                  <thead className="bg-secondary/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-2">Staff</th>
+                      <th className="px-4 py-2">Work</th>
+                      <th className="px-4 py-2">In</th>
+                      <th className="px-4 py-2">Out</th>
+                      <th className="px-4 py-2 text-right">Duration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(q.data?.entries ?? []).length === 0 ? (
+                      <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">No entries in this range.</td></tr>
+                    ) : (
+                      (q.data?.entries ?? []).map((e) => {
+                        const staffRow = e.staff as { name?: string } | null;
+                        const jobRow = e.jobs as { title?: string | null } | null;
+                        return (
+                          <tr key={e.id} className="border-t border-border/60">
+                            <td className="max-w-[160px] truncate px-4 py-2 font-medium text-foreground">{staffRow?.name ?? "—"}</td>
+                            <td className="max-w-[220px] truncate px-4 py-2">
+                              {jobRow?.title ?? e.task_label ?? (
+                                <span className="capitalize text-muted-foreground">{e.category}</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-2 text-muted-foreground">{fmtDT(e.clock_in)}</td>
+                            <td className="px-4 py-2 text-muted-foreground">{e.clock_out ? fmtDT(e.clock_out) : <span className="text-emerald-700">open</span>}</td>
+                            <td className="px-4 py-2 text-right font-semibold">{e.duration_seconds != null ? fmtHours(e.duration_seconds) : "—"}</td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile stacked cards */}
+              <ul className="divide-y divide-border md:hidden">
+                {(q.data?.entries ?? []).length === 0 ? (
+                  <li className="px-4 py-10 text-center text-muted-foreground">No entries in this range.</li>
+                ) : (
+                  (q.data?.entries ?? []).map((e) => {
+                    const staffRow = e.staff as { name?: string } | null;
+                    const jobRow = e.jobs as { title?: string | null } | null;
+                    const work = jobRow?.title ?? e.task_label ?? e.category;
+                    return (
+                      <li key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 px-4 py-3 text-sm">
+                        <div className="min-w-0">
+                          <p className="truncate font-semibold text-foreground">{staffRow?.name ?? "—"}</p>
+                          <p className="truncate text-xs text-muted-foreground capitalize">{work}</p>
+                          <p className="mt-1 text-[11px] text-muted-foreground">
+                            {fmtDT(e.clock_in)} → {e.clock_out ? fmtDT(e.clock_out) : <span className="text-emerald-700">open</span>}
+                          </p>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <p className="font-semibold">{e.duration_seconds != null ? fmtHours(e.duration_seconds) : "—"}</p>
+                        </div>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
             </section>
           </>
         )}
