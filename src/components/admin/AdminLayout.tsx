@@ -10,6 +10,7 @@ import {
   FileSpreadsheet,
   FolderOpen,
   Users,
+  UserSquare2,
   ShieldCheck,
   Menu,
   ExternalLink,
