@@ -46,10 +46,12 @@ function EditQuotePage() {
   const unbookFn = useServerFn(unbookQuote);
   const statusFn = useServerFn(getQuoteBookingStatus);
   const integrityFn = useServerFn(getQuoteBookingIntegrity);
+  const paymentFn = useServerFn(setQuotePayment);
 
   const availFn = useServerFn(getQuoteItemsAvailability);
 
   const [allowOverbook, setAllowOverbook] = useState(false);
+
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-quote", id],
@@ -347,6 +349,11 @@ function EditQuotePage() {
               <h3 className="font-semibold text-foreground">Totals</h3>
               <Totals quote={quote} updFn={updFn} onSaved={() => refetch()} />
             </div>
+            <PaymentPanel
+              quote={quote}
+              paymentFn={paymentFn}
+              onSaved={() => refetch()}
+            />
             <NotesEditor quote={quote} updFn={updFn} onSaved={() => refetch()} />
           </aside>
         </div>
@@ -354,6 +361,80 @@ function EditQuotePage() {
     </SiteLayout>
   );
 }
+
+function PaymentPanel({
+  quote,
+  paymentFn,
+  onSaved,
+}: {
+  quote: { id: string; payment_received?: boolean | null; payment_received_at?: string | null };
+  paymentFn: (opts: { data: { id: string; payment_received: boolean; payment_received_at?: string | null } }) => Promise<unknown>;
+  onSaved: () => void;
+}) {
+  const received = !!quote.payment_received;
+  const receivedAt = quote.payment_received_at
+    ? new Date(quote.payment_received_at).toISOString().slice(0, 10)
+    : new Date().toISOString().slice(0, 10);
+  const [date, setDate] = useState(receivedAt);
+  useEffect(() => {
+    setDate(
+      quote.payment_received_at
+        ? new Date(quote.payment_received_at).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+    );
+  }, [quote.payment_received_at]);
+
+  const save = useMutation({
+    mutationFn: async (opts: { payment_received: boolean; iso?: string | null }) => {
+      await paymentFn({
+        data: {
+          id: quote.id,
+          payment_received: opts.payment_received,
+          payment_received_at: opts.iso ?? null,
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success("Payment status updated.");
+      onSaved();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-4">
+      <h3 className="font-semibold text-foreground">Payment</h3>
+      <p className="mt-0.5 text-xs text-muted-foreground">Manual flag — record when payment has actually been received.</p>
+      <label className="mt-3 flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={received}
+          onChange={(e) => {
+            const now = new Date(date + "T12:00:00").toISOString();
+            save.mutate({ payment_received: e.target.checked, iso: e.target.checked ? now : null });
+          }}
+          disabled={save.isPending}
+        />
+        <span className="font-medium">Payment received</span>
+      </label>
+      <label className="mt-3 block text-xs text-muted-foreground">
+        Received on
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          onBlur={() => {
+            if (!received) return;
+            const iso = new Date(date + "T12:00:00").toISOString();
+            save.mutate({ payment_received: true, iso });
+          }}
+          className="mt-1 w-full rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground"
+        />
+      </label>
+    </div>
+  );
+}
+
 
 function ItemRow({ item, avail, allowOverbook, onSaved, onDelete, upsertFn }: { item: any; avail: { available: number; total_owned: number; inventory_name: string } | null; allowOverbook: boolean; onSaved: () => void; onDelete: () => void; upsertFn: any }) {
   const [draft, setDraft] = useState(item);
