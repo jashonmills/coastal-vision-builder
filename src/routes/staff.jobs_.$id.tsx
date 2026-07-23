@@ -214,13 +214,24 @@ function StaffJobDetail() {
       {/* Pull list — available to everyone on the job */}
       <section>
         <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Next actions</h2>
-        <Link
-          to="/staff/jobs/$id/pull"
-          params={{ id: job.id }}
-          className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
-        >
-          <ClipboardList className="h-5 w-5" /> Open pull list
-        </Link>
+        <div className="grid gap-2">
+          <Link
+            to="/staff/jobs/$id/pull"
+            params={{ id: job.id }}
+            className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+          >
+            <ClipboardList className="h-5 w-5" /> Open pull list
+          </Link>
+          {["loaded", "en_route", "on_site", "event", "teardown", "picked_up", "returned"].includes(job.status) && (
+            <Link
+              to="/staff/jobs/$id/checkin"
+              params={{ id: job.id }}
+              className="flex h-14 items-center justify-center gap-2 rounded-2xl border border-primary bg-background text-base font-semibold text-primary shadow-sm hover:bg-primary/5"
+            >
+              <PackageCheck className="h-5 w-5" /> Check in gear
+            </Link>
+          )}
+        </div>
         {roles.length > 0 && (
           <div className="mt-2 grid grid-cols-2 gap-2">
             {roles
