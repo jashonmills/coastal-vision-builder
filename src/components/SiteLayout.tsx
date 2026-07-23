@@ -10,6 +10,7 @@ import { AccessibilityFontButton } from "./AccessibilityFontButton";
 import { ChatWidget } from "./ChatWidget";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsAdmin } from "@/hooks/use-admin";
+import { useIsStaff } from "@/hooks/use-staff";
 import { useSlotImage } from "@/hooks/use-site-content";
 import { EditableText } from "@/components/Editable";
 import {
