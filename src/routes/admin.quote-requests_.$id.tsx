@@ -133,7 +133,18 @@ function QuoteRequestDetailPage() {
           <div>
             <h1 className="font-serif text-3xl text-primary">{req.customer_name}</h1>
             <p className="text-sm text-muted-foreground">{req.customer_email}{req.customer_phone ? ` · ${req.customer_phone}` : ""}</p>
-            <div className="mt-2"><StatusPill status={req.status} /></div>
+            <div className="mt-2 flex items-center gap-3">
+              <StatusPill status={req.status} />
+              {(req as { customer_id?: string | null }).customer_id && (
+                <Link
+                  to="/admin/customers/$id"
+                  params={{ id: (req as { customer_id: string }).customer_id }}
+                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                >
+                  View customer →
+                </Link>
+              )}
+            </div>
           </div>
           <div className="flex flex-wrap justify-end gap-2">
             {isVenue ? (
