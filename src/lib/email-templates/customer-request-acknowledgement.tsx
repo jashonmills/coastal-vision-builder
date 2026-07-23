@@ -73,6 +73,14 @@ const Email = ({
               We're preparing your quote now and will follow up shortly. In the meantime,
               feel free to reply with any questions.
             </Text>
+            <Text style={letterText}>
+              Tip: create a free account to track your quote and sign your rental contract online — we'll link this request to your account automatically.
+            </Text>
+            <Section style={{ margin: '8px 0 16px' }}>
+              <Button href="https://pacificnorthrentals.com/login?mode=signup" style={ctaButton}>
+                Create your account
+              </Button>
+            </Section>
             <Text style={letterText}>— {senderName}</Text>
           </Section>
 
