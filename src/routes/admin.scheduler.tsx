@@ -197,9 +197,9 @@ function SchedulerPage() {
         </div>
 
         {/* Views */}
-        {view === "month" && <MonthGrid cursor={cursor} events={filtered} onSelect={(e) => setSelected(e)} />}
-        {view === "week" && <WeekList cursor={cursor} events={filtered} onSelect={(e) => setSelected(e)} />}
-        {view === "list" && <AgendaList events={filtered} onSelect={(e) => setSelected(e)} />}
+        {view === "month" && <MonthGrid cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
+        {view === "week" && <WeekList cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
+        {view === "list" && <AgendaList events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
       </section>
 
       {/* Detail modal */}
@@ -218,6 +218,12 @@ function SchedulerPage() {
           <p className="mt-3 text-sm"><strong>When:</strong> {new Date(selected.start_time).toLocaleString()}</p>
           {selected.location && <p className="text-sm"><strong>Where:</strong> {selected.location}</p>}
           {selected.notes && <p className="mt-2 whitespace-pre-wrap text-sm">{selected.notes}</p>}
+
+          <div className="mt-4 rounded-lg border border-border bg-secondary/20 p-3">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Assigned crew</div>
+            <CrewAssign eventId={selected.id} compact />
+          </div>
+
           <div className="mt-4 flex flex-wrap gap-2">
             {selected.quote_request_id && <Link to="/admin/quote-requests/$id" params={{ id: selected.quote_request_id }} className="rounded-full border border-border bg-card px-3 py-1 text-xs">View Request</Link>}
             {selected.quote_id && <Link to="/admin/quotes/$id/edit" params={{ id: selected.quote_id }} className="rounded-full border border-border bg-card px-3 py-1 text-xs">View Quote</Link>}
