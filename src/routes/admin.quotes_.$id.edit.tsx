@@ -23,6 +23,7 @@ import { StatusPill } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 import { buildQuoteMailto } from "@/lib/quote-email-mailto";
+import { JobCrossLink } from "@/components/admin/JobCrossLink";
 
 export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
