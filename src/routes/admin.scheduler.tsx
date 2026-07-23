@@ -205,8 +205,8 @@ function SchedulerPage() {
         </div>
 
         {/* Views */}
-        {view === "month" && <MonthGrid cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
-        {view === "week" && <WeekList cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
+        {view === "month" && <MonthGrid cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} onAddOnDate={(d) => setEditing({ event_type: "internal_note", status: "scheduled", start_time: startOfDayAt9(d).toISOString(), all_day: false })} />}
+        {view === "week" && <WeekList cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} onAddOnDate={(d) => setEditing({ event_type: "internal_note", status: "scheduled", start_time: startOfDayAt9(d).toISOString(), all_day: false })} />}
         {view === "list" && <AgendaList events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
       </section>
 
