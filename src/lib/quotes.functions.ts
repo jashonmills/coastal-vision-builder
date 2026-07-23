@@ -140,7 +140,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         status: "pending",
         color: isVenue ? "#7c5cff" : "#d4a64a",
         quote_request_id: row.id,
-        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        saved_recommendation_id: savedRecommendationId,
         location: data.event_location ?? null,
         notes: data.customer_note ?? null,
       },
@@ -154,7 +154,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         status: "pending",
         color: isVenue ? "#7c5cff" : "#d4a64a",
         quote_request_id: row.id,
-        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        saved_recommendation_id: savedRecommendationId,
         location: data.event_location ?? null,
       });
     }
