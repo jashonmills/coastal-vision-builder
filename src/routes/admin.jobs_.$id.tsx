@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Loader2, ArrowLeft, Save, CalendarPlus } from "lucide-react";
+import { Loader2, ArrowLeft, Save, CalendarPlus, PackageCheck, CheckCircle2, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AdminLayout, AdminPageHeader } from "@/components/admin/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
