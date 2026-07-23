@@ -300,3 +300,115 @@ function PricingRow({ item, mappedInventoryId, invOptions }: {
     </tr>
   );
 }
+
+function PricingCard({ item, mappedInventoryId, invOptions }: {
+  item: PriceItem;
+  mappedInventoryId: string | null;
+  invOptions: InvOption[];
+}) {
+  const qc = useQueryClient();
+  const [draft, setDraft] = useState(item);
+  const dirty = JSON.stringify(draft) !== JSON.stringify(item);
+  const upsertFn = useServerFn(upsertPricingInventoryMapping);
+  const removeFn = useServerFn(removePricingInventoryMapping);
+
+  const save = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("pricing_items").update({
+        category: draft.category, name: draft.name, price_cents: draft.price_cents, unit: draft.unit, notes: draft.notes, sort_order: draft.sort_order, updated_at: new Date().toISOString(),
+      }).eq("id", item.id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
+  });
+  const del = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("pricing_items").delete().eq("id", item.id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing"] }),
+  });
+  const setMapping = useMutation({
+    mutationFn: async (invId: string) => {
+      if (invId === "") await removeFn({ data: { pricing_item_id: item.id } });
+      else await upsertFn({ data: { pricing_item_id: item.id, inventory_item_id: invId } });
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-pricing-mappings"] }),
+  });
+
+  const groups = useMemo(() => {
+    const g: Record<string, InvOption[]> = {};
+    for (const o of invOptions) {
+      const k = o.category ?? "Uncategorized";
+      (g[k] ||= []).push(o);
+    }
+    return Object.entries(g).sort(([a], [b]) => a.localeCompare(b));
+  }, [invOptions]);
+
+  const field = "w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm";
+  const lbl = "block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground";
+
+  return (
+    <div className="space-y-3 rounded-xl border border-border bg-card p-3 shadow-sm">
+      <div className="grid grid-cols-2 gap-3">
+        <label className="col-span-2">
+          <span className={lbl}>Name</span>
+          <input className={field} value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+        </label>
+        <label>
+          <span className={lbl}>Category</span>
+          <input className={field} value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value })} />
+        </label>
+        <label>
+          <span className={lbl}>Unit</span>
+          <input className={field} value={draft.unit} onChange={(e) => setDraft({ ...draft, unit: e.target.value })} />
+        </label>
+        <label>
+          <span className={lbl}>Price ($)</span>
+          <input type="number" step="0.01" className={field} value={(draft.price_cents / 100).toString()} onChange={(e) => setDraft({ ...draft, price_cents: Math.round(parseFloat(e.target.value || "0") * 100) })} />
+        </label>
+        <label>
+          <span className={lbl}>Sort order</span>
+          <input type="number" className={field} value={draft.sort_order} onChange={(e) => setDraft({ ...draft, sort_order: parseInt(e.target.value || "0", 10) })} />
+        </label>
+        <label className="col-span-2">
+          <span className={lbl}>Notes</span>
+          <input className={field} value={draft.notes ?? ""} onChange={(e) => setDraft({ ...draft, notes: e.target.value })} />
+        </label>
+        <label className="col-span-2">
+          <span className={lbl}>Linked inventory item</span>
+          <select
+            className={field}
+            value={mappedInventoryId ?? ""}
+            disabled={setMapping.isPending}
+            onChange={(e) => setMapping.mutate(e.target.value)}
+          >
+            <option value="">— None (not linked)</option>
+            {groups.map(([cat, list]) => (
+              <optgroup key={cat} label={cat}>
+                {list.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.name}{o.total_owned_quantity === 0 ? " (0 owned)" : ""}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          {!mappedInventoryId && (
+            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900">
+              <AlertTriangle className="h-3 w-3" /> Not linked
+            </span>
+          )}
+        </label>
+      </div>
+      <div className="flex justify-end gap-2">
+        <button onClick={() => { if (confirm("Delete this item?")) del.mutate(); }} className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-destructive">
+          <Trash2 className="h-3.5 w-3.5" /> Delete
+        </button>
+        <button disabled={!dirty || save.isPending} onClick={() => save.mutate()} className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-40">
+          <Save className="h-3.5 w-3.5" /> Save
+        </button>
+      </div>
+    </div>
+  );
+}
