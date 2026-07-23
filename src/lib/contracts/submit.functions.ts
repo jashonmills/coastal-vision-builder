@@ -23,7 +23,16 @@ export type SubmitContractInput = z.infer<typeof InputSchema>
  *  Supabase's admin API caps perPage at 1000 and has no direct
  *  getUserByEmail; paginate until found or exhausted. */
 async function findAuthUserIdByEmail(
-  admin: Awaited<ReturnType<typeof import('@/integrations/supabase/client.server')>>['supabaseAdmin'],
+  admin: {
+    auth: {
+      admin: {
+        listUsers: (opts: { page: number; perPage: number }) => Promise<{
+          data: { users: Array<{ id: string; email: string | null | undefined }> } | null
+          error: unknown
+        }>
+      }
+    }
+  },
   email: string,
 ): Promise<string | null> {
   const target = email.trim().toLowerCase()
@@ -37,6 +46,7 @@ async function findAuthUserIdByEmail(
   }
   return null
 }
+
 
 export const submitContract = createServerFn({ method: 'POST' })
   .inputValidator((data: unknown) => InputSchema.parse(data))
