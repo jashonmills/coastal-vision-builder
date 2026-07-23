@@ -1,15 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CalendarDays, Clock, MapPin, Navigation, Phone, Check, X, ClipboardList,
-  Loader2, ChevronRight,
+  Loader2, ChevronRight, Square,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsStaff } from "@/hooks/use-staff";
 import { listMyJobs, acknowledgeAssignment } from "@/lib/jobs.functions";
+import { getActiveTimeEntry, getWeeklyHours, clockOut } from "@/lib/time.functions";
 
 export const Route = createFileRoute("/staff/")({
   component: StaffHome,
@@ -25,7 +26,11 @@ function fmtTime(iso: string) {
 function StaffHome() {
   const { user } = useAuth();
   const { staff } = useIsStaff();
+  const qc = useQueryClient();
   const listFn = useServerFn(listMyJobs);
+  const activeFn = useServerFn(getActiveTimeEntry);
+  const weekFn = useServerFn(getWeeklyHours);
+  const outFn = useServerFn(clockOut);
 
   const range = useMemo(() => {
     const now = new Date();
@@ -42,6 +47,29 @@ function StaffHome() {
     queryFn: async () => (await listFn({ data: range })) as unknown as MyJob[],
   });
 
+  const activeQ = useQuery({
+    queryKey: ["time-active", user?.id ?? "anon"],
+    enabled: !!user,
+    refetchInterval: 60_000,
+    queryFn: () => activeFn(),
+  });
+  const weekQ = useQuery({
+    queryKey: ["time-week-total", user?.id ?? "anon"],
+    enabled: !!user,
+    queryFn: () => weekFn(),
+  });
+
+  const outMut = useMutation({
+    mutationFn: () => outFn({ data: {} as never }),
+    onSuccess: () => {
+      toast.success("Clocked out");
+      qc.invalidateQueries({ queryKey: ["time-active"] });
+      qc.invalidateQueries({ queryKey: ["time-week-total"] });
+      qc.invalidateQueries({ queryKey: ["time-week"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const tk = todayKey();
   const today = jobs.filter((j) => (j.job.event_date ?? "").slice(0, 10) === tk);
   const upcoming = jobs.filter((j) => (j.job.event_date ?? "") > tk);
@@ -49,6 +77,7 @@ function StaffHome() {
     (n, j) => n + j.events.filter((e) => e.ack_status === "assigned").length,
     0,
   );
+  const weekHours = ((weekQ.data?.seconds ?? 0) / 3600).toFixed(1);
 
   const firstName = staff?.name?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
   const hour = new Date().getHours();
@@ -63,10 +92,23 @@ function StaffHome() {
         </h1>
       </header>
 
-      <section className="grid grid-cols-3 gap-3">
+      {activeQ.data && (
+        <ActiveBanner
+          entry={activeQ.data}
+          onClockOut={() => outMut.mutate()}
+          pending={outMut.isPending}
+        />
+      )}
+
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Kpi label="Today" value={today.length} />
         <Kpi label="Upcoming" value={upcoming.length} sub="next 45 days" />
         <Kpi label="Pending" value={pending} sub="acceptances" tone={pending ? "warn" : "muted"} />
+        <Link to="/staff/clock" className="rounded-2xl border border-border bg-card p-3 shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Hours</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{weekHours}</p>
+          <p className="text-[10px] text-muted-foreground">this week</p>
+        </Link>
       </section>
 
       <section>
@@ -109,6 +151,42 @@ function StaffHome() {
           <p className="text-xs text-muted-foreground">All jobs assigned to you</p>
         </Link>
       </section>
+    </div>
+  );
+}
+
+function ActiveBanner({
+  entry, onClockOut, pending,
+}: {
+  entry: { clock_in: string; category: string; task_label: string | null; jobs?: { title?: string | null } | null };
+  onClockOut: () => void;
+  pending: boolean;
+}) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const secs = Math.max(0, Math.floor((now - new Date(entry.clock_in).getTime()) / 1000));
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  const elapsed = h > 0 ? `${h}h ${m}m` : `${m}m ${s.toString().padStart(2, "0")}s`;
+  const label = entry.jobs?.title ?? entry.task_label ?? entry.category;
+  return (
+    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border-2 border-emerald-500/60 bg-emerald-50 px-4 py-3 shadow-sm">
+      <span className="grid h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-600" />
+      <div className="min-w-0">
+        <p className="truncate text-sm font-semibold text-emerald-900">On the clock — {label}</p>
+        <p className="font-mono text-xs tabular-nums text-emerald-800">{elapsed}</p>
+      </div>
+      <button
+        onClick={onClockOut}
+        disabled={pending}
+        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-rose-600 px-3 text-xs font-semibold text-white hover:bg-rose-700 disabled:opacity-60"
+      >
+        <Square className="h-3.5 w-3.5" /> Clock out
+      </button>
     </div>
   );
 }

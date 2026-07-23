@@ -37,8 +37,10 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as StaffMoreRouteImport } from './routes/staff.more'
 import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
+import { Route as StaffClockRouteImport } from './routes/staff.clock'
 import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSiteImagesRouteImport } from './routes/admin.site-images'
 import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
@@ -209,6 +211,11 @@ const StaffJobsRoute = StaffJobsRouteImport.update({
   path: '/jobs',
   getParentRoute: () => StaffRoute,
 } as any)
+const StaffClockRoute = StaffClockRouteImport.update({
+  id: '/clock',
+  path: '/clock',
+  getParentRoute: () => StaffRoute,
+} as any)
 const StaffCalendarRoute = StaffCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
@@ -218,6 +225,11 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTimesheetsRoute = AdminTimesheetsRouteImport.update({
+  id: '/timesheets',
+  path: '/timesheets',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminStaffRoute = AdminStaffRouteImport.update({
   id: '/staff',
@@ -407,8 +419,10 @@ export interface FileRoutesByFullPath {
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/clock': typeof StaffClockRoute
   '/staff/jobs': typeof StaffJobsRoute
   '/staff/more': typeof StaffMoreRoute
   '/account/': typeof AccountIndexRoute
@@ -466,8 +480,10 @@ export interface FileRoutesByTo {
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/clock': typeof StaffClockRoute
   '/staff/jobs': typeof StaffJobsRoute
   '/staff/more': typeof StaffMoreRoute
   '/account': typeof AccountIndexRoute
@@ -528,8 +544,10 @@ export interface FileRoutesById {
   '/admin/scheduler': typeof AdminSchedulerRoute
   '/admin/site-images': typeof AdminSiteImagesRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/timesheets': typeof AdminTimesheetsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/staff/calendar': typeof StaffCalendarRoute
+  '/staff/clock': typeof StaffClockRoute
   '/staff/jobs': typeof StaffJobsRoute
   '/staff/more': typeof StaffMoreRoute
   '/account/': typeof AccountIndexRoute
@@ -591,8 +609,10 @@ export interface FileRouteTypes {
     | '/admin/scheduler'
     | '/admin/site-images'
     | '/admin/staff'
+    | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/clock'
     | '/staff/jobs'
     | '/staff/more'
     | '/account/'
@@ -650,8 +670,10 @@ export interface FileRouteTypes {
     | '/admin/scheduler'
     | '/admin/site-images'
     | '/admin/staff'
+    | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/clock'
     | '/staff/jobs'
     | '/staff/more'
     | '/account'
@@ -711,8 +733,10 @@ export interface FileRouteTypes {
     | '/admin/scheduler'
     | '/admin/site-images'
     | '/admin/staff'
+    | '/admin/timesheets'
     | '/email/unsubscribe'
     | '/staff/calendar'
+    | '/staff/clock'
     | '/staff/jobs'
     | '/staff/more'
     | '/account/'
@@ -970,6 +994,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffJobsRouteImport
       parentRoute: typeof StaffRoute
     }
+    '/staff/clock': {
+      id: '/staff/clock'
+      path: '/clock'
+      fullPath: '/staff/clock'
+      preLoaderRoute: typeof StaffClockRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/calendar': {
       id: '/staff/calendar'
       path: '/calendar'
@@ -983,6 +1014,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/email/unsubscribe'
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/timesheets': {
+      id: '/admin/timesheets'
+      path: '/timesheets'
+      fullPath: '/admin/timesheets'
+      preLoaderRoute: typeof AdminTimesheetsRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/staff': {
       id: '/admin/staff'
@@ -1204,6 +1242,7 @@ interface AdminRouteChildren {
   AdminSchedulerRoute: typeof AdminSchedulerRoute
   AdminSiteImagesRoute: typeof AdminSiteImagesRoute
   AdminStaffRoute: typeof AdminStaffRoute
+  AdminTimesheetsRoute: typeof AdminTimesheetsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminInventoryIdRoute: typeof AdminInventoryIdRoute
@@ -1228,6 +1267,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSchedulerRoute: AdminSchedulerRoute,
   AdminSiteImagesRoute: AdminSiteImagesRoute,
   AdminStaffRoute: AdminStaffRoute,
+  AdminTimesheetsRoute: AdminTimesheetsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminInventoryIdRoute: AdminInventoryIdRoute,
@@ -1242,6 +1282,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface StaffRouteChildren {
   StaffCalendarRoute: typeof StaffCalendarRoute
+  StaffClockRoute: typeof StaffClockRoute
   StaffJobsRoute: typeof StaffJobsRoute
   StaffMoreRoute: typeof StaffMoreRoute
   StaffIndexRoute: typeof StaffIndexRoute
@@ -1250,6 +1291,7 @@ interface StaffRouteChildren {
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffCalendarRoute: StaffCalendarRoute,
+  StaffClockRoute: StaffClockRoute,
   StaffJobsRoute: StaffJobsRoute,
   StaffMoreRoute: StaffMoreRoute,
   StaffIndexRoute: StaffIndexRoute,

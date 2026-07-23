@@ -13,6 +13,7 @@ import {
   Users,
   UserSquare2,
   ShieldCheck,
+  Clock,
   Menu,
   ExternalLink,
   LogOut,
@@ -57,6 +58,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Team",
     items: [
       { to: "/admin/staff", label: "Staff", icon: Users },
+      { to: "/admin/timesheets", label: "Timesheets", icon: Clock },
       { to: "/admin/admins", label: "Admins", icon: ShieldCheck },
     ],
   },

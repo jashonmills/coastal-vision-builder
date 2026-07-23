@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { Clock, DollarSign, FileText, LogOut, Mail, Phone, User } from "lucide-react";
+import { DollarSign, FileText, LogOut, Mail, Phone, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -68,7 +68,6 @@ function MorePage() {
       <section>
         <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tools</h2>
         <ul className="space-y-2">
-          <SoonRow icon={Clock} label="Clock in / out" desc="Track hours for each job" />
           <SoonRow icon={DollarSign} label="Expenses" desc="Submit reimbursements with photos" />
           <SoonRow icon={FileText} label="Notes & handoffs" desc="Leave notes for the next crew" />
         </ul>
@@ -84,7 +83,7 @@ function MorePage() {
   );
 }
 
-function SoonRow({ icon: Icon, label, desc }: { icon: typeof Clock; label: string; desc: string }) {
+function SoonRow({ icon: Icon, label, desc }: { icon: typeof DollarSign; label: string; desc: string }) {
   return (
     <li className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-dashed border-border bg-card/60 p-3">
       <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-muted-foreground">
