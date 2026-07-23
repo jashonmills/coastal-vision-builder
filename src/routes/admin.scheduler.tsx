@@ -205,8 +205,8 @@ function SchedulerPage() {
         </div>
 
         {/* Views */}
-        {view === "month" && <MonthGrid cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
-        {view === "week" && <WeekList cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
+        {view === "month" && <MonthGrid cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} onAddOnDate={(d) => setEditing({ event_type: "internal_note", status: "scheduled", start_time: startOfDayAt9(d).toISOString(), all_day: false })} />}
+        {view === "week" && <WeekList cursor={cursor} events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} onAddOnDate={(d) => setEditing({ event_type: "internal_note", status: "scheduled", start_time: startOfDayAt9(d).toISOString(), all_day: false })} />}
         {view === "list" && <AgendaList events={filtered} crewByEvent={crewByEvent} onSelect={(e) => setSelected(e)} />}
       </section>
 
@@ -288,7 +288,12 @@ function labelForView(d: Date, view: ViewMode) {
 
 type CrewMap = Map<string, Array<{ staff_id: string; name: string; color: string | null }>>;
 
-function MonthGrid({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
+function startOfDayAt9(d: Date) {
+  const n = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0, 0, 0);
+  return n;
+}
+
+function MonthGrid({ cursor, events, crewByEvent, onSelect, onAddOnDate }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void; onAddOnDate: (d: Date) => void }) {
   const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
   const startDow = first.getDay();
   const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
@@ -313,11 +318,16 @@ function MonthGrid({ cursor, events, crewByEvent, onSelect }: { cursor: Date; ev
           const evs = c.date ? byDay.get(c.date.toDateString()) ?? [] : [];
           const isToday = c.date?.toDateString() === new Date().toDateString();
           return (
-            <div key={i} className={`min-h-[100px] border-b border-r border-border p-1 ${isToday ? "bg-primary/5" : ""}`}>
+            <div
+              key={i}
+              onClick={c.date ? () => onAddOnDate(c.date!) : undefined}
+              className={`min-h-[100px] border-b border-r border-border p-1 ${isToday ? "bg-primary/5" : ""} ${c.date ? "cursor-pointer hover:bg-secondary/40" : ""}`}
+              aria-label={c.date ? `Add event on ${c.date.toDateString()}` : undefined}
+            >
               {c.date && <div className="mb-1 text-xs font-medium">{c.date.getDate()}</div>}
               <div className="space-y-1">
                 {evs.slice(0, 3).map((e) => (
-                  <button key={e.id} onClick={() => onSelect(e)} className="flex w-full items-center justify-between gap-1 truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
+                  <button key={e.id} onClick={(ev) => { ev.stopPropagation(); onSelect(e); }} className="flex w-full items-center justify-between gap-1 truncate rounded px-1 py-0.5 text-left text-[10px] text-white" style={{ background: e.color ?? EVENT_COLORS[e.event_type] }}>
                     <span className="truncate">{e.title}</span>
                     <StaffDots entries={crewByEvent.get(e.id) ?? []} max={3} />
                   </button>
@@ -332,7 +342,7 @@ function MonthGrid({ cursor, events, crewByEvent, onSelect }: { cursor: Date; ev
   );
 }
 
-function WeekList({ cursor, events, crewByEvent, onSelect }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void }) {
+function WeekList({ cursor, events, crewByEvent, onSelect, onAddOnDate }: { cursor: Date; events: CalEvent[]; crewByEvent: CrewMap; onSelect: (e: CalEvent) => void; onAddOnDate: (d: Date) => void }) {
   const start = new Date(cursor); start.setDate(cursor.getDate() - cursor.getDay());
   const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return d; });
   return (
@@ -341,7 +351,10 @@ function WeekList({ cursor, events, crewByEvent, onSelect }: { cursor: Date; eve
         const evs = events.filter((e) => new Date(e.start_time).toDateString() === d.toDateString());
         return (
           <div key={d.toISOString()} className="rounded-xl border border-border bg-card">
-            <div className="border-b border-border px-3 py-2 text-sm font-medium">{d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</div>
+            <div className="flex items-center justify-between border-b border-border px-3 py-2 text-sm font-medium">
+              <span>{d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</span>
+              <button onClick={() => onAddOnDate(d)} className="rounded-full border border-border bg-card px-2 py-0.5 text-xs text-muted-foreground hover:bg-secondary/40">+ Add</button>
+            </div>
             {evs.length === 0 ? <p className="px-3 py-2 text-xs text-muted-foreground">No events</p> : (
               <div className="divide-y divide-border">{evs.map((e) => <EventRow key={e.id} e={e} crew={crewByEvent.get(e.id) ?? []} onSelect={onSelect} />)}</div>
             )}
