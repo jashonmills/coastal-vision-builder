@@ -224,12 +224,14 @@ function StatCard({
   icon: Icon,
   tone,
   to,
+  search,
 }: {
   label: string;
   value: number;
   icon: typeof Inbox;
   tone: "gold" | "blue" | "green" | "navy" | "muted";
   to?: "/admin/quote-requests" | "/admin/quotes" | "/admin/scheduler" | "/admin/inventory" | "/admin/pricing";
+  search?: Record<string, string>;
 }) {
   const toneCls: Record<typeof tone, string> = {
     gold: "border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10",
@@ -248,8 +250,9 @@ function StatCard({
       <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );
-  return to ? <Link to={to}>{inner}</Link> : inner;
+  return to ? <Link to={to} search={search as never}>{inner}</Link> : inner;
 }
+
 
 function Panel({
   title,
