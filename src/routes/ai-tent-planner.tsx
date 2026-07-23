@@ -567,16 +567,26 @@ function AIResult({
           )}
         </div>
       ) : (
-        <div className="rounded-2xl border-2 border-[color:var(--gold)]/50 bg-[color:var(--gold)]/10 p-6 text-center">
-          <UserPlus className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
-          <p className="mt-3 font-serif text-xl text-primary">{t("recommender.results.dontLose")}</p>
-          <p className="mx-auto mt-2 max-w-md text-sm text-foreground">
+        <div className="space-y-3">
+          <div className="rounded-2xl border-2 border-[color:var(--gold)]/60 bg-[color:var(--gold)]/10 p-6 text-center">
+            <UserPlus className="mx-auto h-8 w-8 text-[color:var(--gold)]" />
+            <p className="mt-3 font-serif text-xl text-primary">
+              Create an account to track your quote & sign your contract online
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-sm text-foreground">
+              We'll link this plan to your account automatically so you can review your quote, sign your rental contract, and manage everything in one place.
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              <button
+                onClick={() => navigate({ to: "/login", search: { mode: "signup", email: contact.email, next: "/account" } as never })}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]"
+              >
+                <UserPlus className="h-4 w-4" /> Create account
+              </button>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-border bg-secondary/40 p-4 text-center text-xs text-muted-foreground">
             {t("recommender.results.dontLoseDesc")}
-          </p>
-          <div className="mt-5 flex flex-wrap justify-center gap-2">
-            <button onClick={() => navigate({ to: "/login", search: { next: "/ai-tent-planner" } as never })} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-[color:var(--navy-soft)]">
-              <UserPlus className="h-4 w-4" /> {t("recommender.buttons.createAccount")}
-            </button>
           </div>
         </div>
       )}
