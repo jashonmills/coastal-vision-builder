@@ -174,3 +174,46 @@ export const listExpenses = createServerFn({ method: "POST" })
       by_job: Array.from(byJob.values()).sort((a, b) => b.cents - a.cents),
     };
   });
+
+export const updateExpense = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        category: z.enum(CATEGORIES).optional(),
+        amount_cents: z.number().int().min(0).optional(),
+        note: z.string().trim().max(2000).nullable().optional(),
+        incurred_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+        job_id: z.string().uuid().nullable().optional(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const patch: Record<string, unknown> = {};
+    if (data.category !== undefined) patch.category = data.category;
+    if (data.amount_cents !== undefined) patch.amount_cents = data.amount_cents;
+    if (data.note !== undefined) patch.note = data.note;
+    if (data.incurred_on !== undefined) patch.incurred_on = data.incurred_on;
+    if (data.job_id !== undefined) patch.job_id = data.job_id;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("expenses").update(patch as never).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const deleteExpense = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin.from("expenses").select("receipt_path").eq("id", data.id).maybeSingle();
+    const { error } = await supabaseAdmin.from("expenses").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    if (row?.receipt_path) {
+      await supabaseAdmin.storage.from("receipts").remove([row.receipt_path]).catch(() => {});
+    }
+    return { ok: true };
+  });
