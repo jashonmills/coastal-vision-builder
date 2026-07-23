@@ -23,6 +23,7 @@ import { StatusPill } from "./admin.quote-requests";
 import { Mail, CalendarCheck, CalendarX, ClipboardList } from "lucide-react";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
 import { buildQuoteMailto } from "@/lib/quote-email-mailto";
+import { JobCrossLink } from "@/components/admin/JobCrossLink";
 
 export const Route = createFileRoute("/admin/quotes_/$id/edit")({
   head: () => ({ meta: [{ title: "Edit Quote | Admin" }] }),
@@ -153,7 +154,7 @@ function EditQuotePage() {
             <div className="font-mono text-xs text-muted-foreground">{quote.quote_number}</div>
             <h1 className="font-serif text-3xl text-primary">{quote.customer_name}</h1>
             <p className="text-sm text-muted-foreground">{quote.event_type || "—"} · {quote.event_date || "—"} · {quote.event_location || "—"} · {quote.guest_count ?? "?"} guests</p>
-            <div className="mt-2 flex items-center gap-3">
+            <div className="mt-2 flex flex-wrap items-center gap-3">
               <StatusPill status={quote.status} />
               {(quote as { customer_id?: string | null }).customer_id && (
                 <Link
@@ -164,6 +165,7 @@ function EditQuotePage() {
                   View customer →
                 </Link>
               )}
+              <JobCrossLink quoteId={id} />
             </div>
           </div>
           <div className="flex flex-wrap gap-2">

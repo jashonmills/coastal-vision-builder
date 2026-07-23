@@ -40,6 +40,7 @@ import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
 import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-requests'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
+import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
@@ -50,6 +51,7 @@ import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as RentalContractFillContractIdRouteImport } from './routes/rental-contract.fill.$contractId'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
+import { Route as AdminJobsIdRouteImport } from './routes/admin.jobs_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
 import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
 import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
@@ -216,6 +218,11 @@ const AdminPricingRoute = AdminPricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminJobsRoute = AdminJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminInventoryRoute = AdminInventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
@@ -265,6 +272,11 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
 const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
   id: '/quote-requests_/$id',
   path: '/quote-requests/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminJobsIdRoute = AdminJobsIdRouteImport.update({
+  id: '/jobs_/$id',
+  path: '/jobs/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
@@ -352,6 +364,7 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/jobs': typeof AdminJobsRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/quote-requests': typeof AdminQuoteRequestsRoute
   '/admin/quotes': typeof AdminQuotesRoute
@@ -364,6 +377,7 @@ export interface FileRoutesByFullPath {
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
+  '/admin/jobs/$id': typeof AdminJobsIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
@@ -404,6 +418,7 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/jobs': typeof AdminJobsRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/quote-requests': typeof AdminQuoteRequestsRoute
   '/admin/quotes': typeof AdminQuotesRoute
@@ -416,6 +431,7 @@ export interface FileRoutesByTo {
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
+  '/admin/jobs/$id': typeof AdminJobsIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
@@ -458,6 +474,7 @@ export interface FileRoutesById {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/data-import': typeof AdminDataImportRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/jobs': typeof AdminJobsRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/quote-requests': typeof AdminQuoteRequestsRoute
   '/admin/quotes': typeof AdminQuotesRoute
@@ -470,6 +487,7 @@ export interface FileRoutesById {
   '/account/quote/$id': typeof AccountQuoteIdRoute
   '/admin/customers_/$id': typeof AdminCustomersIdRoute
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
+  '/admin/jobs_/$id': typeof AdminJobsIdRoute
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
@@ -513,6 +531,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/data-import'
     | '/admin/inventory'
+    | '/admin/jobs'
     | '/admin/pricing'
     | '/admin/quote-requests'
     | '/admin/quotes'
@@ -525,6 +544,7 @@ export interface FileRouteTypes {
     | '/account/quote/$id'
     | '/admin/customers/$id'
     | '/admin/inventory/$id'
+    | '/admin/jobs/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
@@ -565,6 +585,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/data-import'
     | '/admin/inventory'
+    | '/admin/jobs'
     | '/admin/pricing'
     | '/admin/quote-requests'
     | '/admin/quotes'
@@ -577,6 +598,7 @@ export interface FileRouteTypes {
     | '/account/quote/$id'
     | '/admin/customers/$id'
     | '/admin/inventory/$id'
+    | '/admin/jobs/$id'
     | '/admin/quote-requests/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
@@ -618,6 +640,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/data-import'
     | '/admin/inventory'
+    | '/admin/jobs'
     | '/admin/pricing'
     | '/admin/quote-requests'
     | '/admin/quotes'
@@ -630,6 +653,7 @@ export interface FileRouteTypes {
     | '/account/quote/$id'
     | '/admin/customers_/$id'
     | '/admin/inventory_/$id'
+    | '/admin/jobs_/$id'
     | '/admin/quote-requests_/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
@@ -895,6 +919,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPricingRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/jobs': {
+      id: '/admin/jobs'
+      path: '/jobs'
+      fullPath: '/admin/jobs'
+      preLoaderRoute: typeof AdminJobsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/inventory': {
       id: '/admin/inventory'
       path: '/inventory'
@@ -963,6 +994,13 @@ declare module '@tanstack/react-router' {
       path: '/quote-requests/$id'
       fullPath: '/admin/quote-requests/$id'
       preLoaderRoute: typeof AdminQuoteRequestsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/jobs_/$id': {
+      id: '/admin/jobs_/$id'
+      path: '/jobs/$id'
+      fullPath: '/admin/jobs/$id'
+      preLoaderRoute: typeof AdminJobsIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/inventory_/$id': {
@@ -1045,6 +1083,7 @@ interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminDataImportRoute: typeof AdminDataImportRoute
   AdminInventoryRoute: typeof AdminInventoryRoute
+  AdminJobsRoute: typeof AdminJobsRoute
   AdminPricingRoute: typeof AdminPricingRoute
   AdminQuoteRequestsRoute: typeof AdminQuoteRequestsRoute
   AdminQuotesRoute: typeof AdminQuotesRoute
@@ -1054,6 +1093,7 @@ interface AdminRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminInventoryIdRoute: typeof AdminInventoryIdRoute
+  AdminJobsIdRoute: typeof AdminJobsIdRoute
   AdminQuoteRequestsIdRoute: typeof AdminQuoteRequestsIdRoute
   AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
   AdminQuotesIdJobSheetRoute: typeof AdminQuotesIdJobSheetRoute
@@ -1067,6 +1107,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   AdminDataImportRoute: AdminDataImportRoute,
   AdminInventoryRoute: AdminInventoryRoute,
+  AdminJobsRoute: AdminJobsRoute,
   AdminPricingRoute: AdminPricingRoute,
   AdminQuoteRequestsRoute: AdminQuoteRequestsRoute,
   AdminQuotesRoute: AdminQuotesRoute,
@@ -1076,6 +1117,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminInventoryIdRoute: AdminInventoryIdRoute,
+  AdminJobsIdRoute: AdminJobsIdRoute,
   AdminQuoteRequestsIdRoute: AdminQuoteRequestsIdRoute,
   AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
   AdminQuotesIdJobSheetRoute: AdminQuotesIdJobSheetRoute,

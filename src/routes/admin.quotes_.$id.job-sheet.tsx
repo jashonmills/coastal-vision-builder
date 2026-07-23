@@ -15,6 +15,7 @@ import {
 } from "@/lib/bookings.functions";
 import { CrewAssign } from "@/components/admin/CrewAssign";
 import { invalidateOpsQueries } from "@/lib/admin-cache";
+import { JobCrossLink } from "@/components/admin/JobCrossLink";
 
 export const Route = createFileRoute("/admin/quotes_/$id/job-sheet")({
   head: () => ({ meta: [{ title: "Job Sheet | Admin" }] }),
@@ -88,8 +89,13 @@ function JobSheetPage() {
         </div>
 
         <header className="mt-4 rounded-xl border border-border bg-card p-5">
-          <div className="font-mono text-xs text-muted-foreground">{quote.quote_number}</div>
-          <h1 className="font-serif text-2xl text-primary">{quote.customer_name}</h1>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="font-mono text-xs text-muted-foreground">{quote.quote_number}</div>
+              <h1 className="font-serif text-2xl text-primary">{quote.customer_name}</h1>
+            </div>
+            <JobCrossLink quoteId={id} />
+          </div>
           <div className="mt-1 grid gap-1 text-sm text-muted-foreground sm:grid-cols-2">
             <div><strong className="text-foreground">Event:</strong> {quote.event_type || "—"}</div>
             <div><strong className="text-foreground">Date:</strong> {quote.event_date || "—"}</div>

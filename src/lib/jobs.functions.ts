@@ -67,6 +67,20 @@ export const listJobs = createServerFn({ method: "GET" })
     return { jobs: rows ?? [], nextCursor };
   });
 
+export const getJobByQuote = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ quote_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin
+      .from("jobs")
+      .select("id, status")
+      .eq("quote_id", data.quote_id)
+      .maybeSingle();
+    return row;
+  });
+
 export const getJob = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
