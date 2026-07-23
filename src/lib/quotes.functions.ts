@@ -528,17 +528,31 @@ export const createQuoteFromRequest = createServerFn({ method: "POST" })
     // --- Match picks against catalog ---
     const byId = new Map(catalog.map((p) => [p.id, p]));
     const byName = new Map(catalog.map((p) => [(p.name ?? "").toLowerCase(), p]));
+
+    // Date-aware availability caps for mapped items (no-op on error / no date / no mappings).
+    const { filterCatalogByAvailability: _filterAvail } = await import("./availability-catalog.server");
+    const { info: availInfo } = await _filterAvail(catalog, req.event_date);
+
     const rows = picks.map((pick, idx) => {
       const match =
         (pick.item_id && byId.get(pick.item_id)) ||
         (pick.item_name && byName.get(pick.item_name.toLowerCase())) ||
         null;
-      const qty = Math.max(1, Math.floor(pick.quantity ?? 1));
+      let qty = Math.max(1, Math.floor(pick.quantity ?? 1));
+      let capReason: string | null = null;
+      if (match) {
+        const cap = availInfo.availableByPricingId[match.id];
+        if (typeof cap === "number" && qty > cap && cap > 0) {
+          capReason = ` [Capped to ${cap} available for event dates]`;
+          qty = cap;
+        }
+      }
       const unit_price_cents = match?.price_cents ?? 0;
       const needsReview = !match;
-      const reason = needsReview
+      const baseReason = needsReview
         ? `[Needs pricing] ${pick.reason ?? ""}`.trim()
         : pick.reason ?? null;
+      const reason = capReason ? `${baseReason ?? ""}${capReason}`.trim() : baseReason;
       return {
         quote_id: q.id,
         pricing_item_id: match?.id ?? null,
