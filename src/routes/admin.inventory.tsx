@@ -252,8 +252,8 @@ function Dashboard() {
         </button>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-border">
+      {/* Desktop table */}
+      <div className="hidden overflow-x-auto rounded-lg border border-border md:block">
         <table className="w-full text-sm">
           <thead className="bg-muted/60 text-left text-xs uppercase tracking-wide text-muted-foreground">
             <tr>
@@ -344,6 +344,70 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile stacked cards */}
+      <ul className="space-y-3 md:hidden">
+        {filtered.length === 0 && (
+          <li className="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">No items match these filters.</li>
+        )}
+        {filtered.map((i) => {
+          const av = computeAvailable(i);
+          const cat = i.category_id ? catMap[i.category_id] : null;
+          const held = (reservationSummaries as Record<string, { held: number; next_date: string | null }>)[i.id];
+          const zeroOwned = (i.total_owned_quantity ?? 0) === 0;
+          return (
+            <li key={i.id} className="rounded-lg border border-border bg-card p-3 text-sm shadow-sm">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
+                <div className="min-w-0">
+                  <Link to="/admin/inventory/$id" params={{ id: i.id }} className="block truncate font-semibold text-foreground hover:underline">
+                    {i.name}
+                  </Link>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {cat?.name ?? "Uncategorized"} · <span className="capitalize">{ITEM_TYPE_LABEL[i.item_type]}</span>
+                    {i.sku ? ` · SKU ${i.sku}` : ""}
+                  </p>
+                </div>
+                <div className="shrink-0">
+                  {i.deleted_at ? <Badge tone="muted">Archived</Badge>
+                    : i.active ? <Badge tone="success">Active</Badge>
+                    : <Badge tone="muted">Inactive</Badge>}
+                </div>
+              </div>
+
+              {zeroOwned && (
+                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900">
+                  <AlertTriangle className="h-3 w-3" /> 0 owned
+                </div>
+              )}
+
+              <dl className="mt-3 grid grid-cols-3 gap-2 text-xs">
+                <StatCell label="On hand" value={av} tone={av < 0 ? "danger" : "default"} />
+                <StatCell label="Held" value={held?.held ?? 0} />
+                <StatCell label="Owned" value={i.total_owned_quantity} />
+                <StatCell label="Reserved" value={i.reserved_quantity} />
+                <StatCell label="Out" value={i.checked_out_quantity} />
+                <StatCell label="Cleaning" value={i.cleaning_quantity} />
+                <StatCell label="Maint" value={i.maintenance_quantity} />
+                <StatCell label="Damaged" value={i.damaged_missing_quantity} />
+                {held?.next_date && <StatCell label="Next hold" value={held.next_date} />}
+              </dl>
+
+              <div className="mt-3 flex flex-wrap justify-end gap-2">
+                <button onClick={() => setAdjustItem(i)} className="rounded-full border border-border bg-background px-3 py-1 text-xs">Adjust</button>
+                <Link to="/admin/inventory/$id" params={{ id: i.id }} className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1 text-xs">
+                  Open <ArrowRight className="h-3 w-3" />
+                </Link>
+                {!i.deleted_at && (
+                  <button onClick={() => { if (confirm(`Archive "${i.name}"?`)) archive.mutate(i.id); }}
+                    className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1 text-xs text-muted-foreground">
+                    <Archive className="h-3.5 w-3.5" /> Archive
+                  </button>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
 
       {creating && <CreateItemModal categories={categories} onClose={() => setCreating(false)} />}
       {adjustItem && <AdjustQuantityModal item={adjustItem} onClose={() => setAdjustItem(null)} />}
