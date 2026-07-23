@@ -9,7 +9,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 /** Resolve inventory_item_id for a quote_items row (direct or via pricing mapping).
  *  Also returns the list of quote lines that could NOT be resolved (silent-fail surface). */
-async function resolveInventoryIdsForQuote(
+export async function resolveInventoryIdsForQuote(
   supabase: any,
   quoteId: string,
 ): Promise<{
@@ -69,7 +69,7 @@ async function resolveInventoryIdsForQuote(
 }
 
 /** Apply a status delta on an inventory_items row and write a transaction record. */
-async function applyInventoryMove(
+export async function applyInventoryMove(
   supabase: any,
   opts: {
     inventory_item_id: string;

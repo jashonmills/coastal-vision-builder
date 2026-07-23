@@ -630,44 +630,78 @@ export type Database = {
       job_pull_lines: {
         Row: {
           category: string | null
+          checked_in_at: string | null
+          checked_in_by: string | null
+          checked_out_applied: boolean
+          checkin_notes: string | null
           created_at: string
           id: string
+          inventory_item_id: string | null
           job_id: string
           name: string
           pulled_at: string | null
           pulled_by: string | null
+          quantity_cleaning: number
+          quantity_damaged: number
+          quantity_missing: number
           quantity_pulled: number
           quantity_required: number
+          quantity_returned_ok: number
           quote_item_id: string | null
           updated_at: string
         }
         Insert: {
           category?: string | null
+          checked_in_at?: string | null
+          checked_in_by?: string | null
+          checked_out_applied?: boolean
+          checkin_notes?: string | null
           created_at?: string
           id?: string
+          inventory_item_id?: string | null
           job_id: string
           name: string
           pulled_at?: string | null
           pulled_by?: string | null
+          quantity_cleaning?: number
+          quantity_damaged?: number
+          quantity_missing?: number
           quantity_pulled?: number
           quantity_required?: number
+          quantity_returned_ok?: number
           quote_item_id?: string | null
           updated_at?: string
         }
         Update: {
           category?: string | null
+          checked_in_at?: string | null
+          checked_in_by?: string | null
+          checked_out_applied?: boolean
+          checkin_notes?: string | null
           created_at?: string
           id?: string
+          inventory_item_id?: string | null
           job_id?: string
           name?: string
           pulled_at?: string | null
           pulled_by?: string | null
+          quantity_cleaning?: number
+          quantity_damaged?: number
+          quantity_missing?: number
           quantity_pulled?: number
           quantity_required?: number
+          quantity_returned_ok?: number
           quote_item_id?: string | null
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "job_pull_lines_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "job_pull_lines_job_id_fkey"
             columns: ["job_id"]

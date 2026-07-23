@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { applyInventoryMove, resolveInventoryIdsForQuote } from "@/lib/bookings.functions";
 
 type QuoteItem = {
   id: string;
@@ -14,10 +15,19 @@ type PullLineRow = {
   id: string;
   job_id: string;
   quote_item_id: string | null;
+  inventory_item_id: string | null;
   name: string;
   category: string | null;
   quantity_required: number;
   quantity_pulled: number;
+  quantity_returned_ok: number;
+  quantity_cleaning: number;
+  quantity_damaged: number;
+  quantity_missing: number;
+  checkin_notes: string | null;
+  checked_in_at: string | null;
+  checked_in_by: string | null;
+  checked_out_applied: boolean;
   pulled_at: string | null;
   pulled_by: string | null;
 };
@@ -48,7 +58,22 @@ async function ensurePullLines(
     .select("*")
     .eq("job_id", job.id);
   if (exErr) throw new Error(exErr.message);
-  if ((existing ?? []).length > 0) return existing as PullLineRow[];
+  if ((existing ?? []).length > 0) {
+    // Backfill inventory_item_id on any pre-existing lines that don't have one yet.
+    const rows = existing as PullLineRow[];
+    const missing = rows.filter((r) => !r.inventory_item_id && r.quote_item_id);
+    if (missing.length > 0) {
+      const { resolved } = await resolveInventoryIdsForQuote(supabase, job.quote_id);
+      const byQuoteItem = new Map(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
+      for (const r of missing) {
+        const invId = byQuoteItem.get(r.quote_item_id!);
+        if (!invId) continue;
+        await supabase.from("job_pull_lines").update({ inventory_item_id: invId }).eq("id", r.id);
+        r.inventory_item_id = invId;
+      }
+    }
+    return rows;
+  }
 
   const { data: items, error: qErr } = await supabase
     .from("quote_items")
@@ -57,11 +82,15 @@ async function ensurePullLines(
     .order("sort_order");
   if (qErr) throw new Error(qErr.message);
 
+  const { resolved } = await resolveInventoryIdsForQuote(supabase, job.quote_id);
+  const invByQuoteItem = new Map(resolved.map((r) => [r.quote_item_id, r.inventory_item_id]));
+
   const toInsert = (items as QuoteItem[] | null | undefined ?? [])
     .filter((i) => !i.is_auto && !isNonPhysical(i.name, i.category))
     .map((i) => ({
       job_id: job.id,
       quote_item_id: i.id,
+      inventory_item_id: invByQuoteItem.get(i.id) ?? null,
       name: i.name,
       category: i.category,
       quantity_required: Math.max(1, i.quantity ?? 1),
@@ -148,23 +177,68 @@ export const markJobLoaded = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ job_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { data: job, error: jErr } = await context.supabase
+    const { supabase, userId } = context;
+    const { data: job, error: jErr } = await supabase
       .from("jobs")
-      .select("id, status")
+      .select("id, quote_id, status")
       .eq("id", data.job_id)
       .maybeSingle();
     if (jErr) throw new Error(jErr.message);
     if (!job) throw new Error("Job not found");
-    const status = (job as { status: string }).status;
-    if (status !== "booked" && status !== "prep") {
-      return { ok: true as const, unchanged: true, status };
+    const jobRow = job as { id: string; quote_id: string; status: string };
+
+    // For each mapped pull line not yet applied, move reserved→checked_out via the
+    // shared applyInventoryMove helper. The `checked_out_applied` flag guards
+    // against double-counting if this handler runs twice or if the admin job
+    // sheet already checked items out for the same quote.
+    const { data: lines, error: lErr } = await supabase
+      .from("job_pull_lines")
+      .select("id, inventory_item_id, quantity_pulled, checked_out_applied")
+      .eq("job_id", jobRow.id);
+    if (lErr) throw new Error(lErr.message);
+
+    const applied: string[] = [];
+    for (const raw of (lines ?? []) as Array<{
+      id: string;
+      inventory_item_id: string | null;
+      quantity_pulled: number;
+      checked_out_applied: boolean;
+    }>) {
+      if (raw.checked_out_applied) continue;
+      if (!raw.inventory_item_id) continue;
+      const qty = Math.max(0, Number(raw.quantity_pulled ?? 0));
+      if (qty <= 0) continue;
+      try {
+        await applyInventoryMove(supabase, {
+          inventory_item_id: raw.inventory_item_id,
+          from_status: "reserved",
+          to_status: "checked_out",
+          quantity: qty,
+          related_quote_id: jobRow.quote_id,
+          transaction_type: "check_out_quote",
+          notes: "Truck loaded (pull list)",
+          created_by: userId,
+        });
+        await supabase
+          .from("job_pull_lines")
+          .update({ checked_out_applied: true } as never)
+          .eq("id", raw.id);
+        applied.push(raw.id);
+      } catch (e) {
+        // best-effort; leave flag false so it can be retried
+        console.warn("[markJobLoaded] move failed", raw.id, (e as Error).message);
+      }
     }
-    const { error } = await context.supabase
+
+    if (jobRow.status !== "booked" && jobRow.status !== "prep") {
+      return { ok: true as const, unchanged: true, status: jobRow.status, applied_lines: applied };
+    }
+    const { error } = await supabase
       .from("jobs")
       .update({ status: "loaded" } as never)
       .eq("id", data.job_id);
     if (error) throw new Error(error.message);
-    return { ok: true as const, status: "loaded" as const };
+    return { ok: true as const, status: "loaded" as const, applied_lines: applied };
   });
 
 export const getPullSummary = createServerFn({ method: "GET" })
