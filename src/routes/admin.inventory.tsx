@@ -433,6 +433,14 @@ function Badge({ children, tone }: { children: React.ReactNode; tone: "success" 
   return <span className={`rounded-full px-2 py-0.5 text-xs ${cls}`}>{children}</span>;
 }
 
+function StatCell({ label, value, tone }: { label: string; value: number | string; tone?: "default" | "danger" }) {
+  return (
+    <div className="rounded-md border border-border/60 bg-muted/30 px-2 py-1">
+      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
+      <div className={`font-semibold ${tone === "danger" ? "text-destructive" : "text-foreground"}`}>{value}</div>
+    </div>
+  );
+
 function Warning({ children, tone = "warning" }: { children: React.ReactNode; tone?: "warning" | "error" }) {
   const cls = tone === "error"
     ? "border-destructive/40 bg-destructive/10 text-destructive"
