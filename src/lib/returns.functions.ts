@@ -166,6 +166,9 @@ export const checkInJobLines = createServerFn({ method: "POST" })
           });
         }
 
+        const nextPhotos = inp.photo_path
+          ? [ ...((line.damage_photo_paths ?? []) as string[]), inp.photo_path ]
+          : (line.damage_photo_paths ?? []);
         const patch = {
           quantity_returned_ok: (line.quantity_returned_ok ?? 0) + inp.returned_ok,
           quantity_cleaning: (line.quantity_cleaning ?? 0) + inp.cleaning,
@@ -174,6 +177,7 @@ export const checkInJobLines = createServerFn({ method: "POST" })
           checkin_notes: inp.notes ?? line.checkin_notes,
           checked_in_at: new Date().toISOString(),
           checked_in_by: userId,
+          damage_photo_paths: nextPhotos,
         };
         const { error: upErr } = await supabase
           .from("job_pull_lines")
