@@ -252,6 +252,7 @@ function JobDetailPage() {
         <JobNotesList jobId={job.id} />
       </section>
       <PullProgressSection jobId={job.id} />
+      <ReconciliationSection jobId={job.id} />
     </AdminLayout>
   );
 }
