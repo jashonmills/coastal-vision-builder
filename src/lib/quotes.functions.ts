@@ -29,10 +29,52 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => CreateQuoteRequestSchema.parse(d))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // GUEST-ONLY: if this request carries a planner design but is not already
+    // linked to a saved_recommendations row (i.e. no signed-in user saved it),
+    // persist the design as a guest-owned saved plan so it can be reclaimed on
+    // signup via the auth.users email backfill trigger. Best-effort.
+    let savedRecommendationId = data.saved_recommendation_id ?? null;
+    if (!savedRecommendationId && data.recommendation) {
+      try {
+        const guestTitle =
+          `${data.event_type ?? "Event"}${data.guest_count ? " · " + data.guest_count + " guests" : ""}`;
+        const { data: srRow, error: srErr } = await supabaseAdmin
+          .from("saved_recommendations")
+          .insert({
+            user_id: null,
+            customer_email: data.customer_email,
+            title: guestTitle,
+            event_date: data.event_date ?? null,
+            location: data.event_location ?? null,
+            input: (data.planner_input ?? {}) as never,
+            recommendation: data.recommendation as never,
+            contact: {
+              name: data.customer_name,
+              email: data.customer_email,
+              phone: data.customer_phone ?? null,
+              preferredContact: data.preferred_contact_method,
+            } as never,
+            status: "quote_requested",
+            quote_requested_at: new Date().toISOString(),
+            quote_request_note: data.customer_note ?? null,
+          })
+          .select("id")
+          .single();
+        if (srErr) {
+          console.error("[createQuoteRequest] guest saved_recommendation insert failed", srErr);
+        } else {
+          savedRecommendationId = srRow.id;
+        }
+      } catch (e) {
+        console.error("[createQuoteRequest] guest saved_recommendation insert threw", e);
+      }
+    }
+
     const { data: row, error } = await supabaseAdmin
       .from("quote_requests")
       .insert({
-        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        saved_recommendation_id: savedRecommendationId,
         customer_name: data.customer_name,
         customer_email: data.customer_email,
         customer_phone: data.customer_phone ?? null,
@@ -54,7 +96,10 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
       .single();
     if (error) throw new Error(error.message);
 
-    // Mark linked saved recommendation as quote_requested (if any)
+
+    // Mark linked saved recommendation as quote_requested (if any). For guest
+    // requests where we just created the saved_recommendation above we already
+    // inserted it in the quote_requested state, so skip the redundant update.
     if (data.saved_recommendation_id) {
       await supabaseAdmin
         .from("saved_recommendations")
@@ -65,6 +110,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         })
         .eq("id", data.saved_recommendation_id);
     }
+
 
     // Auto-create scheduler entries: one on the request date, one on event date
     const guests = data.guest_count ? `${data.guest_count} guests` : "";
@@ -94,7 +140,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         status: "pending",
         color: isVenue ? "#7c5cff" : "#d4a64a",
         quote_request_id: row.id,
-        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        saved_recommendation_id: savedRecommendationId,
         location: data.event_location ?? null,
         notes: data.customer_note ?? null,
       },
@@ -108,7 +154,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
         status: "pending",
         color: isVenue ? "#7c5cff" : "#d4a64a",
         quote_request_id: row.id,
-        saved_recommendation_id: data.saved_recommendation_id ?? null,
+        saved_recommendation_id: savedRecommendationId,
         location: data.event_location ?? null,
       });
     }
@@ -160,7 +206,7 @@ export const createQuoteRequest = createServerFn({ method: "POST" })
           layoutCaption: rec?.layout_caption ?? null,
           picks: rec?.picks ?? [],
           weatherNotes: rec?.weather_notes ?? [],
-          savedRecommendationId: data.saved_recommendation_id ?? null,
+          savedRecommendationId: savedRecommendationId,
         },
       });
 
