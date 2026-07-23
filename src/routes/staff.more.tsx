@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, DollarSign, FileText, LogOut, Mail, Phone, User } from "lucide-react";
+import { ChevronRight, DollarSign, FileText, LogOut, Mail, Phone, Sparkles, User } from "lucide-react";
 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
