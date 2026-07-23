@@ -5,12 +5,21 @@ import { useEffect } from "react";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { getMyQuote } from "@/lib/customer-portal.functions";
+import { detectContractTypesForQuote, type ContractId } from "@/lib/contracts/detect-type";
 import { ArrowLeft, FileSignature, Loader2 } from "lucide-react";
+
+const CONTRACT_LABEL: Record<ContractId, string> = {
+  "rental-contract": "Rental Contract",
+  "beacon-contract": "Beacon Venue Agreement",
+  "catering-contract": "Catering Contract",
+  "credit-card-authorization": "Credit Card Authorization",
+};
 
 export const Route = createFileRoute("/account/quote/$id")({
   head: () => ({ meta: [{ title: "Your Quote | Pacific North Events & Tents" }, { name: "robots", content: "noindex" }] }),
   component: QuoteViewPage,
 });
+
 
 function money(cents: number | null | undefined) {
   const c = cents ?? 0;
@@ -61,15 +70,11 @@ function QuoteViewPage() {
       <section className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <Link to="/account" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"><ArrowLeft className="h-4 w-4" /> All quotes</Link>
-          <Link
-            to="/rental-contract/fill/$contractId"
-            params={{ contractId: "rental-contract" }}
-            search={{ quoteId: quote.id }}
-            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-5 py-2 text-sm font-semibold text-[color:var(--ink-on-gold,#1a1a1a)] hover:opacity-90"
-          >
-            <FileSignature className="h-4 w-4" /> Sign Rental Contract
-          </Link>
         </div>
+
+        <ContractActions quote={quote} items={items} />
+
+
 
         <div className="grid gap-4 sm:grid-cols-2">
           <InfoBlock label="Customer">
@@ -155,3 +160,43 @@ function Row({ label, value }: { label: string; value: string }) {
     <div className="flex justify-between text-muted-foreground"><span>{label}</span><span className="text-foreground">{value}</span></div>
   );
 }
+
+
+function ContractActions({
+  quote,
+  items,
+}: {
+  quote: { id: string; event_type?: string | null; event_location?: string | null };
+  items: Array<{ name?: string | null; category?: string | null; description?: string | null }>;
+}) {
+  const { primary, all } = detectContractTypesForQuote(quote, items);
+  const secondary = all.filter((c) => c !== primary);
+  return (
+    <div className="mb-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sign your contracts</p>
+      <p className="mt-1 text-sm text-muted-foreground">Your details are pre-filled from this quote. Review, sign, and submit online.</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Link
+          to="/rental-contract/fill/$contractId"
+          params={{ contractId: primary }}
+          search={{ quoteId: quote.id }}
+          className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-5 py-2 text-sm font-semibold text-[color:var(--ink-on-gold,#1a1a1a)] hover:opacity-90"
+        >
+          <FileSignature className="h-4 w-4" /> Sign {CONTRACT_LABEL[primary]}
+        </Link>
+        {secondary.map((cid) => (
+          <Link
+            key={cid}
+            to="/rental-contract/fill/$contractId"
+            params={{ contractId: cid }}
+            search={{ quoteId: quote.id }}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+          >
+            <FileSignature className="h-4 w-4" /> {CONTRACT_LABEL[cid]}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+

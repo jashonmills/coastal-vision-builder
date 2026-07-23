@@ -62,17 +62,31 @@ function FillContractPage() {
   })
   useEffect(() => {
     const q = quoteQuery.data?.quote
+    const items = quoteQuery.data?.items ?? []
     if (!q) return
+    const itemsList = items
+      .map((i: any) => `- ${i.quantity ?? 1} × ${i.name ?? 'Item'}`)
+      .join('\n')
+      .slice(0, 1900)
     setValues((prev) => ({
       customer_name: prev.customer_name || q.customer_name || '',
       customer_email: prev.customer_email || q.customer_email || '',
       customer_phone: prev.customer_phone || q.customer_phone || '',
+      billing_address: prev.billing_address || q.event_location || '',
+      event_type: prev.event_type || q.event_type || '',
       event_date: prev.event_date || q.event_date || '',
       event_location: prev.event_location || q.event_location || '',
       guest_count: prev.guest_count || (q.guest_count != null ? String(q.guest_count) : ''),
+      guest_count_estimated:
+        prev.guest_count_estimated || (q.guest_count != null ? String(q.guest_count) : ''),
+      delivery_date: prev.delivery_date || q.event_date || '',
+      pickup_date: prev.pickup_date || q.event_date || '',
+      rental_items: prev.rental_items || itemsList,
+      menu_selection: prev.menu_selection || itemsList,
       ...prev,
     }))
   }, [quoteQuery.data])
+
 
   function setField(name: string, v: string) {
     setValues((prev) => ({ ...prev, [name]: v }))
@@ -162,7 +176,47 @@ function FillContractPage() {
           </div>
         </header>
 
+        {params.contractId === 'credit-card-authorization' && (
+          <div className="mx-auto mt-6 max-w-3xl px-6">
+            <div className="rounded-xl border border-[color:var(--gold)]/40 bg-[color:var(--gold)]/10 p-4 text-sm text-foreground">
+              <strong>For your security:</strong> only the last 4 digits of your card are collected online.
+              We'll call to capture the full card details before your event.
+            </div>
+          </div>
+        )}
+
+        {doc && doc.sections.length > 0 && (
+          <div className="mx-auto mt-6 max-w-3xl px-6">
+            <details open className="group rounded-2xl border border-border bg-card">
+              <summary className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl px-5 py-4 text-sm font-semibold text-primary hover:bg-secondary/40">
+                <span className="inline-flex items-center gap-2">
+                  <FileText className="h-4 w-4" /> Full contract terms — please read before signing
+                </span>
+                <span className="text-xs uppercase tracking-widest text-muted-foreground group-open:hidden">
+                  Show
+                </span>
+                <span className="hidden text-xs uppercase tracking-widest text-muted-foreground group-open:inline">
+                  Hide
+                </span>
+              </summary>
+              <div className="max-h-[420px] overflow-y-auto border-t border-border px-5 py-4 text-sm leading-relaxed text-foreground">
+                {doc.sections.map((s) => (
+                  <section key={s.heading} className="mb-5 last:mb-0">
+                    <h3 className="font-serif text-base text-primary">{s.heading}</h3>
+                    {s.paragraphs.map((p, i) => (
+                      <p key={i} className="mt-2 whitespace-pre-wrap text-muted-foreground">
+                        {p}
+                      </p>
+                    ))}
+                  </section>
+                ))}
+              </div>
+            </details>
+          </div>
+        )}
+
         <form onSubmit={onSubmit} className="mx-auto max-w-3xl px-6 py-10">
+
           {schema.groups.map((g: ContractFieldGroup) => (
             <fieldset key={g.heading} className="mb-8 rounded-2xl border border-border bg-card p-6">
               <legend className="px-2 text-sm font-semibold uppercase tracking-widest text-[color:var(--gold)]">
@@ -207,10 +261,11 @@ function FillContractPage() {
                 className="mt-1 h-4 w-4"
               />
               <span>
-                I have read and agree to the terms of the {schema.title.toLowerCase()}. I understand that
-                typing my name and drawing my signature above has the same legal effect as a handwritten
-                signature.
+                I have read and agree to the terms of the {schema.title.toLowerCase()} shown above.
+                I understand that typing my name and drawing my signature above has the same legal effect as
+                a handwritten signature.
               </span>
+
             </label>
           </fieldset>
 
