@@ -125,7 +125,7 @@ function ClockPage() {
         Clock into a specific job, or an ad-hoc task like "organizing the warehouse".
       </HelpTip>
 
-      </header>
+
 
       {active ? (
         <RunningTimer
