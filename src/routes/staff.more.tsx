@@ -83,7 +83,7 @@ function MorePage() {
   );
 }
 
-function SoonRow({ icon: Icon, label, desc }: { icon: typeof Clock; label: string; desc: string }) {
+function SoonRow({ icon: Icon, label, desc }: { icon: typeof DollarSign; label: string; desc: string }) {
   return (
     <li className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-dashed border-border bg-card/60 p-3">
       <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-muted-foreground">
