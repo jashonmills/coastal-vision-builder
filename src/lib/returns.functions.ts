@@ -55,6 +55,7 @@ export const checkInJobLines = createServerFn({ method: "POST" })
               damaged: z.number().int().min(0).default(0),
               missing: z.number().int().min(0).default(0),
               notes: z.string().max(2000).optional().nullable(),
+              photo_path: z.string().max(500).optional().nullable(),
             }),
           )
           .min(1),
