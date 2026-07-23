@@ -159,4 +159,42 @@ function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between text-muted-foreground"><span>{label}</span><span className="text-foreground">{value}</span></div>
   );
+
+function ContractActions({
+  quote,
+  items,
+}: {
+  quote: { id: string; event_type?: string | null; event_location?: string | null };
+  items: Array<{ name?: string | null; category?: string | null; description?: string | null }>;
+}) {
+  const { primary, all } = detectContractTypesForQuote(quote, items);
+  const secondary = all.filter((c) => c !== primary);
+  return (
+    <div className="mb-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sign your contracts</p>
+      <p className="mt-1 text-sm text-muted-foreground">Your details are pre-filled from this quote. Review, sign, and submit online.</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Link
+          to="/rental-contract/fill/$contractId"
+          params={{ contractId: primary }}
+          search={{ quoteId: quote.id }}
+          className="inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-5 py-2 text-sm font-semibold text-[color:var(--ink-on-gold,#1a1a1a)] hover:opacity-90"
+        >
+          <FileSignature className="h-4 w-4" /> Sign {CONTRACT_LABEL[primary]}
+        </Link>
+        {secondary.map((cid) => (
+          <Link
+            key={cid}
+            to="/rental-contract/fill/$contractId"
+            params={{ contractId: cid }}
+            search={{ quoteId: quote.id }}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+          >
+            <FileSignature className="h-4 w-4" /> {CONTRACT_LABEL[cid]}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }
+
