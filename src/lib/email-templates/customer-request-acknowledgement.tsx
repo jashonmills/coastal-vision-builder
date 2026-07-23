@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   Body,
+  Button,
   Container,
   Head,
   Heading,
@@ -72,6 +73,14 @@ const Email = ({
               We're preparing your quote now and will follow up shortly. In the meantime,
               feel free to reply with any questions.
             </Text>
+            <Text style={letterText}>
+              Tip: create a free account to track your quote and sign your rental contract online — we'll link this request to your account automatically.
+            </Text>
+            <Section style={{ margin: '8px 0 16px' }}>
+              <Button href="https://pacificnorthrentals.com/login?mode=signup" style={ctaButton}>
+                Create your account
+              </Button>
+            </Section>
             <Text style={letterText}>— {senderName}</Text>
           </Section>
 
@@ -104,3 +113,4 @@ const h1 = { color: '#0f2c4a', fontSize: '22px', fontWeight: 700, margin: '0 0 4
 const letterText = { color: '#1f2937', fontSize: '15px', lineHeight: '23px', margin: '0 0 12px' }
 const hr = { borderColor: '#e5e7eb', margin: '14px 0' }
 const footer = { fontSize: '12px', color: '#9ca3af', margin: '8px 0 0', textAlign: 'center' as const }
+const ctaButton = { backgroundColor: '#0f2c4a', color: '#ffffff', padding: '10px 20px', borderRadius: '999px', fontSize: '14px', fontWeight: 600, textDecoration: 'none', display: 'inline-block' }
