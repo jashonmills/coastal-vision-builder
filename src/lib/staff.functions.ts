@@ -62,7 +62,7 @@ export const upsertStaff = createServerFn({ method: "POST" })
     };
     if (data.roles) payload.roles = data.roles;
     if (data.id) {
-      const { error } = await context.supabase.from("staff").update(payload).eq("id", data.id);
+      const { error } = await context.supabase.from("staff").update(payload as never).eq("id", data.id);
       if (error) throw new Error(error.message);
       return { id: data.id };
     }
