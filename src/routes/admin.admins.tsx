@@ -63,7 +63,7 @@ function AdminsPage() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Admin" title="Admins" subtitle="Invite or remove users with admin access." />
-      <section className="mx-auto max-w-4xl px-4 py-10 lg:px-8">
+      <section className="mx-auto max-w-4xl py-8">
 
         <div className="mb-6 rounded-xl border border-border bg-card p-4">
           <p className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
