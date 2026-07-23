@@ -243,3 +243,47 @@ export const listTimeEntries = createServerFn({ method: "POST" })
       by_job: Array.from(byJob.values()).sort((a, b) => b.seconds - a.seconds),
     };
   });
+
+export const updateTimeEntry = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        clock_in: z.string().datetime().optional(),
+        clock_out: z.string().datetime().nullable().optional(),
+        category: z.enum(CATEGORIES).optional(),
+        task_label: z.string().trim().max(200).nullable().optional(),
+        job_id: z.string().uuid().nullable().optional(),
+        notes: z.string().trim().max(2000).nullable().optional(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    if (data.clock_in && data.clock_out && new Date(data.clock_out) < new Date(data.clock_in)) {
+      throw new Error("Clock-out must be at or after clock-in.");
+    }
+    const patch: Record<string, unknown> = {};
+    if (data.clock_in !== undefined) patch.clock_in = data.clock_in;
+    if (data.clock_out !== undefined) patch.clock_out = data.clock_out;
+    if (data.category !== undefined) patch.category = data.category;
+    if (data.task_label !== undefined) patch.task_label = data.task_label;
+    if (data.job_id !== undefined) patch.job_id = data.job_id;
+    if (data.notes !== undefined) patch.notes = data.notes;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("time_entries").update(patch as never).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const deleteTimeEntry = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("time_entries").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });

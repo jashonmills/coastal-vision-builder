@@ -61,6 +61,7 @@ import { Route as AccountIdRouteImport } from './routes/account.$id'
 import { Route as StaffJobsIdRouteImport } from './routes/staff.jobs_.$id'
 import { Route as RentalContractFillContractIdRouteImport } from './routes/rental-contract.fill.$contractId'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as AdminStaffIdRouteImport } from './routes/admin.staff_.$id'
 import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
 import { Route as AdminJobsIdRouteImport } from './routes/admin.jobs_.$id'
 import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
@@ -336,6 +337,11 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminStaffIdRoute = AdminStaffIdRouteImport.update({
+  id: '/staff_/$id',
+  path: '/staff/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
   id: '/quote-requests_/$id',
   path: '/quote-requests/$id',
@@ -461,6 +467,7 @@ export interface FileRoutesByFullPath {
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/jobs/$id': typeof AdminJobsIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/staff/$id': typeof AdminStaffIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
   '/staff/jobs/$id': typeof StaffJobsIdRouteWithChildren
@@ -526,6 +533,7 @@ export interface FileRoutesByTo {
   '/admin/inventory/$id': typeof AdminInventoryIdRoute
   '/admin/jobs/$id': typeof AdminJobsIdRoute
   '/admin/quote-requests/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/staff/$id': typeof AdminStaffIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
   '/staff/jobs/$id': typeof StaffJobsIdRouteWithChildren
@@ -594,6 +602,7 @@ export interface FileRoutesById {
   '/admin/inventory_/$id': typeof AdminInventoryIdRoute
   '/admin/jobs_/$id': typeof AdminJobsIdRoute
   '/admin/quote-requests_/$id': typeof AdminQuoteRequestsIdRoute
+  '/admin/staff_/$id': typeof AdminStaffIdRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/rental-contract/fill/$contractId': typeof RentalContractFillContractIdRoute
   '/staff/jobs_/$id': typeof StaffJobsIdRouteWithChildren
@@ -663,6 +672,7 @@ export interface FileRouteTypes {
     | '/admin/inventory/$id'
     | '/admin/jobs/$id'
     | '/admin/quote-requests/$id'
+    | '/admin/staff/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
     | '/staff/jobs/$id'
@@ -728,6 +738,7 @@ export interface FileRouteTypes {
     | '/admin/inventory/$id'
     | '/admin/jobs/$id'
     | '/admin/quote-requests/$id'
+    | '/admin/staff/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
     | '/staff/jobs/$id'
@@ -795,6 +806,7 @@ export interface FileRouteTypes {
     | '/admin/inventory_/$id'
     | '/admin/jobs_/$id'
     | '/admin/quote-requests_/$id'
+    | '/admin/staff_/$id'
     | '/lovable/email/suppression'
     | '/rental-contract/fill/$contractId'
     | '/staff/jobs_/$id'
@@ -1210,6 +1222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/staff_/$id': {
+      id: '/admin/staff_/$id'
+      path: '/staff/$id'
+      fullPath: '/admin/staff/$id'
+      preLoaderRoute: typeof AdminStaffIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/quote-requests_/$id': {
       id: '/admin/quote-requests_/$id'
       path: '/quote-requests/$id'
@@ -1325,6 +1344,7 @@ interface AdminRouteChildren {
   AdminInventoryIdRoute: typeof AdminInventoryIdRoute
   AdminJobsIdRoute: typeof AdminJobsIdRoute
   AdminQuoteRequestsIdRoute: typeof AdminQuoteRequestsIdRoute
+  AdminStaffIdRoute: typeof AdminStaffIdRoute
   AdminQuotesIdEditRoute: typeof AdminQuotesIdEditRoute
   AdminQuotesIdJobSheetRoute: typeof AdminQuotesIdJobSheetRoute
   AdminQuotesIdPreviewRoute: typeof AdminQuotesIdPreviewRoute
@@ -1351,6 +1371,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInventoryIdRoute: AdminInventoryIdRoute,
   AdminJobsIdRoute: AdminJobsIdRoute,
   AdminQuoteRequestsIdRoute: AdminQuoteRequestsIdRoute,
+  AdminStaffIdRoute: AdminStaffIdRoute,
   AdminQuotesIdEditRoute: AdminQuotesIdEditRoute,
   AdminQuotesIdJobSheetRoute: AdminQuotesIdJobSheetRoute,
   AdminQuotesIdPreviewRoute: AdminQuotesIdPreviewRoute,

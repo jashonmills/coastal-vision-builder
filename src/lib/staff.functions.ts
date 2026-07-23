@@ -154,3 +154,80 @@ export const inviteStaffUser = createServerFn({ method: "POST" })
 
     return { ok: true, invited, user_id: existingUserId };
   });
+
+export const getStaffProfile = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: staff, error } = await supabaseAdmin.from("staff").select("*").eq("id", data.id).maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!staff) throw new Error("Staff not found");
+
+    // Upcoming assigned jobs (via event_staff -> rental_calendar_events -> quotes -> jobs)
+    const { data: es } = await supabaseAdmin
+      .from("event_staff")
+      .select("role, ack_at, event:event_id(id, quote_id, start_at, end_at, title)")
+      .eq("staff_id", data.id)
+      .limit(200);
+    const nowIso = new Date().toISOString();
+    const upcomingEvents = (es ?? [])
+      .map((r: any) => ({ role: r.role, ack_at: r.ack_at, event: r.event }))
+      .filter((r) => r.event && r.event.end_at >= nowIso)
+      .sort((a, b) => (a.event.start_at ?? "").localeCompare(b.event.start_at ?? ""))
+      .slice(0, 20);
+
+    const quoteIds = Array.from(new Set(upcomingEvents.map((r) => r.event.quote_id).filter(Boolean)));
+    let jobsByQuote: Record<string, { id: string; title: string | null; event_date: string | null; status: string | null }> = {};
+    if (quoteIds.length) {
+      const { data: jrows } = await supabaseAdmin.from("jobs").select("id, quote_id, title, event_date, status").in("quote_id", quoteIds);
+      for (const j of jrows ?? []) jobsByQuote[j.quote_id as string] = { id: j.id, title: j.title, event_date: j.event_date, status: j.status };
+    }
+    const upcoming_jobs = upcomingEvents.map((r) => ({
+      role: r.role,
+      ack_at: r.ack_at,
+      event_id: r.event.id,
+      event_title: r.event.title,
+      start_at: r.event.start_at,
+      end_at: r.event.end_at,
+      job: r.event.quote_id ? jobsByQuote[r.event.quote_id] ?? null : null,
+    }));
+
+    // Hours: this week (Sun start) + last 30 days
+    const now = new Date();
+    const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+    const monthStart = new Date();
+    monthStart.setDate(monthStart.getDate() - 30);
+
+    const { data: teRows } = await supabaseAdmin
+      .from("time_entries")
+      .select("clock_in, clock_out")
+      .eq("staff_id", data.id)
+      .gte("clock_in", monthStart.toISOString());
+    let week_seconds = 0, period_seconds = 0;
+    for (const r of teRows ?? []) {
+      const end = r.clock_out ? new Date(r.clock_out).getTime() : Date.now();
+      const dur = Math.max(0, Math.floor((end - new Date(r.clock_in).getTime()) / 1000));
+      period_seconds += dur;
+      if (new Date(r.clock_in) >= weekStart) week_seconds += dur;
+    }
+
+    // Expense total (last 30 days)
+    const monthStartDate = monthStart.toISOString().slice(0, 10);
+    const { data: exRows } = await supabaseAdmin
+      .from("expenses")
+      .select("amount_cents")
+      .eq("staff_id", data.id)
+      .gte("incurred_on", monthStartDate);
+    const expense_period_cents = (exRows ?? []).reduce((s, e: any) => s + (e.amount_cents ?? 0), 0);
+
+    return {
+      staff,
+      upcoming_jobs,
+      week_seconds,
+      period_seconds,
+      expense_period_cents,
+    };
+  });
