@@ -55,7 +55,6 @@ export const gallerySetups: SiteImage[] = [
   galleryImg("Tent in backyard.jpg", "Tent set up in a backyard"),
   galleryImg("Tent in backyard 2.jpg", "Backyard tent — alternate angle"),
   galleryImg("Tent near lake.jpg", "Tent set up near a lake"),
-  galleryImg("Tent near lake.jpg", "Tent set up near a lake"),
   galleryImg("2 20' Tent with windows.jpg", "20' tent with windows"),
   galleryImg("20x60 Tent(1).jpg", "20x60 frame tent"),
   galleryImg("10x20-frame-tent-seating-for-16.webp", "10x20 frame tent seating for 16"),

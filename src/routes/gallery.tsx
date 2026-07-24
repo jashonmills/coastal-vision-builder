@@ -134,9 +134,11 @@ function GalleryPage() {
                           className="cursor-zoom-in transition-transform duration-700 hover:scale-105"
                         />
                       </button>
-                      <figcaption className="px-4 py-3 text-xs text-muted-foreground">
-                        {it.caption ?? it.alt}
-                      </figcaption>
+                      {section.key !== "setups" && (
+                        <figcaption className="px-4 py-3 text-xs text-muted-foreground">
+                          {it.caption ?? it.alt}
+                        </figcaption>
+                      )}
                     </figure>
                   ))}
                 </div>
