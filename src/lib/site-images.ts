@@ -41,6 +41,8 @@ function galleryImg(file: string, alt: string, caption?: string): SiteImage {
  * into categories that drive the /gallery page sections.
  */
 export const gallerySetups: SiteImage[] = [
+  { file: "tent-aerial-triple-peak.jpg", url: tentAerialTriplePeakAsset.url, alt: "Aerial view of a triple-peak marquee tent in a backyard", caption: "Triple-peak marquee tent — aerial view" },
+  { file: "tent-pole-with-tables.jpg", url: tentPoleWithTablesAsset.url, alt: "Large pole tent set up on a lawn with round tables and chairs", caption: "Pole tent with round tables and chairs" },
   galleryImg("View 1.jpg", "Event tent setup — view 1"),
   galleryImg("View 2.jpg", "Event tent setup — view 2"),
   galleryImg("View 3.jpg", "Event tent setup — view 3"),
