@@ -13,6 +13,8 @@ const GALLERY_BUCKET_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/obj
 
 import sonyUlt10Asset from "@/assets/products/sony-ult10.jpg.asset.json";
 import cafeLightsAsset from "@/assets/products/cafe-lights.webp.asset.json";
+import tentAerialTriplePeakAsset from "@/assets/gallery/tent-aerial-triple-peak.jpg.asset.json";
+import tentPoleWithTablesAsset from "@/assets/gallery/tent-pole-with-tables.jpg.asset.json";
 
 export type SiteImage = {
   file: string;
