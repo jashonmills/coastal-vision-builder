@@ -44,6 +44,8 @@ const inventoryQuery = queryOptions({
     const { data, error } = await supabase
       .from("pricing_items")
       .select("id,category,name,price_cents,unit,notes,sort_order")
+      .eq("active", true)
+      .is("deleted_at", null)
       .order("category", { ascending: true })
       .order("sort_order", { ascending: true });
     if (error) throw error;
