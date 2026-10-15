@@ -212,7 +212,7 @@ function TimeEntryDialog({ entry, onClose }: { entry: any; onClose: () => void }
             <p className="text-xs uppercase tracking-wider text-muted-foreground">Time entry</p>
             <h2 className="truncate font-serif text-lg text-foreground">
               {entry.staff?.id ? (
-                <Link to="/admin/staff_/$id" params={{ id: entry.staff.id }} className="hover:underline" onClick={onClose}>{entry.staff?.name}</Link>
+                <Link to="/admin/staff/$id" params={{ id: entry.staff.id }} className="hover:underline" onClick={onClose}>{entry.staff?.name}</Link>
               ) : entry.staff?.name ?? "Entry"}
             </h2>
           </div>

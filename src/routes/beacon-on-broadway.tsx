@@ -5,6 +5,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
 import { VirtualTour } from "@/components/VirtualTour/VirtualTour";
+import beaconHeroAsset from "@/assets/beacon-hero.jpg.asset.json";
 
 import {
   MapPin,
@@ -29,7 +30,7 @@ const photoUrls: string[] = Object.entries(photoModules)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([, mod]) => mod.url);
 
-const heroPhoto = photoUrls[11] ?? photoUrls[0];
+const heroPhoto = beaconHeroAsset.url;
 const galleryPhotos = photoUrls;
 
 export const Route = createFileRoute("/beacon-on-broadway")({

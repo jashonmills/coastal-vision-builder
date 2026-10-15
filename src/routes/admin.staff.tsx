@@ -109,7 +109,7 @@ function StaffLinkCard({ staff }: { staff: StaffRow }) {
   return (
     <li>
       <Link
-        to="/admin/staff_/$id"
+        to="/admin/staff/$id"
         params={{ id: staff.id }}
         className="group flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/40 hover:bg-secondary/40"
       >
