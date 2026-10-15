@@ -190,7 +190,7 @@ function ExpenseDialog({ expense, onClose }: { expense: any; onClose: () => void
             <p className="text-xs uppercase tracking-wider text-muted-foreground">Expense</p>
             <h2 className="truncate font-serif text-lg text-foreground">
               {expense.staff?.id ? (
-                <Link to="/admin/staff_/$id" params={{ id: expense.staff.id }} className="hover:underline" onClick={onClose}>{expense.staff?.name}</Link>
+                <Link to="/admin/staff/$id" params={{ id: expense.staff.id }} className="hover:underline" onClick={onClose}>{expense.staff?.name}</Link>
               ) : expense.staff?.name ?? "Expense"}
             </h2>
           </div>

@@ -264,9 +264,9 @@ function SiteFooter() {
             <li><Link to="/gallery" className="hover:text-[color:var(--gold)]">{t("nav.gallery")}</Link></li>
             <li><Link to="/inventory" className="hover:text-[color:var(--gold)]">{t("nav.inventory")}</Link></li>
             <li><Link to="/beacon-on-broadway" className="hover:text-[color:var(--gold)]">{t("nav.beacon")}</Link></li>
-            <li><Link to="/pricing" className="hover:text-[color:var(--gold)]">{t("nav.pricing")}</Link></li>
+            <li><Link to="/inventory" className="hover:text-[color:var(--gold)]">{t("nav.pricing")}</Link></li>
             <li><Link to="/about" className="hover:text-[color:var(--gold)]">{t("nav.about")}</Link></li>
-            <li><Link to="/ai-planner" className="hover:text-[color:var(--gold)]">{t("nav.aiPlanner")}</Link></li>
+            <li><Link to="/ai-tent-planner" className="hover:text-[color:var(--gold)]">{t("nav.aiPlanner")}</Link></li>
             <li><Link to="/contact" className="hover:text-[color:var(--gold)]">{t("nav.contact")}</Link></li>
             <li className="col-span-2"><Link to="/rental-contract" className="hover:text-[color:var(--gold)]">{t("nav.rentalContract")}</Link></li>
           </ul>
