@@ -1,16 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cateringCalloutImage } from "@/lib/site-images";
+import beaconHeroAsset from "@/assets/beacon-hero.jpg.asset.json";
 
-const photoModules = import.meta.glob("@/assets/beacon/*.jpg.asset.json", {
-  eager: true,
-  import: "default",
-}) as Record<string, { url: string }>;
-
-const beaconThumbUrl = Object.entries(photoModules)
-  .sort(([a], [b]) => a.localeCompare(b))[11]?.[1]?.url ??
-  Object.values(photoModules)[0]?.url;
+const beaconPhotoUrl = beaconHeroAsset.url;
 
 export function ServicesCallouts() {
   const { t } = useTranslation();
@@ -21,18 +15,12 @@ export function ServicesCallouts() {
       {/* Beacon callout */}
       <div className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-md">
         <div className="aspect-[16/10] overflow-hidden">
-          {beaconThumbUrl ? (
-            <img
-              src={beaconThumbUrl}
-              alt={t("services.callouts.beacon.alt")}
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted">
-              <MapPin className="h-10 w-10 text-muted-foreground" />
-            </div>
-          )}
+          <img
+            src={beaconPhotoUrl}
+            alt={t("services.callouts.beacon.alt")}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
         </div>
         <div className="p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--gold)]">
