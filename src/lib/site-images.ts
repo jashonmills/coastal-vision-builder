@@ -15,6 +15,7 @@ import sonyUlt10Asset from "@/assets/products/sony-ult10.jpg.asset.json";
 import cafeLightsAsset from "@/assets/products/cafe-lights.webp.asset.json";
 import tentAerialTriplePeakAsset from "@/assets/gallery/tent-aerial-triple-peak.jpg.asset.json";
 import tentPoleWithTablesAsset from "@/assets/gallery/tent-pole-with-tables.jpg.asset.json";
+import cateringWeddingBuffetAsset from "@/assets/catering-wedding-buffet.jpg.asset.json";
 
 export type SiteImage = {
   file: string;
@@ -234,10 +235,11 @@ export const galleryImages: SiteImage[] = [
 export const allImages: SiteImage[] = [...sketchImages, ...productImages, ...photoImages];
 
 /** Prominent catering photo for call-outs and promotional cards. */
-export const cateringCalloutImage: SiteImage = img(
-  "469312785_529823293388786_3537228070558775988_n.jpg",
-  "Catering buffet table with food spread",
-);
+export const cateringCalloutImage: SiteImage = {
+  file: "catering-wedding-buffet.jpg",
+  url: cateringWeddingBuffetAsset.url,
+  alt: "Bride and groom serving themselves from a catered wedding buffet line",
+};
 
 
 // ----- Helpers ----------------------------------------------------------
