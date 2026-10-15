@@ -9,174 +9,79 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VirtualTourRouteImport } from './routes/virtual-tour'
-import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
-import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
-import { Route as StaffRouteImport } from './routes/staff'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RecommenderRouteImport } from './routes/recommender'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as MyScheduleRouteImport } from './routes/my-schedule'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as InventoryRouteImport } from './routes/inventory'
-import { Route as GalleryRouteImport } from './routes/gallery'
-import { Route as EventsRouteImport } from './routes/events'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CateringRouteImport } from './routes/catering'
-import { Route as BeaconOnBroadwayRouteImport } from './routes/beacon-on-broadway'
-import { Route as AiTentPlannerRouteImport } from './routes/ai-tent-planner'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as StaffIndexRouteImport } from './routes/staff.index'
-import { Route as RentalContractIndexRouteImport } from './routes/rental-contract.index'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AiTentPlannerRouteImport } from './routes/ai-tent-planner'
+import { Route as BeaconOnBroadwayRouteImport } from './routes/beacon-on-broadway'
+import { Route as CateringRouteImport } from './routes/catering'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MyScheduleRouteImport } from './routes/my-schedule'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as RecommenderRouteImport } from './routes/recommender'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as StaffRouteImport } from './routes/staff'
+import { Route as TentRentalsRouteImport } from './routes/tent-rentals'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as VirtualTourRouteImport } from './routes/virtual-tour'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
-import { Route as StaffNotesRouteImport } from './routes/staff.notes'
-import { Route as StaffMoreRouteImport } from './routes/staff.more'
-import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
-import { Route as StaffExpensesRouteImport } from './routes/staff.expenses'
-import { Route as StaffClockRouteImport } from './routes/staff.clock'
-import { Route as StaffCleaningRouteImport } from './routes/staff.cleaning'
-import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
-import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
-import { Route as AdminStaffRouteImport } from './routes/admin.staff'
-import { Route as AdminSiteImagesRouteImport } from './routes/admin.site-images'
-import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
-import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
-import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-requests'
-import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
-import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
-import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
-import { Route as AdminExpensesRouteImport } from './routes/admin.expenses'
-import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
-import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
-import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
-import { Route as AdminContentRouteImport } from './routes/admin.content'
-import { Route as AdminCleaningRouteImport } from './routes/admin.cleaning'
-import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 import { Route as AccountIdRouteImport } from './routes/account.$id'
-import { Route as StaffJobsIdRouteImport } from './routes/staff.jobs_.$id'
-import { Route as RentalContractFillContractIdRouteImport } from './routes/rental-contract.fill.$contractId'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
-import { Route as AdminStaffIdRouteImport } from './routes/admin.staff_.$id'
-import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
-import { Route as AdminJobsIdRouteImport } from './routes/admin.jobs_.$id'
-import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
-import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
+import { Route as AdminCleaningRouteImport } from './routes/admin.cleaning'
+import { Route as AdminContentRouteImport } from './routes/admin.content'
+import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminDataImportRouteImport } from './routes/admin.data-import'
+import { Route as AdminExpensesRouteImport } from './routes/admin.expenses'
+import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
+import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
+import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
+import { Route as AdminQuoteRequestsRouteImport } from './routes/admin.quote-requests'
+import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
+import { Route as AdminSchedulerRouteImport } from './routes/admin.scheduler'
+import { Route as AdminSiteImagesRouteImport } from './routes/admin.site-images'
+import { Route as AdminStaffRouteImport } from './routes/admin.staff'
+import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as RentalContractIndexRouteImport } from './routes/rental-contract.index'
+import { Route as StaffIndexRouteImport } from './routes/staff.index'
+import { Route as StaffCalendarRouteImport } from './routes/staff.calendar'
+import { Route as StaffCleaningRouteImport } from './routes/staff.cleaning'
+import { Route as StaffClockRouteImport } from './routes/staff.clock'
+import { Route as StaffExpensesRouteImport } from './routes/staff.expenses'
+import { Route as StaffJobsRouteImport } from './routes/staff.jobs'
+import { Route as StaffMoreRouteImport } from './routes/staff.more'
+import { Route as StaffNotesRouteImport } from './routes/staff.notes'
 import { Route as AccountQuoteIdRouteImport } from './routes/account.quote.$id'
-import { Route as StaffJobsIdPullRouteImport } from './routes/staff.jobs_.$id.pull'
-import { Route as StaffJobsIdCheckinRouteImport } from './routes/staff.jobs_.$id.checkin'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
-import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as ApiPublicHooksSpreadsheetSyncRouteImport } from './routes/api/public/hooks/spreadsheet-sync'
-import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes_.$id.preview'
-import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes_.$id.job-sheet'
+import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers_.$id'
+import { Route as AdminInventoryIdRouteImport } from './routes/admin.inventory_.$id'
+import { Route as AdminJobsIdRouteImport } from './routes/admin.jobs_.$id'
+import { Route as AdminQuoteRequestsIdRouteImport } from './routes/admin.quote-requests_.$id'
+import { Route as AdminStaffIdRouteImport } from './routes/admin.staff_.$id'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as RentalContractFillContractIdRouteImport } from './routes/rental-contract.fill.$contractId'
+import { Route as StaffJobsIdRouteImport } from './routes/staff.jobs_.$id'
 import { Route as AdminQuotesIdEditRouteImport } from './routes/admin.quotes_.$id.edit'
+import { Route as AdminQuotesIdJobSheetRouteImport } from './routes/admin.quotes_.$id.job-sheet'
+import { Route as AdminQuotesIdPreviewRouteImport } from './routes/admin.quotes_.$id.preview'
+import { Route as ApiPublicHooksSpreadsheetSyncRouteImport } from './routes/api/public/hooks/spreadsheet-sync'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as StaffJobsIdCheckinRouteImport } from './routes/staff.jobs_.$id.checkin'
+import { Route as StaffJobsIdPullRouteImport } from './routes/staff.jobs_.$id.pull'
 
-const VirtualTourRoute = VirtualTourRouteImport.update({
-  id: '/virtual-tour',
-  path: '/virtual-tour',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TentRentalsRoute = TentRentalsRouteImport.update({
-  id: '/tent-rentals',
-  path: '/tent-rentals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StaffRoute = StaffRouteImport.update({
-  id: '/staff',
-  path: '/staff',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecommenderRoute = RecommenderRouteImport.update({
-  id: '/recommender',
-  path: '/recommender',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyScheduleRoute = MyScheduleRouteImport.update({
-  id: '/my-schedule',
-  path: '/my-schedule',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InventoryRoute = InventoryRouteImport.update({
-  id: '/inventory',
-  path: '/inventory',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GalleryRoute = GalleryRouteImport.update({
-  id: '/gallery',
-  path: '/gallery',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EventsRoute = EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CateringRoute = CateringRouteImport.update({
-  id: '/catering',
-  path: '/catering',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BeaconOnBroadwayRoute = BeaconOnBroadwayRouteImport.update({
-  id: '/beacon-on-broadway',
-  path: '/beacon-on-broadway',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AiTentPlannerRoute = AiTentPlannerRouteImport.update({
-  id: '/ai-tent-planner',
-  path: '/ai-tent-planner',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AcceptInviteRoute = AcceptInviteRouteImport.update({
-  id: '/accept-invite',
-  path: '/accept-invite',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -184,19 +89,114 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AcceptInviteRoute = AcceptInviteRouteImport.update({
+  id: '/accept-invite',
+  path: '/accept-invite',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StaffIndexRoute = StaffIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => StaffRoute,
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const RentalContractIndexRoute = RentalContractIndexRouteImport.update({
-  id: '/rental-contract/',
-  path: '/rental-contract/',
+const AiTentPlannerRoute = AiTentPlannerRouteImport.update({
+  id: '/ai-tent-planner',
+  path: '/ai-tent-planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeaconOnBroadwayRoute = BeaconOnBroadwayRouteImport.update({
+  id: '/beacon-on-broadway',
+  path: '/beacon-on-broadway',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CateringRoute = CateringRouteImport.update({
+  id: '/catering',
+  path: '/catering',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryRoute = InventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyScheduleRoute = MyScheduleRouteImport.update({
+  id: '/my-schedule',
+  path: '/my-schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecommenderRoute = RecommenderRouteImport.update({
+  id: '/recommender',
+  path: '/recommender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TentRentalsRoute = TentRentalsRouteImport.update({
+  id: '/tent-rentals',
+  path: '/tent-rentals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VirtualTourRoute = VirtualTourRouteImport.update({
+  id: '/virtual-tour',
+  path: '/virtual-tour',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountIndexRoute = AccountIndexRouteImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountIdRoute = AccountIdRouteImport.update({
+  id: '/account/$id',
+  path: '/account/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -204,119 +204,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const AccountIndexRoute = AccountIndexRouteImport.update({
-  id: '/account/',
-  path: '/account/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StaffNotesRoute = StaffNotesRouteImport.update({
-  id: '/notes',
-  path: '/notes',
-  getParentRoute: () => StaffRoute,
-} as any)
-const StaffMoreRoute = StaffMoreRouteImport.update({
-  id: '/more',
-  path: '/more',
-  getParentRoute: () => StaffRoute,
-} as any)
-const StaffJobsRoute = StaffJobsRouteImport.update({
-  id: '/jobs',
-  path: '/jobs',
-  getParentRoute: () => StaffRoute,
-} as any)
-const StaffExpensesRoute = StaffExpensesRouteImport.update({
-  id: '/expenses',
-  path: '/expenses',
-  getParentRoute: () => StaffRoute,
-} as any)
-const StaffClockRoute = StaffClockRouteImport.update({
-  id: '/clock',
-  path: '/clock',
-  getParentRoute: () => StaffRoute,
-} as any)
-const StaffCleaningRoute = StaffCleaningRouteImport.update({
-  id: '/cleaning',
-  path: '/cleaning',
-  getParentRoute: () => StaffRoute,
-} as any)
-const StaffCalendarRoute = StaffCalendarRouteImport.update({
-  id: '/calendar',
-  path: '/calendar',
-  getParentRoute: () => StaffRoute,
-} as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTimesheetsRoute = AdminTimesheetsRouteImport.update({
-  id: '/timesheets',
-  path: '/timesheets',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminStaffRoute = AdminStaffRouteImport.update({
-  id: '/staff',
-  path: '/staff',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSiteImagesRoute = AdminSiteImagesRouteImport.update({
-  id: '/site-images',
-  path: '/site-images',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSchedulerRoute = AdminSchedulerRouteImport.update({
-  id: '/scheduler',
-  path: '/scheduler',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminQuotesRoute = AdminQuotesRouteImport.update({
-  id: '/quotes',
-  path: '/quotes',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminQuoteRequestsRoute = AdminQuoteRequestsRouteImport.update({
-  id: '/quote-requests',
-  path: '/quote-requests',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPricingRoute = AdminPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminJobsRoute = AdminJobsRouteImport.update({
-  id: '/jobs',
-  path: '/jobs',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminInventoryRoute = AdminInventoryRouteImport.update({
-  id: '/inventory',
-  path: '/inventory',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminExpensesRoute = AdminExpensesRouteImport.update({
-  id: '/expenses',
-  path: '/expenses',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminDataImportRoute = AdminDataImportRouteImport.update({
-  id: '/data-import',
-  path: '/data-import',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCustomersRoute = AdminCustomersRouteImport.update({
-  id: '/customers',
-  path: '/customers',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminContentRoute = AdminContentRouteImport.update({
-  id: '/content',
-  path: '/content',
+const AdminAdminsRoute = AdminAdminsRouteImport.update({
+  id: '/admins',
+  path: '/admins',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminCleaningRoute = AdminCleaningRouteImport.update({
@@ -324,45 +214,134 @@ const AdminCleaningRoute = AdminCleaningRouteImport.update({
   path: '/cleaning',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminAdminsRoute = AdminAdminsRouteImport.update({
-  id: '/admins',
-  path: '/admins',
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
   getParentRoute: () => AdminRoute,
 } as any)
-const AccountIdRoute = AccountIdRouteImport.update({
-  id: '/account/$id',
-  path: '/account/$id',
+const AdminCustomersRoute = AdminCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDataImportRoute = AdminDataImportRouteImport.update({
+  id: '/data-import',
+  path: '/data-import',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExpensesRoute = AdminExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInventoryRoute = AdminInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminJobsRoute = AdminJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPricingRoute = AdminPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQuoteRequestsRoute = AdminQuoteRequestsRouteImport.update({
+  id: '/quote-requests',
+  path: '/quote-requests',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQuotesRoute = AdminQuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSchedulerRoute = AdminSchedulerRouteImport.update({
+  id: '/scheduler',
+  path: '/scheduler',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSiteImagesRoute = AdminSiteImagesRouteImport.update({
+  id: '/site-images',
+  path: '/site-images',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTimesheetsRoute = AdminTimesheetsRouteImport.update({
+  id: '/timesheets',
+  path: '/timesheets',
+  getParentRoute: () => AdminRoute,
+} as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StaffJobsIdRoute = StaffJobsIdRouteImport.update({
-  id: '/jobs_/$id',
-  path: '/jobs/$id',
+const RentalContractIndexRoute = RentalContractIndexRouteImport.update({
+  id: '/rental-contract/',
+  path: '/rental-contract/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffIndexRoute = StaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => StaffRoute,
 } as any)
-const RentalContractFillContractIdRoute =
-  RentalContractFillContractIdRouteImport.update({
-    id: '/rental-contract/fill/$contractId',
-    path: '/rental-contract/fill/$contractId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
+const StaffCalendarRoute = StaffCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffCleaningRoute = StaffCleaningRouteImport.update({
+  id: '/cleaning',
+  path: '/cleaning',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffClockRoute = StaffClockRouteImport.update({
+  id: '/clock',
+  path: '/clock',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffExpensesRoute = StaffExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffJobsRoute = StaffJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffMoreRoute = StaffMoreRouteImport.update({
+  id: '/more',
+  path: '/more',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffNotesRoute = StaffNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => StaffRoute,
+} as any)
+const AccountQuoteIdRoute = AccountQuoteIdRouteImport.update({
+  id: '/account/quote/$id',
+  path: '/account/quote/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminStaffIdRoute = AdminStaffIdRouteImport.update({
-  id: '/staff_/$id',
-  path: '/staff/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
-  id: '/quote-requests_/$id',
-  path: '/quote-requests/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminJobsIdRoute = AdminJobsIdRouteImport.update({
-  id: '/jobs_/$id',
-  path: '/jobs/$id',
+const AdminCustomersIdRoute = AdminCustomersIdRouteImport.update({
+  id: '/customers_/$id',
+  path: '/customers/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
@@ -370,36 +349,56 @@ const AdminInventoryIdRoute = AdminInventoryIdRouteImport.update({
   path: '/inventory/$id',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminCustomersIdRoute = AdminCustomersIdRouteImport.update({
-  id: '/customers_/$id',
-  path: '/customers/$id',
+const AdminJobsIdRoute = AdminJobsIdRouteImport.update({
+  id: '/jobs_/$id',
+  path: '/jobs/$id',
   getParentRoute: () => AdminRoute,
 } as any)
-const AccountQuoteIdRoute = AccountQuoteIdRouteImport.update({
-  id: '/account/quote/$id',
-  path: '/account/quote/$id',
+const AdminQuoteRequestsIdRoute = AdminQuoteRequestsIdRouteImport.update({
+  id: '/quote-requests_/$id',
+  path: '/quote-requests/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStaffIdRoute = AdminStaffIdRouteImport.update({
+  id: '/staff_/$id',
+  path: '/staff/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StaffJobsIdPullRoute = StaffJobsIdPullRouteImport.update({
-  id: '/pull',
-  path: '/pull',
-  getParentRoute: () => StaffJobsIdRoute,
-} as any)
-const StaffJobsIdCheckinRoute = StaffJobsIdCheckinRouteImport.update({
-  id: '/checkin',
-  path: '/checkin',
-  getParentRoute: () => StaffJobsIdRoute,
-} as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
+const RentalContractFillContractIdRoute =
+  RentalContractFillContractIdRouteImport.update({
+    id: '/rental-contract/fill/$contractId',
+    path: '/rental-contract/fill/$contractId',
     getParentRoute: () => rootRouteImport,
   } as any)
-const LovableEmailTransactionalPreviewRoute =
-  LovableEmailTransactionalPreviewRouteImport.update({
-    id: '/lovable/email/transactional/preview',
-    path: '/lovable/email/transactional/preview',
+const StaffJobsIdRoute = StaffJobsIdRouteImport.update({
+  id: '/jobs_/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => StaffRoute,
+} as any)
+const AdminQuotesIdEditRoute = AdminQuotesIdEditRouteImport.update({
+  id: '/quotes_/$id/edit',
+  path: '/quotes/$id/edit',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQuotesIdJobSheetRoute = AdminQuotesIdJobSheetRouteImport.update({
+  id: '/quotes_/$id/job-sheet',
+  path: '/quotes/$id/job-sheet',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQuotesIdPreviewRoute = AdminQuotesIdPreviewRouteImport.update({
+  id: '/quotes_/$id/preview',
+  path: '/quotes/$id/preview',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicHooksSpreadsheetSyncRoute =
+  ApiPublicHooksSpreadsheetSyncRouteImport.update({
+    id: '/api/public/hooks/spreadsheet-sync',
+    path: '/api/public/hooks/spreadsheet-sync',
     getParentRoute: () => rootRouteImport,
   } as any)
 const LovableEmailQueueProcessRoute =
@@ -408,26 +407,27 @@ const LovableEmailQueueProcessRoute =
     path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicHooksSpreadsheetSyncRoute =
-  ApiPublicHooksSpreadsheetSyncRouteImport.update({
-    id: '/api/public/hooks/spreadsheet-sync',
-    path: '/api/public/hooks/spreadsheet-sync',
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AdminQuotesIdPreviewRoute = AdminQuotesIdPreviewRouteImport.update({
-  id: '/quotes_/$id/preview',
-  path: '/quotes/$id/preview',
-  getParentRoute: () => AdminRoute,
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StaffJobsIdCheckinRoute = StaffJobsIdCheckinRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => StaffJobsIdRoute,
 } as any)
-const AdminQuotesIdJobSheetRoute = AdminQuotesIdJobSheetRouteImport.update({
-  id: '/quotes_/$id/job-sheet',
-  path: '/quotes/$id/job-sheet',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminQuotesIdEditRoute = AdminQuotesIdEditRouteImport.update({
-  id: '/quotes_/$id/edit',
-  path: '/quotes/$id/edit',
-  getParentRoute: () => AdminRoute,
+const StaffJobsIdPullRoute = StaffJobsIdPullRouteImport.update({
+  id: '/pull',
+  path: '/pull',
+  getParentRoute: () => StaffJobsIdRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -894,144 +894,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/virtual-tour': {
-      id: '/virtual-tour'
-      path: '/virtual-tour'
-      fullPath: '/virtual-tour'
-      preLoaderRoute: typeof VirtualTourRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tent-rentals': {
-      id: '/tent-rentals'
-      path: '/tent-rentals'
-      fullPath: '/tent-rentals'
-      preLoaderRoute: typeof TentRentalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/staff': {
-      id: '/staff'
-      path: '/staff'
-      fullPath: '/staff'
-      preLoaderRoute: typeof StaffRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recommender': {
-      id: '/recommender'
-      path: '/recommender'
-      fullPath: '/recommender'
-      preLoaderRoute: typeof RecommenderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/my-schedule': {
-      id: '/my-schedule'
-      path: '/my-schedule'
-      fullPath: '/my-schedule'
-      preLoaderRoute: typeof MyScheduleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inventory': {
-      id: '/inventory'
-      path: '/inventory'
-      fullPath: '/inventory'
-      preLoaderRoute: typeof InventoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gallery': {
-      id: '/gallery'
-      path: '/gallery'
-      fullPath: '/gallery'
-      preLoaderRoute: typeof GalleryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/catering': {
-      id: '/catering'
-      path: '/catering'
-      fullPath: '/catering'
-      preLoaderRoute: typeof CateringRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/beacon-on-broadway': {
-      id: '/beacon-on-broadway'
-      path: '/beacon-on-broadway'
-      fullPath: '/beacon-on-broadway'
-      preLoaderRoute: typeof BeaconOnBroadwayRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai-tent-planner': {
-      id: '/ai-tent-planner'
-      path: '/ai-tent-planner'
-      fullPath: '/ai-tent-planner'
-      preLoaderRoute: typeof AiTentPlannerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/accept-invite': {
-      id: '/accept-invite'
-      path: '/accept-invite'
-      fullPath: '/accept-invite'
-      preLoaderRoute: typeof AcceptInviteRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -1041,25 +908,158 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/accept-invite': {
+      id: '/accept-invite'
+      path: '/accept-invite'
+      fullPath: '/accept-invite'
+      preLoaderRoute: typeof AcceptInviteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/staff/': {
-      id: '/staff/'
-      path: '/'
-      fullPath: '/staff/'
-      preLoaderRoute: typeof StaffIndexRouteImport
-      parentRoute: typeof StaffRoute
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/rental-contract/': {
-      id: '/rental-contract/'
-      path: '/rental-contract'
-      fullPath: '/rental-contract/'
-      preLoaderRoute: typeof RentalContractIndexRouteImport
+    '/ai-tent-planner': {
+      id: '/ai-tent-planner'
+      path: '/ai-tent-planner'
+      fullPath: '/ai-tent-planner'
+      preLoaderRoute: typeof AiTentPlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beacon-on-broadway': {
+      id: '/beacon-on-broadway'
+      path: '/beacon-on-broadway'
+      fullPath: '/beacon-on-broadway'
+      preLoaderRoute: typeof BeaconOnBroadwayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catering': {
+      id: '/catering'
+      path: '/catering'
+      fullPath: '/catering'
+      preLoaderRoute: typeof CateringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory': {
+      id: '/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-schedule': {
+      id: '/my-schedule'
+      path: '/my-schedule'
+      fullPath: '/my-schedule'
+      preLoaderRoute: typeof MyScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recommender': {
+      id: '/recommender'
+      path: '/recommender'
+      fullPath: '/recommender'
+      preLoaderRoute: typeof RecommenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tent-rentals': {
+      id: '/tent-rentals'
+      path: '/tent-rentals'
+      fullPath: '/tent-rentals'
+      preLoaderRoute: typeof TentRentalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/virtual-tour': {
+      id: '/virtual-tour'
+      path: '/virtual-tour'
+      fullPath: '/virtual-tour'
+      preLoaderRoute: typeof VirtualTourRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/': {
+      id: '/account/'
+      path: '/account'
+      fullPath: '/account/'
+      preLoaderRoute: typeof AccountIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/$id': {
+      id: '/account/$id'
+      path: '/account/$id'
+      fullPath: '/account/$id'
+      preLoaderRoute: typeof AccountIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -1069,165 +1069,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/account/': {
-      id: '/account/'
-      path: '/account'
-      fullPath: '/account/'
-      preLoaderRoute: typeof AccountIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/staff/notes': {
-      id: '/staff/notes'
-      path: '/notes'
-      fullPath: '/staff/notes'
-      preLoaderRoute: typeof StaffNotesRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/staff/more': {
-      id: '/staff/more'
-      path: '/more'
-      fullPath: '/staff/more'
-      preLoaderRoute: typeof StaffMoreRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/staff/jobs': {
-      id: '/staff/jobs'
-      path: '/jobs'
-      fullPath: '/staff/jobs'
-      preLoaderRoute: typeof StaffJobsRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/staff/expenses': {
-      id: '/staff/expenses'
-      path: '/expenses'
-      fullPath: '/staff/expenses'
-      preLoaderRoute: typeof StaffExpensesRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/staff/clock': {
-      id: '/staff/clock'
-      path: '/clock'
-      fullPath: '/staff/clock'
-      preLoaderRoute: typeof StaffClockRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/staff/cleaning': {
-      id: '/staff/cleaning'
-      path: '/cleaning'
-      fullPath: '/staff/cleaning'
-      preLoaderRoute: typeof StaffCleaningRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/staff/calendar': {
-      id: '/staff/calendar'
-      path: '/calendar'
-      fullPath: '/staff/calendar'
-      preLoaderRoute: typeof StaffCalendarRouteImport
-      parentRoute: typeof StaffRoute
-    }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/timesheets': {
-      id: '/admin/timesheets'
-      path: '/timesheets'
-      fullPath: '/admin/timesheets'
-      preLoaderRoute: typeof AdminTimesheetsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/staff': {
-      id: '/admin/staff'
-      path: '/staff'
-      fullPath: '/admin/staff'
-      preLoaderRoute: typeof AdminStaffRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/site-images': {
-      id: '/admin/site-images'
-      path: '/site-images'
-      fullPath: '/admin/site-images'
-      preLoaderRoute: typeof AdminSiteImagesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/scheduler': {
-      id: '/admin/scheduler'
-      path: '/scheduler'
-      fullPath: '/admin/scheduler'
-      preLoaderRoute: typeof AdminSchedulerRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/quotes': {
-      id: '/admin/quotes'
-      path: '/quotes'
-      fullPath: '/admin/quotes'
-      preLoaderRoute: typeof AdminQuotesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/quote-requests': {
-      id: '/admin/quote-requests'
-      path: '/quote-requests'
-      fullPath: '/admin/quote-requests'
-      preLoaderRoute: typeof AdminQuoteRequestsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/pricing': {
-      id: '/admin/pricing'
-      path: '/pricing'
-      fullPath: '/admin/pricing'
-      preLoaderRoute: typeof AdminPricingRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/jobs': {
-      id: '/admin/jobs'
-      path: '/jobs'
-      fullPath: '/admin/jobs'
-      preLoaderRoute: typeof AdminJobsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/inventory': {
-      id: '/admin/inventory'
-      path: '/inventory'
-      fullPath: '/admin/inventory'
-      preLoaderRoute: typeof AdminInventoryRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/expenses': {
-      id: '/admin/expenses'
-      path: '/expenses'
-      fullPath: '/admin/expenses'
-      preLoaderRoute: typeof AdminExpensesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/data-import': {
-      id: '/admin/data-import'
-      path: '/data-import'
-      fullPath: '/admin/data-import'
-      preLoaderRoute: typeof AdminDataImportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/customers': {
-      id: '/admin/customers'
-      path: '/customers'
-      fullPath: '/admin/customers'
-      preLoaderRoute: typeof AdminCustomersRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/content': {
-      id: '/admin/content'
-      path: '/content'
-      fullPath: '/admin/content'
-      preLoaderRoute: typeof AdminContentRouteImport
+    '/admin/admins': {
+      id: '/admin/admins'
+      path: '/admins'
+      fullPath: '/admin/admins'
+      preLoaderRoute: typeof AdminAdminsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/cleaning': {
@@ -1237,60 +1083,186 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCleaningRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/admins': {
-      id: '/admin/admins'
-      path: '/admins'
-      fullPath: '/admin/admins'
-      preLoaderRoute: typeof AdminAdminsRouteImport
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/account/$id': {
-      id: '/account/$id'
-      path: '/account/$id'
-      fullPath: '/account/$id'
-      preLoaderRoute: typeof AccountIdRouteImport
+    '/admin/customers': {
+      id: '/admin/customers'
+      path: '/customers'
+      fullPath: '/admin/customers'
+      preLoaderRoute: typeof AdminCustomersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/data-import': {
+      id: '/admin/data-import'
+      path: '/data-import'
+      fullPath: '/admin/data-import'
+      preLoaderRoute: typeof AdminDataImportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/expenses': {
+      id: '/admin/expenses'
+      path: '/expenses'
+      fullPath: '/admin/expenses'
+      preLoaderRoute: typeof AdminExpensesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/inventory': {
+      id: '/admin/inventory'
+      path: '/inventory'
+      fullPath: '/admin/inventory'
+      preLoaderRoute: typeof AdminInventoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/jobs': {
+      id: '/admin/jobs'
+      path: '/jobs'
+      fullPath: '/admin/jobs'
+      preLoaderRoute: typeof AdminJobsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pricing': {
+      id: '/admin/pricing'
+      path: '/pricing'
+      fullPath: '/admin/pricing'
+      preLoaderRoute: typeof AdminPricingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/quote-requests': {
+      id: '/admin/quote-requests'
+      path: '/quote-requests'
+      fullPath: '/admin/quote-requests'
+      preLoaderRoute: typeof AdminQuoteRequestsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/quotes': {
+      id: '/admin/quotes'
+      path: '/quotes'
+      fullPath: '/admin/quotes'
+      preLoaderRoute: typeof AdminQuotesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/scheduler': {
+      id: '/admin/scheduler'
+      path: '/scheduler'
+      fullPath: '/admin/scheduler'
+      preLoaderRoute: typeof AdminSchedulerRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/site-images': {
+      id: '/admin/site-images'
+      path: '/site-images'
+      fullPath: '/admin/site-images'
+      preLoaderRoute: typeof AdminSiteImagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/staff': {
+      id: '/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/timesheets': {
+      id: '/admin/timesheets'
+      path: '/timesheets'
+      fullPath: '/admin/timesheets'
+      preLoaderRoute: typeof AdminTimesheetsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/staff/jobs_/$id': {
-      id: '/staff/jobs_/$id'
-      path: '/jobs/$id'
-      fullPath: '/staff/jobs/$id'
-      preLoaderRoute: typeof StaffJobsIdRouteImport
+    '/rental-contract/': {
+      id: '/rental-contract/'
+      path: '/rental-contract'
+      fullPath: '/rental-contract/'
+      preLoaderRoute: typeof RentalContractIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff/': {
+      id: '/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof StaffIndexRouteImport
       parentRoute: typeof StaffRoute
     }
-    '/rental-contract/fill/$contractId': {
-      id: '/rental-contract/fill/$contractId'
-      path: '/rental-contract/fill/$contractId'
-      fullPath: '/rental-contract/fill/$contractId'
-      preLoaderRoute: typeof RentalContractFillContractIdRouteImport
+    '/staff/calendar': {
+      id: '/staff/calendar'
+      path: '/calendar'
+      fullPath: '/staff/calendar'
+      preLoaderRoute: typeof StaffCalendarRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/cleaning': {
+      id: '/staff/cleaning'
+      path: '/cleaning'
+      fullPath: '/staff/cleaning'
+      preLoaderRoute: typeof StaffCleaningRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/clock': {
+      id: '/staff/clock'
+      path: '/clock'
+      fullPath: '/staff/clock'
+      preLoaderRoute: typeof StaffClockRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/expenses': {
+      id: '/staff/expenses'
+      path: '/expenses'
+      fullPath: '/staff/expenses'
+      preLoaderRoute: typeof StaffExpensesRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/jobs': {
+      id: '/staff/jobs'
+      path: '/jobs'
+      fullPath: '/staff/jobs'
+      preLoaderRoute: typeof StaffJobsRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/more': {
+      id: '/staff/more'
+      path: '/more'
+      fullPath: '/staff/more'
+      preLoaderRoute: typeof StaffMoreRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/notes': {
+      id: '/staff/notes'
+      path: '/notes'
+      fullPath: '/staff/notes'
+      preLoaderRoute: typeof StaffNotesRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/account/quote/$id': {
+      id: '/account/quote/$id'
+      path: '/account/quote/$id'
+      fullPath: '/account/quote/$id'
+      preLoaderRoute: typeof AccountQuoteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/staff_/$id': {
-      id: '/admin/staff_/$id'
-      path: '/staff/$id'
-      fullPath: '/admin/staff/$id'
-      preLoaderRoute: typeof AdminStaffIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/quote-requests_/$id': {
-      id: '/admin/quote-requests_/$id'
-      path: '/quote-requests/$id'
-      fullPath: '/admin/quote-requests/$id'
-      preLoaderRoute: typeof AdminQuoteRequestsIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/jobs_/$id': {
-      id: '/admin/jobs_/$id'
-      path: '/jobs/$id'
-      fullPath: '/admin/jobs/$id'
-      preLoaderRoute: typeof AdminJobsIdRouteImport
+    '/admin/customers_/$id': {
+      id: '/admin/customers_/$id'
+      path: '/customers/$id'
+      fullPath: '/admin/customers/$id'
+      preLoaderRoute: typeof AdminCustomersIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/inventory_/$id': {
@@ -1300,67 +1272,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInventoryIdRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/customers_/$id': {
-      id: '/admin/customers_/$id'
-      path: '/customers/$id'
-      fullPath: '/admin/customers/$id'
-      preLoaderRoute: typeof AdminCustomersIdRouteImport
+    '/admin/jobs_/$id': {
+      id: '/admin/jobs_/$id'
+      path: '/jobs/$id'
+      fullPath: '/admin/jobs/$id'
+      preLoaderRoute: typeof AdminJobsIdRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/account/quote/$id': {
-      id: '/account/quote/$id'
-      path: '/account/quote/$id'
-      fullPath: '/account/quote/$id'
-      preLoaderRoute: typeof AccountQuoteIdRouteImport
+    '/admin/quote-requests_/$id': {
+      id: '/admin/quote-requests_/$id'
+      path: '/quote-requests/$id'
+      fullPath: '/admin/quote-requests/$id'
+      preLoaderRoute: typeof AdminQuoteRequestsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/staff_/$id': {
+      id: '/admin/staff_/$id'
+      path: '/staff/$id'
+      fullPath: '/admin/staff/$id'
+      preLoaderRoute: typeof AdminStaffIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/staff/jobs_/$id/pull': {
-      id: '/staff/jobs_/$id/pull'
-      path: '/pull'
-      fullPath: '/staff/jobs/$id/pull'
-      preLoaderRoute: typeof StaffJobsIdPullRouteImport
-      parentRoute: typeof StaffJobsIdRoute
-    }
-    '/staff/jobs_/$id/checkin': {
-      id: '/staff/jobs_/$id/checkin'
-      path: '/checkin'
-      fullPath: '/staff/jobs/$id/checkin'
-      preLoaderRoute: typeof StaffJobsIdCheckinRouteImport
-      parentRoute: typeof StaffJobsIdRoute
-    }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+    '/rental-contract/fill/$contractId': {
+      id: '/rental-contract/fill/$contractId'
+      path: '/rental-contract/fill/$contractId'
+      fullPath: '/rental-contract/fill/$contractId'
+      preLoaderRoute: typeof RentalContractFillContractIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/preview': {
-      id: '/lovable/email/transactional/preview'
-      path: '/lovable/email/transactional/preview'
-      fullPath: '/lovable/email/transactional/preview'
-      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
-      parentRoute: typeof rootRouteImport
+    '/staff/jobs_/$id': {
+      id: '/staff/jobs_/$id'
+      path: '/jobs/$id'
+      fullPath: '/staff/jobs/$id'
+      preLoaderRoute: typeof StaffJobsIdRouteImport
+      parentRoute: typeof StaffRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/hooks/spreadsheet-sync': {
-      id: '/api/public/hooks/spreadsheet-sync'
-      path: '/api/public/hooks/spreadsheet-sync'
-      fullPath: '/api/public/hooks/spreadsheet-sync'
-      preLoaderRoute: typeof ApiPublicHooksSpreadsheetSyncRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/quotes_/$id/preview': {
-      id: '/admin/quotes_/$id/preview'
-      path: '/quotes/$id/preview'
-      fullPath: '/admin/quotes/$id/preview'
-      preLoaderRoute: typeof AdminQuotesIdPreviewRouteImport
+    '/admin/quotes_/$id/edit': {
+      id: '/admin/quotes_/$id/edit'
+      path: '/quotes/$id/edit'
+      fullPath: '/admin/quotes/$id/edit'
+      preLoaderRoute: typeof AdminQuotesIdEditRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/quotes_/$id/job-sheet': {
@@ -1370,12 +1328,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminQuotesIdJobSheetRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/quotes_/$id/edit': {
-      id: '/admin/quotes_/$id/edit'
-      path: '/quotes/$id/edit'
-      fullPath: '/admin/quotes/$id/edit'
-      preLoaderRoute: typeof AdminQuotesIdEditRouteImport
+    '/admin/quotes_/$id/preview': {
+      id: '/admin/quotes_/$id/preview'
+      path: '/quotes/$id/preview'
+      fullPath: '/admin/quotes/$id/preview'
+      preLoaderRoute: typeof AdminQuotesIdPreviewRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/public/hooks/spreadsheet-sync': {
+      id: '/api/public/hooks/spreadsheet-sync'
+      path: '/api/public/hooks/spreadsheet-sync'
+      fullPath: '/api/public/hooks/spreadsheet-sync'
+      preLoaderRoute: typeof ApiPublicHooksSpreadsheetSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff/jobs_/$id/checkin': {
+      id: '/staff/jobs_/$id/checkin'
+      path: '/checkin'
+      fullPath: '/staff/jobs/$id/checkin'
+      preLoaderRoute: typeof StaffJobsIdCheckinRouteImport
+      parentRoute: typeof StaffJobsIdRoute
+    }
+    '/staff/jobs_/$id/pull': {
+      id: '/staff/jobs_/$id/pull'
+      path: '/pull'
+      fullPath: '/staff/jobs/$id/pull'
+      preLoaderRoute: typeof StaffJobsIdPullRouteImport
+      parentRoute: typeof StaffJobsIdRoute
     }
   }
 }
