@@ -10,6 +10,7 @@ import bridalLoungeAsset from "@/assets/bridal/bridal-lounge.jpg.asset.json";
 import bridalLoungeIntoPrepRoomAsset from "@/assets/bridal/bridal-lounge-into-prep-room.jpg.asset.json";
 import bridalDressingRoomAsset from "@/assets/bridal/bridal-dressing-room.jpg.asset.json";
 import bridalVanityStationsAsset from "@/assets/bridal/bridal-vanity-stations.jpg.asset.json";
+import bridalSuiteTourAsset from "@/assets/bridal/bridal-suite-tour.mp4.asset.json";
 
 import {
   MapPin,
@@ -349,6 +350,22 @@ function BeaconPage() {
                   </button>
                 ))}
               </div>
+
+              <figure className="mt-6">
+                <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-border/60 bg-secondary shadow-sm">
+                  <video
+                    src={bridalSuiteTourAsset.url}
+                    poster={bridalPhotos[0].url}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="aspect-[3/4] w-full object-cover"
+                  />
+                </div>
+                <figcaption className="mt-2 text-center text-xs text-muted-foreground">
+                  {t("beacon.bridal.videoCaption")}
+                </figcaption>
+              </figure>
             </div>
           </div>
         </div>
