@@ -274,8 +274,8 @@ function BeaconPage() {
       {/* Beacon Bridal Suite — available as an add-on */}
       <section className="border-y border-border/60 bg-gradient-to-b from-[color:var(--sand-soft)]/70 via-background to-background">
         <div className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
-          <div className="grid items-start gap-12 lg:grid-cols-2">
-            <div>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14">
+            <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
                 {t("beacon.bridal.eyebrow")}
               </p>
@@ -285,8 +285,22 @@ function BeaconPage() {
               <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
                 {t("beacon.bridal.intro")}
               </p>
+              <p className="mt-4 text-muted-foreground">{t("beacon.bridal.body")}</p>
+              <p className="mt-5 font-serif text-xl italic leading-relaxed text-primary">
+                {t("beacon.bridal.closing")}
+              </p>
 
-              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <button
+                type="button"
+                onClick={() => setQuoteOpen(true)}
+                className="mt-7 inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
+              >
+                {t("beacon.bridal.cta")} <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="min-w-0 lg:pt-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 {t("beacon.bridal.featuresTitle")}
               </p>
               <ul className="mt-4 grid gap-3">
@@ -305,69 +319,44 @@ function BeaconPage() {
                   );
                 })}
               </ul>
-
-              <p className="mt-6 text-muted-foreground">{t("beacon.bridal.body")}</p>
-              <p className="mt-4 font-serif text-xl italic leading-relaxed text-primary">
-                {t("beacon.bridal.closing")}
-              </p>
-
-              <button
-                type="button"
-                onClick={() => setQuoteOpen(true)}
-                className="mt-7 inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
-              >
-                {t("beacon.bridal.cta")} <ArrowRight className="h-4 w-4" />
-              </button>
             </div>
+          </div>
 
-            <div>
-              <button
-                type="button"
-                onClick={() => setBridalLbIndex(0)}
-                aria-label={bridalPhotos[0].caption}
-                className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-secondary shadow-sm"
-              >
-                <img
-                  src={bridalPhotos[0].url}
-                  alt={bridalPhotos[0].alt}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                />
-              </button>
-              <div className="mt-3 grid grid-cols-3 gap-3">
-                {bridalPhotos.slice(1).map((p, i) => (
-                  <button
-                    key={p.url}
-                    type="button"
-                    onClick={() => setBridalLbIndex(i + 1)}
-                    aria-label={p.caption}
-                    className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-secondary"
-                  >
-                    <img
-                      src={p.url}
-                      alt={p.alt}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </button>
-                ))}
-              </div>
-
-              <figure className="mt-6">
-                <div className="mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 bg-secondary shadow-sm">
-                  <video
-                    src={bridalSuiteTourAsset.url}
-                    poster={bridalSuiteTourPosterAsset.url}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="aspect-[9/16] w-full"
+          <div className="mt-12 grid gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-rows-2">
+              {bridalPhotos.map((p, i) => (
+                <button
+                  key={p.url}
+                  type="button"
+                  onClick={() => setBridalLbIndex(i)}
+                  aria-label={p.caption}
+                  className="group relative block aspect-[4/3] overflow-hidden rounded-2xl bg-secondary shadow-sm lg:aspect-auto"
+                >
+                  <img
+                    src={p.url}
+                    alt={p.alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
-                </div>
-                <figcaption className="mt-2 text-center text-xs text-muted-foreground">
-                  {t("beacon.bridal.videoCaption")}
-                </figcaption>
-              </figure>
+                </button>
+              ))}
             </div>
+
+            <figure className="flex min-w-0 flex-col gap-2">
+              <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-2xl border border-border/60 bg-secondary shadow-sm lg:max-w-none">
+                <video
+                  src={bridalSuiteTourAsset.url}
+                  poster={bridalSuiteTourPosterAsset.url}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="aspect-[9/16] w-full"
+                />
+              </div>
+              <figcaption className="text-center text-xs text-muted-foreground">
+                {t("beacon.bridal.videoCaption")}
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
