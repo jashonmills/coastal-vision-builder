@@ -352,14 +352,14 @@ function BeaconPage() {
               </div>
 
               <figure className="mt-6">
-                <div className="overflow-hidden rounded-2xl border border-border/60 bg-secondary shadow-sm">
+                <div className="mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 bg-secondary shadow-sm">
                   <video
                     src={bridalSuiteTourAsset.url}
                     poster={bridalPhotos[0].url}
                     controls
                     playsInline
                     preload="metadata"
-                    className="aspect-video w-full"
+                    className="aspect-[9/16] w-full"
                   />
                 </div>
                 <figcaption className="mt-2 text-center text-xs text-muted-foreground">
