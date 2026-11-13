@@ -6,6 +6,10 @@ import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
 import { VirtualTour } from "@/components/VirtualTour/VirtualTour";
 import beaconHeroAsset from "@/assets/beacon-hero.jpg.asset.json";
+import bridalLoungeAsset from "@/assets/bridal/bridal-lounge.jpg.asset.json";
+import bridalLoungeIntoPrepRoomAsset from "@/assets/bridal/bridal-lounge-into-prep-room.jpg.asset.json";
+import bridalDressingRoomAsset from "@/assets/bridal/bridal-dressing-room.jpg.asset.json";
+import bridalVanityStationsAsset from "@/assets/bridal/bridal-vanity-stations.jpg.asset.json";
 
 import {
   MapPin,
@@ -18,6 +22,8 @@ import {
   Phone,
   ArrowRight,
   Check,
+  Sofa,
+  Bath,
 } from "lucide-react";
 
 // Eagerly import all Beacon photo CDN pointers
@@ -32,6 +38,32 @@ const photoUrls: string[] = Object.entries(photoModules)
 
 const heroPhoto = beaconHeroAsset.url;
 const galleryPhotos = photoUrls;
+
+// Beacon Bridal Suite — add-on space, kept out of the "Inside the hall" gallery.
+const bridalPhotos = [
+  {
+    url: bridalLoungeIntoPrepRoomAsset.url,
+    alt: "Beacon Bridal Suite living room with an open doorway into the getting-ready room",
+    caption: "Living room opening into the getting-ready room",
+  },
+  {
+    url: bridalLoungeAsset.url,
+    alt: "Beacon Bridal Suite living room with sofa, armchairs, and a refreshment credenza",
+    caption: "Sofa, armchairs & refreshment station",
+  },
+  {
+    url: bridalDressingRoomAsset.url,
+    alt: "Beacon Bridal Suite dressing room with wall mirrors, accent chairs, and a gown rack",
+    caption: "Dressing room with mirrors & gown rack",
+  },
+  {
+    url: bridalVanityStationsAsset.url,
+    alt: "Beacon Bridal Suite vanity stations with mirrors, lamps, and seating",
+    caption: "Getting-ready vanity stations",
+  },
+];
+
+const bridalFeatureIcons = [Sofa, Sparkles, Bath] as const;
 
 export const Route = createFileRoute("/beacon-on-broadway")({
   head: () => ({
@@ -57,10 +89,15 @@ const factIcons = [
 function BeaconPage() {
   const { t } = useTranslation();
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const [bridalLbIndex, setBridalLbIndex] = useState<number | null>(null);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const lbImages: LightboxImage[] = galleryPhotos.map((url, i) => ({
     url,
     alt: `Beacon on Broadway — photo ${i + 1}`,
+  }));
+  const bridalLbImages: LightboxImage[] = bridalPhotos.map((p) => ({
+    url: p.url,
+    alt: p.alt,
   }));
 
   const included = t("beacon.included.items", { returnObjects: true }) as string[];
