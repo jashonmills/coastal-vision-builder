@@ -6,6 +6,10 @@ import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { BeaconQuoteModal } from "@/components/BeaconQuoteModal";
 import { VirtualTour } from "@/components/VirtualTour/VirtualTour";
 import beaconHeroAsset from "@/assets/beacon-hero.jpg.asset.json";
+import bridalLoungeAsset from "@/assets/bridal/bridal-lounge.jpg.asset.json";
+import bridalLoungeIntoPrepRoomAsset from "@/assets/bridal/bridal-lounge-into-prep-room.jpg.asset.json";
+import bridalDressingRoomAsset from "@/assets/bridal/bridal-dressing-room.jpg.asset.json";
+import bridalVanityStationsAsset from "@/assets/bridal/bridal-vanity-stations.jpg.asset.json";
 
 import {
   MapPin,
@@ -18,6 +22,8 @@ import {
   Phone,
   ArrowRight,
   Check,
+  Sofa,
+  Bath,
 } from "lucide-react";
 
 // Eagerly import all Beacon photo CDN pointers
@@ -32,6 +38,32 @@ const photoUrls: string[] = Object.entries(photoModules)
 
 const heroPhoto = beaconHeroAsset.url;
 const galleryPhotos = photoUrls;
+
+// Beacon Bridal Suite — add-on space, kept out of the "Inside the hall" gallery.
+const bridalPhotos = [
+  {
+    url: bridalLoungeIntoPrepRoomAsset.url,
+    alt: "Beacon Bridal Suite living room with an open doorway into the getting-ready room",
+    caption: "Living room opening into the getting-ready room",
+  },
+  {
+    url: bridalLoungeAsset.url,
+    alt: "Beacon Bridal Suite living room with sofa, armchairs, and a refreshment credenza",
+    caption: "Sofa, armchairs & refreshment station",
+  },
+  {
+    url: bridalDressingRoomAsset.url,
+    alt: "Beacon Bridal Suite dressing room with wall mirrors, accent chairs, and a gown rack",
+    caption: "Dressing room with mirrors & gown rack",
+  },
+  {
+    url: bridalVanityStationsAsset.url,
+    alt: "Beacon Bridal Suite vanity stations with mirrors, lamps, and seating",
+    caption: "Getting-ready vanity stations",
+  },
+];
+
+const bridalFeatureIcons = [Sofa, Sparkles, Bath] as const;
 
 export const Route = createFileRoute("/beacon-on-broadway")({
   head: () => ({
@@ -57,13 +89,19 @@ const factIcons = [
 function BeaconPage() {
   const { t } = useTranslation();
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const [bridalLbIndex, setBridalLbIndex] = useState<number | null>(null);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const lbImages: LightboxImage[] = galleryPhotos.map((url, i) => ({
     url,
     alt: `Beacon on Broadway — photo ${i + 1}`,
   }));
+  const bridalLbImages: LightboxImage[] = bridalPhotos.map((p) => ({
+    url: p.url,
+    alt: p.alt,
+  }));
 
   const included = t("beacon.included.items", { returnObjects: true }) as string[];
+  const bridalFeatures = t("beacon.bridal.features", { returnObjects: true }) as string[];
 
   return (
     <SiteLayout>
@@ -231,6 +269,91 @@ function BeaconPage() {
         </div>
       </section>
 
+      {/* Beacon Bridal Suite — available as an add-on */}
+      <section className="border-y border-border/60 bg-gradient-to-b from-[color:var(--sand-soft)]/70 via-background to-background">
+        <div className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
+          <div className="grid items-start gap-12 lg:grid-cols-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--forest)]">
+                {t("beacon.bridal.eyebrow")}
+              </p>
+              <h2 className="mt-3 font-serif text-4xl text-primary sm:text-5xl">
+                {t("beacon.bridal.title")}
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                {t("beacon.bridal.intro")}
+              </p>
+
+              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                {t("beacon.bridal.featuresTitle")}
+              </p>
+              <ul className="mt-4 grid gap-3">
+                {bridalFeatures.map((item, i) => {
+                  const Icon = bridalFeatureIcons[i] ?? Check;
+                  return (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 rounded-2xl border border-border/60 bg-background px-4 py-4 text-sm text-foreground shadow-sm"
+                    >
+                      <span className="mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[color:var(--forest)]/10 text-[color:var(--forest)]">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      {item}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <p className="mt-6 text-muted-foreground">{t("beacon.bridal.body")}</p>
+              <p className="mt-4 font-serif text-xl italic leading-relaxed text-primary">
+                {t("beacon.bridal.closing")}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => setQuoteOpen(true)}
+                className="mt-7 inline-flex items-center gap-2 rounded-full bg-[color:var(--gold)] px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:brightness-105"
+              >
+                {t("beacon.bridal.cta")} <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div>
+              <button
+                type="button"
+                onClick={() => setBridalLbIndex(0)}
+                aria-label={bridalPhotos[0].caption}
+                className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-secondary shadow-sm"
+              >
+                <img
+                  src={bridalPhotos[0].url}
+                  alt={bridalPhotos[0].alt}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+              </button>
+              <div className="mt-3 grid grid-cols-3 gap-3">
+                {bridalPhotos.slice(1).map((p, i) => (
+                  <button
+                    key={p.url}
+                    type="button"
+                    onClick={() => setBridalLbIndex(i + 1)}
+                    aria-label={p.caption}
+                    className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-secondary"
+                  >
+                    <img
+                      src={p.url}
+                      alt={p.alt}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Gallery */}
       <section className="bg-background">
         <div className="mx-auto max-w-6xl px-4 pb-20 lg:px-8">
@@ -321,6 +444,12 @@ function BeaconPage() {
         index={lbIndex}
         onClose={() => setLbIndex(null)}
         onIndexChange={setLbIndex}
+      />
+      <Lightbox
+        images={bridalLbImages}
+        index={bridalLbIndex}
+        onClose={() => setBridalLbIndex(null)}
+        onIndexChange={setBridalLbIndex}
       />
       <BeaconQuoteModal open={quoteOpen} onClose={() => setQuoteOpen(false)} />
     </SiteLayout>

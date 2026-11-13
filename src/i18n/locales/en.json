@@ -825,6 +825,20 @@
         "note": "Friday – Sunday · ask about the Fri 5 PM – Mon noon special"
       }
     },
+    "bridal": {
+      "eyebrow": "💍 Now available as an add-on",
+      "title": "The Beacon Bridal Suite",
+      "intro": "Make your wedding day even more special with a dedicated space to relax, get ready, and celebrate with your favorite people!",
+      "featuresTitle": "Our Beacon Bridal Suite features:",
+      "features": [
+        "A spacious living room and gathering area",
+        "Two separate rooms with 8 getting-ready stations",
+        "A private restroom"
+      ],
+      "body": "Whether you're sipping mimosas, getting glam, or sharing those special moments before walking down the aisle, this is the perfect addition to your wedding day!",
+      "closing": "Because the getting-ready moments deserve to be just as special as the big moment. ❤️",
+      "cta": "Add the Bridal Suite to my quote"
+    },
     "gallery": {
       "eyebrow": "Gallery",
       "title": "Inside the hall"
