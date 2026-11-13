@@ -11,6 +11,7 @@ import bridalLoungeIntoPrepRoomAsset from "@/assets/bridal/bridal-lounge-into-pr
 import bridalDressingRoomAsset from "@/assets/bridal/bridal-dressing-room.jpg.asset.json";
 import bridalVanityStationsAsset from "@/assets/bridal/bridal-vanity-stations.jpg.asset.json";
 import bridalSuiteTourAsset from "@/assets/bridal/bridal-suite-tour.mp4.asset.json";
+import bridalSuiteTourPosterAsset from "@/assets/bridal/bridal-suite-tour-poster.jpg.asset.json";
 
 import {
   MapPin,
@@ -355,7 +356,7 @@ function BeaconPage() {
                 <div className="mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 bg-secondary shadow-sm">
                   <video
                     src={bridalSuiteTourAsset.url}
-                    poster={bridalPhotos[0].url}
+                    poster={bridalSuiteTourPosterAsset.url}
                     controls
                     playsInline
                     preload="metadata"
